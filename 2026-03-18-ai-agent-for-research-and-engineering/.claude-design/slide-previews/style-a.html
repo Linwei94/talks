@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preview A — Bold Signal</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; background: #1a1a1a; }
+
+.slide {
+    width: 100vw; height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    font-family: 'Space Grotesk', sans-serif;
+    background: linear-gradient(135deg, #111 0%, #1f1f1f 50%, #111 100%);
+    position: relative;
+}
+
+/* Left: accent card */
+.left {
+    background: #E84F1C;
+    padding: clamp(2rem, 5vw, 5rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+    overflow: hidden;
+}
+.left::before {
+    content: '01';
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(8rem, 20vw, 18rem);
+    color: rgba(0,0,0,0.12);
+    position: absolute;
+    top: -2rem; left: -1rem;
+    line-height: 1;
+    font-weight: 900;
+    user-select: none;
+}
+.label {
+    font-size: clamp(0.6rem, 1vw, 0.75rem);
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: rgba(0,0,0,0.6);
+    margin-bottom: 0.75rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: up 0.6s cubic-bezier(0.16,1,0.3,1) 0.2s forwards;
+}
+.main-title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(1.5rem, 3.5vw, 3rem);
+    color: #111;
+    line-height: 1.1;
+    font-weight: 900;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: up 0.7s cubic-bezier(0.16,1,0.3,1) 0.35s forwards;
+}
+
+/* Right: dark info panel */
+.right {
+    padding: clamp(2rem, 5vw, 5rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(1rem, 3vh, 2.5rem);
+}
+.meta-row {
+    display: flex; align-items: center; gap: 0.75rem;
+    opacity: 0; transform: translateY(15px);
+    animation: up 0.6s cubic-bezier(0.16,1,0.3,1) 0.5s forwards;
+}
+.meta-row:nth-child(2) { animation-delay: 0.62s; }
+.meta-row:nth-child(3) { animation-delay: 0.74s; }
+.dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #E84F1C; flex-shrink: 0;
+}
+.meta-label {
+    font-size: clamp(0.6rem, 0.9vw, 0.7rem);
+    text-transform: uppercase; letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.35); min-width: 5rem;
+}
+.meta-value {
+    font-size: clamp(0.75rem, 1.1vw, 0.9rem);
+    color: rgba(255,255,255,0.85); font-weight: 500;
+}
+.divider {
+    width: 100%; height: 1px;
+    background: rgba(255,255,255,0.08);
+    opacity: 0; animation: up 0.5s 0.9s forwards;
+}
+.presenter {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(0.75rem, 1.2vw, 1rem);
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0; animation: up 0.5s 1s forwards;
+}
+.tag {
+    display: inline-block;
+    background: rgba(232,79,28,0.15);
+    border: 1px solid rgba(232,79,28,0.4);
+    color: #E84F1C;
+    font-size: clamp(0.6rem, 0.9vw, 0.7rem);
+    padding: 0.3em 0.75em;
+    border-radius: 2px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0; animation: up 0.5s 1.1s forwards;
+}
+
+@keyframes up {
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+<div class="slide">
+    <div class="left">
+        <div class="label">Lab Seminar · 2026.03.18</div>
+        <div class="main-title">AI Agent<br>for Research<br>& Engineering</div>
+    </div>
+    <div class="right">
+        <div class="meta-row">
+            <div class="dot"></div>
+            <span class="meta-label">Topic</span>
+            <span class="meta-value">AI Coding Agent in Practice</span>
+        </div>
+        <div class="meta-row">
+            <div class="dot"></div>
+            <span class="meta-label">Projects</span>
+            <span class="meta-value">NeurIPS paper · Cat boarding app</span>
+        </div>
+        <div class="meta-row">
+            <div class="dot"></div>
+            <span class="meta-label">Tool</span>
+            <span class="meta-value">Claude Code</span>
+        </div>
+        <div class="divider"></div>
+        <div class="presenter">Linwei Tao</div>
+        <div class="tag">Style A — Bold Signal</div>
+    </div>
+</div>
+</body>
+</html>
