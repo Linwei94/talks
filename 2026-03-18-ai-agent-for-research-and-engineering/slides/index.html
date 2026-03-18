@@ -537,7 +537,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
 <div class="progress-bar" id="progressBar"></div>
 <nav class="nav-dots" id="navDots"></nav>
 <div class="edit-hotzone" id="editHotzone"></div>
-<button class="edit-toggle" id="editToggle">✏ 编辑</button>
+<button class="edit-toggle" id="editToggle" data-en="✏ Edit">✏ 编辑</button>
 
 <!-- ===================== SLIDE 1: TITLE ===================== -->
 <section class="slide" id="slide-1">
@@ -554,8 +554,8 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                     AI Agent for Research <span class="text-red">&amp;</span> Engineering
                 </h1>
                 <p class="reveal" style="margin-top: var(--gap); max-width: 32rem;">
-                    Web App · NeurIPS 投稿 · 技术解剖 · 讨论<br>
-                    <span class="text-soft">一人 · 一周 · 顶会投稿 + 生产级 app</span>
+                    <span data-en="Web App · NeurIPS Submission · Technical Deep Dive · Discussion">Web App · NeurIPS 投稿 · 技术解剖 · 讨论</span><br>
+                    <span class="text-soft" data-en="One person · One week · Top-venue paper + production app">一人 · 一周 · 顶会投稿 + 生产级 app</span>
                 </p>
             </div>
         </div>
@@ -615,7 +615,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
         <div style="display: flex; flex-direction: column; gap: 0.6rem; overflow: hidden;">
             <div style="display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0;">
                 <div style="width: 1.6rem; height: 1.6rem; background: var(--ink); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.7rem; font-weight: 700;">①</div>
-                <span style="font-size: var(--t-small); font-weight: 600;">阿里嘎多 · 猫咪寄养 Web App</span>
+                <span style="font-size: var(--t-small); font-weight: 600;" data-en="Arigato · Cat Boarding Web App">阿里嘎多 · 猫咪寄养 Web App</span>
             </div>
             <!-- iPhone 15 Pro shell -->
             <div style="flex: 1; display: flex; justify-content: center; align-items: center; overflow: hidden;">
@@ -750,7 +750,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
         <div style="display: flex; flex-direction: column; gap: 0.6rem; overflow: hidden;">
             <div style="display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0;">
                 <div style="width: 1.6rem; height: 1.6rem; background: var(--red); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.7rem; font-weight: 700;">②</div>
-                <span style="font-size: var(--t-small); font-weight: 600;">CalibrationAGT · NeurIPS 2026 投稿</span>
+                <span style="font-size: var(--t-small); font-weight: 600;" data-en="CalibrationAGT · NeurIPS 2026 Submission">CalibrationAGT · NeurIPS 2026 投稿</span>
             </div>
             <div style="flex: 1; border: 2px solid var(--border-soft); border-radius: 8px; overflow: hidden; background: #f0ede8;">
                 <object
@@ -781,27 +781,27 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
             <div class="card reveal">
                 <div class="card-icon">🐱</div>
                 <div class="card-title">Part 1 · Engineering</div>
-                <div class="card-desc">猫咪寄养 Web App — 用 Claude Code 在 research 间隙完成的生产级应用</div>
+                <div class="card-desc" data-en="Cat Boarding Web App — a production app built with Claude Code in the gaps between research">猫咪寄养 Web App — 用 Claude Code 在 research 间隙完成的生产级应用</div>
             </div>
             <div class="card reveal">
                 <div class="card-icon">🔬</div>
                 <div class="card-title">Part 2 · Research</div>
-                <div class="card-desc">CalibrationAGT — 一篇 NeurIPS 投稿是怎么用 AI Agent 完成的</div>
+                <div class="card-desc" data-en="CalibrationAGT — how a NeurIPS submission was completed using AI Agent">CalibrationAGT — 一篇 NeurIPS 投稿是怎么用 AI Agent 完成的</div>
             </div>
             <div class="card reveal">
                 <div class="card-icon">⚙️</div>
-                <div class="card-title">Part 3 · 技术解剖</div>
-                <div class="card-desc">AI Agent 到底怎么工作的？Tool use、Memory、Sub-agent</div>
+                <div class="card-title" data-en="Part 3 · Technical Anatomy">Part 3 · 技术解剖</div>
+                <div class="card-desc" data-en="How does AI Agent actually work? Tool use, Memory, Sub-agent">AI Agent 到底怎么工作的？Tool use、Memory、Sub-agent</div>
             </div>
             <div class="card reveal">
                 <div class="card-icon">💭</div>
-                <div class="card-title">Part 4 · 讨论</div>
-                <div class="card-desc">Paper 通货膨胀了，Senior 生产力 ×10 了——科研和工程会怎么变？</div>
+                <div class="card-title" data-en="Part 4 · Discussion">Part 4 · 讨论</div>
+                <div class="card-desc" data-en="Paper inflation, Senior productivity ×10 — how will research and engineering change?">Paper 通货膨胀了，Senior 生产力 ×10 了——科研和工程会怎么变？</div>
             </div>
             <div class="card reveal" style="grid-column: span 2; background: var(--bg-alt);">
                 <div class="card-icon">🎁</div>
                 <div class="card-title">Bonus · gnvitop</div>
-                <div class="card-desc">一个顺带开发的小工具——全局 GPU 监控，一行命令完成</div>
+                <div class="card-desc" data-en="A side tool built along the way — global GPU monitoring in one command">一个顺带开发的小工具——全局 GPU 监控，一行命令完成</div>
             </div>
         </div>
     </div>
@@ -836,15 +836,15 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                         <span style="color:#e8321a;font-size:0.8rem;font-weight:700;">O</span>
                     </div>
                     <span style="font-weight:700;font-size:var(--t-body);">OpenClaw</span>
-                    <span style="font-size:var(--t-small);color:var(--ink-soft);">私人助理</span>
+                    <span style="font-size:var(--t-small);color:var(--ink-soft);" data-en="Personal Assistant">私人助理</span>
                 </div>
                 <ul style="font-size:var(--t-small);color:var(--ink);line-height:1.7;padding-left:1.1em;margin:0;">
-                    <li>Memory 记住主人的一切偏好</li>
-                    <li>心跳机制，24h 持续运行</li>
-                    <li>可接 WhatsApp / Telegram</li>
-                    <li style="color:var(--ink-soft);">⚠ 每次塞大量 context，<strong>烧 token</strong></li>
+                    <li data-en="Memory remembers everything about the owner's preferences">Memory 记住主人的一切偏好</li>
+                    <li data-en="Heartbeat mechanism, runs 24h continuously">心跳机制，24h 持续运行</li>
+                    <li data-en="Can connect to WhatsApp / Telegram">可接 WhatsApp / Telegram</li>
+                    <li style="color:var(--ink-soft);" data-en="⚠ Stuffs tons of context each time — <strong>burns tokens</strong>">⚠ 每次塞大量 context，<strong>烧 token</strong></li>
                 </ul>
-                <div style="margin-top:auto;font-size:var(--t-small);background:var(--bg-alt);padding:0.4rem 0.6rem;border-radius:6px;">🦞 更像玩具 / 个人实验</div>
+                <div style="margin-top:auto;font-size:var(--t-small);background:var(--bg-alt);padding:0.4rem 0.6rem;border-radius:6px;" data-en="🦞 More like a toy / personal experiment">🦞 更像玩具 / 个人实验</div>
             </div>
             <!-- Claude Code -->
             <div class="reveal" style="border:2px solid var(--red);border-radius:8px;padding:1rem;display:flex;flex-direction:column;gap:0.5rem;background:var(--red-light);">
@@ -853,15 +853,15 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                         <img src="https://cdn.simpleicons.org/anthropic/ffffff" width="14" height="14" style="display:block;">
                     </div>
                     <span style="font-weight:700;font-size:var(--t-body);">Claude Code ✦</span>
-                    <span style="font-size:var(--t-small);color:var(--ink-soft);">开发者</span>
+                    <span style="font-size:var(--t-small);color:var(--ink-soft);" data-en="Developer">开发者</span>
                 </div>
                 <ul style="font-size:var(--t-small);color:var(--ink);line-height:1.7;padding-left:1.1em;margin:0;">
-                    <li>Terminal CLI，原生操作文件 / git</li>
-                    <li>Skill / Hook 高度可定制</li>
-                    <li>个人体验：比 Codex <strong>更好用</strong></li>
-                    <li style="color:var(--ink-mid);">Claude Cowork：面向<strong>非技术用户</strong></li>
+                    <li data-en="Terminal CLI, native file / git operations">Terminal CLI，原生操作文件 / git</li>
+                    <li data-en="Skill / Hook highly customizable">Skill / Hook 高度可定制</li>
+                    <li data-en="Personal experience: <strong>better than</strong> Codex">个人体验：比 Codex <strong>更好用</strong></li>
+                    <li style="color:var(--ink-mid);" data-en="Claude Cowork: for <strong>non-technical users</strong>">Claude Cowork：面向<strong>非技术用户</strong></li>
                 </ul>
-                <div style="margin-top:auto;font-size:var(--t-small);background:rgba(232,50,26,0.12);padding:0.4rem 0.6rem;border-radius:6px;color:var(--red);font-weight:600;">⚡ 今天主讲工具</div>
+                <div style="margin-top:auto;font-size:var(--t-small);background:rgba(232,50,26,0.12);padding:0.4rem 0.6rem;border-radius:6px;color:var(--red);font-weight:600;" data-en="⚡ Today's main tool">⚡ 今天主讲工具</div>
             </div>
             <!-- Codex -->
             <div class="reveal" style="border:1.5px solid var(--border-soft);border-radius:8px;padding:1rem;display:flex;flex-direction:column;gap:0.5rem;">
@@ -870,19 +870,19 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                         <span style="color:#fff;font-size:0.75rem;font-weight:700;">Cx</span>
                     </div>
                     <span style="font-weight:700;font-size:var(--t-body);">Codex</span>
-                    <span style="font-size:var(--t-small);color:var(--ink-soft);">云端沙箱</span>
+                    <span style="font-size:var(--t-small);color:var(--ink-soft);" data-en="Cloud Sandbox">云端沙箱</span>
                 </div>
                 <ul style="font-size:var(--t-small);color:var(--ink);line-height:1.7;padding-left:1.1em;margin:0;">
-                    <li>在隔离沙箱中并行跑任务</li>
-                    <li>无需本地环境，随时调度</li>
-                    <li>与 Claude Code 定位相近</li>
-                    <li style="color:var(--ink-soft);">适合批量、无人值守任务</li>
+                    <li data-en="Runs tasks in parallel in isolated sandboxes">在隔离沙箱中并行跑任务</li>
+                    <li data-en="No local env needed, schedule anytime">无需本地环境，随时调度</li>
+                    <li data-en="Similar positioning to Claude Code">与 Claude Code 定位相近</li>
+                    <li style="color:var(--ink-soft);" data-en="Good for batch, unattended tasks">适合批量、无人值守任务</li>
                 </ul>
-                <div style="margin-top:auto;font-size:var(--t-small);background:var(--bg-alt);padding:0.4rem 0.6rem;border-radius:6px;">☁️ 云端并行，异步执行</div>
+                <div style="margin-top:auto;font-size:var(--t-small);background:var(--bg-alt);padding:0.4rem 0.6rem;border-radius:6px;" data-en="☁️ Cloud parallel, async execution">☁️ 云端并行，异步执行</div>
             </div>
         </div>
         <div class="reveal" style="border-left:4px solid var(--red);padding:0.5rem 1rem;background:var(--red-light);font-size:var(--t-small);border-radius:0 6px 6px 0;">
-            <strong>共同本质：</strong>LLM + 工具调用 + 记忆系统 — 底层完全一致，差异在于 memory 设计和使用场景
+            <span data-en="<strong>Common core:</strong> LLM + tool calling + memory system — identical at the foundation, differing in memory design and use case"><strong>共同本质：</strong>LLM + 工具调用 + 记忆系统 — 底层完全一致，差异在于 memory 设计和使用场景</span>
         </div>
     </div>
     <div class="slide-footer">
@@ -901,8 +901,15 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
         <div class="two-col" style="align-items: start; gap: var(--gap);">
             <!-- LEFT: LLM 工作原理 -->
             <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);">
-                <p style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-soft);">LLM 怎么工作</p>
-                <div class="code-block" style="font-size:clamp(0.65rem,0.9vw,0.78rem);line-height:1.7;">
+                <p style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-soft);" data-en="How LLM Works">LLM 怎么工作</p>
+                <div class="code-block" style="font-size:clamp(0.65rem,0.9vw,0.78rem);line-height:1.7;" data-en="<span class='cm'>// Everything LLM sees on each call</span>
+<span class='kw'>context</span> = [
+  system_prompt,    <span class='cm'>// rules, tool list, memory files</span>
+  conversation,     <span class='cm'>// conversation history</span>
+  tool_results,     <span class='cm'>// previous step results</span>
+  your_prompt,      <span class='cm'>// what you just typed</span>
+]
+<span class='kw'>output</span> = LLM(context)  <span class='cm'>// predict next token</span>">
 <span class="cm">// 每次调用 LLM，它看到的全部东西</span>
 <span class="kw">context</span> = [
   system_prompt,    <span class="cm">// 规则、工具列表、记忆文件</span>
@@ -912,14 +919,14 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
 ]
 <span class="kw">output</span> = LLM(context)  <span class="cm">// 预测下一个 token</span></div>
                 <div class="highlight-box" style="padding:0.6rem 0.9rem;">
-                    <p style="font-size:var(--t-small);">LLM <strong>没有记忆</strong>——它只能看到 context 里有什么</p>
+                    <p style="font-size:var(--t-small);" data-en="LLM has <strong>no memory</strong> — it can only see what's in the context">LLM <strong>没有记忆</strong>——它只能看到 context 里有什么</p>
                 </div>
 
                 <!-- Context window sizes -->
-                <p style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-soft);margin-top:0.3rem;">Context Window 进化</p>
+                <p style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-soft);margin-top:0.3rem;" data-en="Context Window Evolution">Context Window 进化</p>
                 <div style="display:flex;flex-direction:column;gap:0.4rem;font-size:clamp(0.6rem,0.85vw,0.75rem);">
                     <div style="display:grid;grid-template-columns:10rem 1fr 5rem;gap:0.5rem;color:var(--ink-soft);font-size:0.65em;letter-spacing:0.08em;text-transform:uppercase;padding-bottom:0.2rem;border-bottom:1px solid var(--border-soft);">
-                        <span>模型</span><span></span><span style="text-align:right;">发布</span>
+                        <span data-en="Model">模型</span><span></span><span style="text-align:right;" data-en="Released">发布</span>
                     </div>
                     <div style="display:grid;grid-template-columns:10rem 1fr 5rem;gap:0.5rem;align-items:center;">
                         <span style="color:var(--ink-soft);">GPT-4o</span>
@@ -951,34 +958,36 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
 
             <!-- RIGHT: 现实项目 vs context -->
             <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);">
-                <p style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-soft);">但你的项目有多大？</p>
+                <p style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-soft);" data-en="But How Large Is Your Project?">但你的项目有多大？</p>
                 <div style="display:flex;flex-direction:column;gap:0.5rem;font-size:var(--t-small);">
                     <div style="display:flex;justify-content:space-between;padding:0.5rem 0.75rem;background:var(--bg-alt);border-radius:6px;">
-                        <span>一篇 NeurIPS 论文</span>
+                        <span data-en="A NeurIPS paper">一篇 NeurIPS 论文</span>
                         <span style="font-weight:600;color:var(--red);">~8K tokens ✓</span>
                     </div>
                     <div style="display:flex;justify-content:space-between;padding:0.5rem 0.75rem;background:var(--bg-alt);border-radius:6px;">
-                        <span>一个 PhD thesis</span>
+                        <span data-en="A PhD thesis">一个 PhD thesis</span>
                         <span style="font-weight:600;color:var(--red);">~100K tokens ✓</span>
                     </div>
                     <div style="display:flex;justify-content:space-between;padding:0.5rem 0.75rem;background:#fff3f0;border-radius:6px;border:1px solid #ffd0c8;">
-                        <span>CalibrationAGT 代码库</span>
+                        <span data-en="CalibrationAGT codebase">CalibrationAGT 代码库</span>
                         <span style="font-weight:600;color:#c0392b;">~400K tokens ⚠</span>
                     </div>
                     <div style="display:flex;justify-content:space-between;padding:0.5rem 0.75rem;background:#fff0f0;border-radius:6px;border:1px solid #ffb0b0;">
-                        <span>中等规模生产代码库</span>
+                        <span data-en="Medium-sized production codebase">中等规模生产代码库</span>
                         <span style="font-weight:600;color:#c0392b;">~2–5M tokens ✗</span>
                     </div>
                     <div style="display:flex;justify-content:space-between;padding:0.5rem 0.75rem;background:#ffe8e8;border-radius:6px;border:1px solid #ff8080;">
-                        <span>你的使用习惯 + 环境配置 + 文档</span>
-                        <span style="font-weight:600;color:#c0392b;">根本装不下 ✗</span>
+                        <span data-en="Your habits + env config + docs">你的使用习惯 + 环境配置 + 文档</span>
+                        <span style="font-weight:600;color:#c0392b;" data-en="Can't fit at all ✗">根本装不下 ✗</span>
                     </div>
                 </div>
                 <div class="highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);">
                     <p style="font-size:var(--t-small);">
-                        <strong>Agent 做的事：</strong><br>
+                        <span data-en="<strong>What Agent does:</strong><br>
+                        Decide, for each LLM call, <em>which</em> information to stuff into context —<br>
+                        which files to read, which preferences to remember, which history to forget"><strong>Agent 做的事：</strong><br>
                         决定每次调用 LLM 时，把<em>哪些</em>信息塞进 context——<br>
-                        读哪些文件、记忆哪些偏好、忘掉哪些历史
+                        读哪些文件、记忆哪些偏好、忘掉哪些历史</span>
                     </p>
                 </div>
             </div>
@@ -993,11 +1002,11 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
 <!-- ===================== SLIDE: 工具对比 ===================== -->
 <section class="slide" id="slide-5">
     <div class="slide-content" style="justify-content: center; align-items: center; text-align: center;">
-        <p class="reveal text-soft" style="font-size: var(--t-small); letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 1rem;">今天的核心论点</p>
-        <h1 class="reveal" style="font-size: clamp(2rem, 5.5vw, 5rem); max-width: 22rem; line-height: 1.1; margin: 0 auto;">
+        <p class="reveal text-soft" style="font-size: var(--t-small); letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 1rem;" data-en="Today's Core Argument">今天的核心论点</p>
+        <h1 class="reveal" style="font-size: clamp(2rem, 5.5vw, 5rem); max-width: 22rem; line-height: 1.1; margin: 0 auto;" data-en="AI Agent Is Already Powerful Enough for <span class=&quot;text-red&quot;>Real Work</span>">
             AI Agent 已经强到可以干<span class="text-red">真实业务</span>了
         </h1>
-        <p class="reveal text-mid" style="margin-top: var(--gap); font-size: var(--t-body); max-width: 28rem;">
+        <p class="reveal text-mid" style="margin-top: var(--gap); font-size: var(--t-body); max-width: 28rem;" data-en="Not a demo. Not a toy.">
             不是 demo，不是玩具
         </p>
     </div>
@@ -1032,18 +1041,19 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-content" style="gap: var(--egap);">
         <h2 class="reveal" data-en="You Know My GF Runs a Cat Boarding Business 🐱">大家都知道我女朋友是做宠物寄养的 🐱</h2>
-        <p class="reveal text-mid" style="max-width: 40rem;">
+        <p class="reveal text-mid" style="max-width: 40rem;" data-en="We had <strong>no system at all</strong> before — everything was in our heads or on paper, total chaos.<br>
+            In between research sessions, I spent a few days building her a system with Claude Code.">
             我们原来<strong>完全没有系统</strong>，记录全靠脑子和纸，非常乱。<br>
             我做 research 的空档，用 Claude Code 花了几天给她做了个系统。
         </p>
         <div class="two-col reveal" style="gap: var(--egap);">
             <div class="card">
-                <div class="card-title">📋 原来</div>
-                <div class="card-desc">笔记本、微信群消息、记在脑子里——入住/退房时间经常出错</div>
+                <div class="card-title" data-en="📋 Before">📋 原来</div>
+                <div class="card-desc" data-en="Notebooks, WeChat group messages, kept in memory — check-in/out times were constantly getting mixed up">笔记本、微信群消息、记在脑子里——入住/退房时间经常出错</div>
             </div>
             <div class="card" style="border-color: var(--red); background: var(--red-light);">
-                <div class="card-title" style="color: var(--red);">✅ 现在</div>
-                <div class="card-desc">寄养管理、上门喂养、预约链接、电子签名、收入统计——全面覆盖</div>
+                <div class="card-title" style="color: var(--red);" data-en="✅ Now">✅ 现在</div>
+                <div class="card-desc" data-en="Boarding management, home feeding visits, booking links, e-signatures, revenue stats — full coverage">寄养管理、上门喂养、预约链接、电子签名、收入统计——全面覆盖</div>
             </div>
         </div>
     </div>
@@ -1139,51 +1149,51 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     <div class="slide-content" style="gap:var(--egap);padding-top:0.5rem;">
 
         <!-- Pipeline label -->
-        <p class="reveal" style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;color:var(--ink-soft);text-transform:uppercase;">传统网页开发流程</p>
+        <p class="reveal" style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;color:var(--ink-soft);text-transform:uppercase;" data-en="Traditional Web Development Pipeline">传统网页开发流程</p>
 
         <!-- Pipeline flow -->
         <div class="reveal" style="display:flex;align-items:stretch;gap:0;justify-content:space-between;">
             <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.6rem 0.4rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
                 <span style="font-size:1.4rem;">💬</span>
-                <span style="font-size:clamp(0.62rem,0.9vw,0.8rem);font-weight:700;color:var(--ink);">拆解需求</span>
-                <span style="font-size:clamp(0.5rem,0.72vw,0.65rem);color:var(--ink-soft);text-align:center;line-height:1.4;">自然语言描述<br>agent 拆解任务</span>
+                <span style="font-size:clamp(0.62rem,0.9vw,0.8rem);font-weight:700;color:var(--ink);" data-en="Break Down Requirements">拆解需求</span>
+                <span style="font-size:clamp(0.5rem,0.72vw,0.65rem);color:var(--ink-soft);text-align:center;line-height:1.4;" data-en="Natural language description<br>agent breaks down tasks">自然语言描述<br>agent 拆解任务</span>
             </div>
             <div style="display:flex;align-items:center;padding:0 0.2rem;color:var(--ink-soft);font-size:0.9rem;">→</div>
             <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.6rem 0.4rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
                 <span style="font-size:1.4rem;">🗄️</span>
-                <span style="font-size:clamp(0.62rem,0.9vw,0.8rem);font-weight:700;color:var(--ink);">数据库设计</span>
-                <span style="font-size:clamp(0.5rem,0.72vw,0.65rem);color:var(--ink-soft);text-align:center;line-height:1.4;">schema.sql<br>迁移脚本自动生成</span>
+                <span style="font-size:clamp(0.62rem,0.9vw,0.8rem);font-weight:700;color:var(--ink);" data-en="Database Design">数据库设计</span>
+                <span style="font-size:clamp(0.5rem,0.72vw,0.65rem);color:var(--ink-soft);text-align:center;line-height:1.4;" data-en="schema.sql<br>migration scripts auto-generated">schema.sql<br>迁移脚本自动生成</span>
             </div>
             <div style="display:flex;align-items:center;padding:0 0.2rem;color:var(--ink-soft);font-size:0.9rem;">→</div>
             <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.6rem 0.4rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
                 <span style="font-size:1.4rem;">🎨</span>
-                <span style="font-size:clamp(0.62rem,0.9vw,0.8rem);font-weight:700;color:var(--ink);">网页UI设计</span>
-                <span style="font-size:clamp(0.5rem,0.72vw,0.65rem);color:var(--ink-soft);text-align:center;line-height:1.4;">线框图 → 组件<br>agent 转 HTML</span>
+                <span style="font-size:clamp(0.62rem,0.9vw,0.8rem);font-weight:700;color:var(--ink);" data-en="UI Design">网页UI设计</span>
+                <span style="font-size:clamp(0.5rem,0.72vw,0.65rem);color:var(--ink-soft);text-align:center;line-height:1.4;" data-en="Wireframes → components<br>agent converts to HTML">线框图 → 组件<br>agent 转 HTML</span>
             </div>
             <div style="display:flex;align-items:center;padding:0 0.2rem;color:var(--ink-soft);font-size:0.9rem;">→</div>
             <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.6rem 0.4rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
                 <span style="font-size:1.4rem;">🖥️</span>
-                <span style="font-size:clamp(0.62rem,0.9vw,0.8rem);font-weight:700;color:var(--ink);">前端开发</span>
-                <span style="font-size:clamp(0.5rem,0.72vw,0.65rem);color:var(--ink-soft);text-align:center;line-height:1.4;">纯 HTML + ES Modules<br>无框架，无构建</span>
+                <span style="font-size:clamp(0.62rem,0.9vw,0.8rem);font-weight:700;color:var(--ink);" data-en="Frontend Dev">前端开发</span>
+                <span style="font-size:clamp(0.5rem,0.72vw,0.65rem);color:var(--ink-soft);text-align:center;line-height:1.4;" data-en="Pure HTML + ES Modules<br>no framework, no build step">纯 HTML + ES Modules<br>无框架，无构建</span>
             </div>
             <div style="display:flex;align-items:center;padding:0 0.2rem;color:var(--ink-soft);font-size:0.9rem;">→</div>
             <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.6rem 0.4rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
                 <span style="font-size:1.4rem;">🐛</span>
-                <span style="font-size:clamp(0.62rem,0.9vw,0.8rem);font-weight:700;color:var(--ink);">调试迭代</span>
-                <span style="font-size:clamp(0.5rem,0.72vw,0.65rem);color:var(--ink-soft);text-align:center;line-height:1.4;">报错直接扔给 agent<br>大部分自己解决</span>
+                <span style="font-size:clamp(0.62rem,0.9vw,0.8rem);font-weight:700;color:var(--ink);" data-en="Debug &amp; Iterate">调试迭代</span>
+                <span style="font-size:clamp(0.5rem,0.72vw,0.65rem);color:var(--ink-soft);text-align:center;line-height:1.4;" data-en="Errors go straight to agent<br>mostly self-resolved">报错直接扔给 agent<br>大部分自己解决</span>
             </div>
             <div style="display:flex;align-items:center;padding:0 0.2rem;color:var(--ink-soft);font-size:0.9rem;">→</div>
             <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.6rem 0.4rem;background:#111;border-radius:8px;border:1.5px solid #111;">
                 <span style="font-size:1.4rem;">🚀</span>
-                <span style="font-size:clamp(0.62rem,0.9vw,0.8rem);font-weight:700;color:#fff;">生产上线</span>
-                <span style="font-size:clamp(0.5rem,0.72vw,0.65rem);color:#aaa;text-align:center;line-height:1.4;">真实用户<br>真实业务</span>
+                <span style="font-size:clamp(0.62rem,0.9vw,0.8rem);font-weight:700;color:#fff;" data-en="Production Launch">生产上线</span>
+                <span style="font-size:clamp(0.5rem,0.72vw,0.65rem);color:#aaa;text-align:center;line-height:1.4;" data-en="Real users<br>Real business">真实用户<br>真实业务</span>
             </div>
         </div>
 
         <!-- Divider -->
         <div class="reveal" style="display:flex;align-items:center;gap:1rem;margin:0.2rem 0;">
             <div style="flex:1;height:1px;background:var(--border-soft);"></div>
-            <span style="font-size:clamp(0.65rem,0.9vw,0.8rem);color:var(--ink-soft);white-space:nowrap;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;">这意味着什么</span>
+            <span style="font-size:clamp(0.65rem,0.9vw,0.8rem);color:var(--ink-soft);white-space:nowrap;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;" data-en="What This Means">这意味着什么</span>
             <div style="flex:1;height:1px;background:var(--border-soft);"></div>
         </div>
 
@@ -1192,10 +1202,11 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
 
             <div class="reveal" style="padding:0.8rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);display:flex;flex-direction:column;gap:0.3rem;">
                 <div style="font-size:1.3rem;">🏢</div>
-                <div style="font-size:clamp(0.72rem,1vw,0.88rem);font-weight:700;">一人公司</div>
-                <div style="font-size:clamp(0.54rem,0.76vw,0.68rem);color:var(--ink-mid);line-height:1.5;">一个人执行以前需要整个工程团队才能完成的工作</div>
+                <div style="font-size:clamp(0.72rem,1vw,0.88rem);font-weight:700;" data-en="Solo Company">一人公司</div>
+                <div style="font-size:clamp(0.54rem,0.76vw,0.68rem);color:var(--ink-mid);line-height:1.5;" data-en="One person executing what used to take an entire engineering team">一个人执行以前需要整个工程团队才能完成的工作</div>
                 <div style="margin-top:auto;padding-top:0.4rem;border-top:1px solid var(--border-soft);">
-                    <div style="font-size:clamp(0.52rem,0.72vw,0.65rem);color:var(--ink-soft);line-height:1.5;">
+                    <div style="font-size:clamp(0.52rem,0.72vw,0.65rem);color:var(--ink-soft);line-height:1.5;" data-en="<strong style='color:var(--ink-mid);'>Pieter Levels</strong> — 0 employees, $3.1M ARR, 70+ products<br>
+                        <strong style='color:var(--ink-mid);'>Lovable</strong> — founded by 1 person, reached $100M ARR in 8 months">
                         <strong style="color:var(--ink-mid);">Pieter Levels</strong> — 0 名员工，$3.1M ARR，70+ 产品<br>
                         <strong style="color:var(--ink-mid);">Lovable</strong> — 1 人创立，8 个月达 $100M ARR
                     </div>
@@ -1204,10 +1215,11 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
 
             <div class="reveal" style="padding:0.8rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);display:flex;flex-direction:column;gap:0.3rem;">
                 <div style="font-size:1.3rem;">🔬</div>
-                <div style="font-size:clamp(0.72rem,1vw,0.88rem);font-weight:700;">研究员的工具箱</div>
-                <div style="font-size:clamp(0.54rem,0.76vw,0.68rem);color:var(--ink-mid);line-height:1.5;">自己缺什么工具就造什么，实验管理、可视化、自动化脚本</div>
+                <div style="font-size:clamp(0.72rem,1vw,0.88rem);font-weight:700;" data-en="Researcher's Toolbox">研究员的工具箱</div>
+                <div style="font-size:clamp(0.54rem,0.76vw,0.68rem);color:var(--ink-mid);line-height:1.5;" data-en="Build whatever tool you're missing — experiment management, visualization, automation scripts">自己缺什么工具就造什么，实验管理、可视化、自动化脚本</div>
                 <div style="margin-top:auto;padding-top:0.4rem;border-top:1px solid var(--border-soft);">
-                    <div style="font-size:clamp(0.52rem,0.72vw,0.65rem);color:var(--ink-soft);line-height:1.5;">
+                    <div style="font-size:clamp(0.52rem,0.72vw,0.65rem);color:var(--ink-soft);line-height:1.5;" data-en="<strong style='color:var(--ink-mid);'>Komodo Health</strong> — 6–8 week analysis projects cut to hours<br>
+                        <strong style='color:var(--ink-mid);'>Patrick Mineault</strong> — NeuroAI researcher, uses Claude Code for analysis pipelines">
                         <strong style="color:var(--ink-mid);">Komodo Health</strong> — 6–8 周分析项目缩至数小时<br>
                         <strong style="color:var(--ink-mid);">Patrick Mineault</strong> — NeuroAI 研究员，用 Claude Code 写分析流水线
                     </div>
@@ -1216,10 +1228,11 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
 
             <div class="reveal" style="padding:0.8rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);display:flex;flex-direction:column;gap:0.3rem;">
                 <div style="font-size:1.3rem;">💡</div>
-                <div style="font-size:clamp(0.72rem,1vw,0.88rem);font-weight:700;">创业 MVP</div>
-                <div style="font-size:clamp(0.54rem,0.76vw,0.68rem);color:var(--ink-mid);line-height:1.5;">验证一个 idea 的成本从数月变成数天，想法立刻可以触碰真实用户</div>
+                <div style="font-size:clamp(0.72rem,1vw,0.88rem);font-weight:700;" data-en="Startup MVP">创业 MVP</div>
+                <div style="font-size:clamp(0.54rem,0.76vw,0.68rem);color:var(--ink-mid);line-height:1.5;" data-en="Validating an idea drops from months to days — ideas can reach real users immediately">验证一个 idea 的成本从数月变成数天，想法立刻可以触碰真实用户</div>
                 <div style="margin-top:auto;padding-top:0.4rem;border-top:1px solid var(--border-soft);">
-                    <div style="font-size:clamp(0.52rem,0.72vw,0.65rem);color:var(--ink-soft);line-height:1.5;">
+                    <div style="font-size:clamp(0.52rem,0.72vw,0.65rem);color:var(--ink-soft);line-height:1.5;" data-en="<strong style='color:var(--ink-mid);'>Indragie</strong> — macOS app, 19k/20k lines written by Claude<br>
+                        <strong style='color:var(--ink-mid);'>Invoice management system</strong> — built in 1 day, API cost $3.65">
                         <strong style="color:var(--ink-mid);">Indragie</strong> — macOS app，19k/20k 行由 Claude 写<br>
                         <strong style="color:var(--ink-mid);">发票管理系统</strong> — 1 天构建完成，API 成本 $3.65
                     </div>
@@ -1228,10 +1241,11 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
 
             <div class="reveal" style="padding:0.8rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);display:flex;flex-direction:column;gap:0.3rem;">
                 <div style="font-size:1.3rem;">🛠️</div>
-                <div style="font-size:clamp(0.72rem,1vw,0.88rem);font-weight:700;">生活需求自给自足</div>
-                <div style="font-size:clamp(0.54rem,0.76vw,0.68rem);color:var(--ink-mid);line-height:1.5;">日历同步、账单整理、私人 dashboard——自己的需求自己解决</div>
+                <div style="font-size:clamp(0.72rem,1vw,0.88rem);font-weight:700;" data-en="Self-Sufficient Daily Life">生活需求自给自足</div>
+                <div style="font-size:clamp(0.54rem,0.76vw,0.68rem);color:var(--ink-mid);line-height:1.5;" data-en="Calendar sync, bill organization, personal dashboard — solve your own needs yourself">日历同步、账单整理、私人 dashboard——自己的需求自己解决</div>
                 <div style="margin-top:auto;padding-top:0.4rem;border-top:1px solid var(--border-soft);">
-                    <div style="font-size:clamp(0.52rem,0.72vw,0.65rem);color:var(--ink-soft);line-height:1.5;">
+                    <div style="font-size:clamp(0.52rem,0.72vw,0.65rem);color:var(--ink-soft);line-height:1.5;" data-en="<strong style='color:var(--ink-mid);'>Home Assistant community</strong> — built smart home from scratch with Claude Code<br>
+                        <strong style='color:var(--ink-mid);'>Non-programmer</strong> — Claude Opus 4 + Cursor, wrote a personal finance app with 0 lines of code">
                         <strong style="color:var(--ink-mid);">Home Assistant 社区</strong> — 用 Claude Code 从零搭智能家居<br>
                         <strong style="color:var(--ink-mid);">非程序员</strong> — Claude Opus 4 + Cursor，0 行代码写出理财 app
                     </div>
@@ -1243,7 +1257,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
         <!-- Takeaway -->
         <div class="reveal" style="border-left:4px solid var(--red);background:var(--red-light);border-radius:0 8px 8px 0;padding:0.75rem 1.2rem;display:flex;align-items:center;gap:1rem;">
             <span style="font-size:1.3rem;flex-shrink:0;color:var(--red);">✦</span>
-            <p style="font-size:clamp(0.72rem,1.1vw,0.95rem);line-height:1.5;color:var(--ink);">
+            <p style="font-size:clamp(0.72rem,1.1vw,0.95rem);line-height:1.5;color:var(--ink);" data-en="<strong>The execution barrier has dropped dramatically</strong> — cross-domain work is no longer a bottleneck. Your ceiling is how many worthwhile things you can think to do.">
                 <strong>执行门槛大幅降低</strong>——跨领域不再是瓶颈。你的上限，是你能想到多少值得做的事。
             </p>
         </div>
@@ -1288,22 +1302,22 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                 <div class="reveal" style="display: flex; gap: 1.2rem; align-items: flex-start;">
                     <div style="flex-shrink: 0; width: 2.2rem; height: 2.2rem; border: 2px solid var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: var(--t-small); font-weight: 700; color: var(--red);">01</div>
                     <div>
-                        <p style="font-size: var(--t-body); font-weight: 600;">Conformal Prediction × 标注歧义</p>
-                        <p class="text-soft" style="font-size: var(--t-small);">当 ground truth 本身模糊（多个 annotator 不同意），CP 的覆盖率保证还成立吗？</p>
+                        <p style="font-size: var(--t-body); font-weight: 600;" data-en="Conformal Prediction × Annotation Ambiguity">Conformal Prediction × 标注歧义</p>
+                        <p class="text-soft" style="font-size: var(--t-small);" data-en="When ground truth is inherently ambiguous (annotators disagree), do CP's coverage guarantees still hold?">当 ground truth 本身模糊（多个 annotator 不同意），CP 的覆盖率保证还成立吗？</p>
                     </div>
                 </div>
                 <div class="reveal" style="display: flex; gap: 1.2rem; align-items: flex-start;">
                     <div style="flex-shrink: 0; width: 2.2rem; height: 2.2rem; border: 2px solid var(--border-soft); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: var(--t-small); font-weight: 700; color: var(--ink-soft);">02</div>
                     <div>
-                        <p style="font-size: var(--t-body); font-weight: 600;">Calibration 在这个 setting 下根本没人做过</p>
-                        <p class="text-soft" style="font-size: var(--t-small);">标注歧义 + calibration——连"该怎么评估"都没有定论</p>
+                        <p style="font-size: var(--t-body); font-weight: 600;" data-en="Calibration in This Setting Hasn't Been Done">Calibration 在这个 setting 下根本没人做过</p>
+                        <p class="text-soft" style="font-size: var(--t-small);" data-en="Annotation ambiguity + calibration — even &ldquo;how to evaluate&rdquo; has no consensus">标注歧义 + calibration——连"该怎么评估"都没有定论</p>
                     </div>
                 </div>
                 <div class="reveal" style="display: flex; gap: 1.2rem; align-items: flex-start;">
                     <div style="flex-shrink: 0; width: 2.2rem; height: 2.2rem; background: var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: var(--t-small); font-weight: 700; color: white;">03</div>
                     <div>
                         <p style="font-size: var(--t-body); font-weight: 600;">Pivot → CalibrationAGT</p>
-                        <p class="text-soft" style="font-size: var(--t-small);">Calibration 在这个 setting 下同样值得系统研究。</p>
+                        <p class="text-soft" style="font-size: var(--t-small);" data-en="Calibration in this setting is equally worth systematic study.">Calibration 在这个 setting 下同样值得系统研究。</p>
                     </div>
                 </div>
             </div>
@@ -1315,30 +1329,123 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
 </section>
 
+<!-- ===================== SLIDE: 科研工作流 = 文字 ===================== -->
+<section class="slide" id="slide-research-workflow">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="AI Agent">AI Agent</div>
+        <div class="slide-header-label red" data-en="Why Research?">为什么适合科研？</div>
+    </div>
+    <div class="slide-content" style="padding:var(--pad);gap:var(--gap);">
+        <h2 class="reveal" data-en="Why Is AI Agent Good for Research?">为什么 AI Agent 适合帮助科研？</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0;align-items:start;">
+            <!-- LEFT: workflow chain -->
+            <div class="reveal" style="display:flex;flex-direction:column;gap:0.5rem;">
+                <p style="font-size:var(--t-small);color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.1em;font-weight:700;" data-en="Every step is text">每个环节都是文字</p>
+                <div style="display:flex;flex-direction:column;gap:0.3rem;">
+                    <div style="display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--ink-soft);">
+                        <span style="font-size:1rem;">📚</span>
+                        <div>
+                            <p style="font-size:var(--t-small);font-weight:600;" data-en="Literature Review">文献调研</p>
+                            <p style="font-size:clamp(0.5rem,0.7vw,0.62rem);color:var(--ink-soft);" data-en="Papers, abstracts, notes — all text">论文、摘要、笔记——全是文字</p>
+                        </div>
+                    </div>
+                    <div style="text-align:center;color:var(--ink-soft);font-size:0.75rem;">↓</div>
+                    <div style="display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--ink-soft);">
+                        <span style="font-size:1rem;">💡</span>
+                        <div>
+                            <p style="font-size:var(--t-small);font-weight:600;" data-en="Research Proposal">研究方案</p>
+                            <p style="font-size:clamp(0.5rem,0.7vw,0.62rem);color:var(--ink-soft);" data-en="Hypothesis, design, rationale — text">假设、设计思路、理由——文字</p>
+                        </div>
+                    </div>
+                    <div style="text-align:center;color:var(--ink-soft);font-size:0.75rem;">↓</div>
+                    <div style="display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--ink-soft);">
+                        <span style="font-size:1rem;">🔬</span>
+                        <div>
+                            <p style="font-size:var(--t-small);font-weight:600;" data-en="Experiment Scripts">实验脚本</p>
+                            <p style="font-size:clamp(0.5rem,0.7vw,0.62rem);color:var(--ink-soft);" data-en="Code is text">代码就是文字</p>
+                        </div>
+                    </div>
+                    <div style="text-align:center;color:var(--ink-soft);font-size:0.75rem;">↓</div>
+                    <div style="display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid #e8321a;">
+                        <span style="font-size:1rem;">⚠️</span>
+                        <div>
+                            <p style="font-size:var(--t-small);font-weight:600;" data-en="Errors &amp; Results">报错 &amp; 实验结果</p>
+                            <p style="font-size:clamp(0.5rem,0.7vw,0.62rem);color:var(--ink-soft);" data-en="Stack traces, CSV, logs — text with instant feedback">Stack trace、CSV、日志——文字，且有即时反馈</p>
+                        </div>
+                    </div>
+                    <div style="text-align:center;color:var(--ink-soft);font-size:0.75rem;">↓</div>
+                    <div style="display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--ink-soft);">
+                        <span style="font-size:1rem;">📊</span>
+                        <div>
+                            <p style="font-size:var(--t-small);font-weight:600;" data-en="Figures">画图</p>
+                            <p style="font-size:clamp(0.5rem,0.7vw,0.62rem);color:var(--ink-soft);" data-en="matplotlib / seaborn script — also text">matplotlib / seaborn 脚本——还是文字</p>
+                        </div>
+                    </div>
+                    <div style="text-align:center;color:var(--ink-soft);font-size:0.75rem;">↓</div>
+                    <div style="display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.7rem;background:#111;border-radius:6px;border-left:3px solid var(--red);">
+                        <span style="font-size:1rem;">📄</span>
+                        <div>
+                            <p style="font-size:var(--t-small);font-weight:600;color:#fff;" data-en="Paper (LaTeX)">论文（LaTeX）</p>
+                            <p style="font-size:clamp(0.5rem,0.7vw,0.62rem);color:#888;" data-en="Everything converges — into text">一切汇总——还是文字</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- RIGHT: why agent fits -->
+            <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);justify-content:center;height:100%;">
+                <div class="highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);">
+                    <p style="font-size:var(--t-h3);font-weight:700;line-height:1.4;" data-en="LLM = the world's best text processor">LLM = 有史以来最强的文字处理器</p>
+                </div>
+                <p style="font-size:var(--t-body);color:var(--ink-mid);line-height:1.6;" data-en="Every research bottleneck — reading papers, writing proposals, coding experiments, debugging — is exactly what LLMs are built for">科研的每个瓶颈<br>读文献 · 写方案 · 写代码 · 调 bug<br>恰好都是 LLM 最擅长的</p>
+                <div style="border-top:1px solid var(--border-soft);padding-top:var(--egap);">
+                    <p style="font-size:var(--t-small);font-weight:700;margin-bottom:0.4rem;" data-en="Killer advantage: instant feedback loop">杀手锏：即时反馈闭环</p>
+                    <ul style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.9;padding-left:1.1em;margin:0;">
+                        <li data-en="Error → agent reads, fixes, reruns">报错 → agent 自动定位、修复、重跑</li>
+                        <li data-en="Result CSV → agent plots + updates paper">结果 CSV → agent 画图 + 更新论文</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
 <!-- ===================== SLIDE 9: Claude Code 聊天动画 ===================== -->
 <section class="slide" id="slide-why-research">
     <div class="slide-header">
         <div class="slide-header-label" data-en="AI Agent">AI Agent</div>
-        <div class="slide-header-label red" data-en="Why AI for Research?">为什么适合 AI Research？</div>
+        <div class="slide-header-label red" data-en="ChatGPT vs Agent">ChatGPT vs Agent</div>
     </div>
     <div class="slide-content" style="padding:var(--pad);gap:var(--gap);">
-        <h2 class="reveal" style="font-size:var(--t-h2);" data-en="Why Is AI Agent Good for Research?">为什么 AI Agent 适合帮助科研？</h2>
+        <h2 class="reveal" style="font-size:var(--t-h2);" data-en="From Copy-paste Engineer to Director">从 Copy-paste 到 Director</h2>
 
         <div class="two-col" style="gap:var(--gap);align-items:start;">
             <!-- LEFT: 以前怎么用 ChatGPT -->
             <div style="display:flex;flex-direction:column;gap:var(--egap);">
                 <p class="reveal" style="font-size:var(--t-small);font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-soft);" data-en="Before: How We Used ChatGPT">以前怎么用 ChatGPT</p>
-                <div class="reveal code-block" style="font-size:clamp(0.68rem,0.9vw,0.78rem);line-height:1.75;"><span class="cm"># 实验报错 → 复制粘贴问 ChatGPT</span>
+                <div class="reveal code-block" style="font-size:clamp(0.68rem,0.9vw,0.78rem);line-height:1.75;" data-en="<span class='cm'># Experiment error → copy-paste into ChatGPT</span>
+<span style='color:#f87171;'>Error: KeyError: 'ece_true' in evaluate.py:42</span>
+                ↓  manually copy → paste → ask ChatGPT
+<span class='cm'># ChatGPT gives solution → manually paste back</span>
+<span class='kw'>Fix:</span> metrics[key] = ece_fn(logits, soft_labels)"><span class="cm"># 实验报错 → 复制粘贴问 ChatGPT</span>
 <span style="color:#f87171;">Error: KeyError: 'ece_true' in evaluate.py:42</span>
                 ↓  手动复制 → 粘贴 → 问 ChatGPT
 <span class="cm"># ChatGPT 给方案 → 再手动粘回去</span>
 <span class="kw">Fix:</span> metrics[key] = ece_fn(logits, soft_labels)</div>
-                <div class="reveal code-block" style="font-size:clamp(0.68rem,0.9vw,0.78rem);line-height:1.75;"><span class="cm"># 实验结果 → 复制给 ChatGPT 让它写 LaTeX</span>
+                <div class="reveal code-block" style="font-size:clamp(0.68rem,0.9vw,0.78rem);line-height:1.75;" data-en="<span class='cm'># Experiment results → copy to ChatGPT to write LaTeX</span>
+<span style='color:#86efac;'>model,ece_voted,ece_true</span>
+<span style='color:#86efac;'>TS,0.032,0.088</span>
+                ↓  manually copy → paste → wait for ChatGPT
+<span style='color:#93c5fd;'>\begin{'{'}tabular{'}'}{'{'}lcc{'}'} ...</span>"><span class="cm"># 实验结果 → 复制给 ChatGPT 让它写 LaTeX</span>
 <span style="color:#86efac;">model,ece_voted,ece_true</span>
 <span style="color:#86efac;">TS,0.032,0.088</span>
                 ↓  手动复制 → 粘贴 → 等 ChatGPT 生成
 <span style="color:#93c5fd;">\begin{'{'}tabular{'}'}{'{'}lcc{'}'} ...</span></div>
-                <div class="reveal" style="padding:0.6rem 0.9rem;border-left:3px solid #888;background:var(--bg-alt);border-radius:0 6px 6px 0;font-size:var(--t-small);color:var(--ink-mid);">
+                <div class="reveal" style="padding:0.6rem 0.9rem;border-left:3px solid #888;background:var(--bg-alt);border-radius:0 6px 6px 0;font-size:var(--t-small);color:var(--ink-mid);" data-en="<strong>Pattern:</strong> Manually ferry info → ChatGPT answers → Manually carry it back<br>
+                    ChatGPT is the tool, you're the middleman">
                     <strong>模式：</strong> 人工搬运信息 → ChatGPT 回答 → 人工搬运回来<br>
                     ChatGPT 是工具，你是中间人
                 </div>
@@ -1347,17 +1454,26 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
             <!-- RIGHT: 现在怎么用 Agent -->
             <div style="display:flex;flex-direction:column;gap:var(--egap);">
                 <p class="reveal" style="font-size:var(--t-small);font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--red);" data-en="Now: How We Use Agent">现在怎么用 Agent</p>
-                <div class="reveal code-block" style="font-size:clamp(0.68rem,0.9vw,0.78rem);line-height:1.75;"><span class="cm"># 实验报错 → Agent 自动处理</span>
+                <div class="reveal code-block" style="font-size:clamp(0.68rem,0.9vw,0.78rem);line-height:1.75;" data-en="<span class='cm'># Experiment error → Agent handles automatically</span>
+<span style='color:#f87171;'>Error: KeyError: 'ece_true' in evaluate.py:42</span>
+                ↓  Agent auto-reads file, locates cause, fixes, runs tests
+<span style='color:#86efac;'>✓ All tests passed. Pushed fix.</span>"><span class="cm"># 实验报错 → Agent 自动处理</span>
 <span style="color:#f87171;">Error: KeyError: 'ece_true' in evaluate.py:42</span>
                 ↓  Agent 自动读文件、定位原因、改好、跑测试
 <span style="color:#86efac;">✓ All tests passed. Pushed fix.</span></div>
-                <div class="reveal code-block" style="font-size:clamp(0.68rem,0.9vw,0.78rem);line-height:1.75;"><span class="cm"># 实验出结果 → Agent 自动出图</span>
+                <div class="reveal code-block" style="font-size:clamp(0.68rem,0.9vw,0.78rem);line-height:1.75;" data-en="<span class='cm'># Experiment results → Agent auto-generates figures</span>
+<span style='color:#86efac;'>model,ece_voted,ece_true</span>
+<span style='color:#86efac;'>TS,0.032,0.088</span>
+                ↓  Agent reads CSV → seaborn plots → saves fig2.pdf
+<span style='color:#93c5fd;'>✓ fig2_reliability.pdf saved</span>"><span class="cm"># 实验出结果 → Agent 自动出图</span>
 <span style="color:#86efac;">model,ece_voted,ece_true</span>
 <span style="color:#86efac;">TS,0.032,0.088</span>
                 ↓  Agent 读 CSV → seaborn 画图 → 存 fig2.pdf
 <span style="color:#93c5fd;">✓ fig2_reliability.pdf saved</span></div>
                 <div class="reveal highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);">
-                    <p style="font-size:var(--t-small);line-height:1.6;"><strong>模式：</strong> 你只负责判断方向<br>
+                    <p style="font-size:var(--t-small);line-height:1.6;" data-en="<strong>Pattern:</strong> You only handle direction<br>
+                    Agent autonomously reads files, executes, verifies, and reports back<br>
+                    <span style='color:var(--ink-mid);'>→ You're the Director, not a Copy-paste Engineer</span>"><strong>模式：</strong> 你只负责判断方向<br>
                     Agent 自主读文件、执行、验证、反馈<br>
                     <span style="color:var(--ink-mid);">→ 你是 Director，不是 Copy-paste Engineer</span></p>
                 </div>
@@ -1395,7 +1511,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                 <div style="width:12px;height:12px;border-radius:50%;background:#28c840;"></div>
                 <span style="margin-left:0.75rem;color:#888;font-size:0.75rem;letter-spacing:0.05em;flex:1;">claude — ~/CalibrationAGT</span>
                 <button id="cc-pause-btn" onclick="toggleCCPause()" style="background:#444;border:none;color:#ccc;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;letter-spacing:0.03em;">⏸ 暂停</button>
-                <button onclick="restartCCAnimation()" style="background:#333;border:none;color:#888;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;">↺ 重播</button>
+                <button id="cc-replay-btn" onclick="restartCCAnimation()" style="background:#333;border:none;color:#888;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;">↺ 重播</button>
             </div>
             <!-- Chat area -->
             <div id="cc-chat" style="flex:1;overflow-y:auto;padding:1rem 1.25rem;display:flex;flex-direction:column;gap:0.9rem;"></div>
@@ -1419,28 +1535,31 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
         <div class="slide-header-label" data-en="Research · Toolchain">Research · 工具链</div>
         <div class="slide-header-label red" data-en="Skills &amp; Skill-Creator">Skills &amp; Skill-Creator</div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1.3fr;gap:var(--gap);padding:var(--egap) var(--pad) var(--pad);height:calc(100% - 4rem);align-items:start;">
+    <div style="display:grid;grid-template-columns:1fr 1.3fr;gap:var(--gap);padding:var(--egap) var(--pad) var(--pad);height:calc(100% - 4rem);align-items:center;">
 
         <!-- LEFT: explanation -->
         <div style="display:flex;flex-direction:column;gap:var(--egap);">
             <h2 class="reveal" style="font-size:var(--t-h2);" data-en="Skills — Give Your Agent a Custom Workflow">Skills — 给 Agent 装上专属工作流</h2>
             <div class="reveal" style="display:flex;flex-direction:column;gap:0.6rem;">
                 <div style="padding:0.7rem 1rem;background:var(--bg-alt);border-radius:8px;border-left:3px solid var(--red);">
-                    <p style="font-size:var(--t-small);font-weight:600;margin-bottom:0.2rem;">什么是 Skill？</p>
-                    <p style="font-size:clamp(0.62rem,0.9vw,0.78rem);color:var(--ink-mid);line-height:1.5;">一个 Markdown 文件，描述 Agent 应当如何完成某类任务。触发后，Agent 按照 skill 的指令执行完整流程。</p>
+                    <p style="font-size:var(--t-small);font-weight:600;margin-bottom:0.2rem;" data-en="What is a Skill?">什么是 Skill？</p>
+                    <p style="font-size:clamp(0.62rem,0.9vw,0.78rem);color:var(--ink-mid);line-height:1.5;" data-en="A Markdown file describing how the Agent should complete a category of tasks. Once triggered, the Agent follows the skill's instructions to execute the full workflow.">一个 Markdown 文件，描述 Agent 应当如何完成某类任务。触发后，Agent 按照 skill 的指令执行完整流程。</p>
                 </div>
                 <div style="padding:0.7rem 1rem;background:var(--bg-alt);border-radius:8px;border-left:3px solid var(--ink-soft);">
-                    <p style="font-size:var(--t-small);font-weight:600;margin-bottom:0.2rem;">什么是 Skill-Creator？</p>
-                    <p style="font-size:clamp(0.62rem,0.9vw,0.78rem);color:var(--ink-mid);line-height:1.5;">一个专门用来<strong>写 skill</strong> 的 skill。描述你的需求，Agent 自动生成结构化的工作流规范并保存。</p>
+                    <p style="font-size:var(--t-small);font-weight:600;margin-bottom:0.2rem;" data-en="What is Skill-Creator?">什么是 Skill-Creator？</p>
+                    <p style="font-size:clamp(0.62rem,0.9vw,0.78rem);color:var(--ink-mid);line-height:1.5;" data-en="A skill specifically for <strong>writing skills</strong>. Describe your need, and Agent automatically generates a structured workflow spec and saves it.">一个专门用来<strong>写 skill</strong> 的 skill。描述你的需求，Agent 自动生成结构化的工作流规范并保存。</p>
                 </div>
                 <div style="padding:0.7rem 1rem;background:var(--bg-alt);border-radius:8px;border-left:3px solid var(--ink-soft);">
-                    <p style="font-size:var(--t-small);font-weight:600;margin-bottom:0.2rem;">使用场景</p>
-                    <p style="font-size:clamp(0.62rem,0.9vw,0.78rem);color:var(--ink-mid);line-height:1.5;">文献调研、论文写作、实验管理、代码审查、数据预处理——任何重复的流程都可以封装成 skill</p>
+                    <p style="font-size:var(--t-small);font-weight:600;margin-bottom:0.2rem;" data-en="Use Cases">使用场景</p>
+                    <p style="font-size:clamp(0.62rem,0.9vw,0.78rem);color:var(--ink-mid);line-height:1.5;" data-en="Literature review, paper writing, experiment management, code review, data preprocessing — any repetitive workflow can be packaged as a skill">文献调研、论文写作、实验管理、代码审查、数据预处理——任何重复的流程都可以封装成 skill</p>
                 </div>
             </div>
             <div class="reveal highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);">
-                <p style="font-size:clamp(0.65rem,0.95vw,0.82rem);font-weight:700;margin-bottom:0.3rem;">Skills = 可复用的 Agent 工作流，一次定义，反复调用</p>
-                <p style="font-size:clamp(0.58rem,0.82vw,0.7rem);color:var(--ink-mid);line-height:1.5;">
+                <p style="font-size:clamp(0.65rem,0.95vw,0.82rem);font-weight:700;margin-bottom:0.3rem;" data-en="Skills = reusable Agent workflows — define once, invoke repeatedly">Skills = 可复用的 Agent 工作流，一次定义，反复调用</p>
+                <p style="font-size:clamp(0.58rem,0.82vw,0.7rem);color:var(--ink-mid);line-height:1.5;" data-en="Examples: <code style='background:rgba(0,0,0,0.06);padding:0.1em 0.3em;border-radius:3px;'>/paper-review</code> review workflow ·
+                    <code style='background:rgba(0,0,0,0.06);padding:0.1em 0.3em;border-radius:3px;'>/experiment-log</code> experiment record ·
+                    <code style='background:rgba(0,0,0,0.06);padding:0.1em 0.3em;border-radius:3px;'>/debug-cluster</code> GPU cluster debug ·
+                    <code style='background:rgba(0,0,0,0.06);padding:0.1em 0.3em;border-radius:3px;'>/weekly-report</code> auto weekly report">
                     举一反三：<code style="background:rgba(0,0,0,0.06);padding:0.1em 0.3em;border-radius:3px;">/paper-review</code> 审稿工作流 ·
                     <code style="background:rgba(0,0,0,0.06);padding:0.1em 0.3em;border-radius:3px;">/experiment-log</code> 实验记录 ·
                     <code style="background:rgba(0,0,0,0.06);padding:0.1em 0.3em;border-radius:3px;">/debug-cluster</code> GPU 集群调试 ·
@@ -1456,6 +1575,8 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                 <div style="width:11px;height:11px;border-radius:50%;background:#febc2e;"></div>
                 <div style="width:11px;height:11px;border-radius:50%;background:#28c840;"></div>
                 <span style="margin-left:0.75rem;color:#888;font-size:0.72rem;flex:1;">claude — ~/research</span>
+                <button id="skill0-pause-btn" onclick="toggleSkill0Pause()" style="background:#444;border:none;color:#ccc;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;letter-spacing:0.03em;">⏸ 暂停</button>
+                <button id="skill0-replay-btn" onclick="restartSkill0Animation()" style="background:#333;border:none;color:#888;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;">↺ 重播</button>
             </div>
             <div id="skill0-chat" style="flex:1;overflow-y:auto;padding:0.9rem 1.1rem;font-size:clamp(0.58rem,0.85vw,0.72rem);line-height:1.7;color:#ccc;display:flex;flex-direction:column;gap:0.5rem;"></div>
             <div style="background:#111;border-top:1px solid #333;padding:0.5rem 1rem;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
@@ -1476,7 +1597,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
         <div class="slide-header-label" data-en="Research · Skill in Action">Research · Skill 实战</div>
         <div class="slide-header-label red">ai-research-paper</div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:var(--gap);padding:var(--egap) var(--pad) var(--pad);height:calc(100% - 4rem);align-items:start;">
+    <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:var(--gap);padding:var(--egap) var(--pad) var(--pad);height:calc(100% - 4rem);align-items:center;">
 
         <!-- LEFT: pipeline diagram -->
         <div class="reveal" style="display:flex;flex-direction:column;gap:0.3rem;height:100%;overflow:hidden;">
@@ -1501,14 +1622,14 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                         <span style="font-size:0.8rem;">📚</span>
                         <div>
                             <p style="font-size:clamp(0.58rem,0.8vw,0.68rem);font-weight:700;">Literature Review</p>
-                            <p style="font-size:clamp(0.48rem,0.65vw,0.56rem);color:var(--ink-soft);">ArXiv MCP · WebSearch · gap 定位</p>
+                            <p style="font-size:clamp(0.48rem,0.65vw,0.56rem);color:var(--ink-soft);" data-en="ArXiv MCP · WebSearch · gap identification">ArXiv MCP · WebSearch · gap 定位</p>
                         </div>
                     </div>
                     <div style="display:flex;gap:0.6rem;align-items:center;padding:0.32rem 0.6rem;background:var(--bg-alt);border-radius:5px;">
                         <span style="font-size:0.8rem;">💡</span>
                         <div>
                             <p style="font-size:clamp(0.58rem,0.8vw,0.68rem);font-weight:700;">Idea Generation</p>
-                            <p style="font-size:clamp(0.48rem,0.65vw,0.56rem);color:var(--ink-soft);">生成 4 个候选 idea</p>
+                            <p style="font-size:clamp(0.48rem,0.65vw,0.56rem);color:var(--ink-soft);" data-en="Generate 4 candidate ideas">生成 4 个候选 idea</p>
                         </div>
                     </div>
                     <div style="display:flex;gap:0.6rem;align-items:center;padding:0.32rem 0.6rem;background:var(--bg-alt);border-radius:5px;border-left:2px solid #7ec8e3;">
@@ -1529,7 +1650,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                         <span style="font-size:0.8rem;">🔬</span>
                         <div>
                             <p style="font-size:clamp(0.58rem,0.8vw,0.68rem);font-weight:700;">Pilot Experiment</p>
-                            <p style="font-size:clamp(0.48rem,0.65vw,0.56rem);color:var(--ink-soft);">快速验证可行性 · PASS 才继续</p>
+                            <p style="font-size:clamp(0.48rem,0.65vw,0.56rem);color:var(--ink-soft);" data-en="Quick feasibility check · PASS to continue">快速验证可行性 · PASS 才继续</p>
                         </div>
                     </div>
                 </div>
@@ -1540,28 +1661,28 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                 <span style="font-size:0.95rem;flex-shrink:0;">⚡</span>
                 <div>
                     <p style="font-size:clamp(0.62rem,0.88vw,0.76rem);font-weight:700;">Full Experiments · GPU Auto</p>
-                    <p style="font-size:clamp(0.5rem,0.7vw,0.6rem);color:var(--ink-soft);">SSH · gnvitop 调度 · 自主运行</p>
+                    <p style="font-size:clamp(0.5rem,0.7vw,0.6rem);color:var(--ink-soft);" data-en="SSH · gnvitop scheduling · autonomous execution">SSH · gnvitop 调度 · 自主运行</p>
                 </div>
             </div>
             <div style="display:flex;gap:0.7rem;align-items:center;padding:0.4rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:2px solid #7ec8e3;">
                 <span style="font-size:0.95rem;flex-shrink:0;">📊</span>
                 <div>
                     <p style="font-size:clamp(0.62rem,0.88vw,0.76rem);font-weight:700;">6-Agent Result Debate <span style="color:#7ec8e3;font-size:0.5rem;font-weight:400;">← subagents</span></p>
-                    <p style="font-size:clamp(0.5rem,0.7vw,0.6rem);color:var(--ink-soft);">结果解读 · Contribution 定位</p>
+                    <p style="font-size:clamp(0.5rem,0.7vw,0.6rem);color:var(--ink-soft);" data-en="Result interpretation · Contribution positioning">结果解读 · Contribution 定位</p>
                 </div>
             </div>
             <div style="display:flex;gap:0.7rem;align-items:center;padding:0.4rem 0.7rem;background:var(--bg-alt);border-radius:6px;">
                 <span style="font-size:0.95rem;flex-shrink:0;">✍️</span>
                 <div>
                     <p style="font-size:clamp(0.62rem,0.88vw,0.76rem);font-weight:700;">Paper Writing + Figures</p>
-                    <p style="font-size:clamp(0.5rem,0.7vw,0.6rem);color:var(--ink-soft);">seaborn 图表 · 并行写各节</p>
+                    <p style="font-size:clamp(0.5rem,0.7vw,0.6rem);color:var(--ink-soft);" data-en="seaborn figures · parallel section writing">seaborn 图表 · 并行写各节</p>
                 </div>
             </div>
             <div style="display:flex;gap:0.7rem;align-items:center;padding:0.4rem 0.7rem;background:#111;border-radius:6px;border-left:3px solid var(--red);">
                 <span style="font-size:0.95rem;flex-shrink:0;">📱</span>
                 <div>
                     <p style="font-size:clamp(0.62rem,0.88vw,0.76rem);font-weight:700;color:#fff;">Review <span style="color:#7ec8e3;font-size:0.5rem;font-weight:400;">← subagent</span> → Submit</p>
-                    <p style="font-size:clamp(0.5rem,0.7vw,0.6rem);color:#aaa;">修正 · Telegram 通知</p>
+                    <p style="font-size:clamp(0.5rem,0.7vw,0.6rem);color:#aaa;" data-en="Revisions · Telegram notification">修正 · Telegram 通知</p>
                 </div>
             </div>
         </div>
@@ -1573,11 +1694,38 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                 <div style="width:11px;height:11px;border-radius:50%;background:#febc2e;"></div>
                 <div style="width:11px;height:11px;border-radius:50%;background:#28c840;"></div>
                 <span style="margin-left:0.75rem;color:#888;font-size:0.72rem;flex:1;">claude — ~/CalibrationAGT</span>
+                <button id="arp-pause-btn" onclick="toggleARPPause()" style="background:#444;border:none;color:#ccc;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;letter-spacing:0.03em;">⏸ 暂停</button>
+                <button id="arp-replay-btn" onclick="restartARPAnimation()" style="background:#333;border:none;color:#888;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;">↺ 重播</button>
             </div>
             <div id="arp-chat" style="flex:1;overflow-y:auto;padding:0.9rem 1.1rem;font-size:clamp(0.58rem,0.85vw,0.72rem);line-height:1.7;color:#ccc;display:flex;flex-direction:column;gap:0.5rem;"></div>
             <div style="background:#111;border-top:1px solid #333;padding:0.5rem 1rem;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
                 <span style="color:#e8321a;font-size:0.85rem;">❯</span>
                 <span id="arp-input" style="color:#ccc;font-size:clamp(0.6rem,0.85vw,0.72rem);"></span>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE: 抛砖引玉 ===================== -->
+<section class="slide" id="slide-brickjade">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="Research · Going Further">Research · 更进一步</div>
+        <div class="slide-header-label red" data-en="Just the Beginning">抛砖引玉</div>
+    </div>
+    <div class="slide-content" style="padding:var(--pad);gap:var(--gap);justify-content:center;">
+        <div style="max-width:52rem;display:flex;flex-direction:column;gap:var(--gap);">
+            <div class="reveal">
+                <p style="font-size:var(--t-h3);line-height:1.5;" data-en="<code style='font-size:inherit;background:var(--bg-alt);padding:0.1em 0.35em;border-radius:4px;'>/ai-research-paper</code> is just a starting point —<br>any repetitive workflow can be packaged as a skill."><code style="font-size:inherit;background:var(--bg-alt);padding:0.1em 0.35em;border-radius:4px;">/ai-research-paper</code> 只是起点——<br>任何重复工作流都可以封装成 skill。</p>
+            </div>
+            <div class="reveal" style="border-top:2px solid var(--border-soft);padding-top:var(--gap);">
+                <p style="font-size:var(--t-small);color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.12em;font-weight:700;margin-bottom:0.6rem;" data-en="Lab colleagues have built something more systematic">实验室里有人做得更系统</p>
+                <p style="font-size:var(--t-h2);font-weight:700;line-height:1.3;">Chengcheng &amp; Jinxu</p>
+                <p style="font-size:var(--t-body);color:var(--ink-mid);margin:0.2rem 0 0.6rem;" data-en="AutoAI Research System">AutoAI Research System</p>
+                <p style="font-size:var(--t-small);font-family:var(--font-mono);color:var(--ink-soft);">github.com/Sibyl-Research-Team/AutoResearch-SibylSystem</p>
             </div>
         </div>
     </div>
@@ -1593,19 +1741,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
         <div class="slide-header-label" data-en="Research · More Examples">Research · 更多示例</div>
         <div class="slide-header-label red" data-en="Skills in Action">Skill 实战</div>
     </div>
-    <div style="display:flex;flex-direction:column;gap:0.6rem;padding:var(--egap) var(--pad) var(--pad);height:calc(100% - 4rem);">
-        <!-- Top: intro -->
-        <div class="reveal" style="display:flex;gap:var(--gap);align-items:stretch;">
-            <p style="font-size:clamp(0.72rem,1vw,0.86rem);color:var(--ink-mid);line-height:1.5;flex:1.2;">
-                <code style="background:var(--bg-alt);padding:0.1em 0.4em;border-radius:4px;">ai-research-paper</code> 只是起点——<br>
-                任何重复工作流都可以封装成 skill。
-            </p>
-            <div style="padding:0.5rem 0.9rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--red);flex:1;">
-                <p style="font-size:0.7rem;font-weight:600;margin-bottom:0.2rem;">实验室里有人做得更系统</p>
-                <p style="font-size:0.63rem;color:var(--ink-mid);">Chengcheng & Jinxu · AutoAI Research System</p>
-                <p style="font-size:0.58rem;color:var(--ink-soft);font-family:var(--font-mono);">github.com/Sibyl-Research-Team/AutoResearch-SibylSystem</p>
-            </div>
-        </div>
+    <div style="display:flex;flex-direction:column;gap:0.6rem;padding:var(--egap) var(--pad) var(--pad);height:calc(100% - 4rem);justify-content:center;">
         <!-- Two terminals side by side -->
         <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0;">
             <!-- Terminal 1: /brainstorm -->
@@ -1615,6 +1751,8 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                     <div style="width:10px;height:10px;border-radius:50%;background:#febc2e;"></div>
                     <div style="width:10px;height:10px;border-radius:50%;background:#28c840;"></div>
                     <span style="margin-left:0.6rem;color:#888;font-size:0.66rem;flex:1;">/brainstorm — ~/CalibrationAGT</span>
+                    <button id="bs1-pause-btn" onclick="toggleBs1Pause()" style="background:#444;border:none;color:#ccc;font-size:0.65rem;padding:0.18rem 0.5rem;border-radius:4px;cursor:pointer;">⏸ 暂停</button>
+                    <button id="bs1-replay-btn" onclick="restartBs1Animation()" style="background:#333;border:none;color:#888;font-size:0.65rem;padding:0.18rem 0.5rem;border-radius:4px;cursor:pointer;">↺ 重播</button>
                 </div>
                 <div id="bs1-chat" style="flex:1;overflow-y:auto;padding:0.65rem 0.9rem;font-size:clamp(0.52rem,0.75vw,0.63rem);line-height:1.65;color:#ccc;display:flex;flex-direction:column;gap:0.4rem;"></div>
                 <div style="background:#111;border-top:1px solid #333;padding:0.4rem 0.9rem;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
@@ -1629,6 +1767,8 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                     <div style="width:10px;height:10px;border-radius:50%;background:#febc2e;"></div>
                     <div style="width:10px;height:10px;border-radius:50%;background:#28c840;"></div>
                     <span style="margin-left:0.6rem;color:#888;font-size:0.66rem;flex:1;">/frontend-slides — ~/talks</span>
+                    <button id="fs1-pause-btn" onclick="toggleFs1Pause()" style="background:#444;border:none;color:#ccc;font-size:0.65rem;padding:0.18rem 0.5rem;border-radius:4px;cursor:pointer;">⏸ 暂停</button>
+                    <button id="fs1-replay-btn" onclick="restartFs1Animation()" style="background:#333;border:none;color:#888;font-size:0.65rem;padding:0.18rem 0.5rem;border-radius:4px;cursor:pointer;">↺ 重播</button>
                 </div>
                 <div id="fs1-chat" style="flex:1;overflow-y:auto;padding:0.65rem 0.9rem;font-size:clamp(0.52rem,0.75vw,0.63rem);line-height:1.65;color:#ccc;display:flex;flex-direction:column;gap:0.4rem;"></div>
                 <div style="background:#111;border-top:1px solid #333;padding:0.4rem 0.9rem;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
@@ -1648,73 +1788,16 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
 <section class="slide slide-part" id="slide-18">
     <div class="part-number">03</div>
     <div class="part-content">
-        <div class="part-label reveal">Part Three · 技术解剖</div>
-        <div class="part-title reveal" data-en="Dissecting the Lobster">解剖小龍蝦</div>
-        <div class="part-subtitle reveal" data-en="How AI Agent Works: OpenClaw as Example">以 OpenClaw 為例介紹 AI Agent 的運作原理</div>
-        <div class="reveal" style="margin-top:1.5rem;font-size:clamp(0.65rem,0.9vw,0.8rem);color:rgba(255,255,255,0.45);font-style:italic;">
-            参考 李宏毅（Hung-yi Lee）机器学习课程 2025 · NTU<br>
-            「用 OpenClaw 為例 介紹 AI Agent 運作原理」
+        <div class="part-label reveal" data-en="Part Three · Technical Anatomy">Part Three · 技术解剖</div>
+        <div class="part-title reveal" data-en="Technical Anatomy">技术解剖</div>
+        <div class="part-subtitle reveal" data-en="How Does an AI Agent Actually Work?">Agent 的運作原理是什麼？</div>
+        <div class="reveal" style="margin-top:1.5rem;font-size:clamp(0.65rem,0.9vw,0.8rem);color:rgba(255,255,255,0.45);font-style:italic;" data-en="Reference: Hung-yi Lee Machine Learning Course 2025 · NTU">
+            参考 李宏毅（Hung-yi Lee）机器学习课程 2025 · NTU
         </div>
     </div>
     <div class="slide-footer" style="border-color: rgba(255,255,255,0.1);">
         <div class="footer-text" style="color: rgba(255,255,255,0.3);"></div>
         <div class="slide-num" style="color: rgba(255,255,255,0.3);">— / 23</div>
-    </div>
-</section>
-
-<!-- ===================== SLIDE 18: LLM 基础 ===================== -->
-<section class="slide" id="slide-19">
-    <div class="slide-header">
-        <div class="slide-header-label" data-en="Tech · LLM vs Agent">技术 · LLM vs Agent</div>
-        <div class="slide-header-label red" data-en="Lobster ≠ AI">龙虾不是 AI</div>
-    </div>
-    <div class="slide-content" style="gap: var(--gap);">
-        <h2 class="reveal" data-en="AI Agent ≠ LLM &nbsp;·&nbsp; Lobster ≠ Smart">AI Agent ≠ LLM &nbsp;·&nbsp; 龙虾 ≠ 聪明</h2>
-        <div class="two-col reveal" style="align-items: start; gap: var(--gap);">
-            <div style="display:flex;flex-direction:column;gap:var(--egap);">
-                <div style="padding:0.8rem 1rem;background:var(--bg-alt);border-radius:8px;border-left:3px solid var(--red);">
-                    <p style="font-size:var(--t-small);font-weight:600;margin-bottom:0.3rem;">李宏毅的比喻</p>
-                    <p style="font-size:clamp(0.68rem,0.95vw,0.82rem);color:var(--ink-mid);line-height:1.6;">
-                        OpenClaw 就是一只<strong>龙虾</strong>（Agent 框架）——它完全没有智慧，<br>
-                        是六亲不认的程序。聪明的是背后接的<strong>语言模型</strong>（LLM）。<br>
-                        龙虾的聪明程度，取决于背后装的模型。
-                    </p>
-                </div>
-                <div class="code-block" style="font-size:clamp(0.62rem,0.88vw,0.75rem);">
-<span class="cm"># 龙虾做的事</span>
-你的消息 + System Prompt
-  + 工具列表 + 历史对话
-  → <span class="kw">发给 LLM</span>
-LLM 回复 → 解析 → 执行工具
-  → 把结果贴回 context
-  → 再次发给 LLM
-<span class="cm"># 龙虾没有更多了</span></div>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:var(--egap);">
-                <p style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-soft);">LLM 只做一件事</p>
-                <div style="padding:0.7rem 1rem;background:var(--red-light);border:1px solid rgba(232,50,26,0.2);border-radius:8px;">
-                    <p style="font-size:var(--t-body);font-weight:700;color:var(--red);margin-bottom:0.2rem;">预测下一个 token</p>
-                    <p style="font-size:clamp(0.68rem,0.95vw,0.82rem);color:var(--ink-mid);">没有记忆 · 没有窗户 · 没有日历<br>只能看到当前 context 里的内容</p>
-                </div>
-                <ul style="font-size:var(--t-small);color:var(--ink);line-height:1.8;padding-left:1.2em;">
-                    <li>每次调用都是全新的——不记得你</li>
-                    <li>只有把历史对话贴进 context 才能"记住"</li>
-                    <li>Context Window 有限 = agent 设计的核心约束</li>
-                </ul>
-                <div class="highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);">
-                    <p style="font-size:var(--t-small);">Context Engineering = 每次调用 LLM 时，精心决定把<em>什么</em>塞进 context</p>
-                </div>
-                <!-- 小龙虾 crayfish image — 李宏毅龙虾比喻 -->
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Red_swamp_crayfish.jpg/600px-Red_swamp_crayfish.jpg"
-                     alt="Red swamp crayfish (Procambarus clarkii / 小龙虾)"
-                     style="width:100%;max-height:min(18vh,130px);object-fit:cover;object-position:center 30%;border-radius:8px;opacity:0.85;"
-                     onerror="this.style.display='none'">
-            </div>
-        </div>
-    </div>
-    <div class="slide-footer">
-        <div class="footer-text"></div>
-        <div class="slide-num">— / 23</div>
     </div>
 </section>
 
@@ -1728,9 +1811,9 @@ LLM 回复 → 解析 → 执行工具
         <h2 class="reveal" data-en='How Agent "Acts": The Tool Use Loop'>Agent 怎么"动手"：Tool Use 循环</h2>
         <div class="flow-diagram" style="gap: clamp(0.3rem,0.6vh,0.5rem);">
             <div class="flow-row reveal">
-                <div class="flow-box agent">Agent 收到任务</div>
+                <div class="flow-box agent" data-en="Agent receives task">Agent 收到任务</div>
                 <div class="flow-arrow">→</div>
-                <div class="flow-box llm">发给 LLM（含工具列表）</div>
+                <div class="flow-box llm" data-en="Sent to LLM (with tool list)">发给 LLM（含工具列表）</div>
                 <div class="flow-arrow">→</div>
                 <div class="flow-box llm">[tool_use] Read("main.py")</div>
             </div>
@@ -1738,25 +1821,25 @@ LLM 回复 → 解析 → 执行工具
                 <div class="flow-arrow">↓</div>
             </div>
             <div class="flow-row reveal">
-                <div class="flow-box exec">在电脑上执行 Read("main.py")</div>
+                <div class="flow-box exec" data-en='Execute Read("main.py") on computer'>在电脑上执行 Read("main.py")</div>
                 <div class="flow-arrow">→</div>
-                <div class="flow-box result">返回文件内容</div>
+                <div class="flow-box result" data-en="Return file contents">返回文件内容</div>
                 <div class="flow-arrow">→</div>
-                <div class="flow-box agent">加入 context，再次调用 LLM</div>
+                <div class="flow-box agent" data-en="Add to context, call LLM again">加入 context，再次调用 LLM</div>
             </div>
             <div class="flow-row reveal" style="padding-left: 2rem;">
-                <div class="flow-arrow">↓ 循环直到任务完成</div>
+                <div class="flow-arrow" data-en="↓ Loop until task complete">↓ 循环直到任务完成</div>
             </div>
             <div class="flow-row reveal">
                 <div class="flow-box llm">[tool_use] Write("fix.py", ...)</div>
                 <div class="flow-arrow">→</div>
-                <div class="flow-box exec">写入文件</div>
+                <div class="flow-box exec" data-en="Write to file">写入文件</div>
                 <div class="flow-arrow">→</div>
                 <div class="flow-box result">"done" [END]</div>
             </div>
         </div>
         <div class="highlight-box reveal">
-            <p>强大的原因：可以执行<strong>任意 shell 命令</strong>——文字是 LLM 最擅长的，shell 命令是文字</p>
+            <p data-en="Why it's powerful: can execute <strong>any shell command</strong> — text is what LLM does best, and shell commands are text">强大的原因：可以执行<strong>任意 shell 命令</strong>——文字是 LLM 最擅长的，shell 命令是文字</p>
         </div>
     </div>
     <div class="slide-footer">
@@ -1775,14 +1858,21 @@ LLM 回复 → 解析 → 执行工具
         <h2 class="reveal" data-en='The System Prompt Holds the Agent's "Soul"'>System Prompt 里装着 Agent 的"灵魂"</h2>
         <div class="two-col reveal">
             <ul class="bullet-list">
-                <li><strong>CLAUDE.md</strong>：项目规则、代码约定、注意事项</li>
-                <li><strong>memory/*.md</strong>：用户偏好、历史决策、长期记忆</li>
-                <li><strong>skills/*.md</strong>：可复用的工作流（技能库）</li>
-                <li><strong>工具列表</strong>：Read、Write、Bash、WebSearch……</li>
-                <li>每次调用 LLM 时，这些<strong>全部塞进 system prompt</strong></li>
+                <li data-en="<strong>CLAUDE.md</strong>: project rules, coding conventions, notes"><strong>CLAUDE.md</strong>：项目规则、代码约定、注意事项</li>
+                <li data-en="<strong>memory/*.md</strong>: user preferences, past decisions, long-term memory"><strong>memory/*.md</strong>：用户偏好、历史决策、长期记忆</li>
+                <li data-en="<strong>skills/*.md</strong>: reusable workflows (skill library)"><strong>skills/*.md</strong>：可复用的工作流（技能库）</li>
+                <li data-en="<strong>Tool list</strong>: Read, Write, Bash, WebSearch…"><strong>工具列表</strong>：Read、Write、Bash、WebSearch……</li>
+                <li data-en="At every LLM call, all of this is <strong>stuffed into the system prompt</strong>">每次调用 LLM 时，这些<strong>全部塞进 system prompt</strong></li>
             </ul>
             <div style="display: flex; flex-direction: column; gap: var(--egap);">
-                <div class="code-block">
+                <div class="code-block" data-en="<span class='cm'># CLAUDE.md example</span>
+<span class='kw'>## Rules</span>
+- Reply in English
+- Check GPU usage before running experiments
+- Do not commit untested code
+
+<span class='kw'>## Project Context</span>
+NeurIPS 2026 submission, ddl: 5/31">
 <span class="cm"># CLAUDE.md 示例</span>
 <span class="kw">## Rules</span>
 - 用中文回复
@@ -1792,7 +1882,8 @@ LLM 回复 → 解析 → 执行工具
 <span class="kw">## Project Context</span>
 NeurIPS 2026 投稿，ddl: 5/31
                 </div>
-                <p class="text-soft" style="font-size: var(--t-small);">
+                <p class="text-soft" style="font-size: var(--t-small);" data-en='A single conversation can load <strong>4000+ tokens</strong> of system info —<br>
+                    that&apos;s why the agent can continuously "remember" project state'>
                     一次对话可能塞入 <strong>4000+ tokens</strong> 的系统信息——<br>
                     这就是 agent 能持续"记住"项目状态的原因
                 </p>
@@ -1815,34 +1906,35 @@ NeurIPS 2026 投稿，ddl: 5/31
         <h2 class="reveal" data-en="Sub-agent: Solving the Context Bottleneck">Sub-agent：解决 Context 瓶颈</h2>
         <div class="two-col reveal">
             <div style="display: flex; flex-direction: column; gap: var(--egap);">
-                <p class="text-mid" style="font-size: var(--t-small);">
+                <p class="text-mid" style="font-size: var(--t-small);" data-en="Task too big to fit in one context?<br>
+                    The main agent spawns multiple sub-agents that <strong>handle subtasks in parallel</strong>, returning only summarized results to the main context.">
                     任务太大，一个 context 放不下怎么办？<br>
                     主 agent spawn 多个 sub-agent，<strong>并行处理子任务</strong>，只把摘要结果返回主 context。
                 </p>
                 <div class="arch-diagram" style="flex-direction: column; gap: 0.75rem; align-items: flex-start;">
                     <div style="display:flex; align-items:center; gap:0.75rem;">
-                        <div class="arch-box center-box" style="min-width:5rem; padding:0.5rem 0.75rem; font-size: var(--t-small);">主 Agent</div>
+                        <div class="arch-box center-box" style="min-width:5rem; padding:0.5rem 0.75rem; font-size: var(--t-small);" data-en="Main Agent">主 Agent</div>
                         <span style="color:var(--ink-soft); font-size:0.85rem;">→ spawn</span>
-                        <div class="arch-box" style="min-width:5rem; padding:0.5rem 0.75rem; font-size: var(--t-small);">Sub A：读论文 A</div>
+                        <div class="arch-box" style="min-width:5rem; padding:0.5rem 0.75rem; font-size: var(--t-small);" data-en="Sub A: Read Paper A">Sub A：读论文 A</div>
                     </div>
                     <div style="display:flex; align-items:center; gap:0.75rem; padding-left: 9rem;">
                         <span style="color:var(--ink-soft); font-size:0.85rem;">→ spawn</span>
-                        <div class="arch-box" style="min-width:5rem; padding:0.5rem 0.75rem; font-size: var(--t-small);">Sub B：读论文 B</div>
+                        <div class="arch-box" style="min-width:5rem; padding:0.5rem 0.75rem; font-size: var(--t-small);" data-en="Sub B: Read Paper B">Sub B：读论文 B</div>
                     </div>
                     <div style="display:flex; align-items:center; gap:0.75rem;">
-                        <span style="color:var(--ink-soft); font-size:0.85rem; padding-left: 0.5rem;">← 只返回摘要，不返回全文</span>
+                        <span style="color:var(--ink-soft); font-size:0.85rem; padding-left: 0.5rem;" data-en="← Returns summary only, not full text">← 只返回摘要，不返回全文</span>
                     </div>
                 </div>
             </div>
             <ul class="bullet-list">
-                <li>Sub-agent 有<strong>精简的 system prompt</strong>，专注单一子任务</li>
-                <li>Context Window 里只有任务关键信息，<strong>推理更准确</strong></li>
-                <li>多个 sub-agent 并行跑——<strong>速度更快</strong></li>
-                <li>这就是 <strong>Context Engineering</strong> 的核心技巧</li>
+                <li data-en="Sub-agent has a <strong>lean system prompt</strong>, focused on a single subtask">Sub-agent 有<strong>精简的 system prompt</strong>，专注单一子任务</li>
+                <li data-en="Context window contains only task-relevant info — <strong>more accurate reasoning</strong>">Context Window 里只有任务关键信息，<strong>推理更准确</strong></li>
+                <li data-en="Multiple sub-agents run in parallel — <strong>faster</strong>">多个 sub-agent 并行跑——<strong>速度更快</strong></li>
+                <li data-en="This is the core trick of <strong>Context Engineering</strong>">这就是 <strong>Context Engineering</strong> 的核心技巧</li>
             </ul>
         </div>
         <div class="highlight-box reveal">
-            <p>层层外包到最后谁干事？——最底层的 sub-agent 调用工具真正执行</p>
+            <p data-en="When you keep delegating down, who actually does the work? — The bottom-level sub-agent calls tools and actually executes">层层外包到最后谁干事？——最底层的 sub-agent 调用工具真正执行</p>
         </div>
     </div>
     <div class="slide-footer">
@@ -1862,37 +1954,39 @@ NeurIPS 2026 投稿，ddl: 5/31
         <div class="two-col" style="align-items:start;gap:var(--gap);">
             <div style="display:flex;flex-direction:column;gap:var(--egap);">
                 <div class="reveal" style="padding:0.7rem 1rem;background:var(--red-light);border:1px solid rgba(232,50,26,0.2);border-radius:8px;">
-                    <p style="font-size:var(--t-small);font-weight:700;color:var(--red);margin-bottom:0.3rem;">为什么 Context 会涨这么快？</p>
-                    <p style="font-size:var(--t-small);color:var(--ink-mid);">工具的输出（tool observations）占了 Context 的 <strong style="color:var(--red);">84%</strong><br>
+                    <p style="font-size:var(--t-small);font-weight:700;color:var(--red);margin-bottom:0.3rem;" data-en="Why Does Context Grow So Fast?">为什么 Context 会涨这么快？</p>
+                    <p style="font-size:var(--t-small);color:var(--ink-mid);" data-en="Tool outputs (tool observations) account for <strong style='color:var(--red);'>84%</strong> of context<br>
+                    The model's own words are only ~10%">工具的输出（tool observations）占了 Context 的 <strong style="color:var(--red);">84%</strong><br>
                     模型自己说的话只占 ~10%</p>
                 </div>
-                <p class="reveal" style="font-size:var(--t-small);font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.05em;">两种压缩方式</p>
+                <p class="reveal" style="font-size:var(--t-small);font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.05em;" data-en="Two Compression Methods">两种压缩方式</p>
                 <div class="reveal" style="display:flex;gap:0.8rem;align-items:flex-start;">
                     <div style="flex-shrink:0;width:1.8rem;height:1.8rem;background:var(--bg-alt);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:var(--t-small);font-weight:700;color:var(--red);">1</div>
                     <div>
                         <p style="font-size:var(--t-small);font-weight:600;">Observation Masking</p>
-                        <p style="font-size:var(--t-small);color:var(--ink-mid);">把工具输出直接换成一句话：<br>「<em>这里曾经有个工具的输出</em>」</p>
-                        <p style="font-size:var(--t-small);color:var(--ink-soft);margin-top:0.2rem;">看起来很粗暴——但实验表明效果和 LLM 摘要差不多</p>
+                        <p style="font-size:var(--t-small);color:var(--ink-mid);" data-en="Replace tool output with a single line:<br>&ldquo;<em>There used to be tool output here</em>&rdquo;">把工具输出直接换成一句话：<br>「<em>这里曾经有个工具的输出</em>」</p>
+                        <p style="font-size:var(--t-small);color:var(--ink-soft);margin-top:0.2rem;" data-en="Looks brutal — but experiments show it works about as well as LLM summarization">看起来很粗暴——但实验表明效果和 LLM 摘要差不多</p>
                     </div>
                 </div>
                 <div class="reveal" style="display:flex;gap:0.8rem;align-items:flex-start;">
                     <div style="flex-shrink:0;width:1.8rem;height:1.8rem;background:var(--bg-alt);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:var(--t-small);font-weight:700;color:var(--red);">2</div>
                     <div>
                         <p style="font-size:var(--t-small);font-weight:600;">LLM Summarization</p>
-                        <p style="font-size:var(--t-small);color:var(--ink-mid);">历史对话太长 → 用 LLM 压成摘要<br>OpenClaw 内置了这个 compaction 机制</p>
+                        <p style="font-size:var(--t-small);color:var(--ink-mid);" data-en="History too long → compress it with LLM summarization<br>OpenClaw has this compaction mechanism built in">历史对话太长 → 用 LLM 压成摘要<br>OpenClaw 内置了这个 compaction 机制</p>
                     </div>
                 </div>
             </div>
             <div style="display:flex;flex-direction:column;gap:var(--egap);">
-                <p class="reveal" style="font-size:var(--t-small);font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.05em;">Sub-agent = 自动压缩</p>
+                <p class="reveal" style="font-size:var(--t-small);font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.05em;" data-en="Sub-agent = Automatic Compression">Sub-agent = 自动压缩</p>
                 <div class="reveal" style="display:flex;flex-direction:column;gap:0.5rem;font-size:var(--t-small);">
-                    <div style="padding:0.5rem 0.8rem;background:var(--bg-alt);border-radius:6px;">主 Agent spawn Sub-agent → Sub-agent 积累自己的 Context</div>
+                    <div style="padding:0.5rem 0.8rem;background:var(--bg-alt);border-radius:6px;" data-en="Main Agent spawns Sub-agent → Sub-agent accumulates its own Context">主 Agent spawn Sub-agent → Sub-agent 积累自己的 Context</div>
                     <div style="padding-left:1rem;color:var(--ink-soft);">↓ sub-agent return</div>
-                    <div style="padding:0.5rem 0.8rem;background:var(--bg-alt);border-radius:6px;">Sub-agent 的整段对话<strong>消失</strong>，只留 return 的一句话</div>
-                    <div style="padding-left:1rem;color:var(--ink-soft);">→ Context 锯齿状上升 + 下降</div>
+                    <div style="padding:0.5rem 0.8rem;background:var(--bg-alt);border-radius:6px;" data-en="Sub-agent's entire conversation <strong>vanishes</strong>, only the returned sentence remains">Sub-agent 的整段对话<strong>消失</strong>，只留 return 的一句话</div>
+
                 </div>
                 <div class="reveal highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);">
-                    <p style="font-size:var(--t-small);">语言模型<strong>不喜欢</strong>压缩自己的记忆<br>
+                    <p style="font-size:var(--t-small);" data-en="Language models <strong>dislike</strong> compressing their own memory<br>
+                    <span style='color:var(--ink-mid);'>So compression is usually enforced by the Agent framework</span>">语言模型<strong>不喜欢</strong>压缩自己的记忆<br>
                     <span style="color:var(--ink-mid);">所以压缩通常是 Agent 框架强制执行的</span></p>
                 </div>
             </div>
@@ -1908,7 +2002,7 @@ NeurIPS 2026 投稿，ddl: 5/31
 <section class="slide slide-part" id="slide-part4">
     <div class="part-number">04</div>
     <div class="part-content">
-        <div class="part-label reveal">Part Four · 讨论</div>
+        <div class="part-label reveal" data-en="Part Four · Discussion">Part Four · 讨论</div>
         <div class="part-title reveal" data-en="What Has AI Agent<br>Changed?">AI Agent<br>改变了什么？</div>
         <div class="part-subtitle reveal" data-en="Research · Engineering · Human Value">科研 · 工程 · 人的价值</div>
     </div>
@@ -1927,8 +2021,8 @@ NeurIPS 2026 投稿，ddl: 5/31
     <div class="slide-content" style="gap: var(--gap);">
         <div class="highlight-box reveal" style="border-left: 4px solid var(--red); background: var(--red-light); margin-bottom: 0;">
             <p style="font-size: var(--t-h3); font-weight: 700; line-height: 1.3;">
-                工作，是对<span style="color:var(--red);">结果</span>负责<br>
-                <span style="font-size: 0.6em; font-weight: 400; color: var(--ink-mid);">不是对过程负责，不是对代码行数负责，不是对"我自己写的"负责</span>
+                <span data-en="Work is about being accountable for <span style='color:var(--red);'>outcomes</span>">工作，是对<span style="color:var(--red);">结果</span>负责</span><br>
+                <span style="font-size: 0.6em; font-weight: 400; color: var(--ink-mid);" data-en='Not the process, not the lines of code, not "I wrote it myself"'>不是对过程负责，不是对代码行数负责，不是对"我自己写的"负责</span>
             </p>
         </div>
         <div class="card-grid reveal" style="grid-template-columns: repeat(3,1fr); gap: var(--egap);">
@@ -1949,11 +2043,11 @@ NeurIPS 2026 投稿，ddl: 5/31
             </div>
             <div class="card" style="background: #1a1a1a; border-color: #333; padding: clamp(0.8rem,1.5vw,1.4rem);">
                 <div style="font-size: var(--t-label); color: #e8321a; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.5rem;">Dario Amodei · Anthropic</div>
-                <p style="font-size: var(--t-small); color: #d0d0d0; line-height: 1.55; font-style: italic;">"I don't write any code anymore. I just let the model write the code." — Anthropic engineer</p>
-                <p style="font-size: var(--t-label); color: #666; margin-top: 0.5rem;">Axios · May 2025，预测 white-collar bloodbath</p>
+                <p style="font-size: var(--t-small); color: #d0d0d0; line-height: 1.55; font-style: italic;">"AI could soon compress decades of scientific progress into just a few years."</p>
+                <p style="font-size: var(--t-label); color: #666; margin-top: 0.5rem;">Machines of Loving Grace · Oct 2024</p>
             </div>
         </div>
-        <p class="reveal text-soft" style="font-size: var(--t-small); text-align: center;">
+        <p class="reveal text-soft" style="font-size: var(--t-small); text-align: center;" data-en="This isn't the future — it's <strong style='color:var(--ink);'>now</strong>, happening right in this presentation">
             这不是未来——这是 <strong style="color:var(--ink);">现在</strong>，就发生在这个报告里
         </p>
     </div>
@@ -1970,37 +2064,37 @@ NeurIPS 2026 投稿，ddl: 5/31
         <div class="slide-header-label red">Research</div>
     </div>
     <div class="slide-content" style="gap: var(--gap);">
-        <h2 class="reveal" data-en="How Much Does Incremental Research Still Matter?">Incremental research 的意义还有多大？</h2>
-        <div class="two-col reveal" style="align-items: start; gap: var(--gap);">
+        <h2 class="reveal" data-en="The Paper Inflation Era">论文通货膨胀时代</h2>
+        <div class="two-col" style="align-items: start; gap: var(--gap);">
             <div style="display:flex;flex-direction:column;gap:var(--egap);">
-                <div class="highlight-box" style="border-left:4px solid var(--red);">
-                    <p style="font-size:var(--t-body);"><strong>Paper 通货膨胀</strong><br>
+                <div class="reveal highlight-box" style="border-left:4px solid var(--red);">
+                    <p style="font-size:var(--t-body);" data-en="<strong>Paper Inflation</strong><br>
+                    <span class='text-soft'>Agent lets anyone churn out papers fast — hundreds per day on arxiv, reviewers already can't keep up</span>"><strong>Paper 通货膨胀</strong><br>
                     <span class="text-soft">Agent 让人人都能快速产出论文——arxiv 每天几百篇，reviewers 已经看不过来了</span></p>
                 </div>
                 <!-- arxiv growth chart -->
-                <div style="background:var(--bg-alt);border-radius:8px;padding:0.5rem 0.7rem;">
-                    <p style="font-size:0.6rem;color:var(--ink-soft);margin-bottom:0.3rem;">arxiv 年提交量 · 来源: arxiv.org/stats（2025年已超 2.8万篇/月）</p>
+                <div class="reveal" style="background:var(--bg-alt);border-radius:8px;padding:0.5rem 0.7rem;">
+                    <p style="font-size:0.6rem;color:var(--ink-soft);margin-bottom:0.3rem;" data-en="arXiv annual submissions · Source: arxiv.org/stats (2025: exceeded 28,000/month)">arxiv 年提交量 · 来源: arxiv.org/stats（2025年已超 2.8万篇/月）</p>
                     <img src="https://info.arxiv.org/help/stats/2021_by_area/newsubs.png"
                          alt="arXiv new submissions per year by subject area (1991–2021)"
                          style="width:100%;border-radius:4px;max-height:min(16vh,120px);object-fit:contain;"
                          onerror="this.style.display='none'">
                 </div>
-                <ul class="bullet-list" style="font-size:var(--t-small);">
-                    <li>把 baseline + 1% accuracy 写成 paper 的时代，可能快结束了</li>
-                    <li>Agent 可以自动做 ablation、related work、图表——<strong>门槛消失</strong></li>
-                    <li>"发了多少篇" 这个 metric 会越来越没意义</li>
+                <ul class="bullet-list reveal" style="font-size:var(--t-small);">
+                    <li data-en="The era of publishing &ldquo;baseline +1% accuracy&rdquo; as a paper may soon be over">把 baseline + 1% accuracy 写成 paper 的时代，可能快结束了</li>
+                    <li data-en="Agent can automatically do ablations, related work, figures — <strong>the barrier disappears</strong>">Agent 可以自动做 ablation、related work、图表——<strong>门槛消失</strong></li>
+                    <li data-en="&ldquo;How many papers published&rdquo; as a metric will become increasingly meaningless">"发了多少篇" 这个 metric 会越来越没意义</li>
                 </ul>
             </div>
             <div style="display:flex;flex-direction:column;gap:var(--egap);">
-                <p style="font-size:var(--t-body);font-weight:600;color:var(--ink);">Evaluation system 会怎么变？</p>
-                <ul class="bullet-list">
-                    <li>从 <strong>数量</strong> 转向 <strong>影响力</strong>——citation、real-world adoption</li>
-                    <li>更看重提出真正的新问题，而不是解决已知 benchmark</li>
-                    <li>Reproducibility 和 open-source 会变得更重要</li>
-                    <li>也许：<strong>能不能问出好问题</strong>，才是真正的核心竞争力</li>
+                <p class="reveal" style="font-size:var(--t-body);font-weight:600;color:var(--ink);" data-en="How will the evaluation system shift?">Evaluation system 会怎么变？</p>
+                <ul class="bullet-list reveal">
+                    <li data-en="From <strong>quantity</strong> to <strong>impact</strong> — citation, real-world adoption">从 <strong>数量</strong> 转向 <strong>影响力</strong>——citation、real-world adoption</li>
+                    <li data-en="Greater weight on asking genuinely new questions, not solving known benchmarks">更看重提出真正的新问题，而不是解决已知 benchmark</li>
+                    <li data-en="Reproducibility and open-source become more important">Reproducibility 和 open-source 会变得更重要</li>
                 </ul>
-                <div class="highlight-box">
-                    <p style="font-size:var(--t-small);">我的判断：未来值钱的是 insight，不是 execution</p>
+                <div class="reveal highlight-box" style="border-left:4px solid var(--ink);">
+                    <p style="font-size:var(--t-small);" data-en="Maybe: <strong>asking the right question</strong> is the real core competency">也许：<strong>能不能问出好问题</strong>，才是真正的核心竞争力</p>
                 </div>
             </div>
         </div>
@@ -2023,50 +2117,25 @@ NeurIPS 2026 投稿，ddl: 5/31
             <h2 class="reveal" data-en="Will AI Agent Replace Researchers?">AI Agent 会替代科研工作者吗？</h2>
             <p style="font-size:clamp(0.52rem,0.7vw,0.62rem);color:var(--ink-soft);">参考：李宏毅 AI Agent (3/3) · NTU 2026</p>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0;">
-            <!-- LEFT: images from Andrew Hall -->
-            <div style="display:flex;flex-direction:column;gap:0.5rem;">
-                <div class="reveal" style="flex:1;display:flex;flex-direction:column;gap:0.35rem;">
-                    <p style="font-size:clamp(0.58rem,0.78vw,0.68rem);font-weight:700;color:var(--red);">Andrew Hall (Stanford) · 「100x Research Assistant」</p>
-                    <img src="https://substack-post-media.s3.amazonaws.com/public/images/2f1712c4-2659-4035-97af-c7661f3408fd_1335x922.png"
-                         alt="Cost: PhD student 16h $1040 vs Claude Code 1h $10"
-                         style="width:100%;border-radius:8px;object-fit:contain;max-height:min(28vh,200px);"
-                         onerror="this.style.opacity='0.15'">
-                    <p style="font-size:clamp(0.48rem,0.65vw,0.58rem);color:var(--ink-soft);">博士生：16h / $1,040 &nbsp;vs&nbsp; Claude Code：1h / $10（<strong style="color:var(--red);">104× cheaper</strong>）</p>
-                </div>
-                <div class="reveal" style="flex:0.9;display:flex;flex-direction:column;gap:0.35rem;">
-                    <p style="font-size:clamp(0.58rem,0.78vw,0.68rem);font-weight:700;">Claude Code 独立审计结果</p>
-                    <img src="https://substack-post-media.s3.amazonaws.com/public/images/5ea7e35e-e7e2-4211-8f40-41211d5400b6_700x873.png"
-                         alt="Audit: 29/30 counties correct, data correlation .999"
-                         style="width:100%;border-radius:8px;object-fit:contain;max-height:min(20vh,150px);"
-                         onerror="this.style.opacity='0.15'">
-                    <p style="font-size:clamp(0.48rem,0.65vw,0.58rem);color:var(--ink-soft);">29/30 counties correct · data correlation &gt;0.999</p>
-                </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0;align-items:center;">
+            <!-- LEFT: Andrew Hall image -->
+            <div class="reveal" style="display:flex;flex-direction:column;gap:0.5rem;">
+                <p style="font-size:clamp(0.58rem,0.78vw,0.68rem);font-weight:700;color:var(--red);">Andrew Hall (Stanford) · 「100x Research Assistant」</p>
+                <img src="https://substack-post-media.s3.amazonaws.com/public/images/2f1712c4-2659-4035-97af-c7661f3408fd_1335x922.png"
+                     alt="Cost: PhD student 16h $1040 vs Claude Code 1h $10"
+                     style="width:100%;border-radius:8px;object-fit:contain;max-height:min(55vh,420px);"
+                     onerror="this.style.opacity='0.15'">
+                <p style="font-size:clamp(0.48rem,0.65vw,0.58rem);color:var(--ink-soft);" data-en="PhD student: 16h / $1,040 &nbsp;vs&nbsp; Claude Code: 1h / $10 (<strong style='color:var(--red);'>104× cheaper</strong>)">博士生：16h / $1,040 &nbsp;vs&nbsp; Claude Code：1h / $10（<strong style="color:var(--red);">104× cheaper</strong>）</p>
             </div>
-            <!-- RIGHT: analysis -->
-            <div style="display:flex;flex-direction:column;gap:0.5rem;">
-                <div class="reveal" style="padding:0.6rem 0.8rem;background:var(--bg-alt);border-radius:8px;">
-                    <p style="font-size:clamp(0.6rem,0.82vw,0.72rem);font-weight:700;margin-bottom:0.3rem;">AI 能做全流程科研</p>
-                    <ul style="font-size:clamp(0.56rem,0.78vw,0.68rem);color:var(--ink-mid);line-height:1.7;padding-left:1.1em;margin:0;">
-                        <li>文献整理 · 论文写作 · 论文审查</li>
-                        <li>Karpathy autoresearch：AI 自主训练模型，5 分钟一次迭代</li>
-                        <li>「AI Agent for Science」：AI 当第一作者 + AI 当审稿人</li>
+            <!-- RIGHT: 但人类还没有被替代 -->
+            <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);justify-content:center;">
+                <div style="padding:0.8rem 1rem;background:var(--bg-alt);border-radius:8px;border-left:4px solid var(--ink);">
+                    <p style="font-size:var(--t-body);font-weight:700;margin-bottom:0.5rem;" data-en="But: humans haven't been replaced">但：人类还没有被替代</p>
+                    <ul style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.9;padding-left:1.1em;margin:0;">
+                        <li data-en="AI ideas look novel on the surface — but don't outperform humans after execution">AI 的 idea 表面新颖，执行后并不比人类好</li>
+                        <li data-en="Accepted papers: humans intervene more on idea and experiment design">被接受的论文：<strong>人类在 idea 和实验设计介入更多</strong></li>
+                        <li data-en='AI excels at execution, but "what to do" still needs human judgment'>AI 擅长执行，但"做什么"仍需人来判断</li>
                     </ul>
-                </div>
-                <div class="reveal" style="padding:0.6rem 0.8rem;background:var(--bg-alt);border-radius:8px;border-left:3px solid var(--border-soft);">
-                    <p style="font-size:clamp(0.6rem,0.82vw,0.72rem);font-weight:700;margin-bottom:0.3rem;">但：人类还没有被替代</p>
-                    <ul style="font-size:clamp(0.56rem,0.78vw,0.68rem);color:var(--ink-mid);line-height:1.7;padding-left:1.1em;margin:0;">
-                        <li>AI 的 idea 表面新颖，执行后并不比人类好</li>
-                        <li>被接受的论文：<strong>人类在 idea 和实验设计介入更多</strong></li>
-                        <li>AI 擅长执行，但"做什么"仍需人来判断</li>
-                    </ul>
-                </div>
-                <div class="reveal highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);">
-                    <p style="font-size:clamp(0.58rem,0.8vw,0.7rem);line-height:1.6;">
-                        <strong>最终结论：</strong><br>
-                        资深研究者 + AI agent ≈ 以前一整个研究团队<br>
-                        <span style="color:var(--ink-mid);">人类核心价值转移到：提出真正重要的问题</span>
-                    </p>
                 </div>
             </div>
         </div>
@@ -2089,41 +2158,45 @@ NeurIPS 2026 投稿，ddl: 5/31
             <!-- LEFT: text -->
             <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);">
                 <div class="highlight-box" style="border-left:4px solid var(--red);">
-                    <p style="font-size:var(--t-body);"><strong>管人 vs 管 Agent</strong><br>
+                    <p style="font-size:var(--t-body);" data-en="<strong>Managing people vs. managing Agents</strong><br>
+                    <span class='text-soft'>Junior hires need onboarding, mentoring, review — and might even pass the blame<br>Agent follows instructions, doesn't need coddling, always available, no salary</span>"><strong>管人 vs 管 Agent</strong><br>
                     <span class="text-soft">新人要带、要讲、要 review、还可能甩锅<br>Agent 听话、不受气、随时 available、不要工资</span></p>
                 </div>
                 <ul class="bullet-list">
-                    <li>一个有经验的人 + agent，能做以前 5 人团队的事</li>
-                    <li>Junior 做的重复性工作（boilerplate、CRUD、test）agent 全包了</li>
-                    <li>公司的 headcount 逻辑正在被重新定价</li>
+                    <li data-en="One experienced person + agent can do what used to take a team of 5">一个有经验的人 + agent，能做以前 5 人团队的事</li>
+                    <li data-en="The repetitive work juniors used to do is now fully handled by agents">Junior 做的重复性工作，agent 全包了</li>
+                    <li data-en="Companies' headcount calculus is being repriced">公司的 headcount 逻辑正在被重新定价</li>
                 </ul>
-                <p style="font-size:var(--t-body);font-weight:600;">那 junior/新人 还有机会吗？</p>
+                <p style="font-size:var(--t-body);font-weight:600;" data-en="Do juniors / new grads still have a shot?">那 junior/新人 还有机会吗？</p>
                 <ul class="bullet-list">
-                    <li>有——但路变窄了，要更早找到<strong>不可替代的那部分</strong></li>
-                    <li>系统判断力、用户沟通、定义真正的需求</li>
-                    <li>能驾驭 agent 的人，是新时代的 <strong>10x engineer</strong></li>
+                    <li data-en="Yes — but the path is narrower; you need to find <strong>your irreplaceable part</strong> earlier">有——但路变窄了，要更早找到<strong>不可替代的那部分</strong></li>
+                    <li data-en="Systems judgment, user communication, defining what actually needs to be built">系统判断力、用户沟通、定义真正的需求</li>
+                    <li data-en="Those who can command agents are the new era's <strong>10x engineer</strong>">能驾驭 agent 的人，是新时代的 <strong>10x engineer</strong></li>
                 </ul>
                 <div class="highlight-box">
-                    <p style="font-size:var(--t-small);">这不是悲观——是新的起点<br>
+                    <p style="font-size:var(--t-small);" data-en="This isn't pessimism — it's a new starting line<br>
+                    <span style='color:var(--ink-soft);'>What used to take 5 years to build end-to-end might now take 1</span>">这不是悲观——是新的起点<br>
                     <span style="color:var(--ink-soft);">以前要 5 年才能独立做完一个完整系统，现在可能 1 年</span></p>
                 </div>
-                <div class="reveal" style="padding:0.5rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--red);">
-                    <p style="font-size:clamp(0.5rem,0.65vw,0.58rem);font-weight:700;color:var(--red);margin-bottom:0.2rem;" data-en="Anthropic Labor Market Study (2026)">Anthropic 劳动力市场研究（2026）</p>
-                    <ul style="font-size:clamp(0.46rem,0.6vw,0.54rem);color:var(--ink-mid);line-height:1.6;padding-left:1em;margin:0;">
-                        <li data-en="Computer Programmers: 75% of tasks covered by AI">程序员岗位：AI 覆盖 75% 的工作任务</li>
+            </div>
+            <!-- RIGHT: Anthropic stats + Claude report images -->
+            <div class="reveal" style="display:flex;flex-direction:column;gap:0.5rem;">
+                <div style="padding:0.6rem 0.8rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--red);">
+                    <p style="font-size:var(--t-small);font-weight:700;color:var(--red);margin-bottom:0.3rem;" data-en="Anthropic Labor Market Study (2026)">Anthropic 劳动力市场研究（2026）</p>
+                    <ul style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.8;padding-left:1em;margin:0;">
+                        <li data-en="Programmers: AI covers 75% of job tasks">程序员岗位：AI 覆盖 75% 的工作任务</li>
                         <li data-en="AI-exposed jobs: avg. earnings 47% higher than unexposed">受影响岗位的平均薪资比未受影响岗位高 47%</li>
-                        <li data-en="Young workers (22–25): 14% drop in job finding rate">22–25 岁求职者：就业率下降 14%</li>
+                        <li data-en="Job seekers aged 22–25: 14% drop in employment rate">22–25 岁求职者：就业率下降 14%</li>
                     </ul>
                 </div>
-            </div>
-            <!-- RIGHT: Claude report images (language-aware) -->
-            <div class="reveal" style="display:flex;flex-direction:column;gap:0.5rem;align-items:center;justify-content:center;">
-                <img class="zh-img" src="assets/claude_report_cn.jpg" alt="Claude职业报告（中文）"
-                     style="width:100%;max-height:min(62vh,480px);object-fit:contain;border-radius:8px;"
-                     onerror="this.style.opacity='0.2'">
-                <img class="en-img" src="assets/claude_report_en.webp" alt="Claude Career Report (English)"
-                     style="width:100%;max-height:min(62vh,480px);object-fit:contain;border-radius:8px;"
-                     onerror="this.style.opacity='0.2'">
+                <div style="flex:1;display:flex;align-items:center;justify-content:center;">
+                    <img class="zh-img" src="assets/claude_report_cn.jpg" alt="Claude职业报告（中文）"
+                         style="width:100%;max-height:min(52vh,400px);object-fit:contain;border-radius:8px;"
+                         onerror="this.style.opacity='0.2'">
+                    <img class="en-img" src="assets/claude_report_en.webp" alt="Claude Career Report (English)"
+                         style="width:100%;max-height:min(52vh,400px);object-fit:contain;border-radius:8px;"
+                         onerror="this.style.opacity='0.2'">
+                </div>
             </div>
         </div>
     </div>
@@ -2137,13 +2210,14 @@ NeurIPS 2026 投稿，ddl: 5/31
 <section class="slide" id="slide-22b">
     <div class="slide-header">
         <div class="slide-header-label red">🎁 Bonus</div>
-        <div class="slide-header-label" data-en="Side Project Tool">顺带开发的工具</div>
+        <div class="slide-header-label" data-en="Tool Recommendation">好物推荐</div>
     </div>
     <div class="slide-content" style="gap: var(--gap);">
         <h2 class="reveal" data-en="gnvitop — Global GPU Monitor">gnvitop — 全局 GPU 监控</h2>
         <div class="two-col text-img reveal" style="align-items: start;">
             <div style="display: flex; flex-direction: column; gap: var(--egap);">
-                <p class="text-mid">
+                <p class="text-mid" data-en="While building these two projects, I always needed to know <strong>which GPU was free</strong>.<br>
+                    With all the agents going wild, you still have to fight for GPUs yourself.">
                     做这两个项目的时候，我经常需要知道<strong>哪个 GPU 是空的</strong>。<br>
                     各种 agent 大乱斗打得热闹，GPU 还是要靠自己抢。
                 </p>
@@ -2152,10 +2226,10 @@ pip install gnvitop
 gnvitop
                 </div>
                 <ul class="bullet-list" style="font-size: var(--t-small);">
-                    <li>自动读 ~/.ssh/config，SSH 进所有服务器</li>
-                    <li>实时 Web dashboard，显示全部 GPU 状态</li>
-                    <li>支持 ProxyJump 跳板机</li>
-                    <li>当前用户进程<strong>蓝色高亮</strong></li>
+                    <li data-en="Auto-reads ~/.ssh/config, SSHs into all servers">自动读 ~/.ssh/config，SSH 进所有服务器</li>
+                    <li data-en="Live web dashboard showing all GPU status">实时 Web dashboard，显示全部 GPU 状态</li>
+                    <li data-en="Supports ProxyJump bastion hosts">支持 ProxyJump 跳板机</li>
+                    <li data-en="Current user processes <strong>highlighted in blue</strong>">当前用户进程<strong>蓝色高亮</strong></li>
                 </ul>
             </div>
             <img src="https://github.com/user-attachments/assets/2ca35564-c891-4af9-9b30-5ebb0949ba99" alt="gnvitop dashboard" class="screenshot" style="max-height: min(45vh, 360px);" onerror="this.style.display='none'">
@@ -2254,14 +2328,46 @@ const CC_SCRIPT = [
     { role: 'claude', text: '论文草稿完成，共 9 页。需要我调整某个部分吗？' },
 ];
 
+const CC_SCRIPT_EN = [
+    { role: 'user', text: 'I\'m researching confidence calibration where ground truth is ambiguous — different annotators disagree on the same image. Has anyone studied this?' },
+    { role: 'claude', text: 'Let me search the literature first.' },
+    { tool: 'WebSearch', args: '"calibration ambiguous labels annotator disagreement"', result: '47 results, filtering...' },
+    { tool: 'WebSearch', args: '"soft label calibration ECE annotator agreement"', result: 'Key papers: Soft Calibration (ICML 2023), CrowdKit, CROWDLAB' },
+    { tool: 'Write', args: 'literature_review.md', result: 'Written 34 lines of survey notes' },
+    { role: 'claude', text: 'Survey complete. Core finding:\n  ECE_voted (against majority-vote labels) vs ECE_true (against true distribution)\n  — this distinction has barely been studied ← that\'s your gap' },
+    { role: 'user', text: 'Exactly! Help me design and implement an ambiguity-aware calibrator' },
+    { role: 'claude', text: 'Let me look at your existing code structure first...' },
+    { tool: 'Read', args: 'src/calibrators/base.py', result: 'Read 128 lines (BaseCalibrator class)' },
+    { tool: 'Read', args: 'src/metrics/ece.py', result: 'Read 84 lines (standard ECE implementation)' },
+    { tool: 'Write', args: 'src/calibrators/agt_calibrator.py', result: 'Written 156 lines (AGTCalibrator + soft label support)' },
+    { tool: 'Write', args: 'src/metrics/ece_true.py', result: 'Written 67 lines (ECE_true, ECE_voted metrics)' },
+    { tool: 'Bash', args: 'python -m pytest src/tests/test_agt.py -v', result: '........  8 passed in 1.23s ✓' },
+    { tool: 'Bash', args: 'python experiments/run_baseline.py --dataset CIFAR-10H', result: '  Temperature Scaling: ECE_voted=0.032  ECE_true=0.088  ← ECE_true is much higher!\n  AGT Calibrator:      ECE_voted=0.031  ECE_true=0.041  ✓' },
+    { role: 'claude', text: 'Hypothesis validated. Temperature Scaling was optimizing the wrong metric.' },
+    { role: 'user', text: 'Run ablation experiments on xuchang-lab1, xuchang-lab2, linwei-lab2 in parallel with different seeds' },
+    { tool: 'Bash', args: "ssh xuchang-lab1 'python train.py --seed 0 --dataset CIFAR-10H > logs/s0.log &'", result: '[1] 23847' },
+    { tool: 'Bash', args: "ssh xuchang-lab2 'python train.py --seed 1 --dataset ChaosNLI > logs/s1.log &'", result: '[1] 31092' },
+    { tool: 'Bash', args: "ssh linwei-lab2  'python train.py --seed 2 --dataset ISIC > logs/s2.log &'", result: '[1] 8834' },
+    { role: 'claude', text: 'All three launched in parallel, ETA ~2 hours. Results will be in results/ablation/' },
+    { role: 'user', text: 'Results are in — write them up as a NeurIPS-format paper' },
+    { tool: 'Read', args: 'results/ablation/summary.csv', result: 'Read 45 lines (3 datasets × 5 methods × 3 seeds)' },
+    { tool: 'Bash', args: 'python scripts/gen_figures.py', result: '✓ fig1_toy_example.pdf\n✓ fig2_reliability_diagrams.pdf\n✓ fig3_ablation_results.pdf' },
+    { tool: 'Write', args: 'paper/main.tex', result: 'Written 847 lines (NeurIPS 2026 template)' },
+    { tool: 'Bash', args: 'cd paper && pdflatex main.tex', result: 'Output written on main.pdf (9 pages). ✓' },
+    { role: 'claude', text: 'Paper draft complete — 9 pages. Want me to revise any section?' },
+];
+
 let ccAnimationRunning = false;
 let ccPaused = false;
 let ccGeneration = 0;
 
+function pauseLabel(p) { return p ? (currentLang==='en'?'▶ Resume':'▶ 继续') : (currentLang==='en'?'⏸ Pause':'⏸ 暂停'); }
+function replayLabel() { return currentLang==='en'?'↺ Replay':'↺ 重播'; }
+
 function toggleCCPause() {
     ccPaused = !ccPaused;
     const btn = document.getElementById('cc-pause-btn');
-    if (btn) btn.textContent = ccPaused ? '▶ 继续' : '⏸ 暂停';
+    if (btn) btn.textContent = pauseLabel(ccPaused);
 }
 
 function restartCCAnimation() {
@@ -2269,7 +2375,7 @@ function restartCCAnimation() {
     ccAnimationRunning = false;
     ccPaused = false;
     const btn = document.getElementById('cc-pause-btn');
-    if (btn) btn.textContent = '⏸ 暂停';
+    if (btn) btn.textContent = pauseLabel(false);
     const chat = document.getElementById('cc-chat');
     if (chat) { chat.innerHTML = ''; }
     const input = document.getElementById('cc-input');
@@ -2333,7 +2439,8 @@ async function runCCAnimation() {
     ccAnimationRunning = true;
     chat.innerHTML = '';
 
-    for (const msg of CC_SCRIPT) {
+    const ccScript = currentLang === 'en' ? CC_SCRIPT_EN : CC_SCRIPT;
+    for (const msg of ccScript) {
         if (!ccAnimationRunning || ccGeneration !== myGen) break;
         await waitIfPaused();
 
@@ -2866,7 +2973,32 @@ const SKILL0_SCRIPT = [
     { role: 'claude', text: '✓ Skill literature-review 已创建。\n\n下次输入 /literature-review 即可触发。' },
 ];
 
+const SKILL0_SCRIPT_EN = [
+    { role: 'user', text: '/skill-creator' },
+    { tool: 'Read', args: '~/.claude/skills/', result: 'Found 15 skills: gpu-experiment, paper-review, daily-summary...' },
+    { role: 'claude', text: 'What skill do you want to create?\nDescribe the trigger scenario and what you want the agent to do.' },
+    { role: 'user', text: 'literature-review: given a research direction, auto-survey papers and summarize the gap' },
+    { role: 'claude', text: 'Got it. What format should the output be after the survey?\nE.g., chronological, grouped by method, or a ready-made related work paragraph?' },
+    { role: 'user', text: 'List the top 10 papers with one-line summaries, then write a gap analysis' },
+    { role: 'claude', text: 'Search scope — arXiv only, or also Semantic Scholar / Google Scholar?' },
+    { role: 'user', text: 'arXiv as the primary source, then a Google Scholar pass to catch stragglers' },
+    { role: 'claude', text: 'Got it. Drafting the skill spec now.' },
+    { tool: 'mcp__arxiv__search_papers', args: '"literature review automation survey NeurIPS 2024"', result: '12 results — reviewing common survey structures' },
+    { tool: 'Write', args: '~/.claude/skills/literature-review.md', result: 'Written: 487 lines' },
+    { role: 'claude', text: 'Draft ready. Structure:\n1. Receive research keyword\n2. arXiv search → top 10 by citation count\n3. One-line summary per paper\n4. Google Scholar supplementary search\n5. Output gap analysis paragraph\n\nAny adjustments?' },
+    { role: 'user', text: 'Change step 3 to three sentences: method, dataset, conclusion' },
+    { tool: 'Write', args: '~/.claude/skills/literature-review.md', result: 'Updated: summary template → method / dataset / conclusion' },
+    { role: 'claude', text: '✓ Skill literature-review created.\n\nType /literature-review to trigger it next time.' },
+];
+
 let skill0Running = false;
+let skill0Paused = false;
+
+function toggleSkill0Pause() {
+    skill0Paused = !skill0Paused;
+    const btn = document.getElementById('skill0-pause-btn');
+    if (btn) btn.textContent = pauseLabel(skill0Paused);
+}
 
 function appendBubbleSkill(chat, role) {
     const wrap = document.createElement('div');
@@ -2887,8 +3019,9 @@ function appendBubbleSkill(chat, role) {
     return bubble;
 }
 
-async function typeTextSkill(el, text, chat, speed = 22) {
+async function typeTextSkill(el, text, chat, speed = 22, isPaused = null) {
     for (const ch of text) {
+        if (isPaused) while (isPaused()) await sleep(50);
         el.textContent += ch;
         if (chat) chat.scrollTop = chat.scrollHeight;
         await sleep(ch === '\n' ? 45 : speed);
@@ -2900,12 +3033,19 @@ async function runSkill0Animation() {
     const inputEl = document.getElementById('skill0-input');
     if (!chat || !inputEl || skill0Running) return;
     skill0Running = true;
+    skill0Paused = false;
+    const btn = document.getElementById('skill0-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
     chat.innerHTML = '';
-    for (const msg of SKILL0_SCRIPT) {
+    const ip = () => skill0Paused;
+    const skill0Script = currentLang === 'en' ? SKILL0_SCRIPT_EN : SKILL0_SCRIPT;
+    for (const msg of skill0Script) {
+        if (!skill0Running) break;
+        while (skill0Paused) await sleep(50);
         if (msg.role === 'user') {
             await sleep(300);
             inputEl.textContent = '';
-            await typeTextSkill(inputEl, msg.text, null, 30);
+            await typeTextSkill(inputEl, msg.text, null, 30, ip);
             await sleep(500);
             inputEl.textContent = '';
             const bubble = appendBubbleSkill(chat, 'user');
@@ -2914,7 +3054,7 @@ async function runSkill0Animation() {
         } else if (msg.role === 'claude') {
             await sleep(280);
             const bubble = appendBubbleSkill(chat, 'claude');
-            await typeTextSkill(bubble, msg.text, chat, 16);
+            await typeTextSkill(bubble, msg.text, chat, 16, ip);
             await sleep(450);
         } else if (msg.tool) {
             await sleep(180);
@@ -2928,7 +3068,7 @@ async function runSkill0Animation() {
             resultLine.style.cssText = 'color:#555;padding-left:1.1rem;';
             const span = document.createElement('span');
             resultLine.appendChild(span); wrap.appendChild(resultLine);
-            await typeTextSkill(span, '⎿ ' + msg.result, chat, 10);
+            await typeTextSkill(span, '⎿ ' + msg.result, chat, 10, ip);
             await sleep(180);
         }
     }
@@ -2938,6 +3078,9 @@ async function runSkill0Animation() {
 
 function restartSkill0Animation() {
     skill0Running = false;
+    skill0Paused = false;
+    const btn = document.getElementById('skill0-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
     const chat = document.getElementById('skill0-chat');
     if (chat) chat.innerHTML = '';
     const input = document.getElementById('skill0-input');
@@ -2974,19 +3117,59 @@ const ARP_SCRIPT = [
     { role: 'claude', text: '✓ 全流程完成。9 页草稿，通过 internal review。\n📱 Telegram 通知已发送。' },
 ];
 
+const ARP_SCRIPT_EN = [
+    { role: 'user', text: '/ai-research-paper' },
+    { role: 'claude', text: 'Phase 0: Setup\nTarget venue / research topic / compute resources?' },
+    { role: 'user', text: 'venue: NeurIPS 2026\ntopic: calibration under annotator disagreement\ncompute: 4x A100 (jinxu-lab1)' },
+    { tool: 'Write', args: 'plan/config.md', result: 'Saved: venue · topic · compute config' },
+    { role: 'claude', text: '── Phase 1: Literature Review ──' },
+    { tool: 'mcp__arxiv__search_papers', args: '"calibration annotator disagreement soft labels"', result: '53 results · top-12 parsed and summarized' },
+    { tool: 'WebSearch', args: '"ECE soft label NeurIPS ICML 2024"', result: 'CROWDLAB · SoftCalib (ICML23) · DiRA identified' },
+    { tool: 'Write', args: 'plan/literature.md', result: '12 papers · gap: ECE_voted vs ECE_true unstudied' },
+    { role: 'claude', text: '── Phase 2-3: Idea Generation + 6-Agent Debate ──\nGenerating 4 candidates, spawning subagent debate...' },
+    { tool: 'Agent', args: 'IdeaDebate × 6 subagents · idea_pool.md', result: 'Subagent[Critic]:   Idea-3 assumption too strong, needs annotation budget prior\nSubagent[Champion]: Idea-1 clean formulation, fits NeurIPS style\nSubagent[Devil]:    Idea-2 baseline too weak, reviewer will object\nSubagent[Reviewer]: Idea-1 clear gap, quantifiable contribution\n…(6 rounds complete)' },
+    { role: 'claude', text: '── AC Gate ──\n[ACCEPT] Idea-1: ECE Decomposition Framework\nReason: novel · feasible · clear gap' },
+    { role: 'claude', text: '── Phase 4: Pilot Experiment ──\nChecking GPU availability...' },
+    { tool: 'Bash', args: 'gnvitop --agent', result: 'jinxu-lab1  GPU 0: available=true\njinxu-lab1  GPU 1: available=true' },
+    { tool: 'Bash', args: 'ssh jinxu-lab1 "python pilot/run.py --seed 0"', result: 'ECE_voted=0.082 · ECE_true=0.041 · Δ=0.041 ✓' },
+    { role: 'claude', text: 'Pilot PASSED — strong effect, launching full experiments.\nScheduling all 4 GPUs autonomously...' },
+    { tool: 'Bash', args: 'ssh jinxu-lab1 "nohup python run_all.py --gpus 0,1,2,3 &"', result: 'Launched · ETA 4h · monitoring enabled' },
+    { role: 'claude', text: '── Phase 7: 6-Agent Result Debate ──' },
+    { tool: 'Agent', args: 'ResultDebate × 6 subagents · results/', result: 'Subagent[Stats]:    ECE↓31% vs voted baseline\nSubagent[Reviewer]: contribution narrative clear\nConsensus: strong empirical result, ready to write' },
+    { role: 'claude', text: '── Phase 8: Paper Writing ──' },
+    { tool: 'Bash', args: 'python scripts/gen_figures.py', result: '✓ fig1_decomp.pdf · fig2_reliability.pdf · fig3_ablation.pdf' },
+    { tool: 'Write', args: 'paper/main.tex', result: 'NeurIPS 2026 template · 9 pages · all sections' },
+    { tool: 'Agent', args: 'InternalReview subagent · main.tex', result: 'Sec 3.2: inconsistent notation · Related Work missing DiRA citation\n→ 2 issues fixed' },
+    { role: 'claude', text: '✓ Pipeline complete. 9-page draft, internal review passed.\n📱 Telegram notification sent.' },
+];
+
 let arpRunning = false;
+let arpPaused = false;
+
+function toggleARPPause() {
+    arpPaused = !arpPaused;
+    const btn = document.getElementById('arp-pause-btn');
+    if (btn) btn.textContent = pauseLabel(arpPaused);
+}
 
 async function runARPAnimation() {
     const chat = document.getElementById('arp-chat');
     const inputEl = document.getElementById('arp-input');
     if (!chat || !inputEl || arpRunning) return;
     arpRunning = true;
+    arpPaused = false;
+    const btn = document.getElementById('arp-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
     chat.innerHTML = '';
-    for (const msg of ARP_SCRIPT) {
+    const ip = () => arpPaused;
+    const arpScript = currentLang === 'en' ? ARP_SCRIPT_EN : ARP_SCRIPT;
+    for (const msg of arpScript) {
+        if (!arpRunning) break;
+        while (arpPaused) await sleep(50);
         if (msg.role === 'user') {
             await sleep(300);
             inputEl.textContent = '';
-            await typeTextSkill(inputEl, msg.text, null, 28);
+            await typeTextSkill(inputEl, msg.text, null, 28, ip);
             await sleep(500);
             inputEl.textContent = '';
             const bubble = appendBubbleSkill(chat, 'user');
@@ -2995,7 +3178,7 @@ async function runARPAnimation() {
         } else if (msg.role === 'claude') {
             await sleep(280);
             const bubble = appendBubbleSkill(chat, 'claude');
-            await typeTextSkill(bubble, msg.text, chat, 14);
+            await typeTextSkill(bubble, msg.text, chat, 14, ip);
             await sleep(450);
         } else if (msg.tool) {
             await sleep(180);
@@ -3009,7 +3192,7 @@ async function runARPAnimation() {
             resultLine.style.cssText = 'color:#555;padding-left:1.1rem;';
             const span = document.createElement('span');
             resultLine.appendChild(span); wrap.appendChild(resultLine);
-            await typeTextSkill(span, '⎿ ' + msg.result, chat, 10);
+            await typeTextSkill(span, '⎿ ' + msg.result, chat, 10, ip);
             await sleep(180);
         }
     }
@@ -3019,6 +3202,9 @@ async function runARPAnimation() {
 
 function restartARPAnimation() {
     arpRunning = false;
+    arpPaused = false;
+    const btn = document.getElementById('arp-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
     const chat = document.getElementById('arp-chat');
     if (chat) chat.innerHTML = '';
     const input = document.getElementById('arp-input');
@@ -3040,20 +3226,44 @@ const BS1_SCRIPT = [
     { role: 'claude', text: '推荐 4 个层次：\n• Temperature Scaling — 经典\n• Label Smoothing — soft 常见替代\n• CROWDLAB — annotator disagreement 专用\n• SoftCalib (ICML 23) — 最接近你方向的 prior work\n\nreviewer 会认可这个覆盖度。' },
 ];
 
+const BS1_SCRIPT_EN = [
+    { role: 'user', text: '/brainstorm' },
+    { role: 'claude', text: 'What direction do you want to explore?\nA vague intuition or rough question is fine.' },
+    { role: 'user', text: 'I want to study LLM calibration under soft-label settings, but I\'m not sure which angle to take' },
+    { role: 'claude', text: 'Sure, exploring 5 directions:\n\n1. ECE decomposition: ECE_voted vs ECE_true — almost no one has done this\n2. Annotator predictor: train the model to learn annotators, not majority vote\n3. Bayesian aggregation: replace point labels with distributions\n4. Training objective: is soft CE naturally better calibrated than hard CE?\n5. Zero-shot transfer: can soft calibration generalize cross-dataset?' },
+    { role: 'user', text: '1 is most interesting — how do you do the ECE decomposition?' },
+    { role: 'claude', text: 'ECE_voted = gap(confidence, majority-vote accuracy)\nECE_true  = gap(confidence, soft label distribution)\n\nKey insight: even when ECE_voted = 0, ECE_true can still be large.\nThe model "fools" the hard labels but never learns true uncertainty.\nA toy example demonstrates this vividly — great for a talk.' },
+    { role: 'user', text: 'Which baselines should I use?' },
+    { role: 'claude', text: '4 tiers covering the landscape:\n• Temperature Scaling — the classic\n• Label Smoothing — common soft alternative\n• CROWDLAB — designed for annotator disagreement\n• SoftCalib (ICML 23) — closest prior work to your direction\n\nReviewers will appreciate this coverage.' },
+];
+
 let bs1Running = false;
+let bs1Paused = false;
+
+function toggleBs1Pause() {
+    bs1Paused = !bs1Paused;
+    const btn = document.getElementById('bs1-pause-btn');
+    if (btn) btn.textContent = pauseLabel(bs1Paused);
+}
 
 async function runBs1Animation() {
     const chat = document.getElementById('bs1-chat');
     const inputEl = document.getElementById('bs1-input');
     if (!chat || !inputEl || bs1Running) return;
     bs1Running = true;
+    bs1Paused = false;
+    const btn = document.getElementById('bs1-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
     chat.innerHTML = '';
-    for (const msg of BS1_SCRIPT) {
+    const ip = () => bs1Paused;
+    const bs1Script = currentLang === 'en' ? BS1_SCRIPT_EN : BS1_SCRIPT;
+    for (const msg of bs1Script) {
         if (!bs1Running) break;
+        while (bs1Paused) await sleep(50);
         if (msg.role === 'user') {
             await sleep(300);
             inputEl.textContent = '';
-            await typeTextSkill(inputEl, msg.text, null, 30);
+            await typeTextSkill(inputEl, msg.text, null, 30, ip);
             await sleep(450);
             inputEl.textContent = '';
             const bubble = appendBubbleSkill(chat, 'user');
@@ -3062,7 +3272,7 @@ async function runBs1Animation() {
         } else if (msg.role === 'claude') {
             await sleep(260);
             const bubble = appendBubbleSkill(chat, 'claude');
-            await typeTextSkill(bubble, msg.text, chat, 12);
+            await typeTextSkill(bubble, msg.text, chat, 12, ip);
             await sleep(400);
         } else if (msg.tool) {
             await sleep(180);
@@ -3076,7 +3286,7 @@ async function runBs1Animation() {
             resultLine.style.cssText = 'color:#555;padding-left:1.1rem;';
             const span = document.createElement('span');
             resultLine.appendChild(span); wrap.appendChild(resultLine);
-            await typeTextSkill(span, '\u23BF ' + msg.result, chat, 10);
+            await typeTextSkill(span, '\u23BF ' + msg.result, chat, 10, ip);
             await sleep(160);
         }
     }
@@ -3086,6 +3296,9 @@ async function runBs1Animation() {
 
 function restartBs1Animation() {
     bs1Running = false;
+    bs1Paused = false;
+    const btn = document.getElementById('bs1-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
     const chat = document.getElementById('bs1-chat');
     if (chat) chat.innerHTML = '';
     const input = document.getElementById('bs1-input');
@@ -3110,20 +3323,47 @@ const FS1_SCRIPT = [
     { role: 'claude', text: '已更新。对比很直观，group meeting 效果应该不错。' },
 ];
 
+const FS1_SCRIPT_EN = [
+    { role: 'user', text: '/frontend-slides' },
+    { role: 'claude', text: 'What topic are the slides for?\nFeel free to mention style, page count, and purpose.' },
+    { role: 'user', text: 'Group meeting — presenting calibration research, 5-min lightning talk, 7 slides' },
+    { role: 'claude', text: 'Which style?\nA) Academic rigorous (dark bg + charts)\nB) Visual impact (large text + color blocks)\nC) Clean minimal (white bg + data)' },
+    { role: 'user', text: 'A, and add an animation on slide 3 showing the ECE decomposition' },
+    { role: 'claude', text: 'Planning 7-slide structure:\n1. Title — research question + one-line summary\n2. Motivation — ECE_voted vs ECE_true\n3. Key Insight ← animation: hard → soft decomposition\n4. Method — equations + diagram\n5. Experiments — datasets · baselines\n6. Results — main results + ablation\n7. Takeaways\n\nGenerating...' },
+    { tool: 'Write', args: 'slides/index.html', result: '✓ 7 slides · dark academic style · slide 3 SVG animation · standalone HTML' },
+    { role: 'claude', text: 'Done. Open slides/index.html to preview.\nSlide 3 animation triggers on click to match your pacing.' },
+    { role: 'user', text: 'Add a reliability diagram to slide 6' },
+    { tool: 'Edit', args: 'slides/index.html — slide-6', result: '✓ Inline SVG · ECE_voted(red) vs ECE_true(blue) comparison' },
+    { role: 'claude', text: 'Updated. The contrast is clear — should land well at the group meeting.' },
+];
+
 let fs1Running = false;
+let fs1Paused = false;
+
+function toggleFs1Pause() {
+    fs1Paused = !fs1Paused;
+    const btn = document.getElementById('fs1-pause-btn');
+    if (btn) btn.textContent = pauseLabel(fs1Paused);
+}
 
 async function runFs1Animation() {
     const chat = document.getElementById('fs1-chat');
     const inputEl = document.getElementById('fs1-input');
     if (!chat || !inputEl || fs1Running) return;
     fs1Running = true;
+    fs1Paused = false;
+    const btn = document.getElementById('fs1-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
     chat.innerHTML = '';
-    for (const msg of FS1_SCRIPT) {
+    const ip = () => fs1Paused;
+    const fs1Script = currentLang === 'en' ? FS1_SCRIPT_EN : FS1_SCRIPT;
+    for (const msg of fs1Script) {
         if (!fs1Running) break;
+        while (fs1Paused) await sleep(50);
         if (msg.role === 'user') {
             await sleep(300);
             inputEl.textContent = '';
-            await typeTextSkill(inputEl, msg.text, null, 30);
+            await typeTextSkill(inputEl, msg.text, null, 30, ip);
             await sleep(450);
             inputEl.textContent = '';
             const bubble = appendBubbleSkill(chat, 'user');
@@ -3132,7 +3372,7 @@ async function runFs1Animation() {
         } else if (msg.role === 'claude') {
             await sleep(260);
             const bubble = appendBubbleSkill(chat, 'claude');
-            await typeTextSkill(bubble, msg.text, chat, 12);
+            await typeTextSkill(bubble, msg.text, chat, 12, ip);
             await sleep(400);
         } else if (msg.tool) {
             await sleep(180);
@@ -3146,7 +3386,7 @@ async function runFs1Animation() {
             resultLine.style.cssText = 'color:#555;padding-left:1.1rem;';
             const span = document.createElement('span');
             resultLine.appendChild(span); wrap.appendChild(resultLine);
-            await typeTextSkill(span, '\u23BF ' + msg.result, chat, 10);
+            await typeTextSkill(span, '\u23BF ' + msg.result, chat, 10, ip);
             await sleep(160);
         }
     }
@@ -3156,6 +3396,9 @@ async function runFs1Animation() {
 
 function restartFs1Animation() {
     fs1Running = false;
+    fs1Paused = false;
+    const btn = document.getElementById('fs1-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
     const chat = document.getElementById('fs1-chat');
     if (chat) chat.innerHTML = '';
     const input = document.getElementById('fs1-input');
@@ -3181,6 +3424,22 @@ function setLang(lang) {
         el.innerHTML = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-zh');
     });
     try { localStorage.setItem('talk-lang', lang); } catch(e) {}
+
+    // Update all terminal button labels
+    const pauseBtns = ['cc-pause-btn','skill0-pause-btn','arp-pause-btn','bs1-pause-btn','fs1-pause-btn'];
+    const pauseStates = [ccPaused, skill0Paused, arpPaused, bs1Paused, fs1Paused];
+    pauseBtns.forEach((id, i) => { const b = document.getElementById(id); if (b) b.textContent = pauseLabel(pauseStates[i]); });
+    const replayBtns = ['cc-replay-btn','skill0-replay-btn','arp-replay-btn','bs1-replay-btn','fs1-replay-btn'];
+    replayBtns.forEach(id => { const b = document.getElementById(id); if (b) b.textContent = replayLabel(); });
+
+    // Restart animation on the currently-visible terminal slide
+    const visible = document.querySelector('.slide.visible');
+    if (visible) {
+        if (visible.id === 'slide-9') { setTimeout(restartCCAnimation, 100); }
+        else if (visible.id === 'slide-skills-intro') { setTimeout(restartSkill0Animation, 100); }
+        else if (visible.id === 'slide-skill-arp') { setTimeout(restartARPAnimation, 100); }
+        else if (visible.id === 'slide-autoai') { setTimeout(restartBs1Animation, 100); setTimeout(restartFs1Animation, 400); }
+    }
 }
 
 (function() {
