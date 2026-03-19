@@ -1,0 +1,3284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agent for Research and Engineering — Linwei Tao</title>
+
+<!-- Noto Sans SC as fallback for PingFang SC -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Noto+Serif+SC:wght@700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ===========================================
+   THEME: Swiss Modern × 投影优化 × 中文
+   =========================================== */
+:root {
+    --bg:        #ffffff;
+    --bg-alt:    #f7f6f2;
+    --ink:       #111111;
+    --ink-mid:   #444444;
+    --ink-soft:  #888888;
+    --red:       #e8321a;
+    --red-light: rgba(232,50,26,0.08);
+    --border:    #111111;
+    --border-soft: #e0ddd8;
+
+    /* 投影优化字号：偏大 */
+    --t-hero:    clamp(3rem,   7vw,  6.5rem);
+    --t-h1:      clamp(2.2rem, 5vw,  4.5rem);
+    --t-h2:      clamp(1.6rem, 3.5vw, 3rem);
+    --t-h3:      clamp(1.2rem, 2.5vw, 2rem);
+    --t-body:    clamp(1rem,   1.8vw, 1.5rem);
+    --t-small:   clamp(0.8rem, 1.2vw, 1.1rem);
+    --t-label:   clamp(0.65rem,0.9vw, 0.85rem);
+
+    --pad:    clamp(2rem, 5vw, 5rem);
+    --gap:    clamp(1rem, 2.5vw, 2.5rem);
+    --egap:   clamp(0.5rem, 1.2vw, 1.2rem);
+
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --dur:  0.65s;
+
+    --font-cn: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+    --font-serif: "Noto Serif SC", serif;
+    --font-mono: "JetBrains Mono", monospace;
+}
+
+/* === RESET & BASE === */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+    height: 100%;
+    overflow-x: hidden;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-cn);
+}
+
+html {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+}
+
+/* === VIEWPORT BASE (mandatory) === */
+.slide {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background: var(--bg);
+}
+
+.slide-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-height: 100%;
+    overflow: hidden;
+    padding: var(--pad);
+}
+
+img {
+    max-width: 100%;
+    max-height: min(52vh, 440px);
+    object-fit: contain;
+    display: block;
+}
+
+@media (max-height: 700px) {
+    :root { --pad: clamp(1rem, 3vw, 2.5rem); --gap: clamp(0.6rem, 1.5vw, 1.5rem); --t-hero: clamp(2rem, 5.5vw, 4.5rem); --t-h1: clamp(1.8rem, 4vw, 3.5rem); }
+}
+@media (max-height: 600px) {
+    :root { --t-body: clamp(0.85rem, 1.4vw, 1.1rem); }
+    .nav-dots { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
+}
+
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+@keyframes bar1 { 0%,100%{height:3px} 50%{height:10px} }
+@keyframes bar2 { 0%,100%{height:7px} 50%{height:3px} }
+@keyframes bar3 { 0%,100%{height:5px} 50%{height:10px} }
+
+/* === ANIMATIONS === */
+.reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+/* Auto-reveal when no build mode: slide becomes visible → all show with stagger */
+.slide.visible:not(.build-active) .reveal { opacity: 1; transform: translateY(0); }
+.slide.visible:not(.build-active) .reveal:nth-child(1) { transition-delay: 0.05s; }
+.slide.visible:not(.build-active) .reveal:nth-child(2) { transition-delay: 0.15s; }
+.slide.visible:not(.build-active) .reveal:nth-child(3) { transition-delay: 0.25s; }
+.slide.visible:not(.build-active) .reveal:nth-child(4) { transition-delay: 0.35s; }
+.slide.visible:not(.build-active) .reveal:nth-child(5) { transition-delay: 0.45s; }
+.slide.visible:not(.build-active) .reveal:nth-child(n+6) { transition-delay: 0.5s; }
+/* Step-reveal: items show one by one via .step-shown */
+.slide.build-active .reveal { opacity: 0; transform: translateY(20px); }
+.slide.build-active .reveal.step-shown { opacity: 1; transform: translateY(0); transition-delay: 0s; }
+
+.reveal-left {
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.slide.visible .reveal-left { opacity: 1; transform: translateX(0); }
+
+/* === PROGRESS BAR === */
+.progress-bar {
+    position: fixed; top: 0; left: 0;
+    height: 3px; background: var(--red);
+    z-index: 1000; transition: width 0.3s ease;
+    width: 0%;
+}
+
+/* === NAV DOTS === */
+.nav-dots {
+    position: fixed; right: clamp(1rem, 2.5vw, 2rem); top: 50%;
+    transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 5px;
+    z-index: 999;
+    align-items: flex-end;
+}
+.nav-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--ink-soft); opacity: 0.3;
+    cursor: pointer; transition: all 0.3s;
+    border: none; flex-shrink: 0;
+}
+.nav-dot.active { background: var(--red); opacity: 1; transform: scale(1.3); }
+.nav-dot-part {
+    display: flex; align-items: center; gap: 6px;
+    cursor: pointer; border: none; background: none;
+    padding: 0; flex-shrink: 0;
+    margin: 4px 0;
+}
+.nav-dot-part .part-diamond {
+    width: 9px; height: 9px;
+    background: var(--ink-soft); opacity: 0.45;
+    transform: rotate(45deg);
+    transition: all 0.3s; flex-shrink: 0;
+}
+.nav-dot-part .part-label {
+    font-size: 0.6rem; font-weight: 600; letter-spacing: 0.06em;
+    color: var(--ink-soft); opacity: 0;
+    transition: opacity 0.3s; white-space: nowrap;
+    font-family: var(--font-cn);
+    text-transform: uppercase;
+}
+.nav-dot-part:hover .part-label,
+.nav-dot-part.active .part-label { opacity: 1; }
+.nav-dot-part.active .part-diamond { background: var(--red); opacity: 1; transform: rotate(45deg) scale(1.3); }
+.nav-dot-part:hover .part-diamond { opacity: 0.8; }
+
+/* === SLIDE HEADER (top rule) === */
+.slide-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: clamp(1rem, 2vh, 1.8rem) var(--pad);
+    border-bottom: 2px solid var(--ink);
+    flex-shrink: 0;
+}
+.slide-header-label {
+    font-size: var(--t-label);
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    font-weight: 700;
+    color: var(--ink-soft);
+}
+.slide-header-label.red { color: var(--red); }
+
+/* === LANGUAGE TOGGLE === */
+/* language-specific images */
+.en-img { display: none; }
+
+/* === SLIDE FOOTER === */
+.slide-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: clamp(0.75rem, 1.5vh, 1.2rem) var(--pad);
+    border-top: 1px solid var(--border-soft);
+    flex-shrink: 0;
+}
+.footer-text {
+    font-size: var(--t-label);
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+}
+.slide-num {
+    font-size: var(--t-label);
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+}
+
+/* === ACCENT BAR === */
+.accent-bar-left {
+    position: absolute;
+    left: var(--pad);
+    top: 50%; transform: translateY(-50%);
+    width: 4px;
+    height: 55%;
+    background: var(--red);
+}
+.text-indented {
+    padding-left: clamp(1.5rem, 2.5vw, 2.5rem);
+}
+
+/* === RED TAG === */
+.red-tag {
+    display: inline-block;
+    background: var(--red);
+    color: #fff;
+    font-size: var(--t-label);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.35em 0.85em;
+}
+
+/* === PART DIVIDER SLIDE === */
+.slide-part {
+    background: var(--ink);
+    color: #fff;
+}
+.part-number {
+    font-size: clamp(5rem, 18vw, 16rem);
+    font-weight: 900;
+    color: rgba(255,255,255,0.06);
+    position: absolute;
+    top: 50%; left: var(--pad);
+    transform: translateY(-50%);
+    line-height: 1;
+    user-select: none;
+    font-family: var(--font-serif);
+}
+.part-content {
+    position: relative; z-index: 1;
+    padding: var(--pad);
+    display: flex; flex-direction: column; justify-content: center;
+    height: 100%;
+}
+.part-label {
+    font-size: var(--t-label);
+    text-transform: uppercase;
+    letter-spacing: 0.35em;
+    color: var(--red);
+    margin-bottom: clamp(0.75rem, 1.5vh, 1.2rem);
+    font-weight: 700;
+}
+.part-title {
+    font-size: clamp(2.5rem, 6.5vw, 6rem);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.0;
+}
+.part-subtitle {
+    font-size: var(--t-body);
+    color: rgba(255,255,255,0.45);
+    margin-top: clamp(0.75rem, 1.5vh, 1.2rem);
+    white-space: nowrap;
+}
+
+/* === BULLET LIST === */
+.bullet-list {
+    list-style: none;
+    display: flex; flex-direction: column;
+    gap: var(--egap);
+}
+.bullet-list li {
+    font-size: var(--t-body);
+    line-height: 1.5;
+    padding-left: 1.5em;
+    position: relative;
+    color: var(--ink-mid);
+}
+.bullet-list li::before {
+    content: '';
+    position: absolute; left: 0; top: 0.65em;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--red);
+}
+.bullet-list li strong { color: var(--ink); font-weight: 700; }
+
+/* === TWO COLUMN === */
+.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--gap);
+    align-items: start;
+}
+.two-col.img-text { grid-template-columns: 1.2fr 1fr; align-items: center; }
+.two-col.text-img { grid-template-columns: 1fr 1.2fr; align-items: center; }
+
+/* === CARD GRID === */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(0.75rem, 1.5vw, 1.5rem);
+}
+.card {
+    border: 1px solid var(--border-soft);
+    padding: clamp(0.75rem, 1.5vw, 1.5rem);
+    border-radius: 4px;
+}
+.card-icon { font-size: clamp(1.4rem, 2.5vw, 2rem); margin-bottom: 0.5rem; }
+.card-title {
+    font-size: var(--t-small);
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    color: var(--ink);
+}
+.card-desc { font-size: clamp(0.75rem, 1.1vw, 0.95rem); color: var(--ink-soft); line-height: 1.5; }
+
+/* === TOOL BADGE GRID === */
+.tool-grid {
+    display: flex; flex-wrap: wrap; gap: clamp(0.6rem, 1.2vw, 1rem);
+    align-items: center;
+}
+.tool-badge {
+    display: flex; align-items: center; gap: 0.5rem;
+    border: 1.5px solid var(--border-soft);
+    padding: 0.5em 1em;
+    border-radius: 6px;
+    font-size: var(--t-small);
+    font-weight: 500;
+    color: var(--ink-mid);
+}
+.tool-logo {
+    width: 1.05em;
+    height: 1.05em;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+.tool-badge.highlight {
+    border-color: var(--red);
+    color: var(--red);
+    background: var(--red-light);
+}
+
+/* === ARCH DIAGRAM (CSS) === */
+.arch-diagram {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 2.5vw, 2.5rem);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.arch-box {
+    border: 2px solid var(--ink);
+    padding: clamp(0.75rem, 1.5vw, 1.2rem) clamp(1rem, 2vw, 1.8rem);
+    text-align: center;
+    min-width: clamp(6rem, 12vw, 11rem);
+    border-radius: 4px;
+}
+.arch-box.center-box {
+    border-color: var(--red);
+    background: var(--red-light);
+}
+.arch-box-title {
+    font-size: var(--t-small);
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    color: var(--ink);
+}
+.arch-box.center-box .arch-box-title { color: var(--red); }
+.arch-box-items {
+    font-size: clamp(0.65rem, 0.9vw, 0.8rem);
+    color: var(--ink-soft);
+    line-height: 1.6;
+}
+.arch-arrow {
+    font-size: clamp(1.2rem, 2.5vw, 2rem);
+    color: var(--ink-soft);
+}
+
+/* === TOOL-USE FLOW (CSS diagram) === */
+.flow-diagram {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.4rem, 1vh, 0.8rem);
+    font-family: var(--font-mono);
+}
+.flow-row {
+    display: flex; align-items: center; gap: 0.75rem;
+    font-size: clamp(0.7rem, 1.1vw, 0.95rem);
+}
+.flow-box {
+    padding: 0.4em 0.9em;
+    border-radius: 4px;
+    font-size: clamp(0.65rem, 1vw, 0.85rem);
+    white-space: nowrap;
+}
+.flow-box.llm  { background: #e8f4fd; color: #1a6fa8; border: 1px solid #b3d9f5; }
+.flow-box.agent { background: var(--red-light); color: var(--red); border: 1px solid rgba(232,50,26,0.3); }
+.flow-box.exec  { background: #f0f0f0; color: #444; border: 1px solid #ccc; }
+.flow-box.result{ background: #eef8ee; color: #2a7a2a; border: 1px solid #b3e0b3; }
+.flow-arrow { color: var(--ink-soft); font-size: 0.9rem; }
+
+/* === CODE BLOCK === */
+.code-block {
+    background: #f5f5f5;
+    border-left: 3px solid var(--red);
+    padding: clamp(0.6rem, 1.2vw, 1rem) clamp(1rem, 1.8vw, 1.5rem);
+    font-family: var(--font-mono);
+    font-size: clamp(0.7rem, 1.1vw, 0.95rem);
+    color: #333;
+    line-height: 1.6;
+    border-radius: 0 4px 4px 0;
+    overflow: hidden;
+}
+.code-block .kw { color: #e8321a; font-weight: 500; }
+.code-block .cm { color: #999; }
+.code-block .str { color: #2a7a2a; }
+
+/* === SCREENSHOT === */
+.screenshot {
+    max-height: min(52vh, 430px);
+    max-width: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    border: 1px solid var(--border-soft);
+}
+
+/* === HIGHLIGHT BOX === */
+.highlight-box {
+    background: var(--red-light);
+    border-left: 4px solid var(--red);
+    padding: clamp(0.75rem, 1.5vw, 1.2rem) clamp(1rem, 2vw, 1.6rem);
+    border-radius: 0 4px 4px 0;
+}
+.highlight-box p {
+    font-size: var(--t-body);
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.5;
+}
+
+/* === HEADING STYLES === */
+h1 { font-size: var(--t-h1); font-weight: 900; line-height: 1.05; }
+h2 { font-size: var(--t-h2); font-weight: 700; line-height: 1.1; }
+h3 { font-size: var(--t-h3); font-weight: 700; line-height: 1.2; }
+p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
+.text-red { color: var(--red); }
+.text-soft { color: var(--ink-soft); }
+.text-mid { color: var(--ink-mid); }
+.mono { font-family: var(--font-mono); }
+
+/* === EDIT MODE === */
+.edit-hotzone {
+    position: fixed; top: 0; left: 0;
+    width: 80px; height: 80px;
+    z-index: 10000; cursor: pointer;
+}
+.edit-toggle {
+    position: fixed; top: 16px; left: 16px;
+    z-index: 10001;
+    background: var(--ink); color: #fff;
+    border: none; border-radius: 4px;
+    padding: 0.4em 0.8em;
+    font-size: 0.75rem; letter-spacing: 0.05em;
+    cursor: pointer;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.edit-toggle.show, .edit-toggle.active {
+    opacity: 1; pointer-events: auto;
+}
+.edit-toggle.active { background: var(--red); }
+[contenteditable] { outline: none; }
+.edit-mode [contenteditable]:hover {
+    background: rgba(232,50,26,0.06);
+    border-radius: 2px;
+}
+</style>
+</head>
+<body>
+<!-- Background music: muted autoplay is always allowed by browsers; JS unmutes on load -->
+<audio id="bg-music" src="assets/interstellar.mp3" loop muted preload="auto" style="display:none;"></audio>
+
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots"></nav>
+<div class="edit-hotzone" id="editHotzone"></div>
+<button class="edit-toggle" id="editToggle" data-en="✏ Edit">✏ 编辑</button>
+
+<!-- ===================== SLIDE 1: TITLE ===================== -->
+<section class="slide" id="slide-1">
+    <div class="slide-header">
+        <div class="slide-header-label">Lab Seminar · 2026.03.20</div>
+        <div class="slide-header-label">Linwei Tao</div>
+    </div>
+    <div class="slide-content" style="display:grid;grid-template-columns:1fr 1.15fr;gap:var(--gap);align-items:center;padding:var(--pad);">
+        <!-- LEFT: Title -->
+        <div style="position:relative;">
+            <div>
+                <div class="red-tag reveal">AI Agent in Practice</div>
+                <h1 class="reveal" style="margin-top: var(--egap); font-size: clamp(2rem,4.5vw,3.8rem); line-height:1.2;">
+                    AI Agent for Research <span class="text-red">&amp;</span> Engineering
+                </h1>
+                <p class="reveal" style="margin-top: var(--gap); max-width: 32rem;">
+                    <span data-en="Web App · NeurIPS Submission · Technical Deep Dive · Discussion">Web App · NeurIPS 投稿 · 技术解剖 · 讨论</span><br>
+                    <span class="text-soft" data-en="One person · One week · Top-venue paper + production app">一人 · 一周 · 顶会投稿 + 生产级 app</span>
+                </p>
+            </div>
+        </div>
+        <!-- RIGHT: Terminal (looping CC animation) -->
+        <div id="cc0-window" style="
+            background:#1a1a1a;
+            border-radius:10px;
+            overflow:hidden;
+            display:flex;
+            flex-direction:column;
+            height:min(68vh,520px);
+            font-family:var(--font-mono);
+            box-shadow:0 8px 40px rgba(0,0,0,0.18);
+        ">
+            <!-- Title bar -->
+            <div style="background:#2a2a2a;padding:0.55rem 1rem;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+                <div style="width:11px;height:11px;border-radius:50%;background:#ff5f57;"></div>
+                <div style="width:11px;height:11px;border-radius:50%;background:#febc2e;"></div>
+                <div style="width:11px;height:11px;border-radius:50%;background:#28c840;"></div>
+                <span style="margin-left:0.75rem;color:#888;font-size:0.72rem;letter-spacing:0.05em;flex:1;">claude — ~/CalibrationAGT</span>
+            </div>
+            <!-- Chat area -->
+            <div id="cc0-chat" style="flex:1;overflow-y:auto;padding:0.9rem 1.1rem;display:flex;flex-direction:column;gap:0.8rem;"></div>
+            <!-- Input bar -->
+            <div style="background:#111;border-top:1px solid #333;padding:0.55rem 1rem;display:flex;align-items:center;gap:0.75rem;flex-shrink:0;">
+                <span style="color:#e8321a;font-size:0.85rem;">❯</span>
+                <div id="cc0-input" style="color:#e0e0e0;font-size:clamp(0.65rem,1vw,0.82rem);flex:1;min-height:1.2em;"></div>
+                <div style="width:2px;height:1.1em;background:#e8321a;animation:blink 1s step-end infinite;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text" style="display:flex;align-items:center;gap:0.5rem;">
+            Linwei Tao
+            <span id="music-indicator" style="opacity:0;transition:opacity 1s;font-size:0.65rem;color:var(--ink-soft);display:flex;align-items:center;gap:0.3rem;">
+                <span style="display:inline-flex;gap:2px;align-items:flex-end;height:10px;">
+                    <span style="width:2px;background:var(--red);border-radius:1px;animation:bar1 1.1s ease-in-out infinite;"></span>
+                    <span style="width:2px;background:var(--red);border-radius:1px;animation:bar2 1.3s ease-in-out infinite;"></span>
+                    <span style="width:2px;background:var(--red);border-radius:1px;animation:bar3 0.9s ease-in-out infinite;"></span>
+                </span>
+                ambient
+            </span>
+        </div>
+        <div class="slide-num">01 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 1.5: DEMO SHOWCASE ===================== -->
+<section class="slide" id="slide-showcase">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="Today's Two Projects">今天要聊的两个项目</div>
+        <div class="slide-header-label red" data-en="Live Demo">Live Demo</div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; padding: clamp(0.8rem,1.5vh,1.5rem) var(--pad) var(--pad); height: calc(100% - 4rem); overflow: hidden;">
+
+        <!-- LEFT: Cat App in phone frame -->
+        <div style="display: flex; flex-direction: column; gap: 0.6rem; overflow: hidden;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0;">
+                <div style="width: 1.6rem; height: 1.6rem; background: var(--ink); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.7rem; font-weight: 700;">①</div>
+                <span style="font-size: var(--t-small); font-weight: 600;" data-en="Arigato · Cat Boarding Web App">阿里嘎多 · 猫咪寄养 Web App</span>
+            </div>
+            <!-- iPhone 15 Pro shell -->
+            <div style="flex: 1; display: flex; justify-content: center; align-items: center; overflow: hidden;">
+                <div style="
+                    position: relative;
+                    height: 100%;
+                    max-height: min(82vh, 680px);
+                    aspect-ratio: 393/852;
+                ">
+                    <!-- Outer body: titanium frame -->
+                    <div style="
+                        position: absolute; inset: 0;
+                        background: linear-gradient(145deg, #b5b5b5 0%, #8a8a8a 40%, #6e6e6e 60%, #9a9a9a 100%);
+                        border-radius: 13.5% / 6.3%;
+                        box-shadow:
+                            0 0 0 1.5px #c8c8c8,
+                            0 20px 60px rgba(0,0,0,0.45),
+                            0 4px 12px rgba(0,0,0,0.3),
+                            inset 0 1px 0 rgba(255,255,255,0.25);
+                        pointer-events: none;
+                    "></div>
+
+                    <!-- Inner black bezel -->
+                    <div style="
+                        position: absolute;
+                        inset: 1.2%;
+                        background: #0a0a0a;
+                        border-radius: 12.5% / 5.8%;
+                        pointer-events: none;
+                    "></div>
+
+                    <!-- Screen area -->
+                    <div style="
+                        position: absolute;
+                        inset: 1.8%;
+                        border-radius: 11.5% / 5.3%;
+                        overflow: hidden;
+                        background: #fff;
+                        display: flex;
+                        flex-direction: column;
+                    ">
+                        <!-- iOS status bar -->
+                        <div style="
+                            flex-shrink: 0;
+                            height: 5.5%;
+                            background: #f2f2f7;
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            padding: 0 6% 0 5%;
+                            position: relative;
+                            pointer-events: none;
+                        ">
+                            <!-- Dynamic Island -->
+                            <div style="
+                                position: absolute;
+                                top: 18%;
+                                left: 50%;
+                                transform: translateX(-50%);
+                                width: 26%;
+                                height: 64%;
+                                background: #0a0a0a;
+                                border-radius: 100px;
+                            "></div>
+                            <!-- Time -->
+                            <span style="font-size: clamp(0.35rem,0.6vw,0.5rem); font-weight: 600; color: #000; font-family: -apple-system, sans-serif; letter-spacing: -0.02em;">9:41</span>
+                            <!-- Status icons -->
+                            <div style="display:flex; align-items:center; gap:3px;">
+                                <!-- Signal bars -->
+                                <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                                    <rect x="0" y="5" width="2" height="3" rx="0.5" fill="#000"/>
+                                    <rect x="2.7" y="3.5" width="2" height="4.5" rx="0.5" fill="#000"/>
+                                    <rect x="5.4" y="2" width="2" height="6" rx="0.5" fill="#000"/>
+                                    <rect x="8.1" y="0" width="2" height="8" rx="0.5" fill="#000"/>
+                                </svg>
+                                <!-- WiFi -->
+                                <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                                    <path d="M5 6.5 L5 6.5" stroke="#000" stroke-width="1.5" stroke-linecap="round"/>
+                                    <path d="M3.2 4.8 Q5 3.2 6.8 4.8" stroke="#000" stroke-width="1" fill="none" stroke-linecap="round"/>
+                                    <path d="M1.5 3 Q5 0.5 8.5 3" stroke="#000" stroke-width="1" fill="none" stroke-linecap="round"/>
+                                </svg>
+                                <!-- Battery -->
+                                <svg width="14" height="8" viewBox="0 0 14 8" fill="none">
+                                    <rect x="0" y="1" width="11.5" height="6" rx="1.5" stroke="#000" stroke-width="0.8"/>
+                                    <rect x="12" y="2.5" width="1.5" height="3" rx="0.8" fill="#000"/>
+                                    <rect x="1" y="2" width="8.5" height="4" rx="0.8" fill="#34c759"/>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- App content: fixed 430px wide iframe, scaled to fit -->
+                        <div id="phone-screen" style="flex: 1; overflow: hidden; background: white; position: relative;">
+                            <iframe
+                                id="cat-iframe"
+                                src="https://www.taolinwei.com/cat-boarding-system/"
+                                style="
+                                    width: 430px;
+                                    height: 932px;
+                                    border: none;
+                                    display: block;
+                                    transform-origin: top left;
+                                    position: absolute;
+                                    top: 0; left: 0;
+                                "
+                                title="猫咪寄养系统"
+                                allow="fullscreen"
+                            ></iframe>
+                        </div>
+
+                        <!-- iOS home indicator -->
+                        <div style="
+                            flex-shrink: 0;
+                            height: 3.5%;
+                            background: #f2f2f7;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        ">
+                            <div style="width: 28%; height: 4px; background: #000; border-radius: 100px; opacity: 0.2;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Side buttons (volume up/down + power) -->
+                    <div style="position:absolute; left:-1.8%; top:22%; width:2%; height:7%; background: linear-gradient(to right,#8a8a8a,#b0b0b0); border-radius:3px 0 0 3px; pointer-events:none;"></div>
+                    <div style="position:absolute; left:-1.8%; top:31%; width:2%; height:7%; background: linear-gradient(to right,#8a8a8a,#b0b0b0); border-radius:3px 0 0 3px; pointer-events:none;"></div>
+                    <div style="position:absolute; right:-1.8%; top:26%; width:2%; height:11%; background: linear-gradient(to left,#8a8a8a,#b0b0b0); border-radius:0 3px 3px 0; pointer-events:none;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT: Paper PDF -->
+        <div style="display: flex; flex-direction: column; gap: 0.6rem; overflow: hidden;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0;">
+                <div style="width: 1.6rem; height: 1.6rem; background: var(--red); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.7rem; font-weight: 700;">②</div>
+                <span style="font-size: var(--t-small); font-weight: 600;" data-en="CalibrationAGT · NeurIPS 2026 Submission">CalibrationAGT · NeurIPS 2026 投稿</span>
+            </div>
+            <div style="flex: 1; border: 2px solid var(--border-soft); border-radius: 8px; overflow: hidden; background: #f0ede8;">
+                <object
+                    data="assets/paper.pdf#toolbar=0&navpanes=0&scrollbar=1&view=FitH"
+                    type="application/pdf"
+                    style="width: 100%; height: 100%; display: block;"
+                >
+                    <!-- fallback: embed tag -->
+                    <embed
+                        src="assets/paper.pdf#toolbar=0&navpanes=0"
+                        type="application/pdf"
+                        style="width:100%;height:100%;"
+                    />
+                </object>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 2: AGENDA ===================== -->
+<section class="slide" id="slide-2">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="Agenda">今天讲什么</div>
+        <div class="slide-header-label red">Agenda</div>
+    </div>
+    <div class="slide-content">
+        <div class="card-grid" style="grid-template-columns: repeat(2, 1fr);">
+            <div class="card reveal">
+                <div class="card-icon">🐱</div>
+                <div class="card-title">Part 1 · Engineering</div>
+                <div class="card-desc" data-en="Cat Boarding Web App — a production app built with Claude Code in the gaps between research">猫咪寄养 Web App — 用 Claude Code 在 research 间隙完成的生产级应用</div>
+            </div>
+            <div class="card reveal">
+                <div class="card-icon">🔬</div>
+                <div class="card-title">Part 2 · Research</div>
+                <div class="card-desc" data-en="CalibrationAGT — how a NeurIPS submission was completed using AI Agent">CalibrationAGT — 一篇 NeurIPS 投稿是怎么用 AI Agent 完成的</div>
+            </div>
+            <div class="card reveal">
+                <div class="card-icon">⚙️</div>
+                <div class="card-title" data-en="Part 3 · Technical Anatomy">Part 3 · 技术解剖</div>
+                <div class="card-desc" data-en="How does AI Agent actually work? Tool use, Memory, Sub-agent">AI Agent 到底怎么工作的？Tool use、Memory、Sub-agent</div>
+            </div>
+            <div class="card reveal">
+                <div class="card-icon">💭</div>
+                <div class="card-title" data-en="Part 4 · Discussion">Part 4 · 讨论</div>
+                <div class="card-desc" data-en="Paper inflation, Senior productivity ×10 — how will research and engineering change?">Paper 通货膨胀了，Senior 生产力 ×10 了——科研和工程会怎么变？</div>
+            </div>
+            <div class="card reveal" style="grid-column: span 2; background: var(--bg-alt);">
+                <div class="card-icon">🎁</div>
+                <div class="card-title">Bonus · gnvitop</div>
+                <div class="card-desc" data-en="A side tool built along the way — global GPU monitoring in one command">一个顺带开发的小工具——全局 GPU 监控，一行命令完成</div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">02 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 3: 工具景观 ===================== -->
+<section class="slide" id="slide-3">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="You've Heard of These">大家都听过这些</div>
+        <div class="slide-header-label red">AI Coding Agents</div>
+    </div>
+    <div class="slide-content" style="gap:var(--egap);padding-top:0.5rem;">
+        <h2 class="reveal" style="font-size:var(--t-h2);" data-en="You've Probably Heard These Names">大家可能都听过这些名字</h2>
+        <div class="reveal" style="display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;">
+            <div class="tool-badge" style="padding:0.3rem 0.7rem;font-size:var(--t-small);"><img class="tool-logo" style="width:16px;height:16px;" src="https://cdn.simpleicons.org/githubcopilot" alt="">GitHub Copilot</div>
+            <div class="tool-badge" style="padding:0.3rem 0.7rem;font-size:var(--t-small);"><img class="tool-logo" style="width:16px;height:16px;" src="https://cdn.simpleicons.org/cursor" alt="">Cursor</div>
+            <div class="tool-badge" style="padding:0.3rem 0.7rem;font-size:var(--t-small);"><img class="tool-logo" style="width:16px;height:16px;" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/codeium.svg" alt="">Windsurf</div>
+            <div class="tool-badge" style="padding:0.3rem 0.7rem;font-size:var(--t-small);"><img class="tool-logo" style="width:16px;height:16px;" src="https://cdn.simpleicons.org/googlegemini" alt="">Gemini CLI</div>
+            <div class="tool-badge highlight" style="padding:0.3rem 0.7rem;font-size:var(--t-small);"><img class="tool-logo" style="width:16px;height:16px;" src="https://cdn.simpleicons.org/anthropic" alt="">Claude Code ✦</div>
+            <div class="tool-badge" style="padding:0.3rem 0.7rem;font-size:var(--t-small);"><img class="tool-logo" style="width:16px;height:16px;" src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f99e.svg" alt="">OpenClaw</div>
+            <div class="tool-badge" style="padding:0.3rem 0.7rem;font-size:var(--t-small);"><img class="tool-logo" style="width:16px;height:16px;" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/openai.svg" alt="">Codex</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--egap);">
+            <!-- OpenClaw -->
+            <div class="reveal" style="border:1.5px solid var(--border-soft);border-radius:8px;padding:1rem;display:flex;flex-direction:column;gap:0.5rem;">
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <div style="width:24px;height:24px;background:#1a1a2e;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <span style="color:#e8321a;font-size:0.8rem;font-weight:700;">O</span>
+                    </div>
+                    <span style="font-weight:700;font-size:var(--t-body);">OpenClaw</span>
+                    <span style="font-size:var(--t-small);color:var(--ink-soft);" data-en="Personal Assistant">私人助理</span>
+                </div>
+                <ul style="font-size:var(--t-small);color:var(--ink);line-height:1.7;padding-left:1.1em;margin:0;">
+                    <li data-en="Memory remembers everything about the owner's preferences">Memory 记住主人的一切偏好</li>
+                    <li data-en="Heartbeat mechanism, runs 24h continuously">心跳机制，24h 持续运行</li>
+                    <li data-en="Can connect to WhatsApp / Telegram">可接 WhatsApp / Telegram</li>
+                    <li style="color:var(--ink-soft);" data-en="⚠ Stuffs tons of context each time — <strong>burns tokens</strong>">⚠ 每次塞大量 context，<strong>烧 token</strong></li>
+                </ul>
+                <div style="margin-top:auto;font-size:var(--t-small);background:var(--bg-alt);padding:0.4rem 0.6rem;border-radius:6px;" data-en="🦞 More like a toy / personal experiment">🦞 更像玩具 / 个人实验</div>
+            </div>
+            <!-- Claude Code -->
+            <div class="reveal" style="border:2px solid var(--red);border-radius:8px;padding:1rem;display:flex;flex-direction:column;gap:0.5rem;background:var(--red-light);">
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <div style="width:24px;height:24px;background:#da7756;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <img src="https://cdn.simpleicons.org/anthropic/ffffff" width="14" height="14" style="display:block;">
+                    </div>
+                    <span style="font-weight:700;font-size:var(--t-body);">Claude Code ✦</span>
+                    <span style="font-size:var(--t-small);color:var(--ink-soft);" data-en="Developer">开发者</span>
+                </div>
+                <ul style="font-size:var(--t-small);color:var(--ink);line-height:1.7;padding-left:1.1em;margin:0;">
+                    <li data-en="Terminal CLI, native file / git operations">Terminal CLI，原生操作文件 / git</li>
+                    <li data-en="Skill / Hook highly customizable">Skill / Hook 高度可定制</li>
+                    <li data-en="Personal experience: <strong>better than</strong> Codex">个人体验：比 Codex <strong>更好用</strong></li>
+                    <li style="color:var(--ink-mid);" data-en="Claude Cowork: for <strong>non-technical users</strong>">Claude Cowork：面向<strong>非技术用户</strong></li>
+                </ul>
+                <div style="margin-top:auto;font-size:var(--t-small);background:rgba(232,50,26,0.12);padding:0.4rem 0.6rem;border-radius:6px;color:var(--red);font-weight:600;" data-en="⚡ Today's main tool">⚡ 今天主讲工具</div>
+            </div>
+            <!-- Codex -->
+            <div class="reveal" style="border:1.5px solid var(--border-soft);border-radius:8px;padding:1rem;display:flex;flex-direction:column;gap:0.5rem;">
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <div style="width:24px;height:24px;background:#10a37f;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <span style="color:#fff;font-size:0.75rem;font-weight:700;">Cx</span>
+                    </div>
+                    <span style="font-weight:700;font-size:var(--t-body);">Codex</span>
+                    <span style="font-size:var(--t-small);color:var(--ink-soft);" data-en="Cloud Sandbox">云端沙箱</span>
+                </div>
+                <ul style="font-size:var(--t-small);color:var(--ink);line-height:1.7;padding-left:1.1em;margin:0;">
+                    <li data-en="Runs tasks in parallel in isolated sandboxes">在隔离沙箱中并行跑任务</li>
+                    <li data-en="No local env needed, schedule anytime">无需本地环境，随时调度</li>
+                    <li data-en="Similar positioning to Claude Code">与 Claude Code 定位相近</li>
+                    <li style="color:var(--ink-soft);" data-en="Good for batch, unattended tasks">适合批量、无人值守任务</li>
+                </ul>
+                <div style="margin-top:auto;font-size:var(--t-small);background:var(--bg-alt);padding:0.4rem 0.6rem;border-radius:6px;" data-en="☁️ Cloud parallel, async execution">☁️ 云端并行，异步执行</div>
+            </div>
+        </div>
+        <div class="reveal" style="border-left:4px solid var(--red);padding:0.5rem 1rem;background:var(--red-light);font-size:var(--t-small);border-radius:0 6px 6px 0;">
+            <span data-en="<strong>Common core:</strong> LLM + tool calling + memory system — identical at the foundation, differing in memory design and use case"><strong>共同本质：</strong>LLM + 工具调用 + 记忆系统 — 底层完全一致，差异在于 memory 设计和使用场景</span>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">03 / 23</div>
+    </div>
+</section>
+<section class="slide" id="slide-4">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="What Is an AI Agent?">AI Agent 的本质</div>
+        <div class="slide-header-label red" data-en="Context Engineering">Context Engineering</div>
+    </div>
+    <div class="slide-content" style="gap: var(--egap);">
+        <h2 class="reveal" data-en="Agent = Feed the Right Info into LLM's Context Window">Agent = 在有限 Context 里给 LLM 喂正确的信息</h2>
+
+        <div class="two-col" style="align-items: start; gap: var(--gap);">
+            <!-- LEFT: LLM 工作原理 -->
+            <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);">
+                <p style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-soft);" data-en="How LLM Works">LLM 怎么工作</p>
+                <div class="code-block" style="font-size:clamp(0.65rem,0.9vw,0.78rem);line-height:1.7;" data-en="<span class='cm'>// Everything LLM sees on each call</span>
+<span class='kw'>context</span> = [
+  system_prompt,    <span class='cm'>// rules, tool list, memory files</span>
+  conversation,     <span class='cm'>// conversation history</span>
+  tool_results,     <span class='cm'>// previous step results</span>
+  your_prompt,      <span class='cm'>// what you just typed</span>
+]
+<span class='kw'>output</span> = LLM(context)  <span class='cm'>// predict next token</span>">
+<span class="cm">// 每次调用 LLM，它看到的全部东西</span>
+<span class="kw">context</span> = [
+  system_prompt,    <span class="cm">// 规则、工具列表、记忆文件</span>
+  conversation,     <span class="cm">// 历史对话</span>
+  tool_results,     <span class="cm">// 上一步执行结果</span>
+  your_prompt,      <span class="cm">// 你刚输入的</span>
+]
+<span class="kw">output</span> = LLM(context)  <span class="cm">// 预测下一个 token</span></div>
+                <div class="highlight-box" style="padding:0.6rem 0.9rem;">
+                    <p style="font-size:var(--t-small);" data-en="LLM has <strong>no memory</strong> — it can only see what's in the context">LLM <strong>没有记忆</strong>——它只能看到 context 里有什么</p>
+                </div>
+
+                <!-- Context window sizes -->
+                <p style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-soft);margin-top:0.3rem;" data-en="Context Window Evolution">Context Window 进化</p>
+                <div style="display:flex;flex-direction:column;gap:0.4rem;font-size:clamp(0.6rem,0.85vw,0.75rem);">
+                    <div style="display:grid;grid-template-columns:10rem 1fr 5rem;gap:0.5rem;color:var(--ink-soft);font-size:0.65em;letter-spacing:0.08em;text-transform:uppercase;padding-bottom:0.2rem;border-bottom:1px solid var(--border-soft);">
+                        <span data-en="Model">模型</span><span></span><span style="text-align:right;" data-en="Released">发布</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns:10rem 1fr 5rem;gap:0.5rem;align-items:center;">
+                        <span style="color:var(--ink-soft);">GPT-4o</span>
+                        <div style="height:20px;background:#f0ede8;border-radius:4px;overflow:hidden;"><div style="width:13%;height:100%;background:#bbb;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:5px;"><span style="color:#fff;font-size:0.85em;font-weight:600;white-space:nowrap;">128K</span></div></div>
+                        <span style="color:var(--ink-soft);text-align:right;">2024.05</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns:10rem 1fr 5rem;gap:0.5rem;align-items:center;">
+                        <span style="color:var(--ink-mid);">Claude Sonnet 4</span>
+                        <div style="height:20px;background:#f0ede8;border-radius:4px;overflow:hidden;"><div style="width:20%;height:100%;background:#aaa;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:5px;"><span style="color:#fff;font-size:0.85em;font-weight:600;white-space:nowrap;">200K</span></div></div>
+                        <span style="color:var(--ink-soft);text-align:right;">2025.07</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns:10rem 1fr 5rem;gap:0.5rem;align-items:center;">
+                        <span style="color:var(--ink-mid);">GPT-5.2</span>
+                        <div style="height:20px;background:#f0ede8;border-radius:4px;overflow:hidden;"><div style="width:40%;height:100%;background:#888;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:5px;"><span style="color:#fff;font-size:0.85em;font-weight:600;white-space:nowrap;">400K</span></div></div>
+                        <span style="color:var(--ink-soft);text-align:right;">2025.12</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns:10rem 1fr 5rem;gap:0.5rem;align-items:center;">
+                        <span style="font-weight:600;">GPT-5.4</span>
+                        <div style="height:20px;background:#f0ede8;border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:#555;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;"><span style="color:#fff;font-size:0.85em;font-weight:700;white-space:nowrap;">1M</span></div></div>
+                        <span style="color:var(--ink-soft);text-align:right;">2026.03</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns:10rem 1fr 5rem;gap:0.5rem;align-items:center;">
+                        <span style="color:var(--red);font-weight:600;">Claude Sonnet 4.6</span>
+                        <div style="height:20px;background:#f0ede8;border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:var(--red);border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;"><span style="color:#fff;font-size:0.85em;font-weight:700;white-space:nowrap;">1M</span></div></div>
+                        <span style="color:var(--ink-soft);text-align:right;">2026.03</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: 现实项目 vs context -->
+            <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);">
+                <p style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-soft);" data-en="But How Large Is Your Project?">但你的项目有多大？</p>
+                <div style="display:flex;flex-direction:column;gap:0.5rem;font-size:var(--t-small);">
+                    <div style="display:flex;justify-content:space-between;padding:0.5rem 0.75rem;background:var(--bg-alt);border-radius:6px;">
+                        <span data-en="A NeurIPS paper">一篇 NeurIPS 论文</span>
+                        <span style="font-weight:600;color:var(--red);">~8K tokens ✓</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;padding:0.5rem 0.75rem;background:var(--bg-alt);border-radius:6px;">
+                        <span data-en="A PhD thesis">一个 PhD thesis</span>
+                        <span style="font-weight:600;color:var(--red);">~100K tokens ✓</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;padding:0.5rem 0.75rem;background:#fff3f0;border-radius:6px;border:1px solid #ffd0c8;">
+                        <span data-en="CalibrationAGT codebase">CalibrationAGT 代码库</span>
+                        <span style="font-weight:600;color:#c0392b;">~400K tokens ⚠</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;padding:0.5rem 0.75rem;background:#fff0f0;border-radius:6px;border:1px solid #ffb0b0;">
+                        <span data-en="Medium-sized production codebase">中等规模生产代码库</span>
+                        <span style="font-weight:600;color:#c0392b;">~2–5M tokens ✗</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;padding:0.5rem 0.75rem;background:#ffe8e8;border-radius:6px;border:1px solid #ff8080;">
+                        <span data-en="Your habits + env config + docs">你的使用习惯 + 环境配置 + 文档</span>
+                        <span style="font-weight:600;color:#c0392b;" data-en="Can't fit at all ✗">根本装不下 ✗</span>
+                    </div>
+                </div>
+                <div class="highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);">
+                    <p style="font-size:var(--t-small);">
+                        <span data-en="<strong>What Agent does:</strong><br>
+                        Decide, for each LLM call, <em>which</em> information to stuff into context —<br>
+                        which files to read, which preferences to remember, which history to forget"><strong>Agent 做的事：</strong><br>
+                        决定每次调用 LLM 时，把<em>哪些</em>信息塞进 context——<br>
+                        读哪些文件、记忆哪些偏好、忘掉哪些历史</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">04 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE: 工具对比 ===================== -->
+<section class="slide" id="slide-5">
+    <div class="slide-content" style="justify-content: center; align-items: center; text-align: center;">
+        <p class="reveal text-soft" style="font-size: var(--t-small); letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 1rem;" data-en="Today's Core Argument">今天的核心论点</p>
+        <h1 class="reveal" style="font-size: clamp(2rem, 5.5vw, 5rem); max-width: 22rem; line-height: 1.1; margin: 0 auto;" data-en="AI Agent Is Already Powerful Enough for <span class=&quot;text-red&quot;>Real Work</span>">
+            AI Agent 已经强到可以干<span class="text-red">真实业务</span>了
+        </h1>
+        <p class="reveal text-mid" style="margin-top: var(--gap); font-size: var(--t-body); max-width: 28rem;" data-en="Not a demo. Not a toy.">
+            不是 demo，不是玩具
+        </p>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">05 / 23</div>
+    </div>
+</section>
+
+
+
+
+<!-- ===================== SLIDE: 为什么 Agent 适合 Research ===================== -->
+<section class="slide slide-part" id="slide-12">
+    <div class="part-number">01</div>
+    <div class="part-content">
+        <div class="part-label reveal">Part One · Engineering</div>
+        <div class="part-title reveal" data-en="Cat Boarding<br>Web App">猫咪寄养<br>Web App</div>
+        <div class="part-subtitle reveal" data-en="Zero to Production, Driven by Claude Code">从零到生产，Claude Code 全程驾驶</div>
+    </div>
+    <div class="slide-footer" style="border-color: rgba(255,255,255,0.1);">
+        <div class="footer-text" style="color: rgba(255,255,255,0.3);"></div>
+        <div class="slide-num" style="color: rgba(255,255,255,0.3);">12 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 12: 背景 ===================== -->
+<section class="slide" id="slide-13">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="Engineering · Background">Engineering · 背景</div>
+        <div class="slide-header-label red" data-en="Side Project">Side Project</div>
+    </div>
+    <div class="slide-content" style="gap: var(--egap);">
+        <h2 class="reveal" data-en="You Know My GF Runs a Cat Boarding Business 🐱">大家都知道我女朋友是做宠物寄养的 🐱</h2>
+        <p class="reveal text-mid" style="max-width: 40rem;" data-en="We had <strong>no system at all</strong> before — everything was in our heads or on paper, total chaos.<br>
+            In between research sessions, I spent a few days building her a system with Claude Code.">
+            我们原来<strong>完全没有系统</strong>，记录全靠脑子和纸，非常乱。<br>
+            我做 research 的空档，用 Claude Code 花了几天给她做了个系统。
+        </p>
+        <div class="two-col reveal" style="gap: var(--egap);">
+            <div class="card">
+                <div class="card-title" data-en="📋 Before">📋 原来</div>
+                <div class="card-desc" data-en="Notebooks, WeChat group messages, kept in memory — check-in/out times were constantly getting mixed up">笔记本、微信群消息、记在脑子里——入住/退房时间经常出错</div>
+            </div>
+            <div class="card" style="border-color: var(--red); background: var(--red-light);">
+                <div class="card-title" style="color: var(--red);" data-en="✅ Now">✅ 现在</div>
+                <div class="card-desc" data-en="Boarding management, home feeding visits, booking links, e-signatures, revenue stats — full coverage">寄养管理、上门喂养、预约链接、电子签名、收入统计——全面覆盖</div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">13 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 13: 系统截图 Desktop ===================== -->
+<section class="slide" id="slide-14">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="Engineering · System Demo">Engineering · 系统展示</div>
+        <div class="slide-header-label red">Desktop</div>
+    </div>
+    <div class="slide-content" style="gap: var(--egap);">
+        <h2 class="reveal" data-en="Arigato · Cat Boarding Web App">阿里嘎多 · 猫咪寄养 Web App</h2>
+        <!-- Safari browser mockup -->
+        <div class="reveal" style="
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 12px 48px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.08);
+            min-height: 0;
+        ">
+            <!-- Safari toolbar -->
+            <div style="
+                flex-shrink: 0;
+                background: #ececec;
+                padding: 0.45rem 0.75rem;
+                display: flex;
+                align-items: center;
+                gap: 0.6rem;
+                border-bottom: 1px solid #d0d0d0;
+            ">
+                <!-- Traffic lights -->
+                <div style="display:flex;gap:5px;flex-shrink:0;">
+                    <div style="width:12px;height:12px;border-radius:50%;background:#ff5f57;"></div>
+                    <div style="width:12px;height:12px;border-radius:50%;background:#febc2e;"></div>
+                    <div style="width:12px;height:12px;border-radius:50%;background:#28c840;"></div>
+                </div>
+                <!-- Back/forward -->
+                <div style="display:flex;gap:4px;flex-shrink:0;margin-left:0.3rem;">
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="#999" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="#ccc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <!-- URL bar -->
+                <div style="
+                    flex: 1;
+                    background: #fff;
+                    border-radius: 6px;
+                    padding: 0.2rem 0.6rem;
+                    font-size: 0.72rem;
+                    color: #555;
+                    font-family: -apple-system, sans-serif;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.3rem;
+                    border: 1px solid #d8d8d8;
+                ">
+                    <svg width="10" height="10" viewBox="0 0 16 16" fill="none"><rect x="2" y="7" width="12" height="8" rx="1.5" stroke="#34c759" stroke-width="1.5"/><path d="M5 7V5a3 3 0 016 0v2" stroke="#34c759" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    <span>taolinwei.com/cat-boarding-system</span>
+                </div>
+                <!-- Share icon -->
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;"><path d="M8 1v9M5 4L8 1l3 3" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 9v4a1 1 0 001 1h8a1 1 0 001-1V9" stroke="#999" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <!-- Page content -->
+            <div id="safari-screen" style="flex:1;overflow:hidden;position:relative;background:#fff;">
+                <iframe
+                    id="safari-iframe"
+                    src="https://www.taolinwei.com/cat-boarding-system/"
+                    style="width:1440px;height:900px;border:none;display:block;transform-origin:top left;position:absolute;top:0;left:0;"
+                    title="阿里嘎多猫咪寄养 Web App"
+                    allow="fullscreen"
+                ></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">14 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 15: 构建过程 ===================== -->
+<section class="slide" id="slide-16">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="Engineering · Build Process">Engineering · 构建过程</div>
+        <div class="slide-header-label red" data-en="Claude Code in Action">Claude Code in Action</div>
+    </div>
+    <div class="slide-content" style="gap:var(--egap);padding-top:0.5rem;">
+
+        <!-- Pipeline label -->
+        <p class="reveal" style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;color:var(--ink-soft);text-transform:uppercase;" data-en="Traditional Web Development Pipeline">传统网页开发流程</p>
+
+        <!-- Pipeline flow -->
+        <div class="reveal" style="display:flex;align-items:stretch;gap:0;justify-content:space-between;">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.6rem 0.4rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
+                <span style="font-size:1.4rem;">💬</span>
+                <span style="font-size:clamp(0.62rem,0.9vw,0.8rem);font-weight:700;color:var(--ink);" data-en="Break Down Requirements">拆解需求</span>
+                <span style="font-size:clamp(0.5rem,0.72vw,0.65rem);color:var(--ink-soft);text-align:center;line-height:1.4;" data-en="Natural language description<br>agent breaks down tasks">自然语言描述<br>agent 拆解任务</span>
+            </div>
+            <div style="display:flex;align-items:center;padding:0 0.2rem;color:var(--ink-soft);font-size:0.9rem;">→</div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.6rem 0.4rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
+                <span style="font-size:1.4rem;">🗄️</span>
+                <span style="font-size:clamp(0.62rem,0.9vw,0.8rem);font-weight:700;color:var(--ink);" data-en="Database Design">数据库设计</span>
+                <span style="font-size:clamp(0.5rem,0.72vw,0.65rem);color:var(--ink-soft);text-align:center;line-height:1.4;" data-en="schema.sql<br>migration scripts auto-generated">schema.sql<br>迁移脚本自动生成</span>
+            </div>
+            <div style="display:flex;align-items:center;padding:0 0.2rem;color:var(--ink-soft);font-size:0.9rem;">→</div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.6rem 0.4rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
+                <span style="font-size:1.4rem;">🎨</span>
+                <span style="font-size:clamp(0.62rem,0.9vw,0.8rem);font-weight:700;color:var(--ink);" data-en="UI Design">网页UI设计</span>
+                <span style="font-size:clamp(0.5rem,0.72vw,0.65rem);color:var(--ink-soft);text-align:center;line-height:1.4;" data-en="Wireframes → components<br>agent converts to HTML">线框图 → 组件<br>agent 转 HTML</span>
+            </div>
+            <div style="display:flex;align-items:center;padding:0 0.2rem;color:var(--ink-soft);font-size:0.9rem;">→</div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.6rem 0.4rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
+                <span style="font-size:1.4rem;">🖥️</span>
+                <span style="font-size:clamp(0.62rem,0.9vw,0.8rem);font-weight:700;color:var(--ink);" data-en="Frontend Dev">前端开发</span>
+                <span style="font-size:clamp(0.5rem,0.72vw,0.65rem);color:var(--ink-soft);text-align:center;line-height:1.4;" data-en="Pure HTML + ES Modules<br>no framework, no build step">纯 HTML + ES Modules<br>无框架，无构建</span>
+            </div>
+            <div style="display:flex;align-items:center;padding:0 0.2rem;color:var(--ink-soft);font-size:0.9rem;">→</div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.6rem 0.4rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
+                <span style="font-size:1.4rem;">🐛</span>
+                <span style="font-size:clamp(0.62rem,0.9vw,0.8rem);font-weight:700;color:var(--ink);" data-en="Debug &amp; Iterate">调试迭代</span>
+                <span style="font-size:clamp(0.5rem,0.72vw,0.65rem);color:var(--ink-soft);text-align:center;line-height:1.4;" data-en="Errors go straight to agent<br>mostly self-resolved">报错直接扔给 agent<br>大部分自己解决</span>
+            </div>
+            <div style="display:flex;align-items:center;padding:0 0.2rem;color:var(--ink-soft);font-size:0.9rem;">→</div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.6rem 0.4rem;background:#111;border-radius:8px;border:1.5px solid #111;">
+                <span style="font-size:1.4rem;">🚀</span>
+                <span style="font-size:clamp(0.62rem,0.9vw,0.8rem);font-weight:700;color:#fff;" data-en="Production Launch">生产上线</span>
+                <span style="font-size:clamp(0.5rem,0.72vw,0.65rem);color:#aaa;text-align:center;line-height:1.4;" data-en="Real users<br>Real business">真实用户<br>真实业务</span>
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="reveal" style="display:flex;align-items:center;gap:1rem;margin:0.2rem 0;">
+            <div style="flex:1;height:1px;background:var(--border-soft);"></div>
+            <span style="font-size:clamp(0.65rem,0.9vw,0.8rem);color:var(--ink-soft);white-space:nowrap;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;" data-en="What This Means">这意味着什么</span>
+            <div style="flex:1;height:1px;background:var(--border-soft);"></div>
+        </div>
+
+        <!-- Vision cards — each a separate reveal -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;">
+
+            <div class="reveal" style="padding:0.8rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);display:flex;flex-direction:column;gap:0.3rem;">
+                <div style="font-size:1.3rem;">🏢</div>
+                <div style="font-size:clamp(0.72rem,1vw,0.88rem);font-weight:700;" data-en="Solo Company">一人公司</div>
+                <div style="font-size:clamp(0.54rem,0.76vw,0.68rem);color:var(--ink-mid);line-height:1.5;" data-en="One person executing what used to take an entire engineering team">一个人执行以前需要整个工程团队才能完成的工作</div>
+                <div style="margin-top:auto;padding-top:0.4rem;border-top:1px solid var(--border-soft);">
+                    <div style="font-size:clamp(0.52rem,0.72vw,0.65rem);color:var(--ink-soft);line-height:1.5;" data-en="<strong style='color:var(--ink-mid);'>Pieter Levels</strong> — 0 employees, $3.1M ARR, 70+ products<br>
+                        <strong style='color:var(--ink-mid);'>Lovable</strong> — founded by 1 person, reached $100M ARR in 8 months">
+                        <strong style="color:var(--ink-mid);">Pieter Levels</strong> — 0 名员工，$3.1M ARR，70+ 产品<br>
+                        <strong style="color:var(--ink-mid);">Lovable</strong> — 1 人创立，8 个月达 $100M ARR
+                    </div>
+                </div>
+            </div>
+
+            <div class="reveal" style="padding:0.8rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);display:flex;flex-direction:column;gap:0.3rem;">
+                <div style="font-size:1.3rem;">🔬</div>
+                <div style="font-size:clamp(0.72rem,1vw,0.88rem);font-weight:700;" data-en="Researcher's Toolbox">研究员的工具箱</div>
+                <div style="font-size:clamp(0.54rem,0.76vw,0.68rem);color:var(--ink-mid);line-height:1.5;" data-en="Build whatever tool you're missing — experiment management, visualization, automation scripts">自己缺什么工具就造什么，实验管理、可视化、自动化脚本</div>
+                <div style="margin-top:auto;padding-top:0.4rem;border-top:1px solid var(--border-soft);">
+                    <div style="font-size:clamp(0.52rem,0.72vw,0.65rem);color:var(--ink-soft);line-height:1.5;" data-en="<strong style='color:var(--ink-mid);'>Komodo Health</strong> — 6–8 week analysis projects cut to hours<br>
+                        <strong style='color:var(--ink-mid);'>Patrick Mineault</strong> — NeuroAI researcher, uses Claude Code for analysis pipelines">
+                        <strong style="color:var(--ink-mid);">Komodo Health</strong> — 6–8 周分析项目缩至数小时<br>
+                        <strong style="color:var(--ink-mid);">Patrick Mineault</strong> — NeuroAI 研究员，用 Claude Code 写分析流水线
+                    </div>
+                </div>
+            </div>
+
+            <div class="reveal" style="padding:0.8rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);display:flex;flex-direction:column;gap:0.3rem;">
+                <div style="font-size:1.3rem;">💡</div>
+                <div style="font-size:clamp(0.72rem,1vw,0.88rem);font-weight:700;" data-en="Startup MVP">创业 MVP</div>
+                <div style="font-size:clamp(0.54rem,0.76vw,0.68rem);color:var(--ink-mid);line-height:1.5;" data-en="Validating an idea drops from months to days — ideas can reach real users immediately">验证一个 idea 的成本从数月变成数天，想法立刻可以触碰真实用户</div>
+                <div style="margin-top:auto;padding-top:0.4rem;border-top:1px solid var(--border-soft);">
+                    <div style="font-size:clamp(0.52rem,0.72vw,0.65rem);color:var(--ink-soft);line-height:1.5;" data-en="<strong style='color:var(--ink-mid);'>Indragie</strong> — macOS app, 19k/20k lines written by Claude<br>
+                        <strong style='color:var(--ink-mid);'>Invoice management system</strong> — built in 1 day, API cost $3.65">
+                        <strong style="color:var(--ink-mid);">Indragie</strong> — macOS app，19k/20k 行由 Claude 写<br>
+                        <strong style="color:var(--ink-mid);">发票管理系统</strong> — 1 天构建完成，API 成本 $3.65
+                    </div>
+                </div>
+            </div>
+
+            <div class="reveal" style="padding:0.8rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);display:flex;flex-direction:column;gap:0.3rem;">
+                <div style="font-size:1.3rem;">🛠️</div>
+                <div style="font-size:clamp(0.72rem,1vw,0.88rem);font-weight:700;" data-en="Self-Sufficient Daily Life">生活需求自给自足</div>
+                <div style="font-size:clamp(0.54rem,0.76vw,0.68rem);color:var(--ink-mid);line-height:1.5;" data-en="Calendar sync, bill organization, personal dashboard — solve your own needs yourself">日历同步、账单整理、私人 dashboard——自己的需求自己解决</div>
+                <div style="margin-top:auto;padding-top:0.4rem;border-top:1px solid var(--border-soft);">
+                    <div style="font-size:clamp(0.52rem,0.72vw,0.65rem);color:var(--ink-soft);line-height:1.5;" data-en="<strong style='color:var(--ink-mid);'>Home Assistant community</strong> — built smart home from scratch with Claude Code<br>
+                        <strong style='color:var(--ink-mid);'>Non-programmer</strong> — Claude Opus 4 + Cursor, wrote a personal finance app with 0 lines of code">
+                        <strong style="color:var(--ink-mid);">Home Assistant 社区</strong> — 用 Claude Code 从零搭智能家居<br>
+                        <strong style="color:var(--ink-mid);">非程序员</strong> — Claude Opus 4 + Cursor，0 行代码写出理财 app
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Takeaway -->
+        <div class="reveal" style="border-left:4px solid var(--red);background:var(--red-light);border-radius:0 8px 8px 0;padding:0.75rem 1.2rem;display:flex;align-items:center;gap:1rem;">
+            <span style="font-size:1.3rem;flex-shrink:0;color:var(--red);">✦</span>
+            <p style="font-size:clamp(0.72rem,1.1vw,0.95rem);line-height:1.5;color:var(--ink);" data-en="<strong>The execution barrier has dropped dramatically</strong> — cross-domain work is no longer a bottleneck. Your ceiling is how many worthwhile things you can think to do.">
+                <strong>执行门槛大幅降低</strong>——跨领域不再是瓶颈。你的上限，是你能想到多少值得做的事。
+            </p>
+        </div>
+
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">16 / 23</div>
+    </div>
+</section>
+
+
+<!-- ===================== SLIDE 6: PART 1 DIVIDER ===================== -->
+<section class="slide slide-part" id="slide-6">
+    <div class="part-number">02</div>
+    <div class="part-content">
+        <div class="part-label reveal">Part Two · Research</div>
+        <div class="part-title reveal">CalibrationAGT</div>
+        <div class="part-subtitle reveal" data-en="Confidence Calibration Under Annotation Ambiguity">标注歧义下的置信度校准</div>
+    </div>
+    <div class="slide-footer" style="border-color: rgba(255,255,255,0.1);">
+        <div class="footer-text" style="color: rgba(255,255,255,0.3);"></div>
+        <div class="slide-num" style="color: rgba(255,255,255,0.3);">06 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 7: Motivation ===================== -->
+<section class="slide" id="slide-7">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="Research · Motivation">Research · 动机</div>
+        <div class="slide-header-label red">CalibrationAGT</div>
+    </div>
+    <div class="slide-content" style="gap: var(--egap);">
+        <h2 class="reveal" data-en="How Did This Paper Start?">这篇文章怎么来的？</h2>
+        <div style="display: flex; gap: var(--gap); align-items: center;">
+            <!-- Right: ambiguity figure — first in DOM so it reveals first -->
+            <div class="reveal" style="order: 2; flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center;">
+                <img src="assets/fig_intro_ambiguity.png" alt="标注歧义示例" style="max-width: 100%; max-height: min(52vh, 380px); object-fit: contain;">
+            </div>
+            <!-- Left: timeline steps, each a reveal -->
+            <div style="order: 1; display: flex; flex-direction: column; gap: var(--egap); flex: 1; min-width: 0;">
+                <div class="reveal" style="display: flex; gap: 1.2rem; align-items: flex-start;">
+                    <div style="flex-shrink: 0; width: 2.2rem; height: 2.2rem; border: 2px solid var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: var(--t-small); font-weight: 700; color: var(--red);">01</div>
+                    <div>
+                        <p style="font-size: var(--t-body); font-weight: 600;" data-en="Conformal Prediction × Annotation Ambiguity">Conformal Prediction × 标注歧义</p>
+                        <p class="text-soft" style="font-size: var(--t-small);" data-en="When ground truth is inherently ambiguous (annotators disagree), do CP's coverage guarantees still hold?">当 ground truth 本身模糊（多个 annotator 不同意），CP 的覆盖率保证还成立吗？</p>
+                    </div>
+                </div>
+                <div class="reveal" style="display: flex; gap: 1.2rem; align-items: flex-start;">
+                    <div style="flex-shrink: 0; width: 2.2rem; height: 2.2rem; border: 2px solid var(--border-soft); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: var(--t-small); font-weight: 700; color: var(--ink-soft);">02</div>
+                    <div>
+                        <p style="font-size: var(--t-body); font-weight: 600;" data-en="Calibration in This Setting Hasn't Been Done">Calibration 在这个 setting 下根本没人做过</p>
+                        <p class="text-soft" style="font-size: var(--t-small);" data-en="Annotation ambiguity + calibration — even &ldquo;how to evaluate&rdquo; has no consensus">标注歧义 + calibration——连"该怎么评估"都没有定论</p>
+                    </div>
+                </div>
+                <div class="reveal" style="display: flex; gap: 1.2rem; align-items: flex-start;">
+                    <div style="flex-shrink: 0; width: 2.2rem; height: 2.2rem; background: var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: var(--t-small); font-weight: 700; color: white;">03</div>
+                    <div>
+                        <p style="font-size: var(--t-body); font-weight: 600;">Pivot → CalibrationAGT</p>
+                        <p class="text-soft" style="font-size: var(--t-small);" data-en="Calibration in this setting is equally worth systematic study.">Calibration 在这个 setting 下同样值得系统研究。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">07 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE: 科研工作流 = 文字 ===================== -->
+<section class="slide" id="slide-research-workflow">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="AI Agent">AI Agent</div>
+        <div class="slide-header-label red" data-en="Why Research?">为什么适合科研？</div>
+    </div>
+    <div class="slide-content" style="padding:var(--pad);gap:var(--gap);">
+        <h2 class="reveal" data-en="Why Is AI Agent Good for Research?">为什么 AI Agent 适合帮助科研？</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0;align-items:start;">
+            <!-- LEFT: workflow chain -->
+            <div class="reveal" style="display:flex;flex-direction:column;gap:0.5rem;">
+                <p style="font-size:var(--t-small);color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.1em;font-weight:700;" data-en="Every step is text">每个环节都是文字</p>
+                <div style="display:flex;flex-direction:column;gap:0.3rem;">
+                    <div style="display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--ink-soft);">
+                        <span style="font-size:1rem;">📚</span>
+                        <div>
+                            <p style="font-size:var(--t-small);font-weight:600;" data-en="Literature Review">文献调研</p>
+                            <p style="font-size:clamp(0.5rem,0.7vw,0.62rem);color:var(--ink-soft);" data-en="Papers, abstracts, notes — all text">论文、摘要、笔记——全是文字</p>
+                        </div>
+                    </div>
+                    <div style="text-align:center;color:var(--ink-soft);font-size:0.75rem;">↓</div>
+                    <div style="display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--ink-soft);">
+                        <span style="font-size:1rem;">💡</span>
+                        <div>
+                            <p style="font-size:var(--t-small);font-weight:600;" data-en="Research Proposal">研究方案</p>
+                            <p style="font-size:clamp(0.5rem,0.7vw,0.62rem);color:var(--ink-soft);" data-en="Hypothesis, design, rationale — text">假设、设计思路、理由——文字</p>
+                        </div>
+                    </div>
+                    <div style="text-align:center;color:var(--ink-soft);font-size:0.75rem;">↓</div>
+                    <div style="display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--ink-soft);">
+                        <span style="font-size:1rem;">🔬</span>
+                        <div>
+                            <p style="font-size:var(--t-small);font-weight:600;" data-en="Experiment Scripts">实验脚本</p>
+                            <p style="font-size:clamp(0.5rem,0.7vw,0.62rem);color:var(--ink-soft);" data-en="Code is text">代码就是文字</p>
+                        </div>
+                    </div>
+                    <div style="text-align:center;color:var(--ink-soft);font-size:0.75rem;">↓</div>
+                    <div style="display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid #e8321a;">
+                        <span style="font-size:1rem;">⚠️</span>
+                        <div>
+                            <p style="font-size:var(--t-small);font-weight:600;" data-en="Errors &amp; Results">报错 &amp; 实验结果</p>
+                            <p style="font-size:clamp(0.5rem,0.7vw,0.62rem);color:var(--ink-soft);" data-en="Stack traces, CSV, logs — text with instant feedback">Stack trace、CSV、日志——文字，且有即时反馈</p>
+                        </div>
+                    </div>
+                    <div style="text-align:center;color:var(--ink-soft);font-size:0.75rem;">↓</div>
+                    <div style="display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--ink-soft);">
+                        <span style="font-size:1rem;">📊</span>
+                        <div>
+                            <p style="font-size:var(--t-small);font-weight:600;" data-en="Figures">画图</p>
+                            <p style="font-size:clamp(0.5rem,0.7vw,0.62rem);color:var(--ink-soft);" data-en="matplotlib / seaborn script — also text">matplotlib / seaborn 脚本——还是文字</p>
+                        </div>
+                    </div>
+                    <div style="text-align:center;color:var(--ink-soft);font-size:0.75rem;">↓</div>
+                    <div style="display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.7rem;background:#111;border-radius:6px;border-left:3px solid var(--red);">
+                        <span style="font-size:1rem;">📄</span>
+                        <div>
+                            <p style="font-size:var(--t-small);font-weight:600;color:#fff;" data-en="Paper (LaTeX)">论文（LaTeX）</p>
+                            <p style="font-size:clamp(0.5rem,0.7vw,0.62rem);color:#888;" data-en="Everything converges — into text">一切汇总——还是文字</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- RIGHT: why agent fits -->
+            <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);justify-content:center;height:100%;">
+                <div class="highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);">
+                    <p style="font-size:var(--t-h3);font-weight:700;line-height:1.4;" data-en="LLM = the world's best text processor">LLM = 有史以来最强的文字处理器</p>
+                </div>
+                <p style="font-size:var(--t-body);color:var(--ink-mid);line-height:1.6;" data-en="Every research bottleneck — reading papers, writing proposals, coding experiments, debugging — is exactly what LLMs are built for">科研的每个瓶颈<br>读文献 · 写方案 · 写代码 · 调 bug<br>恰好都是 LLM 最擅长的</p>
+                <div style="border-top:1px solid var(--border-soft);padding-top:var(--egap);">
+                    <p style="font-size:var(--t-small);font-weight:700;margin-bottom:0.4rem;" data-en="Killer advantage: instant feedback loop">杀手锏：即时反馈闭环</p>
+                    <ul style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.9;padding-left:1.1em;margin:0;">
+                        <li data-en="Error → agent reads, fixes, reruns">报错 → agent 自动定位、修复、重跑</li>
+                        <li data-en="Result CSV → agent plots + updates paper">结果 CSV → agent 画图 + 更新论文</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 9: Claude Code 聊天动画 ===================== -->
+<section class="slide" id="slide-why-research">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="AI Agent">AI Agent</div>
+        <div class="slide-header-label red" data-en="ChatGPT vs Agent">ChatGPT vs Agent</div>
+    </div>
+    <div class="slide-content" style="padding:var(--pad);gap:var(--gap);">
+        <h2 class="reveal" style="font-size:var(--t-h2);" data-en="From Copy-paste Engineer to Director">从 Copy-paste 到 Director</h2>
+
+        <div class="two-col" style="gap:var(--gap);align-items:start;">
+            <!-- LEFT: 以前怎么用 ChatGPT -->
+            <div style="display:flex;flex-direction:column;gap:var(--egap);">
+                <p class="reveal" style="font-size:var(--t-small);font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-soft);" data-en="Before: How We Used ChatGPT">以前怎么用 ChatGPT</p>
+                <div class="reveal code-block" style="font-size:clamp(0.68rem,0.9vw,0.78rem);line-height:1.75;" data-en="<span class='cm'># Experiment error → copy-paste into ChatGPT</span>
+<span style='color:#f87171;'>Error: KeyError: 'ece_true' in evaluate.py:42</span>
+                ↓  manually copy → paste → ask ChatGPT
+<span class='cm'># ChatGPT gives solution → manually paste back</span>
+<span class='kw'>Fix:</span> metrics[key] = ece_fn(logits, soft_labels)"><span class="cm"># 实验报错 → 复制粘贴问 ChatGPT</span>
+<span style="color:#f87171;">Error: KeyError: 'ece_true' in evaluate.py:42</span>
+                ↓  手动复制 → 粘贴 → 问 ChatGPT
+<span class="cm"># ChatGPT 给方案 → 再手动粘回去</span>
+<span class="kw">Fix:</span> metrics[key] = ece_fn(logits, soft_labels)</div>
+                <div class="reveal code-block" style="font-size:clamp(0.68rem,0.9vw,0.78rem);line-height:1.75;" data-en="<span class='cm'># Experiment results → copy to ChatGPT to write LaTeX</span>
+<span style='color:#86efac;'>model,ece_voted,ece_true</span>
+<span style='color:#86efac;'>TS,0.032,0.088</span>
+                ↓  manually copy → paste → wait for ChatGPT
+<span style='color:#93c5fd;'>\begin{'{'}tabular{'}'}{'{'}lcc{'}'} ...</span>"><span class="cm"># 实验结果 → 复制给 ChatGPT 让它写 LaTeX</span>
+<span style="color:#86efac;">model,ece_voted,ece_true</span>
+<span style="color:#86efac;">TS,0.032,0.088</span>
+                ↓  手动复制 → 粘贴 → 等 ChatGPT 生成
+<span style="color:#93c5fd;">\begin{'{'}tabular{'}'}{'{'}lcc{'}'} ...</span></div>
+                <div class="reveal" style="padding:0.6rem 0.9rem;border-left:3px solid #888;background:var(--bg-alt);border-radius:0 6px 6px 0;font-size:var(--t-small);color:var(--ink-mid);" data-en="<strong>Pattern:</strong> Manually ferry info → ChatGPT answers → Manually carry it back<br>
+                    ChatGPT is the tool, you're the middleman">
+                    <strong>模式：</strong> 人工搬运信息 → ChatGPT 回答 → 人工搬运回来<br>
+                    ChatGPT 是工具，你是中间人
+                </div>
+            </div>
+
+            <!-- RIGHT: 现在怎么用 Agent -->
+            <div style="display:flex;flex-direction:column;gap:var(--egap);">
+                <p class="reveal" style="font-size:var(--t-small);font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--red);" data-en="Now: How We Use Agent">现在怎么用 Agent</p>
+                <div class="reveal code-block" style="font-size:clamp(0.68rem,0.9vw,0.78rem);line-height:1.75;" data-en="<span class='cm'># Experiment error → Agent handles automatically</span>
+<span style='color:#f87171;'>Error: KeyError: 'ece_true' in evaluate.py:42</span>
+                ↓  Agent auto-reads file, locates cause, fixes, runs tests
+<span style='color:#86efac;'>✓ All tests passed. Pushed fix.</span>"><span class="cm"># 实验报错 → Agent 自动处理</span>
+<span style="color:#f87171;">Error: KeyError: 'ece_true' in evaluate.py:42</span>
+                ↓  Agent 自动读文件、定位原因、改好、跑测试
+<span style="color:#86efac;">✓ All tests passed. Pushed fix.</span></div>
+                <div class="reveal code-block" style="font-size:clamp(0.68rem,0.9vw,0.78rem);line-height:1.75;" data-en="<span class='cm'># Experiment results → Agent auto-generates figures</span>
+<span style='color:#86efac;'>model,ece_voted,ece_true</span>
+<span style='color:#86efac;'>TS,0.032,0.088</span>
+                ↓  Agent reads CSV → seaborn plots → saves fig2.pdf
+<span style='color:#93c5fd;'>✓ fig2_reliability.pdf saved</span>"><span class="cm"># 实验出结果 → Agent 自动出图</span>
+<span style="color:#86efac;">model,ece_voted,ece_true</span>
+<span style="color:#86efac;">TS,0.032,0.088</span>
+                ↓  Agent 读 CSV → seaborn 画图 → 存 fig2.pdf
+<span style="color:#93c5fd;">✓ fig2_reliability.pdf saved</span></div>
+                <div class="reveal highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);">
+                    <p style="font-size:var(--t-small);line-height:1.6;" data-en="<strong>Pattern:</strong> You only handle direction<br>
+                    Agent autonomously reads files, executes, verifies, and reports back<br>
+                    <span style='color:var(--ink-mid);'>→ You're the Director, not a Copy-paste Engineer</span>"><strong>模式：</strong> 你只负责判断方向<br>
+                    Agent 自主读文件、执行、验证、反馈<br>
+                    <span style="color:var(--ink-mid);">→ 你是 Director，不是 Copy-paste Engineer</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 11: PART 2 DIVIDER ===================== -->
+<section class="slide" id="slide-9">
+    <div class="slide-header">
+        <div class="slide-header-label">Research · Claude Code in Action</div>
+        <div class="slide-header-label red" data-en="Live Interaction">实际交互</div>
+    </div>
+    <div class="slide-content" style="padding: clamp(1rem,2vw,2rem) var(--pad); gap: 0;">
+        <!-- Claude Code terminal chrome -->
+        <div id="cc-window" style="
+            background: #1a1a1a;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: min(72vh, 580px);
+            font-family: var(--font-mono);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+        ">
+            <!-- Title bar -->
+            <div style="background:#2a2a2a;padding:0.6rem 1rem;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+                <div style="width:12px;height:12px;border-radius:50%;background:#ff5f57;"></div>
+                <div style="width:12px;height:12px;border-radius:50%;background:#febc2e;"></div>
+                <div style="width:12px;height:12px;border-radius:50%;background:#28c840;"></div>
+                <span style="margin-left:0.75rem;color:#888;font-size:0.75rem;letter-spacing:0.05em;flex:1;">claude — ~/CalibrationAGT</span>
+                <button id="cc-pause-btn" onclick="toggleCCPause()" style="background:#444;border:none;color:#ccc;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;letter-spacing:0.03em;">⏸ 暂停</button>
+                <button id="cc-replay-btn" onclick="restartCCAnimation()" style="background:#333;border:none;color:#888;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;">↺ 重播</button>
+            </div>
+            <!-- Chat area -->
+            <div id="cc-chat" style="flex:1;overflow-y:auto;padding:1rem 1.25rem;display:flex;flex-direction:column;gap:0.9rem;"></div>
+            <!-- Input bar -->
+            <div style="background:#111;border-top:1px solid #333;padding:0.6rem 1rem;display:flex;align-items:center;gap:0.75rem;flex-shrink:0;">
+                <span style="color:#e8321a;font-size:0.85rem;">❯</span>
+                <div id="cc-input" style="color:#e0e0e0;font-size:clamp(0.7rem,1.1vw,0.9rem);flex:1;min-height:1.2em;"></div>
+                <div id="cc-cursor" style="width:2px;height:1.1em;background:#e8321a;animation:blink 1s step-end infinite;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">09 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE R1: Skills & Skill-Creator ===================== -->
+<section class="slide" id="slide-skills-intro">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="Research · Toolchain">Research · 工具链</div>
+        <div class="slide-header-label red" data-en="Skills &amp; Skill-Creator">Skills &amp; Skill-Creator</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1.3fr;gap:var(--gap);padding:var(--egap) var(--pad) var(--pad);height:calc(100% - 4rem);align-items:center;">
+
+        <!-- LEFT: explanation -->
+        <div style="display:flex;flex-direction:column;gap:var(--egap);">
+            <h2 class="reveal" style="font-size:var(--t-h2);" data-en="Skills — Give Your Agent a Custom Workflow">Skills — 给 Agent 装上专属工作流</h2>
+            <div class="reveal" style="display:flex;flex-direction:column;gap:0.6rem;">
+                <div style="padding:0.7rem 1rem;background:var(--bg-alt);border-radius:8px;border-left:3px solid var(--red);">
+                    <p style="font-size:var(--t-small);font-weight:600;margin-bottom:0.2rem;" data-en="What is a Skill?">什么是 Skill？</p>
+                    <p style="font-size:clamp(0.62rem,0.9vw,0.78rem);color:var(--ink-mid);line-height:1.5;" data-en="A Markdown file describing how the Agent should complete a category of tasks. Once triggered, the Agent follows the skill's instructions to execute the full workflow.">一个 Markdown 文件，描述 Agent 应当如何完成某类任务。触发后，Agent 按照 skill 的指令执行完整流程。</p>
+                </div>
+                <div style="padding:0.7rem 1rem;background:var(--bg-alt);border-radius:8px;border-left:3px solid var(--ink-soft);">
+                    <p style="font-size:var(--t-small);font-weight:600;margin-bottom:0.2rem;" data-en="What is Skill-Creator?">什么是 Skill-Creator？</p>
+                    <p style="font-size:clamp(0.62rem,0.9vw,0.78rem);color:var(--ink-mid);line-height:1.5;" data-en="A skill specifically for <strong>writing skills</strong>. Describe your need, and Agent automatically generates a structured workflow spec and saves it.">一个专门用来<strong>写 skill</strong> 的 skill。描述你的需求，Agent 自动生成结构化的工作流规范并保存。</p>
+                </div>
+                <div style="padding:0.7rem 1rem;background:var(--bg-alt);border-radius:8px;border-left:3px solid var(--ink-soft);">
+                    <p style="font-size:var(--t-small);font-weight:600;margin-bottom:0.2rem;" data-en="Use Cases">使用场景</p>
+                    <p style="font-size:clamp(0.62rem,0.9vw,0.78rem);color:var(--ink-mid);line-height:1.5;" data-en="Literature review, paper writing, experiment management, code review, data preprocessing — any repetitive workflow can be packaged as a skill">文献调研、论文写作、实验管理、代码审查、数据预处理——任何重复的流程都可以封装成 skill</p>
+                </div>
+            </div>
+            <div class="reveal highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);">
+                <p style="font-size:clamp(0.65rem,0.95vw,0.82rem);font-weight:700;margin-bottom:0.3rem;" data-en="Skills = reusable Agent workflows — define once, invoke repeatedly">Skills = 可复用的 Agent 工作流，一次定义，反复调用</p>
+                <p style="font-size:clamp(0.58rem,0.82vw,0.7rem);color:var(--ink-mid);line-height:1.5;" data-en="Examples: <code style='background:rgba(0,0,0,0.06);padding:0.1em 0.3em;border-radius:3px;'>/paper-review</code> review workflow ·
+                    <code style='background:rgba(0,0,0,0.06);padding:0.1em 0.3em;border-radius:3px;'>/experiment-log</code> experiment record ·
+                    <code style='background:rgba(0,0,0,0.06);padding:0.1em 0.3em;border-radius:3px;'>/debug-cluster</code> GPU cluster debug ·
+                    <code style='background:rgba(0,0,0,0.06);padding:0.1em 0.3em;border-radius:3px;'>/weekly-report</code> auto weekly report">
+                    举一反三：<code style="background:rgba(0,0,0,0.06);padding:0.1em 0.3em;border-radius:3px;">/paper-review</code> 审稿工作流 ·
+                    <code style="background:rgba(0,0,0,0.06);padding:0.1em 0.3em;border-radius:3px;">/experiment-log</code> 实验记录 ·
+                    <code style="background:rgba(0,0,0,0.06);padding:0.1em 0.3em;border-radius:3px;">/debug-cluster</code> GPU 集群调试 ·
+                    <code style="background:rgba(0,0,0,0.06);padding:0.1em 0.3em;border-radius:3px;">/weekly-report</code> 自动周报
+                </p>
+            </div>
+        </div>
+
+        <!-- RIGHT: animated terminal -->
+        <div style="background:#1a1a1a;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;height:min(66vh,500px);font-family:var(--font-mono);box-shadow:0 8px 40px rgba(0,0,0,0.18);">
+            <div style="background:#2a2a2a;padding:0.55rem 1rem;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+                <div style="width:11px;height:11px;border-radius:50%;background:#ff5f57;"></div>
+                <div style="width:11px;height:11px;border-radius:50%;background:#febc2e;"></div>
+                <div style="width:11px;height:11px;border-radius:50%;background:#28c840;"></div>
+                <span style="margin-left:0.75rem;color:#888;font-size:0.72rem;flex:1;">claude — ~/research</span>
+                <button id="skill0-pause-btn" onclick="toggleSkill0Pause()" style="background:#444;border:none;color:#ccc;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;letter-spacing:0.03em;">⏸ 暂停</button>
+                <button id="skill0-replay-btn" onclick="restartSkill0Animation()" style="background:#333;border:none;color:#888;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;">↺ 重播</button>
+            </div>
+            <div id="skill0-chat" style="flex:1;overflow-y:auto;padding:0.9rem 1.1rem;font-size:clamp(0.58rem,0.85vw,0.72rem);line-height:1.7;color:#ccc;display:flex;flex-direction:column;gap:0.5rem;"></div>
+            <div style="background:#111;border-top:1px solid #333;padding:0.5rem 1rem;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+                <span style="color:#e8321a;font-size:0.85rem;">❯</span>
+                <span id="skill0-input" style="color:#ccc;font-size:clamp(0.6rem,0.85vw,0.72rem);"></span>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE R2: ai-research-paper skill ===================== -->
+<section class="slide" id="slide-skill-arp">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="Research · Skill in Action">Research · Skill 实战</div>
+        <div class="slide-header-label red">ai-research-paper</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:var(--gap);padding:var(--egap) var(--pad) var(--pad);height:calc(100% - 4rem);align-items:center;">
+
+        <!-- LEFT: pipeline diagram -->
+        <div class="reveal" style="display:flex;flex-direction:column;gap:0.3rem;height:100%;overflow:hidden;">
+            <p style="font-size:var(--t-small);font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-soft);">Pipeline</p>
+            <!-- Phase 0 -->
+            <div style="display:flex;gap:0.7rem;align-items:center;padding:0.4rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--red);">
+                <span style="font-size:0.95rem;flex-shrink:0;">🔧</span>
+                <div>
+                    <p style="font-size:clamp(0.62rem,0.88vw,0.76rem);font-weight:700;">Phase 0 · Setup</p>
+                    <p style="font-size:clamp(0.5rem,0.7vw,0.6rem);color:var(--ink-soft);">venue · topic · compute → config.md</p>
+                </div>
+            </div>
+            <div style="padding-left:1.4rem;color:#555;font-size:0.75rem;line-height:1;">↓</div>
+            <!-- IDEA LOOP bracket -->
+            <div style="display:flex;gap:0;align-items:stretch;">
+                <div style="width:10px;border-top:2px solid #444;border-left:2px solid #444;border-bottom:2px solid #444;border-radius:4px 0 0 4px;flex-shrink:0;margin:0.05rem 0;position:relative;">
+                    <span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-90deg);font-size:0.45rem;color:#555;white-space:nowrap;letter-spacing:0.05em;">↻ LOOP</span>
+                </div>
+                <div style="flex:1;display:flex;flex-direction:column;gap:0.22rem;padding:0.3rem 0 0.3rem 0.5rem;background:rgba(255,255,255,0.02);border-radius:0 6px 6px 0;">
+                    <p style="font-size:0.52rem;color:#555;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Idea Loop · Phase 1–5</p>
+                    <div style="display:flex;gap:0.6rem;align-items:center;padding:0.32rem 0.6rem;background:var(--bg-alt);border-radius:5px;">
+                        <span style="font-size:0.8rem;">📚</span>
+                        <div>
+                            <p style="font-size:clamp(0.58rem,0.8vw,0.68rem);font-weight:700;">Literature Review</p>
+                            <p style="font-size:clamp(0.48rem,0.65vw,0.56rem);color:var(--ink-soft);" data-en="ArXiv MCP · WebSearch · gap identification">ArXiv MCP · WebSearch · gap 定位</p>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:0.6rem;align-items:center;padding:0.32rem 0.6rem;background:var(--bg-alt);border-radius:5px;">
+                        <span style="font-size:0.8rem;">💡</span>
+                        <div>
+                            <p style="font-size:clamp(0.58rem,0.8vw,0.68rem);font-weight:700;">Idea Generation</p>
+                            <p style="font-size:clamp(0.48rem,0.65vw,0.56rem);color:var(--ink-soft);" data-en="Generate 4 candidate ideas">生成 4 个候选 idea</p>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:0.6rem;align-items:center;padding:0.32rem 0.6rem;background:var(--bg-alt);border-radius:5px;border-left:2px solid #7ec8e3;">
+                        <span style="font-size:0.8rem;">🤖</span>
+                        <div>
+                            <p style="font-size:clamp(0.58rem,0.8vw,0.68rem);font-weight:700;">6-Agent Debate <span style="color:#7ec8e3;font-size:0.5rem;font-weight:400;">← subagents</span></p>
+                            <p style="font-size:clamp(0.48rem,0.65vw,0.56rem);color:var(--ink-soft);">Critic · Champion · Devil's Advocate…</p>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:0.6rem;align-items:center;padding:0.32rem 0.6rem;background:#1a1a0a;border-radius:5px;border-left:2px solid #febc2e;">
+                        <span style="font-size:0.8rem;">🚪</span>
+                        <div>
+                            <p style="font-size:clamp(0.58rem,0.8vw,0.68rem);font-weight:700;">AC Gate</p>
+                            <p style="font-size:clamp(0.48rem,0.65vw,0.56rem);color:#888;">REVISE → loop · REJECT → drop · <span style="color:#28c840;">ACCEPT</span> ↓</p>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:0.6rem;align-items:center;padding:0.32rem 0.6rem;background:var(--bg-alt);border-radius:5px;">
+                        <span style="font-size:0.8rem;">🔬</span>
+                        <div>
+                            <p style="font-size:clamp(0.58rem,0.8vw,0.68rem);font-weight:700;">Pilot Experiment</p>
+                            <p style="font-size:clamp(0.48rem,0.65vw,0.56rem);color:var(--ink-soft);" data-en="Quick feasibility check · PASS to continue">快速验证可行性 · PASS 才继续</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="padding-left:1.4rem;color:#555;font-size:0.75rem;line-height:1;">↓ ACCEPT</div>
+            <!-- Post-loop phases -->
+            <div style="display:flex;gap:0.7rem;align-items:center;padding:0.4rem 0.7rem;background:var(--bg-alt);border-radius:6px;">
+                <span style="font-size:0.95rem;flex-shrink:0;">⚡</span>
+                <div>
+                    <p style="font-size:clamp(0.62rem,0.88vw,0.76rem);font-weight:700;">Full Experiments · GPU Auto</p>
+                    <p style="font-size:clamp(0.5rem,0.7vw,0.6rem);color:var(--ink-soft);" data-en="SSH · gnvitop scheduling · autonomous execution">SSH · gnvitop 调度 · 自主运行</p>
+                </div>
+            </div>
+            <div style="display:flex;gap:0.7rem;align-items:center;padding:0.4rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:2px solid #7ec8e3;">
+                <span style="font-size:0.95rem;flex-shrink:0;">📊</span>
+                <div>
+                    <p style="font-size:clamp(0.62rem,0.88vw,0.76rem);font-weight:700;">6-Agent Result Debate <span style="color:#7ec8e3;font-size:0.5rem;font-weight:400;">← subagents</span></p>
+                    <p style="font-size:clamp(0.5rem,0.7vw,0.6rem);color:var(--ink-soft);" data-en="Result interpretation · Contribution positioning">结果解读 · Contribution 定位</p>
+                </div>
+            </div>
+            <div style="display:flex;gap:0.7rem;align-items:center;padding:0.4rem 0.7rem;background:var(--bg-alt);border-radius:6px;">
+                <span style="font-size:0.95rem;flex-shrink:0;">✍️</span>
+                <div>
+                    <p style="font-size:clamp(0.62rem,0.88vw,0.76rem);font-weight:700;">Paper Writing + Figures</p>
+                    <p style="font-size:clamp(0.5rem,0.7vw,0.6rem);color:var(--ink-soft);" data-en="seaborn figures · parallel section writing">seaborn 图表 · 并行写各节</p>
+                </div>
+            </div>
+            <div style="display:flex;gap:0.7rem;align-items:center;padding:0.4rem 0.7rem;background:#111;border-radius:6px;border-left:3px solid var(--red);">
+                <span style="font-size:0.95rem;flex-shrink:0;">📱</span>
+                <div>
+                    <p style="font-size:clamp(0.62rem,0.88vw,0.76rem);font-weight:700;color:#fff;">Review <span style="color:#7ec8e3;font-size:0.5rem;font-weight:400;">← subagent</span> → Submit</p>
+                    <p style="font-size:clamp(0.5rem,0.7vw,0.6rem);color:#aaa;" data-en="Revisions · Telegram notification">修正 · Telegram 通知</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT: animated terminal -->
+        <div style="background:#1a1a1a;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;height:min(66vh,500px);font-family:var(--font-mono);box-shadow:0 8px 40px rgba(0,0,0,0.18);">
+            <div style="background:#2a2a2a;padding:0.55rem 1rem;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+                <div style="width:11px;height:11px;border-radius:50%;background:#ff5f57;"></div>
+                <div style="width:11px;height:11px;border-radius:50%;background:#febc2e;"></div>
+                <div style="width:11px;height:11px;border-radius:50%;background:#28c840;"></div>
+                <span style="margin-left:0.75rem;color:#888;font-size:0.72rem;flex:1;">claude — ~/CalibrationAGT</span>
+                <button id="arp-pause-btn" onclick="toggleARPPause()" style="background:#444;border:none;color:#ccc;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;letter-spacing:0.03em;">⏸ 暂停</button>
+                <button id="arp-replay-btn" onclick="restartARPAnimation()" style="background:#333;border:none;color:#888;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;">↺ 重播</button>
+            </div>
+            <div id="arp-chat" style="flex:1;overflow-y:auto;padding:0.9rem 1.1rem;font-size:clamp(0.58rem,0.85vw,0.72rem);line-height:1.7;color:#ccc;display:flex;flex-direction:column;gap:0.5rem;"></div>
+            <div style="background:#111;border-top:1px solid #333;padding:0.5rem 1rem;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+                <span style="color:#e8321a;font-size:0.85rem;">❯</span>
+                <span id="arp-input" style="color:#ccc;font-size:clamp(0.6rem,0.85vw,0.72rem);"></span>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE: 抛砖引玉 ===================== -->
+<section class="slide" id="slide-brickjade">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="Research · Going Further">Research · 更进一步</div>
+        <div class="slide-header-label red" data-en="Just the Beginning">抛砖引玉</div>
+    </div>
+    <div class="slide-content" style="padding:var(--pad);gap:var(--gap);justify-content:center;">
+        <div style="max-width:52rem;display:flex;flex-direction:column;gap:var(--gap);">
+            <div class="reveal">
+                <p style="font-size:var(--t-h3);line-height:1.5;" data-en="<code style='font-size:inherit;background:var(--bg-alt);padding:0.1em 0.35em;border-radius:4px;'>/ai-research-paper</code> is just a starting point —<br>any repetitive workflow can be packaged as a skill."><code style="font-size:inherit;background:var(--bg-alt);padding:0.1em 0.35em;border-radius:4px;">/ai-research-paper</code> 只是起点——<br>任何重复工作流都可以封装成 skill。</p>
+            </div>
+            <div class="reveal" style="border-top:2px solid var(--border-soft);padding-top:var(--gap);">
+                <p style="font-size:var(--t-small);color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.12em;font-weight:700;margin-bottom:0.6rem;" data-en="Lab colleagues have built something more systematic">实验室里有人做得更系统</p>
+                <p style="font-size:var(--t-h2);font-weight:700;line-height:1.3;">Chengcheng &amp; Jinxu</p>
+                <p style="font-size:var(--t-body);color:var(--ink-mid);margin:0.2rem 0 0.6rem;" data-en="AutoAI Research System">AutoAI Research System</p>
+                <p style="font-size:var(--t-small);font-family:var(--font-mono);color:var(--ink-soft);">github.com/Sibyl-Research-Team/AutoResearch-SibylSystem</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE R3: 抛砖引玉 ===================== -->
+<section class="slide" id="slide-autoai">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="Research · More Examples">Research · 更多示例</div>
+        <div class="slide-header-label red" data-en="Skills in Action">Skill 实战</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:0.6rem;padding:var(--egap) var(--pad) var(--pad);height:calc(100% - 4rem);justify-content:center;">
+        <!-- Two terminals side by side -->
+        <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0;">
+            <!-- Terminal 1: /brainstorm -->
+            <div style="background:#1a1a1a;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;font-family:var(--font-mono);box-shadow:0 6px 30px rgba(0,0,0,0.2);">
+                <div style="background:#2a2a2a;padding:0.45rem 1rem;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+                    <div style="width:10px;height:10px;border-radius:50%;background:#ff5f57;"></div>
+                    <div style="width:10px;height:10px;border-radius:50%;background:#febc2e;"></div>
+                    <div style="width:10px;height:10px;border-radius:50%;background:#28c840;"></div>
+                    <span style="margin-left:0.6rem;color:#888;font-size:0.66rem;flex:1;">/brainstorm — ~/CalibrationAGT</span>
+                    <button id="bs1-pause-btn" onclick="toggleBs1Pause()" style="background:#444;border:none;color:#ccc;font-size:0.65rem;padding:0.18rem 0.5rem;border-radius:4px;cursor:pointer;">⏸ 暂停</button>
+                    <button id="bs1-replay-btn" onclick="restartBs1Animation()" style="background:#333;border:none;color:#888;font-size:0.65rem;padding:0.18rem 0.5rem;border-radius:4px;cursor:pointer;">↺ 重播</button>
+                </div>
+                <div id="bs1-chat" style="flex:1;overflow-y:auto;padding:0.65rem 0.9rem;font-size:clamp(0.52rem,0.75vw,0.63rem);line-height:1.65;color:#ccc;display:flex;flex-direction:column;gap:0.4rem;"></div>
+                <div style="background:#111;border-top:1px solid #333;padding:0.4rem 0.9rem;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+                    <span style="color:#e8321a;font-size:0.8rem;">❯</span>
+                    <span id="bs1-input" style="color:#ccc;font-size:clamp(0.52rem,0.75vw,0.63rem);"></span>
+                </div>
+            </div>
+            <!-- Terminal 2: /frontend-slides -->
+            <div style="background:#1a1a1a;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;font-family:var(--font-mono);box-shadow:0 6px 30px rgba(0,0,0,0.2);">
+                <div style="background:#2a2a2a;padding:0.45rem 1rem;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+                    <div style="width:10px;height:10px;border-radius:50%;background:#ff5f57;"></div>
+                    <div style="width:10px;height:10px;border-radius:50%;background:#febc2e;"></div>
+                    <div style="width:10px;height:10px;border-radius:50%;background:#28c840;"></div>
+                    <span style="margin-left:0.6rem;color:#888;font-size:0.66rem;flex:1;">/frontend-slides — ~/talks</span>
+                    <button id="fs1-pause-btn" onclick="toggleFs1Pause()" style="background:#444;border:none;color:#ccc;font-size:0.65rem;padding:0.18rem 0.5rem;border-radius:4px;cursor:pointer;">⏸ 暂停</button>
+                    <button id="fs1-replay-btn" onclick="restartFs1Animation()" style="background:#333;border:none;color:#888;font-size:0.65rem;padding:0.18rem 0.5rem;border-radius:4px;cursor:pointer;">↺ 重播</button>
+                </div>
+                <div id="fs1-chat" style="flex:1;overflow-y:auto;padding:0.65rem 0.9rem;font-size:clamp(0.52rem,0.75vw,0.63rem);line-height:1.65;color:#ccc;display:flex;flex-direction:column;gap:0.4rem;"></div>
+                <div style="background:#111;border-top:1px solid #333;padding:0.4rem 0.9rem;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+                    <span style="color:#e8321a;font-size:0.8rem;">❯</span>
+                    <span id="fs1-input" style="color:#ccc;font-size:clamp(0.52rem,0.75vw,0.63rem);"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 17: PART 3 DIVIDER ===================== -->
+<section class="slide slide-part" id="slide-18">
+    <div class="part-number">03</div>
+    <div class="part-content">
+        <div class="part-label reveal" data-en="Part Three · Technical Anatomy">Part Three · 技术解剖</div>
+        <div class="part-title reveal" data-en="Technical Anatomy">技术解剖</div>
+        <div class="part-subtitle reveal" data-en="How Does an AI Agent Actually Work?">Agent 的運作原理是什麼？</div>
+        <div class="reveal" style="margin-top:1.5rem;font-size:clamp(0.65rem,0.9vw,0.8rem);color:rgba(255,255,255,0.45);font-style:italic;" data-en="Reference: Hung-yi Lee Machine Learning Course 2025 · NTU">
+            参考 李宏毅（Hung-yi Lee）机器学习课程 2025 · NTU
+        </div>
+    </div>
+    <div class="slide-footer" style="border-color: rgba(255,255,255,0.1);">
+        <div class="footer-text" style="color: rgba(255,255,255,0.3);"></div>
+        <div class="slide-num" style="color: rgba(255,255,255,0.3);">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 19: Tool Use ===================== -->
+<section class="slide" id="slide-20">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="Tech · Tool Use">技术 · Tool Use 机制</div>
+        <div class="slide-header-label red">Function Calling</div>
+    </div>
+    <div class="slide-content" style="gap: clamp(0.4rem,1vh,0.8rem);">
+        <h2 class="reveal" data-en='How Agent "Acts": The Tool Use Loop'>Agent 怎么"动手"：Tool Use 循环</h2>
+        <div class="flow-diagram" style="gap: clamp(0.3rem,0.6vh,0.5rem);">
+            <div class="flow-row reveal">
+                <div class="flow-box agent" data-en="Agent receives task">Agent 收到任务</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box llm" data-en="Sent to LLM (with tool list)">发给 LLM（含工具列表）</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box llm">[tool_use] Read("main.py")</div>
+            </div>
+            <div class="flow-row reveal" style="padding-left: 2rem;">
+                <div class="flow-arrow">↓</div>
+            </div>
+            <div class="flow-row reveal">
+                <div class="flow-box exec" data-en='Execute Read("main.py") on computer'>在电脑上执行 Read("main.py")</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box result" data-en="Return file contents">返回文件内容</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box agent" data-en="Add to context, call LLM again">加入 context，再次调用 LLM</div>
+            </div>
+            <div class="flow-row reveal" style="padding-left: 2rem;">
+                <div class="flow-arrow" data-en="↓ Loop until task complete">↓ 循环直到任务完成</div>
+            </div>
+            <div class="flow-row reveal">
+                <div class="flow-box llm">[tool_use] Write("fix.py", ...)</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box exec" data-en="Write to file">写入文件</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box result">"done" [END]</div>
+            </div>
+        </div>
+        <div class="highlight-box reveal">
+            <p data-en="Why it's powerful: can execute <strong>any shell command</strong> — text is what LLM does best, and shell commands are text">强大的原因：可以执行<strong>任意 shell 命令</strong>——文字是 LLM 最擅长的，shell 命令是文字</p>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">20 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 20: Memory ===================== -->
+<section class="slide" id="slide-21">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="Tech · Memory">技术 · 记忆系统</div>
+        <div class="slide-header-label red">Memory Architecture</div>
+    </div>
+    <div class="slide-content" style="gap: var(--gap);">
+        <h2 class="reveal" data-en='The System Prompt Holds the Agent's "Soul"'>System Prompt 里装着 Agent 的"灵魂"</h2>
+        <div class="two-col reveal">
+            <ul class="bullet-list">
+                <li data-en="<strong>CLAUDE.md</strong>: project rules, coding conventions, notes"><strong>CLAUDE.md</strong>：项目规则、代码约定、注意事项</li>
+                <li data-en="<strong>memory/*.md</strong>: user preferences, past decisions, long-term memory"><strong>memory/*.md</strong>：用户偏好、历史决策、长期记忆</li>
+                <li data-en="<strong>skills/*.md</strong>: reusable workflows (skill library)"><strong>skills/*.md</strong>：可复用的工作流（技能库）</li>
+                <li data-en="<strong>Tool list</strong>: Read, Write, Bash, WebSearch…"><strong>工具列表</strong>：Read、Write、Bash、WebSearch……</li>
+                <li data-en="At every LLM call, all of this is <strong>stuffed into the system prompt</strong>">每次调用 LLM 时，这些<strong>全部塞进 system prompt</strong></li>
+            </ul>
+            <div style="display: flex; flex-direction: column; gap: var(--egap);">
+                <div class="code-block" data-en="<span class='cm'># CLAUDE.md example</span>
+<span class='kw'>## Rules</span>
+- Reply in English
+- Check GPU usage before running experiments
+- Do not commit untested code
+
+<span class='kw'>## Project Context</span>
+NeurIPS 2026 submission, ddl: 5/31">
+<span class="cm"># CLAUDE.md 示例</span>
+<span class="kw">## Rules</span>
+- 用中文回复
+- 运行实验前先检查 GPU 占用
+- 不要 commit 未测试的代码
+
+<span class="kw">## Project Context</span>
+NeurIPS 2026 投稿，ddl: 5/31
+                </div>
+                <p class="text-soft" style="font-size: var(--t-small);" data-en='A single conversation can load <strong>4000+ tokens</strong> of system info —<br>
+                    that&apos;s why the agent can continuously "remember" project state'>
+                    一次对话可能塞入 <strong>4000+ tokens</strong> 的系统信息——<br>
+                    这就是 agent 能持续"记住"项目状态的原因
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">21 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 21: Sub-agent ===================== -->
+<section class="slide" id="slide-22">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="Tech · Sub-agent">技术 · Sub-agent</div>
+        <div class="slide-header-label red">Context Engineering</div>
+    </div>
+    <div class="slide-content" style="gap: var(--gap);">
+        <h2 class="reveal" data-en="Sub-agent: Solving the Context Bottleneck">Sub-agent：解决 Context 瓶颈</h2>
+        <div class="two-col reveal">
+            <div style="display: flex; flex-direction: column; gap: var(--egap);">
+                <p class="text-mid" style="font-size: var(--t-small);" data-en="Task too big to fit in one context?<br>
+                    The main agent spawns multiple sub-agents that <strong>handle subtasks in parallel</strong>, returning only summarized results to the main context.">
+                    任务太大，一个 context 放不下怎么办？<br>
+                    主 agent spawn 多个 sub-agent，<strong>并行处理子任务</strong>，只把摘要结果返回主 context。
+                </p>
+                <div class="arch-diagram" style="flex-direction: column; gap: 0.75rem; align-items: flex-start;">
+                    <div style="display:flex; align-items:center; gap:0.75rem;">
+                        <div class="arch-box center-box" style="min-width:5rem; padding:0.5rem 0.75rem; font-size: var(--t-small);" data-en="Main Agent">主 Agent</div>
+                        <span style="color:var(--ink-soft); font-size:0.85rem;">→ spawn</span>
+                        <div class="arch-box" style="min-width:5rem; padding:0.5rem 0.75rem; font-size: var(--t-small);" data-en="Sub A: Read Paper A">Sub A：读论文 A</div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:0.75rem; padding-left: 9rem;">
+                        <span style="color:var(--ink-soft); font-size:0.85rem;">→ spawn</span>
+                        <div class="arch-box" style="min-width:5rem; padding:0.5rem 0.75rem; font-size: var(--t-small);" data-en="Sub B: Read Paper B">Sub B：读论文 B</div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:0.75rem;">
+                        <span style="color:var(--ink-soft); font-size:0.85rem; padding-left: 0.5rem;" data-en="← Returns summary only, not full text">← 只返回摘要，不返回全文</span>
+                    </div>
+                </div>
+            </div>
+            <ul class="bullet-list">
+                <li data-en="Sub-agent has a <strong>lean system prompt</strong>, focused on a single subtask">Sub-agent 有<strong>精简的 system prompt</strong>，专注单一子任务</li>
+                <li data-en="Context window contains only task-relevant info — <strong>more accurate reasoning</strong>">Context Window 里只有任务关键信息，<strong>推理更准确</strong></li>
+                <li data-en="Multiple sub-agents run in parallel — <strong>faster</strong>">多个 sub-agent 并行跑——<strong>速度更快</strong></li>
+                <li data-en="This is the core trick of <strong>Context Engineering</strong>">这就是 <strong>Context Engineering</strong> 的核心技巧</li>
+            </ul>
+        </div>
+        <div class="highlight-box reveal">
+            <p data-en="When you keep delegating down, who actually does the work? — The bottom-level sub-agent calls tools and actually executes">层层外包到最后谁干事？——最底层的 sub-agent 调用工具真正执行</p>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">22 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE: Context 压缩 ===================== -->
+<section class="slide" id="slide-compress">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="Tech · Context Compression">技术 · Context 压缩</div>
+        <div class="slide-header-label red" data-en="From Hongyi Lee's Course">来自李宏毅课程</div>
+    </div>
+    <div class="slide-content" style="gap:var(--gap);">
+        <h2 class="reveal" data-en="Context Overflow — How to Compress?">Context 超出上限——怎么压缩？</h2>
+        <div class="two-col" style="align-items:start;gap:var(--gap);">
+            <div style="display:flex;flex-direction:column;gap:var(--egap);">
+                <div class="reveal" style="padding:0.7rem 1rem;background:var(--red-light);border:1px solid rgba(232,50,26,0.2);border-radius:8px;">
+                    <p style="font-size:var(--t-small);font-weight:700;color:var(--red);margin-bottom:0.3rem;" data-en="Why Does Context Grow So Fast?">为什么 Context 会涨这么快？</p>
+                    <p style="font-size:var(--t-small);color:var(--ink-mid);" data-en="Tool outputs (tool observations) account for <strong style='color:var(--red);'>84%</strong> of context<br>
+                    The model's own words are only ~10%">工具的输出（tool observations）占了 Context 的 <strong style="color:var(--red);">84%</strong><br>
+                    模型自己说的话只占 ~10%</p>
+                </div>
+                <p class="reveal" style="font-size:var(--t-small);font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.05em;" data-en="Two Compression Methods">两种压缩方式</p>
+                <div class="reveal" style="display:flex;gap:0.8rem;align-items:flex-start;">
+                    <div style="flex-shrink:0;width:1.8rem;height:1.8rem;background:var(--bg-alt);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:var(--t-small);font-weight:700;color:var(--red);">1</div>
+                    <div>
+                        <p style="font-size:var(--t-small);font-weight:600;">Observation Masking</p>
+                        <p style="font-size:var(--t-small);color:var(--ink-mid);" data-en="Replace tool output with a single line:<br>&ldquo;<em>There used to be tool output here</em>&rdquo;">把工具输出直接换成一句话：<br>「<em>这里曾经有个工具的输出</em>」</p>
+                        <p style="font-size:var(--t-small);color:var(--ink-soft);margin-top:0.2rem;" data-en="Looks brutal — but experiments show it works about as well as LLM summarization">看起来很粗暴——但实验表明效果和 LLM 摘要差不多</p>
+                    </div>
+                </div>
+                <div class="reveal" style="display:flex;gap:0.8rem;align-items:flex-start;">
+                    <div style="flex-shrink:0;width:1.8rem;height:1.8rem;background:var(--bg-alt);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:var(--t-small);font-weight:700;color:var(--red);">2</div>
+                    <div>
+                        <p style="font-size:var(--t-small);font-weight:600;">LLM Summarization</p>
+                        <p style="font-size:var(--t-small);color:var(--ink-mid);" data-en="History too long → compress it with LLM summarization<br>OpenClaw has this compaction mechanism built in">历史对话太长 → 用 LLM 压成摘要<br>OpenClaw 内置了这个 compaction 机制</p>
+                    </div>
+                </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:var(--egap);">
+                <p class="reveal" style="font-size:var(--t-small);font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.05em;" data-en="Sub-agent = Automatic Compression">Sub-agent = 自动压缩</p>
+                <div class="reveal" style="display:flex;flex-direction:column;gap:0.5rem;font-size:var(--t-small);">
+                    <div style="padding:0.5rem 0.8rem;background:var(--bg-alt);border-radius:6px;" data-en="Main Agent spawns Sub-agent → Sub-agent accumulates its own Context">主 Agent spawn Sub-agent → Sub-agent 积累自己的 Context</div>
+                    <div style="padding-left:1rem;color:var(--ink-soft);">↓ sub-agent return</div>
+                    <div style="padding:0.5rem 0.8rem;background:var(--bg-alt);border-radius:6px;" data-en="Sub-agent's entire conversation <strong>vanishes</strong>, only the returned sentence remains">Sub-agent 的整段对话<strong>消失</strong>，只留 return 的一句话</div>
+
+                </div>
+                <div class="reveal highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);">
+                    <p style="font-size:var(--t-small);" data-en="Language models <strong>dislike</strong> compressing their own memory<br>
+                    <span style='color:var(--ink-mid);'>So compression is usually enforced by the Agent framework</span>">语言模型<strong>不喜欢</strong>压缩自己的记忆<br>
+                    <span style="color:var(--ink-mid);">所以压缩通常是 Agent 框架强制执行的</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== PART 4 DIVIDER ===================== -->
+<section class="slide slide-part" id="slide-part4">
+    <div class="part-number">04</div>
+    <div class="part-content">
+        <div class="part-label reveal" data-en="Part Four · Discussion">Part Four · 讨论</div>
+        <div class="part-title reveal" data-en="What Has AI Agent<br>Changed?">AI Agent<br>改变了什么？</div>
+        <div class="part-subtitle reveal" data-en="Research · Engineering · Human Value">科研 · 工程 · 人的价值</div>
+    </div>
+    <div class="slide-footer" style="border-color: rgba(255,255,255,0.1);">
+        <div class="footer-text" style="color: rgba(255,255,255,0.3);"></div>
+        <div class="slide-num" style="color: rgba(255,255,255,0.3);">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== MINDSET ===================== -->
+<section class="slide" id="slide-mindset">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="Discussion · New Mindset">讨论 · 新 Mindset</div>
+        <div class="slide-header-label red" data-en="Working in the Agent Era">Agent 时代的工作方式</div>
+    </div>
+    <div class="slide-content" style="gap: var(--gap);">
+        <div class="highlight-box reveal" style="border-left: 4px solid var(--red); background: var(--red-light); margin-bottom: 0;">
+            <p style="font-size: var(--t-h3); font-weight: 700; line-height: 1.3;">
+                <span data-en="Work is about being accountable for <span style='color:var(--red);'>outcomes</span>">工作，是对<span style="color:var(--red);">结果</span>负责</span><br>
+                <span style="font-size: 0.6em; font-weight: 400; color: var(--ink-mid);" data-en='Not the process, not the lines of code, not "I wrote it myself"'>不是对过程负责，不是对代码行数负责，不是对"我自己写的"负责</span>
+            </p>
+        </div>
+        <div class="card-grid reveal" style="grid-template-columns: repeat(3,1fr); gap: var(--egap);">
+            <div class="card" style="background: #1a1a1a; border-color: #333; padding: clamp(0.8rem,1.5vw,1.4rem);">
+                <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem;">
+                    <img src="https://karpathy.ai/assets/me_new.jpg" alt="Andrej Karpathy"
+                         style="width:2rem;height:2rem;border-radius:50%;object-fit:cover;flex-shrink:0;"
+                         onerror="this.style.display='none'">
+                    <div style="font-size: var(--t-label); color: #e8321a; letter-spacing: 0.15em; text-transform: uppercase;">Andrej Karpathy</div>
+                </div>
+                <p style="font-size: var(--t-small); color: #d0d0d0; line-height: 1.55; font-style: italic;">"Vibe coding — fully give in to the vibes, embrace exponentials, and forget that the code even exists."</p>
+                <p style="font-size: var(--t-label); color: #666; margin-top: 0.5rem;">X · Feb 2025 → now: "agentic engineering"</p>
+            </div>
+            <div class="card" style="background: #1a1a1a; border-color: #333; padding: clamp(0.8rem,1.5vw,1.4rem);">
+                <div style="font-size: var(--t-label); color: #e8321a; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.5rem;">Sam Altman · OpenAI</div>
+                <p style="font-size: var(--t-small); color: #d0d0d0; line-height: 1.55; font-style: italic;">"We may see the first AI agents join the workforce and materially change the output of companies."</p>
+                <p style="font-size: var(--t-label); color: #666; margin-top: 0.5rem;">Blog · Jan 2025</p>
+            </div>
+            <div class="card" style="background: #1a1a1a; border-color: #333; padding: clamp(0.8rem,1.5vw,1.4rem);">
+                <div style="font-size: var(--t-label); color: #e8321a; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.5rem;">Dario Amodei · Anthropic</div>
+                <p style="font-size: var(--t-small); color: #d0d0d0; line-height: 1.55; font-style: italic;">"AI could soon compress decades of scientific progress into just a few years."</p>
+                <p style="font-size: var(--t-label); color: #666; margin-top: 0.5rem;">Machines of Loving Grace · Oct 2024</p>
+            </div>
+        </div>
+        <p class="reveal text-soft" style="font-size: var(--t-small); text-align: center;" data-en="This isn't the future — it's <strong style='color:var(--ink);'>now</strong>, happening right in this presentation">
+            这不是未来——这是 <strong style="color:var(--ink);">现在</strong>，就发生在这个报告里
+        </p>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== REFLECTION 1: 科研 ===================== -->
+<section class="slide" id="slide-refl1">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="Discussion · Research">讨论 · 科研</div>
+        <div class="slide-header-label red">Research</div>
+    </div>
+    <div class="slide-content" style="gap: var(--gap);">
+        <h2 class="reveal" data-en="The Paper Inflation Era">论文通货膨胀时代</h2>
+        <div class="two-col" style="align-items: start; gap: var(--gap);">
+            <div style="display:flex;flex-direction:column;gap:var(--egap);">
+                <div class="reveal highlight-box" style="border-left:4px solid var(--red);">
+                    <p style="font-size:var(--t-body);" data-en="<strong>Paper Inflation</strong><br>
+                    <span class='text-soft'>Agent lets anyone churn out papers fast — hundreds per day on arxiv, reviewers already can't keep up</span>"><strong>Paper 通货膨胀</strong><br>
+                    <span class="text-soft">Agent 让人人都能快速产出论文——arxiv 每天几百篇，reviewers 已经看不过来了</span></p>
+                </div>
+                <!-- arxiv growth chart -->
+                <div class="reveal" style="background:var(--bg-alt);border-radius:8px;padding:0.5rem 0.7rem;">
+                    <p style="font-size:0.6rem;color:var(--ink-soft);margin-bottom:0.3rem;" data-en="arXiv annual submissions · Source: arxiv.org/stats (2025: exceeded 28,000/month)">arxiv 年提交量 · 来源: arxiv.org/stats（2025年已超 2.8万篇/月）</p>
+                    <img src="https://info.arxiv.org/help/stats/2021_by_area/newsubs.png"
+                         alt="arXiv new submissions per year by subject area (1991–2021)"
+                         style="width:100%;border-radius:4px;max-height:min(16vh,120px);object-fit:contain;"
+                         onerror="this.style.display='none'">
+                </div>
+                <ul class="bullet-list reveal" style="font-size:var(--t-small);">
+                    <li data-en="The era of publishing &ldquo;baseline +1% accuracy&rdquo; as a paper may soon be over">把 baseline + 1% accuracy 写成 paper 的时代，可能快结束了</li>
+                    <li data-en="Agent can automatically do ablations, related work, figures — <strong>the barrier disappears</strong>">Agent 可以自动做 ablation、related work、图表——<strong>门槛消失</strong></li>
+                    <li data-en="&ldquo;How many papers published&rdquo; as a metric will become increasingly meaningless">"发了多少篇" 这个 metric 会越来越没意义</li>
+                </ul>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:var(--egap);">
+                <p class="reveal" style="font-size:var(--t-body);font-weight:600;color:var(--ink);" data-en="How will the evaluation system shift?">Evaluation system 会怎么变？</p>
+                <ul class="bullet-list reveal">
+                    <li data-en="From <strong>quantity</strong> to <strong>impact</strong> — citation, real-world adoption">从 <strong>数量</strong> 转向 <strong>影响力</strong>——citation、real-world adoption</li>
+                    <li data-en="Greater weight on asking genuinely new questions, not solving known benchmarks">更看重提出真正的新问题，而不是解决已知 benchmark</li>
+                    <li data-en="Reproducibility and open-source become more important">Reproducibility 和 open-source 会变得更重要</li>
+                </ul>
+                <div class="reveal highlight-box" style="border-left:4px solid var(--ink);">
+                    <p style="font-size:var(--t-small);" data-en="Maybe: <strong>asking the right question</strong> is the real core competency">也许：<strong>能不能问出好问题</strong>，才是真正的核心竞争力</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+
+<!-- ===================== DISCUSSION: AI on Research ===================== -->
+<section class="slide" id="slide-refl-research">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="Discussion · AI Agent's Impact">讨论 · AI Agent 的冲击</div>
+        <div class="slide-header-label red" data-en="Academic Research">学术科研</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:0.5rem;padding:var(--egap) var(--pad) var(--pad);height:calc(100% - 4rem);">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;flex-shrink:0;">
+            <h2 class="reveal" data-en="Will AI Agent Replace Researchers?">AI Agent 会替代科研工作者吗？</h2>
+            <p style="font-size:clamp(0.52rem,0.7vw,0.62rem);color:var(--ink-soft);">参考：李宏毅 AI Agent (3/3) · NTU 2026</p>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0;align-items:center;">
+            <!-- LEFT: Andrew Hall image -->
+            <div class="reveal" style="display:flex;flex-direction:column;gap:0.5rem;">
+                <p style="font-size:clamp(0.58rem,0.78vw,0.68rem);font-weight:700;color:var(--red);">Andrew Hall (Stanford) · 「100x Research Assistant」</p>
+                <img src="https://substack-post-media.s3.amazonaws.com/public/images/2f1712c4-2659-4035-97af-c7661f3408fd_1335x922.png"
+                     alt="Cost: PhD student 16h $1040 vs Claude Code 1h $10"
+                     style="width:100%;border-radius:8px;object-fit:contain;max-height:min(55vh,420px);"
+                     onerror="this.style.opacity='0.15'">
+                <p style="font-size:clamp(0.48rem,0.65vw,0.58rem);color:var(--ink-soft);" data-en="PhD student: 16h / $1,040 &nbsp;vs&nbsp; Claude Code: 1h / $10 (<strong style='color:var(--red);'>104× cheaper</strong>)">博士生：16h / $1,040 &nbsp;vs&nbsp; Claude Code：1h / $10（<strong style="color:var(--red);">104× cheaper</strong>）</p>
+            </div>
+            <!-- RIGHT: 但人类还没有被替代 -->
+            <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);justify-content:center;">
+                <div style="padding:0.8rem 1rem;background:var(--bg-alt);border-radius:8px;border-left:4px solid var(--ink);">
+                    <p style="font-size:var(--t-body);font-weight:700;margin-bottom:0.5rem;" data-en="But: humans haven't been replaced">但：人类还没有被替代</p>
+                    <ul style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.9;padding-left:1.1em;margin:0;">
+                        <li data-en="AI ideas look novel on the surface — but don't outperform humans after execution">AI 的 idea 表面新颖，执行后并不比人类好</li>
+                        <li data-en="Accepted papers: humans intervene more on idea and experiment design">被接受的论文：<strong>人类在 idea 和实验设计介入更多</strong></li>
+                        <li data-en='AI excels at execution, but "what to do" still needs human judgment'>AI 擅长执行，但"做什么"仍需人来判断</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== DISCUSSION 2: 工程 ===================== -->
+<section class="slide" id="slide-refl2">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="Discussion · Engineering">讨论 · 工程</div>
+        <div class="slide-header-label red">Engineering</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:0.5rem;padding:var(--egap) var(--pad) var(--pad);height:calc(100% - 4rem);">
+        <h2 class="reveal" data-en="Senior Engineers 10× Productive — Why Still Hire Juniors?">Senior 工程师生产力 ×10，还要招新人干嘛？</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0;">
+            <!-- LEFT: text -->
+            <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);">
+                <div class="highlight-box" style="border-left:4px solid var(--red);">
+                    <p style="font-size:var(--t-body);" data-en="<strong>Managing people vs. managing Agents</strong><br>
+                    <span class='text-soft'>Junior hires need onboarding, mentoring, review — and might even pass the blame<br>Agent follows instructions, doesn't need coddling, always available, no salary</span>"><strong>管人 vs 管 Agent</strong><br>
+                    <span class="text-soft">新人要带、要讲、要 review、还可能甩锅<br>Agent 听话、不受气、随时 available、不要工资</span></p>
+                </div>
+                <ul class="bullet-list">
+                    <li data-en="One experienced person + agent can do what used to take a team of 5">一个有经验的人 + agent，能做以前 5 人团队的事</li>
+                    <li data-en="The repetitive work juniors used to do is now fully handled by agents">Junior 做的重复性工作，agent 全包了</li>
+                    <li data-en="Companies' headcount calculus is being repriced">公司的 headcount 逻辑正在被重新定价</li>
+                </ul>
+                <p style="font-size:var(--t-body);font-weight:600;" data-en="Do juniors / new grads still have a shot?">那 junior/新人 还有机会吗？</p>
+                <ul class="bullet-list">
+                    <li data-en="Yes — but the path is narrower; you need to find <strong>your irreplaceable part</strong> earlier">有——但路变窄了，要更早找到<strong>不可替代的那部分</strong></li>
+                    <li data-en="Systems judgment, user communication, defining what actually needs to be built">系统判断力、用户沟通、定义真正的需求</li>
+                    <li data-en="Those who can command agents are the new era's <strong>10x engineer</strong>">能驾驭 agent 的人，是新时代的 <strong>10x engineer</strong></li>
+                </ul>
+                <div class="highlight-box">
+                    <p style="font-size:var(--t-small);" data-en="This isn't pessimism — it's a new starting line<br>
+                    <span style='color:var(--ink-soft);'>What used to take 5 years to build end-to-end might now take 1</span>">这不是悲观——是新的起点<br>
+                    <span style="color:var(--ink-soft);">以前要 5 年才能独立做完一个完整系统，现在可能 1 年</span></p>
+                </div>
+            </div>
+            <!-- RIGHT: Anthropic stats + Claude report images -->
+            <div class="reveal" style="display:flex;flex-direction:column;gap:0.5rem;">
+                <div style="padding:0.6rem 0.8rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--red);">
+                    <p style="font-size:var(--t-small);font-weight:700;color:var(--red);margin-bottom:0.3rem;" data-en="Anthropic Labor Market Study (2026)">Anthropic 劳动力市场研究（2026）</p>
+                    <ul style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.8;padding-left:1em;margin:0;">
+                        <li data-en="Programmers: AI covers 75% of job tasks">程序员岗位：AI 覆盖 75% 的工作任务</li>
+                        <li data-en="AI-exposed jobs: avg. earnings 47% higher than unexposed">受影响岗位的平均薪资比未受影响岗位高 47%</li>
+                        <li data-en="Job seekers aged 22–25: 14% drop in employment rate">22–25 岁求职者：就业率下降 14%</li>
+                    </ul>
+                </div>
+                <div style="flex:1;display:flex;align-items:center;justify-content:center;">
+                    <img class="zh-img" src="assets/claude_report_cn.jpg" alt="Claude职业报告（中文）"
+                         style="width:100%;max-height:min(52vh,400px);object-fit:contain;border-radius:8px;"
+                         onerror="this.style.opacity='0.2'">
+                    <img class="en-img" src="assets/claude_report_en.webp" alt="Claude Career Report (English)"
+                         style="width:100%;max-height:min(52vh,400px);object-fit:contain;border-radius:8px;"
+                         onerror="this.style.opacity='0.2'">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 22: gnvitop BONUS ===================== -->
+<section class="slide" id="slide-22b">
+    <div class="slide-header">
+        <div class="slide-header-label red">🎁 Bonus</div>
+        <div class="slide-header-label" data-en="Tool Recommendation">好物推荐</div>
+    </div>
+    <div class="slide-content" style="gap: var(--gap);">
+        <h2 class="reveal" data-en="gnvitop — Global GPU Monitor">gnvitop — 全局 GPU 监控</h2>
+        <div class="two-col text-img reveal" style="align-items: start;">
+            <div style="display: flex; flex-direction: column; gap: var(--egap);">
+                <p class="text-mid" data-en="While building these two projects, I always needed to know <strong>which GPU was free</strong>.<br>
+                    With all the agents going wild, you still have to fight for GPUs yourself.">
+                    做这两个项目的时候，我经常需要知道<strong>哪个 GPU 是空的</strong>。<br>
+                    各种 agent 大乱斗打得热闹，GPU 还是要靠自己抢。
+                </p>
+                <div class="code-block">
+pip install gnvitop
+gnvitop
+                </div>
+                <ul class="bullet-list" style="font-size: var(--t-small);">
+                    <li data-en="Auto-reads ~/.ssh/config, SSHs into all servers">自动读 ~/.ssh/config，SSH 进所有服务器</li>
+                    <li data-en="Live web dashboard showing all GPU status">实时 Web dashboard，显示全部 GPU 状态</li>
+                    <li data-en="Supports ProxyJump bastion hosts">支持 ProxyJump 跳板机</li>
+                    <li data-en="Current user processes <strong>highlighted in blue</strong>">当前用户进程<strong>蓝色高亮</strong></li>
+                </ul>
+            </div>
+            <img src="https://github.com/user-attachments/assets/2ca35564-c891-4af9-9b30-5ebb0949ba99" alt="gnvitop dashboard" class="screenshot" style="max-height: min(45vh, 360px);" onerror="this.style.display='none'">
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text">github.com/Linwei94/gnvitop</div>
+        <div class="slide-num">23 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 23: Q&A ===================== -->
+<section class="slide" id="slide-23">
+    <div class="slide-content" style="justify-content: center; align-items: center; text-align: center;">
+        <p class="reveal text-soft" style="font-size: var(--t-small); letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 1rem;">Thanks</p>
+        <h1 class="reveal" style="font-size: var(--t-hero);">Q &amp; A</h1>
+        <div class="reveal" style="margin-top: var(--gap); display: flex; flex-direction: column; gap: 0.5rem; align-items: center;">
+            <p class="text-soft" style="font-size: var(--t-small); font-family: var(--font-mono);">github.com/Linwei94/talks</p>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text">Linwei Tao · 2026.03.18</div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+<script>
+/* ===========================================
+   PHONE IFRAME SCALE
+   =========================================== */
+function scalePhoneIframe() {
+    const screen = document.getElementById('phone-screen');
+    const iframe = document.getElementById('cat-iframe');
+    if (!screen || !iframe) return;
+    const containerW = screen.offsetWidth;
+    const containerH = screen.offsetHeight;
+    const scaleW = containerW / 430;
+    const scaleH = containerH / 932;
+    const scale = Math.min(scaleW, scaleH);
+    iframe.style.transform = `scale(${scale})`;
+    // center if there's leftover space
+    const scaledW = 430 * scale;
+    const scaledH = 932 * scale;
+    iframe.style.left = ((containerW - scaledW) / 2) + 'px';
+    iframe.style.top = ((containerH - scaledH) / 2) + 'px';
+    // allow the iframe to scroll internally
+    iframe.style.overflow = 'auto';
+}
+window.addEventListener('load', scalePhoneIframe);
+window.addEventListener('resize', scalePhoneIframe);
+setTimeout(scalePhoneIframe, 500);
+
+function scaleSafariIframe() {
+    const screen = document.getElementById('safari-screen');
+    const iframe = document.getElementById('safari-iframe');
+    if (!screen || !iframe) return;
+    const scale = screen.offsetWidth / 1440;
+    iframe.style.transform = `scale(${scale})`;
+    iframe.style.height = (screen.offsetHeight / scale) + 'px';
+}
+window.addEventListener('load', scaleSafariIframe);
+window.addEventListener('resize', scaleSafariIframe);
+setTimeout(scaleSafariIframe, 500);
+
+/* ===========================================
+   CLAUDE CODE CHAT ANIMATION
+   =========================================== */
+
+// Script: each entry is { role, text } or { tool, args, result }
+const CC_SCRIPT = [
+    { role: 'user', text: '我在研究 confidence calibration，ground truth 本身有歧义——不同 annotator 对同一张图不同意。帮我调研一下有没有人做过？' },
+    { role: 'claude', text: '好，先搜文献。' },
+    { tool: 'WebSearch', args: '"calibration ambiguous labels annotator disagreement"', result: '返回 47 篇结果，正在筛选...' },
+    { tool: 'WebSearch', args: '"soft label calibration ECE annotator agreement"', result: '找到关键论文: Soft Calibration (ICML 2023), CrowdKit, CROWDLAB' },
+    { tool: 'Write', args: 'literature_review.md', result: '已写入 34 行调研笔记' },
+    { role: 'claude', text: '调研完成。核心发现：\n  ECE_voted（对多数投票 label 评估）vs ECE_true（对真实分布评估）\n  的区别几乎没有人系统讨论过 ← 这是你的 gap' },
+    { role: 'user', text: '就是这个！帮我设计一个 ambiguity-aware calibrator 并实现' },
+    { role: 'claude', text: '先读一下你现有的代码结构...' },
+    { tool: 'Read', args: 'src/calibrators/base.py', result: '读取 128 行 (BaseCalibrator class)' },
+    { tool: 'Read', args: 'src/metrics/ece.py', result: '读取 84 行 (standard ECE implementation)' },
+    { tool: 'Write', args: 'src/calibrators/agt_calibrator.py', result: '已写入 156 行 (AGTCalibrator + soft label support)' },
+    { tool: 'Write', args: 'src/metrics/ece_true.py', result: '已写入 67 行 (ECE_true, ECE_voted metrics)' },
+    { tool: 'Bash', args: 'python -m pytest src/tests/test_agt.py -v', result: '........  8 passed in 1.23s ✓' },
+    { tool: 'Bash', args: 'python experiments/run_baseline.py --dataset CIFAR-10H', result: '  Temperature Scaling: ECE_voted=0.032  ECE_true=0.088  ← ECE_true 反而更高了！\n  AGT Calibrator:      ECE_voted=0.031  ECE_true=0.041  ✓' },
+    { role: 'claude', text: '假设验证成立。Temperature Scaling 确实在优化错误指标。' },
+    { role: 'user', text: '帮我在 xuchang-lab1、xuchang-lab2、linwei-lab2 上同时跑消融实验，不同 seed' },
+    { tool: 'Bash', args: "ssh xuchang-lab1 'python train.py --seed 0 --dataset CIFAR-10H > logs/s0.log &'", result: '[1] 23847' },
+    { tool: 'Bash', args: "ssh xuchang-lab2 'python train.py --seed 1 --dataset ChaosNLI > logs/s1.log &'", result: '[1] 31092' },
+    { tool: 'Bash', args: "ssh linwei-lab2  'python train.py --seed 2 --dataset ISIC > logs/s2.log &'", result: '[1] 8834' },
+    { role: 'claude', text: '三台已并行启动，预计 2 小时完成。结果写到 results/ablation/' },
+    { role: 'user', text: '结果出来了，帮我写成 NeurIPS 格式的论文' },
+    { tool: 'Read', args: 'results/ablation/summary.csv', result: '读取 45 行 (3 datasets × 5 methods × 3 seeds)' },
+    { tool: 'Bash', args: 'python scripts/gen_figures.py', result: '✓ fig1_toy_example.pdf\n✓ fig2_reliability_diagrams.pdf\n✓ fig3_ablation_results.pdf' },
+    { tool: 'Write', args: 'paper/main.tex', result: '已写入 847 行 (NeurIPS 2026 template)' },
+    { tool: 'Bash', args: 'cd paper && pdflatex main.tex', result: 'Output written on main.pdf (9 pages). ✓' },
+    { role: 'claude', text: '论文草稿完成，共 9 页。需要我调整某个部分吗？' },
+];
+
+
+let ccAnimationRunning = false;
+let ccPaused = false;
+let ccGeneration = 0;
+
+function pauseLabel(p) { return p ? '▶ 继续' : '⏸ 暂停'; }
+function replayLabel() { return '↺ 重播'; }
+
+function toggleCCPause() {
+    ccPaused = !ccPaused;
+    const btn = document.getElementById('cc-pause-btn');
+    if (btn) btn.textContent = pauseLabel(ccPaused);
+}
+
+function restartCCAnimation() {
+    ccGeneration++;
+    ccAnimationRunning = false;
+    ccPaused = false;
+    const btn = document.getElementById('cc-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
+    const chat = document.getElementById('cc-chat');
+    if (chat) { chat.innerHTML = ''; }
+    const input = document.getElementById('cc-input');
+    if (input) input.textContent = '';
+    setTimeout(runCCAnimation, 200);
+}
+
+async function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+async function waitIfPaused() {
+    while (ccPaused) await sleep(100);
+}
+
+async function typeText(el, text, speed = 40) {
+    const chat = document.getElementById('cc-chat');
+    for (const ch of text) {
+        await waitIfPaused();
+        el.textContent += ch;
+        if (chat) chat.scrollTop = chat.scrollHeight;
+        await sleep(ch === '\n' ? 55 : speed);
+    }
+}
+
+function appendBubble(chat, role) {
+    const wrap = document.createElement('div');
+    wrap.style.cssText = `display:flex;gap:0.6rem;align-items:flex-start;${role==='user'?'flex-direction:row-reverse;':''}`;
+    const avatar = document.createElement('div');
+    avatar.style.cssText = `flex-shrink:0;width:1.6rem;height:1.6rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;`;
+    if (role === 'user') {
+        avatar.style.background = '#e8321a'; avatar.style.color = '#fff'; avatar.textContent = 'L';
+    } else {
+        avatar.style.background = '#da7756';
+        avatar.innerHTML = `<img src="https://cdn.simpleicons.org/anthropic/ffffff" width="15" height="15" style="display:block;">`;
+    }
+    const bubble = document.createElement('div');
+    const isUser = role === 'user';
+    bubble.style.cssText = `max-width:82%;padding:0.45rem 0.8rem;border-radius:${isUser?'10px 3px 10px 10px':'3px 10px 10px 10px'};font-size:clamp(0.62rem,0.95vw,0.78rem);line-height:1.55;white-space:pre-wrap;background:${isUser?'#e8321a':'#252525'};color:${isUser?'#fff':'#d0d0d0'};font-family:${isUser?'var(--font-cn)':'var(--font-mono)'};`;
+    wrap.appendChild(avatar);
+    wrap.appendChild(bubble);
+    chat.appendChild(wrap);
+    chat.scrollTop = chat.scrollHeight;
+    return bubble;
+}
+
+function appendToolCall(chat, tool, args, result) {
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'margin:0.1rem 0 0.1rem 2.2rem;';
+    wrap.innerHTML = `<div style="font-family:var(--font-mono);font-size:clamp(0.58rem,0.88vw,0.72rem);color:#888;">` +
+        `<span style="color:#7ec8e3;">⏺ ${tool}</span><span style="color:#aaa;">(${args})</span><br>` +
+        `<span style="color:#666;padding-left:1.2rem;">⎿ ${result.replace(/\n/g,'<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;')}</span></div>`;
+    chat.appendChild(wrap);
+    chat.scrollTop = chat.scrollHeight;
+    return wrap;
+}
+
+async function runCCAnimation() {
+    const chat = document.getElementById('cc-chat');
+    const inputEl = document.getElementById('cc-input');
+    if (!chat || !inputEl || ccAnimationRunning) return;
+    const myGen = ccGeneration;
+    ccAnimationRunning = true;
+    chat.innerHTML = '';
+
+    for (const msg of CC_SCRIPT) {
+        if (!ccAnimationRunning || ccGeneration !== myGen) break;
+        await waitIfPaused();
+
+        if (msg.role === 'user') {
+            await sleep(350);
+            inputEl.textContent = '';
+            await typeText(inputEl, msg.text, 32);
+            await sleep(600);
+            inputEl.textContent = '';
+            const bubble = appendBubble(chat, 'user');
+            bubble.textContent = msg.text;
+            await sleep(400);
+        } else if (msg.role === 'claude') {
+            await sleep(300);
+            const bubble = appendBubble(chat, 'claude');
+            await typeText(bubble, msg.text, 18);
+            await sleep(500);
+        } else if (msg.tool) {
+            await sleep(200);
+            // Show tool call line by line
+            const wrap = document.createElement('div');
+            wrap.style.cssText = 'margin:0.1rem 0 0.1rem 2.2rem;font-family:var(--font-mono);font-size:clamp(0.58rem,0.88vw,0.72rem);';
+            const callLine = document.createElement('div');
+            callLine.innerHTML = `<span style="color:#7ec8e3;">⏺ ${msg.tool}</span><span style="color:#888;">(${msg.args})</span>`;
+            wrap.appendChild(callLine);
+            chat.appendChild(wrap);
+            chat.scrollTop = chat.scrollHeight;
+            await sleep(300);
+            await waitIfPaused();
+            const resultLine = document.createElement('div');
+            resultLine.style.cssText = 'color:#555;padding-left:1.2rem;';
+            resultLine.innerHTML = `⎿ <span id="rtl_${Date.now()}"></span>`;
+            wrap.appendChild(resultLine);
+            const span = resultLine.querySelector('span');
+            await typeText(span, msg.result, 12);
+            await sleep(200);
+        }
+    }
+    inputEl.textContent = '';
+    if (ccGeneration === myGen) ccAnimationRunning = false;
+}
+
+/* ===========================================
+   TITLE SLIDE CC ANIMATION (looping)
+   =========================================== */
+
+let cc0AnimationRunning = false;
+
+function appendBubble0(chat, role) {
+    const wrap = document.createElement('div');
+    wrap.style.cssText = `display:flex;gap:0.55rem;align-items:flex-start;${role==='user'?'flex-direction:row-reverse;':''}`;
+    const avatar = document.createElement('div');
+    avatar.style.cssText = `flex-shrink:0;width:1.5rem;height:1.5rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;`;
+    if (role === 'user') {
+        avatar.style.background = '#e8321a'; avatar.style.color = '#fff'; avatar.textContent = 'L';
+    } else {
+        avatar.style.background = '#da7756';
+        avatar.innerHTML = `<img src="https://cdn.simpleicons.org/anthropic/ffffff" width="14" height="14" style="display:block;">`;
+    }
+    const bubble = document.createElement('div');
+    const isUser = role === 'user';
+    bubble.style.cssText = `max-width:84%;padding:0.4rem 0.75rem;border-radius:${isUser?'10px 3px 10px 10px':'3px 10px 10px 10px'};font-size:clamp(0.58rem,0.88vw,0.72rem);line-height:1.5;white-space:pre-wrap;background:${isUser?'#e8321a':'#252525'};color:${isUser?'#fff':'#d0d0d0'};font-family:${isUser?'var(--font-cn)':'var(--font-mono)'};`;
+    wrap.appendChild(avatar);
+    wrap.appendChild(bubble);
+    chat.appendChild(wrap);
+    chat.scrollTop = chat.scrollHeight;
+    return bubble;
+}
+
+async function typeText0(el, text, speed = 35) {
+    const chat = document.getElementById('cc0-chat');
+    for (const ch of text) {
+        if (!cc0AnimationRunning) return;
+        el.textContent += ch;
+        if (chat) chat.scrollTop = chat.scrollHeight;
+        await sleep(ch === '\n' ? 50 : speed);
+    }
+}
+
+async function runCC0Animation() {
+    const chat = document.getElementById('cc0-chat');
+    const inputEl = document.getElementById('cc0-input');
+    if (!chat || !inputEl) return;
+    cc0AnimationRunning = true;
+
+    while (cc0AnimationRunning) {
+        chat.innerHTML = '';
+        inputEl.textContent = '';
+
+        for (const msg of CC_SCRIPT) {
+            if (!cc0AnimationRunning) break;
+
+            if (msg.role === 'user') {
+                await sleep(300);
+                inputEl.textContent = '';
+                await typeText0(inputEl, msg.text, 28);
+                await sleep(500);
+                inputEl.textContent = '';
+                const bubble = appendBubble0(chat, 'user');
+                bubble.textContent = msg.text;
+                await sleep(350);
+            } else if (msg.role === 'claude') {
+                await sleep(250);
+                const bubble = appendBubble0(chat, 'claude');
+                await typeText0(bubble, msg.text, 16);
+                await sleep(450);
+            } else if (msg.tool) {
+                await sleep(180);
+                const wrap = document.createElement('div');
+                wrap.style.cssText = 'margin:0.05rem 0 0.05rem 2rem;font-family:var(--font-mono);font-size:clamp(0.55rem,0.82vw,0.67rem);';
+                const callLine = document.createElement('div');
+                callLine.innerHTML = `<span style="color:#7ec8e3;">⏺ ${msg.tool}</span><span style="color:#888;">(${msg.args})</span>`;
+                wrap.appendChild(callLine);
+                chat.appendChild(wrap);
+                chat.scrollTop = chat.scrollHeight;
+                await sleep(250);
+                if (!cc0AnimationRunning) break;
+                const resultLine = document.createElement('div');
+                resultLine.style.cssText = 'color:#555;padding-left:1.1rem;';
+                resultLine.innerHTML = `⎿ <span></span>`;
+                wrap.appendChild(resultLine);
+                const span = resultLine.querySelector('span');
+                await typeText0(span, msg.result, 10);
+                await sleep(180);
+            }
+        }
+
+        if (!cc0AnimationRunning) break;
+        // Brief pause before looping
+        inputEl.textContent = '';
+        await sleep(2000);
+    }
+    cc0AnimationRunning = false;
+}
+
+/* ===========================================
+   SLIDE PRESENTATION CONTROLLER
+   =========================================== */
+class SlidePresentation {
+    constructor() {
+        this.slides = Array.from(document.querySelectorAll('.slide'));
+        this.total = this.slides.length;
+        this.current = 0;
+        this.isScrolling = false;
+
+        this.setupIntersectionObserver();
+        this.setupKeyboardNav();
+        this.setupTouchNav();
+        this.setupWheelNav();
+        this.setupProgressBar();
+        this.setupNavDots();
+
+        // Mark first slide visible
+        setTimeout(() => this.slides[0].classList.add('visible'), 100);
+    }
+
+    setupIntersectionObserver() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    this.current = this.slides.indexOf(entry.target);
+                    this.updateUI();
+                    // Music: only on slide-1
+                    if (entry.target.id === 'slide-1') {
+                        ambience.start();
+                    } else {
+                        ambience.stop();
+                    }
+                    // Animations — always restart from beginning on slide entry
+                    if (entry.target.id === 'slide-9') {
+                        setTimeout(restartCCAnimation, 400);
+                    }
+                    if (entry.target.id === 'slide-skills-intro') {
+                        setTimeout(restartSkill0Animation, 400);
+                    }
+                    if (entry.target.id === 'slide-skill-arp') {
+                        setTimeout(restartARPAnimation, 400);
+                    }
+                    if (entry.target.id === 'slide-autoai') {
+                        setTimeout(restartBs1Animation, 400);
+                        setTimeout(restartFs1Animation, 700);
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+
+        this.slides.forEach(s => observer.observe(s));
+    }
+
+    getBuildItems(slide) {
+        // Only slides with 3+ reveal items and not part-dividers or title use build mode
+        if (slide.classList.contains('slide-part')) return [];
+        if (slide.id === 'slide-1') return [];
+        const items = Array.from(slide.querySelectorAll('.reveal'));
+        return items.length >= 3 ? items : [];
+    }
+
+    revealNext() {
+        const slide = this.slides[this.current];
+        const items = this.getBuildItems(slide);
+        if (items.length === 0) return false;
+        const nextHidden = items.find(el => !el.classList.contains('step-shown'));
+        if (!nextHidden) return false;
+        nextHidden.classList.add('step-shown');
+        return true;
+    }
+
+    goTo(index) {
+        index = Math.max(0, Math.min(this.total - 1, index));
+        const slide = this.slides[index];
+        // Reset build state on new slide
+        this.slides.forEach(s => {
+            s.classList.remove('build-active');
+            s.querySelectorAll('.reveal').forEach(el => el.classList.remove('step-shown'));
+        });
+        const items = this.getBuildItems(slide);
+        if (items.length >= 3) {
+            slide.classList.add('build-active');
+            // Show first item immediately
+            if (items[0]) items[0].classList.add('step-shown');
+        }
+        slide.scrollIntoView({ behavior: 'smooth' });
+        this.current = index;
+        this.updateUI();
+    }
+
+    setupKeyboardNav() {
+        document.addEventListener('keydown', e => {
+            if (e.target.getAttribute('contenteditable') === 'true') return;
+            if (['ArrowDown','ArrowRight','Space','PageDown'].includes(e.code)) {
+                e.preventDefault();
+                if (!this.revealNext()) this.goTo(this.current + 1);
+            } else if (['ArrowUp','ArrowLeft','PageUp'].includes(e.code)) {
+                e.preventDefault(); this.goTo(this.current - 1);
+            } else if (e.key === 'Home') { this.goTo(0); }
+            else if (e.key === 'End') { this.goTo(this.total - 1); }
+        });
+    }
+
+    setupWheelNav() {
+        let lastWheel = 0;
+        document.addEventListener('wheel', e => {
+            e.preventDefault();
+            const now = Date.now();
+            if (now - lastWheel < 800) return;
+            lastWheel = now;
+            if (e.deltaY > 0) {
+                if (!this.revealNext()) this.goTo(this.current + 1);
+            } else {
+                this.goTo(this.current - 1);
+            }
+        }, { passive: false });
+    }
+
+    setupTouchNav() {
+        let startY = 0;
+        document.addEventListener('touchstart', e => { startY = e.touches[0].clientY; }, { passive: true });
+        document.addEventListener('touchend', e => {
+            const diff = startY - e.changedTouches[0].clientY;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    if (!this.revealNext()) this.goTo(this.current + 1);
+                } else {
+                    this.goTo(this.current - 1);
+                }
+            }
+        }, { passive: true });
+    }
+
+    setupProgressBar() {
+        this.bar = document.getElementById('progressBar');
+    }
+
+    setupNavDots() {
+        const nav = document.getElementById('navDots');
+        const partLabels = {
+            'slide-6':     'Part 2 · Research',
+            'slide-12':    'Part 1 · Engineering',
+            'slide-18':    'Part 3 · 技术解剖',
+            'slide-part4': 'Part 4 · 讨论',
+        };
+        this.dotEls = [];
+        this.slides.forEach((slide, i) => {
+            const isPart = slide.classList.contains('slide-part');
+            const label = partLabels[slide.id];
+            if (isPart) {
+                const btn = document.createElement('button');
+                btn.className = 'nav-dot-part';
+                btn.innerHTML = `<span class="part-label">${label || ''}</span><div class="part-diamond"></div>`;
+                btn.addEventListener('click', () => this.goTo(i));
+                nav.appendChild(btn);
+                this.dotEls.push(btn);
+            } else {
+                const dot = document.createElement('button');
+                dot.className = 'nav-dot';
+                dot.setAttribute('aria-label', `Slide ${i + 1}`);
+                dot.addEventListener('click', () => this.goTo(i));
+                nav.appendChild(dot);
+                this.dotEls.push(dot);
+            }
+        });
+    }
+
+    updateUI() {
+        const pct = this.total > 1 ? (this.current / (this.total - 1)) * 100 : 0;
+        if (this.bar) this.bar.style.width = pct + '%';
+        if (this.dotEls) {
+            this.dotEls.forEach((d, i) => d.classList.toggle('active', i === this.current));
+        }
+    }
+}
+
+/* ===========================================
+   INLINE EDITOR
+   =========================================== */
+class InlineEditor {
+    constructor() {
+        this.isActive = false;
+        this.editables = [];
+        this.saveKey = 'slides-content-v1';
+        this.hideTimeout = null;
+
+        this.toggle = document.getElementById('editToggle');
+        this.hotzone = document.getElementById('editHotzone');
+        this.setupHotzone();
+        this.setupKeyboard();
+        this.loadSaved();
+    }
+
+    setupHotzone() {
+        this.hotzone.addEventListener('mouseenter', () => {
+            clearTimeout(this.hideTimeout);
+            this.toggle.classList.add('show');
+        });
+        this.hotzone.addEventListener('mouseleave', () => {
+            this.hideTimeout = setTimeout(() => {
+                if (!this.isActive) this.toggle.classList.remove('show');
+            }, 400);
+        });
+        this.toggle.addEventListener('mouseenter', () => clearTimeout(this.hideTimeout));
+        this.toggle.addEventListener('mouseleave', () => {
+            this.hideTimeout = setTimeout(() => {
+                if (!this.isActive) this.toggle.classList.remove('show');
+            }, 400);
+        });
+        this.toggle.addEventListener('click', () => this.toggleEditMode());
+        this.hotzone.addEventListener('click', () => this.toggleEditMode());
+    }
+
+    setupKeyboard() {
+        document.addEventListener('keydown', e => {
+            if ((e.key === 'e' || e.key === 'E') && !e.target.getAttribute('contenteditable')) {
+                this.toggleEditMode();
+            }
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                this.save();
+            }
+        });
+    }
+
+    toggleEditMode() {
+        this.isActive = !this.isActive;
+        document.body.classList.toggle('edit-mode', this.isActive);
+        this.toggle.textContent = this.isActive ? '💾 保存 (Ctrl+S)' : '✏ 编辑';
+        this.toggle.classList.toggle('active', this.isActive);
+        this.toggle.classList.add('show');
+
+        const selector = 'h1,h2,h3,p,li,.card-title,.card-desc,.part-title,.part-subtitle,.footer-text';
+        document.querySelectorAll(selector).forEach(el => {
+            el.setAttribute('contenteditable', this.isActive ? 'true' : 'false');
+        });
+
+        if (!this.isActive) { this.save(); this.toggle.classList.remove('show'); }
+    }
+
+    save() {
+        const data = {};
+        document.querySelectorAll('[contenteditable]').forEach((el, i) => {
+            data[i] = el.innerHTML;
+        });
+        localStorage.setItem(this.saveKey, JSON.stringify(data));
+        if (this.isActive) {
+            this.toggle.textContent = '✅ 已保存';
+            setTimeout(() => { this.toggle.textContent = '💾 保存 (Ctrl+S)'; }, 1500);
+        }
+    }
+
+    loadSaved() {
+        const saved = localStorage.getItem(this.saveKey);
+        if (!saved) return;
+        try {
+            const data = JSON.parse(saved);
+            document.querySelectorAll('h1,h2,h3,p,li,.card-title,.card-desc,.part-title,.part-subtitle,.footer-text').forEach((el, i) => {
+                if (data[i] !== undefined) el.innerHTML = data[i];
+            });
+        } catch(e) {}
+    }
+}
+
+// Init
+const presentation = new SlidePresentation();
+const editor = new InlineEditor();
+
+/* ===========================================
+   INTERSTELLAR AMBIENCE — Hans Zimmer OST
+   =========================================== */
+// The <audio autoplay muted> element is in the HTML — browsers always allow muted autoplay.
+// We grab it here and unmute+fade in immediately on load.
+class CyberpunkAmbience {
+    constructor() {
+        this.audio = document.getElementById('bg-music');
+        this.playing = false;
+        this._fadeInterval = null;
+    }
+
+    start() {
+        if (this.playing || !this.audio) return;
+        this.playing = true;
+        this._indicator(true);
+        this.audio.muted = false;
+        // Don't reset volume to 0 if already audible (prevents glitch on quick back-nav)
+        if (this.audio.volume === 0) {
+            this.audio.volume = 0;
+        }
+        this.audio.play().then(() => this._fadeTo(0.55, 3000)).catch(() => {
+            this.playing = false; this._indicator(false);
+        });
+    }
+
+    stop() {
+        if (!this.playing || !this.audio) return;
+        // Keep playing=true during fade so start() won't double-fire
+        this._indicator(false);
+        this._fadeTo(0, 2500, () => {
+            this.audio.pause();
+            this.audio.muted = true;
+            this.playing = false;
+        });
+    }
+
+    _fadeTo(target, ms, onDone) {
+        clearInterval(this._fadeInterval);
+        const steps = 50;
+        const interval = ms / steps;
+        const start = this.audio ? this.audio.volume : 0;
+        const delta = (target - start) / steps;
+        let i = 0;
+        this._fadeInterval = setInterval(() => {
+            i++;
+            if (!this.audio) { clearInterval(this._fadeInterval); return; }
+            this.audio.volume = Math.max(0, Math.min(1, start + delta * i));
+            if (i >= steps) {
+                clearInterval(this._fadeInterval);
+                if (onDone) onDone();
+            }
+        }, interval);
+    }
+
+    _indicator(on) {
+        const el = document.getElementById('music-indicator');
+        if (el) el.style.opacity = on ? '1' : '0';
+    }
+}
+
+const ambience = new CyberpunkAmbience();
+
+// Play on slide 0, stop when leaving
+const _origGoTo = presentation.goTo.bind(presentation);
+presentation.goTo = function(index) {
+    _origGoTo(index);
+    if (index === 0) { ambience.start(); }
+    else if (ambience.playing) { ambience.stop(); }
+};
+
+// Auto-start music + terminal on page load
+window.addEventListener('load', () => {
+    setTimeout(runCC0Animation, 600);
+
+    const el = document.getElementById('bg-music');
+    if (!el) return;
+
+    // Muted play is ALWAYS allowed — start muted, then unmute
+    el.muted = true;
+    el.volume = 0;
+    el.play().then(() => {
+        // Muted play succeeded → unmute and fade in
+        el.muted = false;
+        ambience.playing = true;
+        ambience._indicator(true);
+        ambience._fadeTo(0.55, 4000);
+    }).catch(() => {
+        // Even muted failed (very rare) → wait for first user gesture
+        const onGesture = () => ambience.start();
+        document.addEventListener('keydown', onGesture, { once: true });
+        document.addEventListener('click',   onGesture, { once: true });
+    });
+});
+
+// Also restart cc0 when navigating back to slide 0
+const _origGoTo2 = presentation.goTo.bind(presentation);
+presentation.goTo = function(index) {
+    _origGoTo2(index);
+    if (index === 0 && !cc0AnimationRunning) {
+        setTimeout(runCC0Animation, 300);
+    } else if (index !== 0) {
+        cc0AnimationRunning = false;
+    }
+};
+
+/* ===========================================
+   SKILL-CREATOR ANIMATION
+   =========================================== */
+const SKILL0_SCRIPT = [
+    { role: 'user', text: '/skill-creator' },
+    { tool: 'Read', args: '~/.claude/skills/', result: 'Found 15 skills: gpu-experiment, paper-review, daily-summary...' },
+    { role: 'claude', text: '好，你想创建什么 skill？\n描述一下触发场景和希望 agent 做什么。' },
+    { role: 'user', text: 'literature-review：给我一个研究方向，自动调研文献、总结 gap' },
+    { role: 'claude', text: '明白了。调研完之后输出什么格式？\n比如：按时间线整理、按方法分类、还是直接写 related work 段落？' },
+    { role: 'user', text: '先列 top 10 论文 + 每篇一句话摘要，然后写 gap 分析' },
+    { role: 'claude', text: '好的。搜索范围只用 arxiv，还是也搜 semantic scholar / Google Scholar？' },
+    { role: 'user', text: 'arxiv 为主，最后加一下 Google Scholar 补漏' },
+    { role: 'claude', text: '收到，我来起草 skill 规范。' },
+    { tool: 'mcp__arxiv__search_papers', args: '"literature review automation survey NeurIPS 2024"', result: '12 results — reviewing common survey structures' },
+    { tool: 'Write', args: '~/.claude/skills/literature-review.md', result: 'Written: 487 lines' },
+    { role: 'claude', text: '草稿写好了，结构如下：\n1. 接收研究方向关键词\n2. arxiv 检索 → 按引用排序 top 10\n3. 每篇生成一句话摘要\n4. Google Scholar 补充检索\n5. 输出 gap 分析段落\n\n要调整吗？' },
+    { role: 'user', text: '第3步改成三句话，包含：方法、数据集、结论' },
+    { tool: 'Write', args: '~/.claude/skills/literature-review.md', result: 'Updated: summary template → method / dataset / conclusion' },
+    { role: 'claude', text: '✓ Skill literature-review 已创建。\n\n下次输入 /literature-review 即可触发。' },
+];
+
+
+let skill0Running = false;
+let skill0Paused = false;
+
+function toggleSkill0Pause() {
+    skill0Paused = !skill0Paused;
+    const btn = document.getElementById('skill0-pause-btn');
+    if (btn) btn.textContent = pauseLabel(skill0Paused);
+}
+
+function appendBubbleSkill(chat, role) {
+    const wrap = document.createElement('div');
+    wrap.style.cssText = `display:flex;gap:0.6rem;align-items:flex-start;${role==='user'?'flex-direction:row-reverse;':''}`;
+    const avatar = document.createElement('div');
+    avatar.style.cssText = `flex-shrink:0;width:1.5rem;height:1.5rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;`;
+    if (role === 'user') {
+        avatar.style.background = '#e8321a'; avatar.style.color = '#fff'; avatar.textContent = 'L';
+    } else {
+        avatar.style.background = '#da7756';
+        avatar.innerHTML = `<img src="https://cdn.simpleicons.org/anthropic/ffffff" width="14" height="14" style="display:block;">`;
+    }
+    const bubble = document.createElement('div');
+    const isUser = role === 'user';
+    bubble.style.cssText = `max-width:85%;padding:0.45rem 0.8rem;border-radius:${isUser?'10px 3px 10px 10px':'3px 10px 10px 10px'};font-size:clamp(0.6rem,0.9vw,0.74rem);line-height:1.55;white-space:pre-wrap;background:${isUser?'#e8321a':'#252525'};color:${isUser?'#fff':'#d0d0d0'};font-family:${isUser?'var(--font-cn)':'var(--font-mono)'};`;
+    wrap.appendChild(avatar); wrap.appendChild(bubble);
+    chat.appendChild(wrap); chat.scrollTop = chat.scrollHeight;
+    return bubble;
+}
+
+async function typeTextSkill(el, text, chat, speed = 22, isPaused = null) {
+    for (const ch of text) {
+        if (isPaused) while (isPaused()) await sleep(50);
+        el.textContent += ch;
+        if (chat) chat.scrollTop = chat.scrollHeight;
+        await sleep(ch === '\n' ? 45 : speed);
+    }
+}
+
+async function runSkill0Animation() {
+    const chat = document.getElementById('skill0-chat');
+    const inputEl = document.getElementById('skill0-input');
+    if (!chat || !inputEl || skill0Running) return;
+    skill0Running = true;
+    skill0Paused = false;
+    const btn = document.getElementById('skill0-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
+    chat.innerHTML = '';
+    const ip = () => skill0Paused;
+    for (const msg of SKILL0_SCRIPT) {
+        if (!skill0Running) break;
+        while (skill0Paused) await sleep(50);
+        if (msg.role === 'user') {
+            await sleep(300);
+            inputEl.textContent = '';
+            await typeTextSkill(inputEl, msg.text, null, 30, ip);
+            await sleep(500);
+            inputEl.textContent = '';
+            const bubble = appendBubbleSkill(chat, 'user');
+            bubble.textContent = msg.text;
+            await sleep(350);
+        } else if (msg.role === 'claude') {
+            await sleep(280);
+            const bubble = appendBubbleSkill(chat, 'claude');
+            await typeTextSkill(bubble, msg.text, chat, 16, ip);
+            await sleep(450);
+        } else if (msg.tool) {
+            await sleep(180);
+            const wrap = document.createElement('div');
+            wrap.style.cssText = 'margin:0.05rem 0 0.05rem 2rem;font-family:var(--font-mono);font-size:clamp(0.56rem,0.82vw,0.68rem);';
+            const callLine = document.createElement('div');
+            callLine.innerHTML = `<span style="color:#7ec8e3;">⏺ ${msg.tool}</span><span style="color:#888;">(${msg.args})</span>`;
+            wrap.appendChild(callLine); chat.appendChild(wrap); chat.scrollTop = chat.scrollHeight;
+            await sleep(280);
+            const resultLine = document.createElement('div');
+            resultLine.style.cssText = 'color:#555;padding-left:1.1rem;';
+            const span = document.createElement('span');
+            resultLine.appendChild(span); wrap.appendChild(resultLine);
+            await typeTextSkill(span, '⎿ ' + msg.result, chat, 10, ip);
+            await sleep(180);
+        }
+    }
+    inputEl.textContent = '';
+    skill0Running = false;
+}
+
+function restartSkill0Animation() {
+    skill0Running = false;
+    skill0Paused = false;
+    const btn = document.getElementById('skill0-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
+    const chat = document.getElementById('skill0-chat');
+    if (chat) chat.innerHTML = '';
+    const input = document.getElementById('skill0-input');
+    if (input) input.textContent = '';
+    setTimeout(runSkill0Animation, 200);
+}
+
+/* ===========================================
+   AI-RESEARCH-PAPER ANIMATION
+   =========================================== */
+const ARP_SCRIPT = [
+    { role: 'user', text: '/ai-research-paper' },
+    { role: 'claude', text: 'Phase 0: Setup\n目标会议 / 研究方向 / 计算资源？' },
+    { role: 'user', text: 'venue: NeurIPS 2026\ntopic: calibration under annotator disagreement\ncompute: 4x A100 (jinxu-lab1)' },
+    { tool: 'Write', args: 'plan/config.md', result: 'Saved: venue · topic · compute config' },
+    { role: 'claude', text: '── Phase 1: Literature Review ──' },
+    { tool: 'mcp__arxiv__search_papers', args: '"calibration annotator disagreement soft labels"', result: '53 results · top-12 parsed and summarized' },
+    { tool: 'WebSearch', args: '"ECE soft label NeurIPS ICML 2024"', result: 'CROWDLAB · SoftCalib (ICML23) · DiRA identified' },
+    { tool: 'Write', args: 'plan/literature.md', result: '12 papers · gap: ECE_voted vs ECE_true unstudied' },
+    { role: 'claude', text: '── Phase 2-3: Idea Generation + 6-Agent Debate ──\n生成 4 个候选，启动 subagent 辩论…' },
+    { tool: 'Agent', args: 'IdeaDebate × 6 subagents · idea_pool.md', result: 'Subagent[Critic]:   Idea-3 假设过强，需要 annotation budget 先验\nSubagent[Champion]: Idea-1 形式简洁，NeurIPS 风格契合\nSubagent[Devil]:    Idea-2 baseline 太弱，reviewer 会质疑\nSubagent[Reviewer]: Idea-1 gap 清晰，contribution 可量化\n…（6 轮 debate 完成）' },
+    { role: 'claude', text: '── AC Gate ──\n[ACCEPT] Idea-1: ECE 分解框架\n理由：novel · feasible · gap 明确' },
+    { role: 'claude', text: '── Phase 4: Pilot Experiment ──\n检查 GPU 可用性…' },
+    { tool: 'Bash', args: 'gnvitop --agent', result: 'jinxu-lab1  GPU 0: available=true\njinxu-lab1  GPU 1: available=true' },
+    { tool: 'Bash', args: 'ssh jinxu-lab1 "python pilot/run.py --seed 0"', result: 'ECE_voted=0.082 · ECE_true=0.041 · Δ=0.041 ✓' },
+    { role: 'claude', text: 'Pilot PASS — 效果显著，进入全量实验。\n自主调度 4 卡开始跑…' },
+    { tool: 'Bash', args: 'ssh jinxu-lab1 "nohup python run_all.py --gpus 0,1,2,3 &"', result: 'Launched · ETA 4h · monitoring enabled' },
+    { role: 'claude', text: '── Phase 7: 6-Agent Result Debate ──' },
+    { tool: 'Agent', args: 'ResultDebate × 6 subagents · results/', result: 'Subagent[Stats]:    ECE↓31% vs voted baseline\nSubagent[Reviewer]: contribution narrative clear\nConsensus: strong empirical result, ready to write' },
+    { role: 'claude', text: '── Phase 8: Paper Writing ──' },
+    { tool: 'Bash', args: 'python scripts/gen_figures.py', result: '✓ fig1_decomp.pdf · fig2_reliability.pdf · fig3_ablation.pdf' },
+    { tool: 'Write', args: 'paper/main.tex', result: 'NeurIPS 2026 template · 9 pages · all sections' },
+    { tool: 'Agent', args: 'InternalReview subagent · main.tex', result: 'Sec 3.2: 公式符号不一致 · Related Work 缺 DiRA 引用\n→ 2 处已修正' },
+    { role: 'claude', text: '✓ 全流程完成。9 页草稿，通过 internal review。\n📱 Telegram 通知已发送。' },
+];
+
+
+let arpRunning = false;
+let arpPaused = false;
+
+function toggleARPPause() {
+    arpPaused = !arpPaused;
+    const btn = document.getElementById('arp-pause-btn');
+    if (btn) btn.textContent = pauseLabel(arpPaused);
+}
+
+async function runARPAnimation() {
+    const chat = document.getElementById('arp-chat');
+    const inputEl = document.getElementById('arp-input');
+    if (!chat || !inputEl || arpRunning) return;
+    arpRunning = true;
+    arpPaused = false;
+    const btn = document.getElementById('arp-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
+    chat.innerHTML = '';
+    const ip = () => arpPaused;
+    for (const msg of ARP_SCRIPT) {
+        if (!arpRunning) break;
+        while (arpPaused) await sleep(50);
+        if (msg.role === 'user') {
+            await sleep(300);
+            inputEl.textContent = '';
+            await typeTextSkill(inputEl, msg.text, null, 28, ip);
+            await sleep(500);
+            inputEl.textContent = '';
+            const bubble = appendBubbleSkill(chat, 'user');
+            bubble.textContent = msg.text;
+            await sleep(350);
+        } else if (msg.role === 'claude') {
+            await sleep(280);
+            const bubble = appendBubbleSkill(chat, 'claude');
+            await typeTextSkill(bubble, msg.text, chat, 14, ip);
+            await sleep(450);
+        } else if (msg.tool) {
+            await sleep(180);
+            const wrap = document.createElement('div');
+            wrap.style.cssText = 'margin:0.05rem 0 0.05rem 2rem;font-family:var(--font-mono);font-size:clamp(0.56rem,0.82vw,0.68rem);';
+            const callLine = document.createElement('div');
+            callLine.innerHTML = `<span style="color:#7ec8e3;">⏺ ${msg.tool}</span><span style="color:#888;">(${msg.args})</span>`;
+            wrap.appendChild(callLine); chat.appendChild(wrap); chat.scrollTop = chat.scrollHeight;
+            await sleep(280);
+            const resultLine = document.createElement('div');
+            resultLine.style.cssText = 'color:#555;padding-left:1.1rem;';
+            const span = document.createElement('span');
+            resultLine.appendChild(span); wrap.appendChild(resultLine);
+            await typeTextSkill(span, '⎿ ' + msg.result, chat, 10, ip);
+            await sleep(180);
+        }
+    }
+    inputEl.textContent = '';
+    arpRunning = false;
+}
+
+function restartARPAnimation() {
+    arpRunning = false;
+    arpPaused = false;
+    const btn = document.getElementById('arp-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
+    const chat = document.getElementById('arp-chat');
+    if (chat) chat.innerHTML = '';
+    const input = document.getElementById('arp-input');
+    if (input) input.textContent = '';
+    setTimeout(runARPAnimation, 200);
+}
+
+/* ===========================================
+   BRAINSTORM ANIMATION
+   =========================================== */
+const BS1_SCRIPT = [
+    { role: 'user', text: '/brainstorm' },
+    { role: 'claude', text: '想探索什么方向？\n模糊的直觉或问题都可以。' },
+    { role: 'user', text: '我想研究 LLM 在 soft-label 设置下的 calibration，但不知道从哪个角度切入' },
+    { role: 'claude', text: '好，发散 5 个方向：\n\n1. ECE 分解：ECE_voted vs ECE_true 拆开——文献里几乎没人做\n2. Annotator predictor：让模型学人，而非多数投票\n3. Bayesian aggregation：用分布代替 point label\n4. 训练目标：soft CE 是否天然比 hard CE 更 calibrated？\n5. 零样本迁移：soft calibration 能否 cross-dataset？' },
+    { role: 'user', text: '1 最有意思，怎么做 ECE 分解？' },
+    { role: 'claude', text: 'ECE_voted = gap(confidence, majority-vote accuracy)\nECE_true  = gap(confidence, soft label distribution)\n\n关键洞察：即使 ECE_voted = 0，ECE_true 仍可能很大。\n模型"骗过"了 hard label，但没学到真实 uncertainty。\n一个 toy example 就能 demonstrate，很好讲。' },
+    { role: 'user', text: 'baseline 选什么？' },
+    { role: 'claude', text: '推荐 4 个层次：\n• Temperature Scaling — 经典\n• Label Smoothing — soft 常见替代\n• CROWDLAB — annotator disagreement 专用\n• SoftCalib (ICML 23) — 最接近你方向的 prior work\n\nreviewer 会认可这个覆盖度。' },
+];
+
+
+let bs1Running = false;
+let bs1Paused = false;
+
+function toggleBs1Pause() {
+    bs1Paused = !bs1Paused;
+    const btn = document.getElementById('bs1-pause-btn');
+    if (btn) btn.textContent = pauseLabel(bs1Paused);
+}
+
+async function runBs1Animation() {
+    const chat = document.getElementById('bs1-chat');
+    const inputEl = document.getElementById('bs1-input');
+    if (!chat || !inputEl || bs1Running) return;
+    bs1Running = true;
+    bs1Paused = false;
+    const btn = document.getElementById('bs1-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
+    chat.innerHTML = '';
+    const ip = () => bs1Paused;
+    for (const msg of BS1_SCRIPT) {
+        if (!bs1Running) break;
+        while (bs1Paused) await sleep(50);
+        if (msg.role === 'user') {
+            await sleep(300);
+            inputEl.textContent = '';
+            await typeTextSkill(inputEl, msg.text, null, 30, ip);
+            await sleep(450);
+            inputEl.textContent = '';
+            const bubble = appendBubbleSkill(chat, 'user');
+            bubble.textContent = msg.text;
+            await sleep(300);
+        } else if (msg.role === 'claude') {
+            await sleep(260);
+            const bubble = appendBubbleSkill(chat, 'claude');
+            await typeTextSkill(bubble, msg.text, chat, 12, ip);
+            await sleep(400);
+        } else if (msg.tool) {
+            await sleep(180);
+            const wrap = document.createElement('div');
+            wrap.style.cssText = 'margin:0.05rem 0 0.05rem 2rem;font-family:var(--font-mono);font-size:clamp(0.5rem,0.72vw,0.62rem);';
+            const callLine = document.createElement('div');
+            callLine.innerHTML = '<span style="color:#7ec8e3;">\u23FA ' + msg.tool + '</span><span style="color:#888;">(' + msg.args + ')</span>';
+            wrap.appendChild(callLine); chat.appendChild(wrap); chat.scrollTop = chat.scrollHeight;
+            await sleep(260);
+            const resultLine = document.createElement('div');
+            resultLine.style.cssText = 'color:#555;padding-left:1.1rem;';
+            const span = document.createElement('span');
+            resultLine.appendChild(span); wrap.appendChild(resultLine);
+            await typeTextSkill(span, '\u23BF ' + msg.result, chat, 10, ip);
+            await sleep(160);
+        }
+    }
+    inputEl.textContent = '';
+    bs1Running = false;
+}
+
+function restartBs1Animation() {
+    bs1Running = false;
+    bs1Paused = false;
+    const btn = document.getElementById('bs1-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
+    const chat = document.getElementById('bs1-chat');
+    if (chat) chat.innerHTML = '';
+    const input = document.getElementById('bs1-input');
+    if (input) input.textContent = '';
+    setTimeout(runBs1Animation, 200);
+}
+
+/* ===========================================
+   FRONTEND-SLIDES ANIMATION
+   =========================================== */
+const FS1_SCRIPT = [
+    { role: 'user', text: '/frontend-slides' },
+    { role: 'claude', text: '帮你做什么主题的 slides？\n风格、页数、用途都可以说。' },
+    { role: 'user', text: '给 group meeting，介绍 calibration 研究，5 分钟 lightning talk，7 页' },
+    { role: 'claude', text: '风格偏哪种？\nA) 学术严谨（黑底 + 图表）\nB) 视觉冲击（大字 + 色块）\nC) 简洁极简（白底 + 数据）' },
+    { role: 'user', text: 'A，第3页加个动画展示 ECE 分解' },
+    { role: 'claude', text: '规划 7 页结构：\n1. Title — 研究问题 + 一句话摘要\n2. Motivation — ECE_voted vs ECE_true\n3. Key Insight ← 动画：hard → soft 分解\n4. Method — 公式 + 图示\n5. Experiments — 数据集 · baselines\n6. Results — 主结果 + ablation\n7. Takeaways\n\n生成中…' },
+    { tool: 'Write', args: 'slides/index.html', result: '✓ 7 slides · 黑底学术风 · 第3页 SVG 动画 · 独立 HTML' },
+    { role: 'claude', text: '完成。open slides/index.html 预览。\n第3页动画配合讲解节奏点击触发。' },
+    { role: 'user', text: '第6页加 reliability diagram' },
+    { tool: 'Edit', args: 'slides/index.html — slide-6', result: '✓ 内联 SVG · ECE_voted(红) vs ECE_true(蓝) 对比' },
+    { role: 'claude', text: '已更新。对比很直观，group meeting 效果应该不错。' },
+];
+
+
+let fs1Running = false;
+let fs1Paused = false;
+
+function toggleFs1Pause() {
+    fs1Paused = !fs1Paused;
+    const btn = document.getElementById('fs1-pause-btn');
+    if (btn) btn.textContent = pauseLabel(fs1Paused);
+}
+
+async function runFs1Animation() {
+    const chat = document.getElementById('fs1-chat');
+    const inputEl = document.getElementById('fs1-input');
+    if (!chat || !inputEl || fs1Running) return;
+    fs1Running = true;
+    fs1Paused = false;
+    const btn = document.getElementById('fs1-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
+    chat.innerHTML = '';
+    const ip = () => fs1Paused;
+    for (const msg of FS1_SCRIPT) {
+        if (!fs1Running) break;
+        while (fs1Paused) await sleep(50);
+        if (msg.role === 'user') {
+            await sleep(300);
+            inputEl.textContent = '';
+            await typeTextSkill(inputEl, msg.text, null, 30, ip);
+            await sleep(450);
+            inputEl.textContent = '';
+            const bubble = appendBubbleSkill(chat, 'user');
+            bubble.textContent = msg.text;
+            await sleep(300);
+        } else if (msg.role === 'claude') {
+            await sleep(260);
+            const bubble = appendBubbleSkill(chat, 'claude');
+            await typeTextSkill(bubble, msg.text, chat, 12, ip);
+            await sleep(400);
+        } else if (msg.tool) {
+            await sleep(180);
+            const wrap = document.createElement('div');
+            wrap.style.cssText = 'margin:0.05rem 0 0.05rem 2rem;font-family:var(--font-mono);font-size:clamp(0.5rem,0.72vw,0.62rem);';
+            const callLine = document.createElement('div');
+            callLine.innerHTML = '<span style="color:#7ec8e3;">\u23FA ' + msg.tool + '</span><span style="color:#888;">(' + msg.args + ')</span>';
+            wrap.appendChild(callLine); chat.appendChild(wrap); chat.scrollTop = chat.scrollHeight;
+            await sleep(260);
+            const resultLine = document.createElement('div');
+            resultLine.style.cssText = 'color:#555;padding-left:1.1rem;';
+            const span = document.createElement('span');
+            resultLine.appendChild(span); wrap.appendChild(resultLine);
+            await typeTextSkill(span, '\u23BF ' + msg.result, chat, 10, ip);
+            await sleep(160);
+        }
+    }
+    inputEl.textContent = '';
+    fs1Running = false;
+}
+
+function restartFs1Animation() {
+    fs1Running = false;
+    fs1Paused = false;
+    const btn = document.getElementById('fs1-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
+    const chat = document.getElementById('fs1-chat');
+    if (chat) chat.innerHTML = '';
+    const input = document.getElementById('fs1-input');
+    if (input) input.textContent = '';
+    setTimeout(runFs1Animation, 200);
+}
+
+
+</script>
+
+
+</body>
+</html>

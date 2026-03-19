@@ -1,0 +1,3201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agent for Research and Engineering — Linwei Tao</title>
+
+<!-- Noto Sans SC as fallback for PingFang SC -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Noto+Serif+SC:wght@700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ===========================================
+   THEME: Swiss Modern × Projection Optimized × English
+   =========================================== */
+:root {
+    --bg:        #ffffff;
+    --bg-alt:    #f7f6f2;
+    --ink:       #111111;
+    --ink-mid:   #444444;
+    --ink-soft:  #888888;
+    --red:       #e8321a;
+    --red-light: rgba(232,50,26,0.08);
+    --border:    #111111;
+    --border-soft: #e0ddd8;
+
+    /* Projection-optimized sizes: slightly large */
+    --t-hero:    clamp(3rem,   7vw,  6.5rem);
+    --t-h1:      clamp(2.2rem, 5vw,  4.5rem);
+    --t-h2:      clamp(1.6rem, 3.5vw, 3rem);
+    --t-h3:      clamp(1.2rem, 2.5vw, 2rem);
+    --t-body:    clamp(1rem,   1.8vw, 1.5rem);
+    --t-small:   clamp(0.8rem, 1.2vw, 1.1rem);
+    --t-label:   clamp(0.65rem,0.9vw, 0.85rem);
+
+    --pad:    clamp(2rem, 5vw, 5rem);
+    --gap:    clamp(1rem, 2.5vw, 2.5rem);
+    --egap:   clamp(0.5rem, 1.2vw, 1.2rem);
+
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --dur:  0.65s;
+
+    --font-cn: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+    --font-serif: "Noto Serif SC", serif;
+    --font-mono: "JetBrains Mono", monospace;
+}
+
+/* === RESET & BASE === */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+    height: 100%;
+    overflow-x: hidden;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-cn);
+}
+
+html {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+}
+
+/* === VIEWPORT BASE (mandatory) === */
+.slide {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background: var(--bg);
+}
+
+.slide-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-height: 100%;
+    overflow: hidden;
+    padding: var(--pad);
+}
+
+img {
+    max-width: 100%;
+    max-height: min(52vh, 440px);
+    object-fit: contain;
+    display: block;
+}
+
+@media (max-height: 700px) {
+    :root { --pad: clamp(1rem, 3vw, 2.5rem); --gap: clamp(0.6rem, 1.5vw, 1.5rem); --t-hero: clamp(2rem, 5.5vw, 4.5rem); --t-h1: clamp(1.8rem, 4vw, 3.5rem); }
+}
+@media (max-height: 600px) {
+    :root { --t-body: clamp(0.85rem, 1.4vw, 1.1rem); }
+    .nav-dots { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
+}
+
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+@keyframes bar1 { 0%,100%{height:3px} 50%{height:10px} }
+@keyframes bar2 { 0%,100%{height:7px} 50%{height:3px} }
+@keyframes bar3 { 0%,100%{height:5px} 50%{height:10px} }
+
+/* === ANIMATIONS === */
+.reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+/* Auto-reveal when no build mode: slide becomes visible → all show with stagger */
+.slide.visible:not(.build-active) .reveal { opacity: 1; transform: translateY(0); }
+.slide.visible:not(.build-active) .reveal:nth-child(1) { transition-delay: 0.05s; }
+.slide.visible:not(.build-active) .reveal:nth-child(2) { transition-delay: 0.15s; }
+.slide.visible:not(.build-active) .reveal:nth-child(3) { transition-delay: 0.25s; }
+.slide.visible:not(.build-active) .reveal:nth-child(4) { transition-delay: 0.35s; }
+.slide.visible:not(.build-active) .reveal:nth-child(5) { transition-delay: 0.45s; }
+.slide.visible:not(.build-active) .reveal:nth-child(n+6) { transition-delay: 0.5s; }
+/* Step-reveal: items show one by one via .step-shown */
+.slide.build-active .reveal { opacity: 0; transform: translateY(20px); }
+.slide.build-active .reveal.step-shown { opacity: 1; transform: translateY(0); transition-delay: 0s; }
+
+.reveal-left {
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.slide.visible .reveal-left { opacity: 1; transform: translateX(0); }
+
+/* === PROGRESS BAR === */
+.progress-bar {
+    position: fixed; top: 0; left: 0;
+    height: 3px; background: var(--red);
+    z-index: 1000; transition: width 0.3s ease;
+    width: 0%;
+}
+
+/* === NAV DOTS === */
+.nav-dots {
+    position: fixed; right: clamp(1rem, 2.5vw, 2rem); top: 50%;
+    transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 5px;
+    z-index: 999;
+    align-items: flex-end;
+}
+.nav-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--ink-soft); opacity: 0.3;
+    cursor: pointer; transition: all 0.3s;
+    border: none; flex-shrink: 0;
+}
+.nav-dot.active { background: var(--red); opacity: 1; transform: scale(1.3); }
+.nav-dot-part {
+    display: flex; align-items: center; gap: 6px;
+    cursor: pointer; border: none; background: none;
+    padding: 0; flex-shrink: 0;
+    margin: 4px 0;
+}
+.nav-dot-part .part-diamond {
+    width: 9px; height: 9px;
+    background: var(--ink-soft); opacity: 0.45;
+    transform: rotate(45deg);
+    transition: all 0.3s; flex-shrink: 0;
+}
+.nav-dot-part .part-label {
+    font-size: 0.6rem; font-weight: 600; letter-spacing: 0.06em;
+    color: var(--ink-soft); opacity: 0;
+    transition: opacity 0.3s; white-space: nowrap;
+    font-family: var(--font-cn);
+    text-transform: uppercase;
+}
+.nav-dot-part:hover .part-label,
+.nav-dot-part.active .part-label { opacity: 1; }
+.nav-dot-part.active .part-diamond { background: var(--red); opacity: 1; transform: rotate(45deg) scale(1.3); }
+.nav-dot-part:hover .part-diamond { opacity: 0.8; }
+
+/* === SLIDE HEADER (top rule) === */
+.slide-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: clamp(1rem, 2vh, 1.8rem) var(--pad);
+    border-bottom: 2px solid var(--ink);
+    flex-shrink: 0;
+}
+.slide-header-label {
+    font-size: var(--t-label);
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    font-weight: 700;
+    color: var(--ink-soft);
+}
+.slide-header-label.red { color: var(--red); }
+
+/* === LANGUAGE TOGGLE === */
+/* language-specific images */
+.en-img { display: block }
+
+/* === SLIDE FOOTER === */
+.slide-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: clamp(0.75rem, 1.5vh, 1.2rem) var(--pad);
+    border-top: 1px solid var(--border-soft);
+    flex-shrink: 0;
+}
+.footer-text {
+    font-size: var(--t-label);
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+}
+.slide-num {
+    font-size: var(--t-label);
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+}
+
+/* === ACCENT BAR === */
+.accent-bar-left {
+    position: absolute;
+    left: var(--pad);
+    top: 50%; transform: translateY(-50%);
+    width: 4px;
+    height: 55%;
+    background: var(--red);
+}
+.text-indented {
+    padding-left: clamp(1.5rem, 2.5vw, 2.5rem);
+}
+
+/* === RED TAG === */
+.red-tag {
+    display: inline-block;
+    background: var(--red);
+    color: #fff;
+    font-size: var(--t-label);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.35em 0.85em;
+}
+
+/* === PART DIVIDER SLIDE === */
+.slide-part {
+    background: var(--ink);
+    color: #fff;
+}
+.part-number {
+    font-size: clamp(5rem, 18vw, 16rem);
+    font-weight: 900;
+    color: rgba(255,255,255,0.06);
+    position: absolute;
+    top: 50%; left: var(--pad);
+    transform: translateY(-50%);
+    line-height: 1;
+    user-select: none;
+    font-family: var(--font-serif);
+}
+.part-content {
+    position: relative; z-index: 1;
+    padding: var(--pad);
+    display: flex; flex-direction: column; justify-content: center;
+    height: 100%;
+}
+.part-label {
+    font-size: var(--t-label);
+    text-transform: uppercase;
+    letter-spacing: 0.35em;
+    color: var(--red);
+    margin-bottom: clamp(0.75rem, 1.5vh, 1.2rem);
+    font-weight: 700;
+}
+.part-title {
+    font-size: clamp(2.5rem, 6.5vw, 6rem);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.0;
+}
+.part-subtitle {
+    font-size: var(--t-body);
+    color: rgba(255,255,255,0.45);
+    margin-top: clamp(0.75rem, 1.5vh, 1.2rem);
+    white-space: nowrap;
+}
+
+/* === BULLET LIST === */
+.bullet-list {
+    list-style: none;
+    display: flex; flex-direction: column;
+    gap: var(--egap);
+}
+.bullet-list li {
+    font-size: var(--t-body);
+    line-height: 1.5;
+    padding-left: 1.5em;
+    position: relative;
+    color: var(--ink-mid);
+}
+.bullet-list li::before {
+    content: '';
+    position: absolute; left: 0; top: 0.65em;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--red);
+}
+.bullet-list li strong { color: var(--ink); font-weight: 700; }
+
+/* === TWO COLUMN === */
+.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--gap);
+    align-items: start;
+}
+.two-col.img-text { grid-template-columns: 1.2fr 1fr; align-items: center; }
+.two-col.text-img { grid-template-columns: 1fr 1.2fr; align-items: center; }
+
+/* === CARD GRID === */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(0.75rem, 1.5vw, 1.5rem);
+}
+.card {
+    border: 1px solid var(--border-soft);
+    padding: clamp(0.75rem, 1.5vw, 1.5rem);
+    border-radius: 4px;
+}
+.card-icon { font-size: clamp(1.4rem, 2.5vw, 2rem); margin-bottom: 0.5rem; }
+.card-title {
+    font-size: var(--t-small);
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    color: var(--ink);
+}
+.card-desc { font-size: clamp(0.75rem, 1.1vw, 0.95rem); color: var(--ink-soft); line-height: 1.5; }
+
+/* === TOOL BADGE GRID === */
+.tool-grid {
+    display: flex; flex-wrap: wrap; gap: clamp(0.6rem, 1.2vw, 1rem);
+    align-items: center;
+}
+.tool-badge {
+    display: flex; align-items: center; gap: 0.5rem;
+    border: 1.5px solid var(--border-soft);
+    padding: 0.5em 1em;
+    border-radius: 6px;
+    font-size: var(--t-small);
+    font-weight: 500;
+    color: var(--ink-mid);
+}
+.tool-logo {
+    width: 1.05em;
+    height: 1.05em;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+.tool-badge.highlight {
+    border-color: var(--red);
+    color: var(--red);
+    background: var(--red-light);
+}
+
+/* === ARCH DIAGRAM (CSS) === */
+.arch-diagram {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 2.5vw, 2.5rem);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.arch-box {
+    border: 2px solid var(--ink);
+    padding: clamp(0.75rem, 1.5vw, 1.2rem) clamp(1rem, 2vw, 1.8rem);
+    text-align: center;
+    min-width: clamp(6rem, 12vw, 11rem);
+    border-radius: 4px;
+}
+.arch-box.center-box {
+    border-color: var(--red);
+    background: var(--red-light);
+}
+.arch-box-title {
+    font-size: var(--t-small);
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    color: var(--ink);
+}
+.arch-box.center-box .arch-box-title { color: var(--red); }
+.arch-box-items {
+    font-size: clamp(0.65rem, 0.9vw, 0.8rem);
+    color: var(--ink-soft);
+    line-height: 1.6;
+}
+.arch-arrow {
+    font-size: clamp(1.2rem, 2.5vw, 2rem);
+    color: var(--ink-soft);
+}
+
+/* === TOOL-USE FLOW (CSS diagram) === */
+.flow-diagram {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.4rem, 1vh, 0.8rem);
+    font-family: var(--font-mono);
+}
+.flow-row {
+    display: flex; align-items: center; gap: 0.75rem;
+    font-size: clamp(0.7rem, 1.1vw, 0.95rem);
+}
+.flow-box {
+    padding: 0.4em 0.9em;
+    border-radius: 4px;
+    font-size: clamp(0.65rem, 1vw, 0.85rem);
+    white-space: nowrap;
+}
+.flow-box.llm  { background: #e8f4fd; color: #1a6fa8; border: 1px solid #b3d9f5; }
+.flow-box.agent { background: var(--red-light); color: var(--red); border: 1px solid rgba(232,50,26,0.3); }
+.flow-box.exec  { background: #f0f0f0; color: #444; border: 1px solid #ccc; }
+.flow-box.result{ background: #eef8ee; color: #2a7a2a; border: 1px solid #b3e0b3; }
+.flow-arrow { color: var(--ink-soft); font-size: 0.9rem; }
+
+/* === CODE BLOCK === */
+.code-block {
+    background: #f5f5f5;
+    border-left: 3px solid var(--red);
+    padding: clamp(0.6rem, 1.2vw, 1rem) clamp(1rem, 1.8vw, 1.5rem);
+    font-family: var(--font-mono);
+    font-size: clamp(0.7rem, 1.1vw, 0.95rem);
+    color: #333;
+    line-height: 1.6;
+    border-radius: 0 4px 4px 0;
+    overflow: hidden;
+}
+.code-block .kw { color: #e8321a; font-weight: 500; }
+.code-block .cm { color: #999; }
+.code-block .str { color: #2a7a2a; }
+
+/* === SCREENSHOT === */
+.screenshot {
+    max-height: min(52vh, 430px);
+    max-width: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    border: 1px solid var(--border-soft);
+}
+
+/* === HIGHLIGHT BOX === */
+.highlight-box {
+    background: var(--red-light);
+    border-left: 4px solid var(--red);
+    padding: clamp(0.75rem, 1.5vw, 1.2rem) clamp(1rem, 2vw, 1.6rem);
+    border-radius: 0 4px 4px 0;
+}
+.highlight-box p {
+    font-size: var(--t-body);
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.5;
+}
+
+/* === HEADING STYLES === */
+h1 { font-size: var(--t-h1); font-weight: 900; line-height: 1.05; }
+h2 { font-size: var(--t-h2); font-weight: 700; line-height: 1.1; }
+h3 { font-size: var(--t-h3); font-weight: 700; line-height: 1.2; }
+p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
+.text-red { color: var(--red); }
+.text-soft { color: var(--ink-soft); }
+.text-mid { color: var(--ink-mid); }
+.mono { font-family: var(--font-mono); }
+
+/* === EDIT MODE === */
+.edit-hotzone {
+    position: fixed; top: 0; left: 0;
+    width: 80px; height: 80px;
+    z-index: 10000; cursor: pointer;
+}
+.edit-toggle {
+    position: fixed; top: 16px; left: 16px;
+    z-index: 10001;
+    background: var(--ink); color: #fff;
+    border: none; border-radius: 4px;
+    padding: 0.4em 0.8em;
+    font-size: 0.75rem; letter-spacing: 0.05em;
+    cursor: pointer;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.edit-toggle.show, .edit-toggle.active {
+    opacity: 1; pointer-events: auto;
+}
+.edit-toggle.active { background: var(--red); }
+[contenteditable] { outline: none; }
+.edit-mode [contenteditable]:hover {
+    background: rgba(232,50,26,0.06);
+    border-radius: 2px;
+}
+</style>
+</head>
+<body>
+<!-- Background music: muted autoplay is always allowed by browsers; JS unmutes on load -->
+<audio id="bg-music" src="assets/interstellar.mp3" loop muted preload="auto" style="display:none;"></audio>
+
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots"></nav>
+<div class="edit-hotzone" id="editHotzone"></div>
+<button class="edit-toggle" id="editToggle">✏ Edit</button>
+
+<!-- ===================== SLIDE 1: TITLE ===================== -->
+<section class="slide" id="slide-1">
+    <div class="slide-header">
+        <div class="slide-header-label">Lab Seminar · 2026.03.20</div>
+        <div class="slide-header-label">Linwei Tao</div>
+    </div>
+    <div class="slide-content" style="display:grid;grid-template-columns:1fr 1.15fr;gap:var(--gap);align-items:center;padding:var(--pad);">
+        <!-- LEFT: Title -->
+        <div style="position:relative;">
+            <div>
+                <div class="red-tag reveal">AI Agent in Practice</div>
+                <h1 class="reveal" style="margin-top: var(--egap); font-size: clamp(2rem,4.5vw,3.8rem); line-height:1.2;">
+                    AI Agent for Research <span class="text-red">&amp;</span> Engineering
+                </h1>
+                <p class="reveal" style="margin-top: var(--gap); max-width: 32rem;">
+                    <span>Web App · NeurIPS Submission · Technical Deep Dive · Discussion</span><br>
+                    <span class="text-soft">One person · One week · Top-venue paper + production app</span>
+                </p>
+            </div>
+        </div>
+        <!-- RIGHT: Terminal (looping CC animation) -->
+        <div id="cc0-window" style="
+            background:#1a1a1a;
+            border-radius:10px;
+            overflow:hidden;
+            display:flex;
+            flex-direction:column;
+            height:min(68vh,520px);
+            font-family:var(--font-mono);
+            box-shadow:0 8px 40px rgba(0,0,0,0.18);
+        ">
+            <!-- Title bar -->
+            <div style="background:#2a2a2a;padding:0.55rem 1rem;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+                <div style="width:11px;height:11px;border-radius:50%;background:#ff5f57;"></div>
+                <div style="width:11px;height:11px;border-radius:50%;background:#febc2e;"></div>
+                <div style="width:11px;height:11px;border-radius:50%;background:#28c840;"></div>
+                <span style="margin-left:0.75rem;color:#888;font-size:0.72rem;letter-spacing:0.05em;flex:1;">claude — ~/CalibrationAGT</span>
+            </div>
+            <!-- Chat area -->
+            <div id="cc0-chat" style="flex:1;overflow-y:auto;padding:0.9rem 1.1rem;display:flex;flex-direction:column;gap:0.8rem;"></div>
+            <!-- Input bar -->
+            <div style="background:#111;border-top:1px solid #333;padding:0.55rem 1rem;display:flex;align-items:center;gap:0.75rem;flex-shrink:0;">
+                <span style="color:#e8321a;font-size:0.85rem;">❯</span>
+                <div id="cc0-input" style="color:#e0e0e0;font-size:clamp(0.65rem,1vw,0.82rem);flex:1;min-height:1.2em;"></div>
+                <div style="width:2px;height:1.1em;background:#e8321a;animation:blink 1s step-end infinite;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text" style="display:flex;align-items:center;gap:0.5rem;">
+            Linwei Tao
+            <span id="music-indicator" style="opacity:0;transition:opacity 1s;font-size:0.65rem;color:var(--ink-soft);display:flex;align-items:center;gap:0.3rem;">
+                <span style="display:inline-flex;gap:2px;align-items:flex-end;height:10px;">
+                    <span style="width:2px;background:var(--red);border-radius:1px;animation:bar1 1.1s ease-in-out infinite;"></span>
+                    <span style="width:2px;background:var(--red);border-radius:1px;animation:bar2 1.3s ease-in-out infinite;"></span>
+                    <span style="width:2px;background:var(--red);border-radius:1px;animation:bar3 0.9s ease-in-out infinite;"></span>
+                </span>
+                ambient
+            </span>
+        </div>
+        <div class="slide-num">01 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 1.5: DEMO SHOWCASE ===================== -->
+<section class="slide" id="slide-showcase">
+    <div class="slide-header">
+        <div class="slide-header-label">Today's Two Projects</div>
+        <div class="slide-header-label red">Live Demo</div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; padding: clamp(0.8rem,1.5vh,1.5rem) var(--pad) var(--pad); height: calc(100% - 4rem); overflow: hidden;">
+
+        <!-- LEFT: Cat App in phone frame -->
+        <div style="display: flex; flex-direction: column; gap: 0.6rem; overflow: hidden;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0;">
+                <div style="width: 1.6rem; height: 1.6rem; background: var(--ink); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.7rem; font-weight: 700;">①</div>
+                <span style="font-size: var(--t-small); font-weight: 600;">Arigato · Cat Boarding Web App</span>
+            </div>
+            <!-- iPhone 15 Pro shell -->
+            <div style="flex: 1; display: flex; justify-content: center; align-items: center; overflow: hidden;">
+                <div style="
+                    position: relative;
+                    height: 100%;
+                    max-height: min(82vh, 680px);
+                    aspect-ratio: 393/852;
+                ">
+                    <!-- Outer body: titanium frame -->
+                    <div style="
+                        position: absolute; inset: 0;
+                        background: linear-gradient(145deg, #b5b5b5 0%, #8a8a8a 40%, #6e6e6e 60%, #9a9a9a 100%);
+                        border-radius: 13.5% / 6.3%;
+                        box-shadow:
+                            0 0 0 1.5px #c8c8c8,
+                            0 20px 60px rgba(0,0,0,0.45),
+                            0 4px 12px rgba(0,0,0,0.3),
+                            inset 0 1px 0 rgba(255,255,255,0.25);
+                        pointer-events: none;
+                    "></div>
+
+                    <!-- Inner black bezel -->
+                    <div style="
+                        position: absolute;
+                        inset: 1.2%;
+                        background: #0a0a0a;
+                        border-radius: 12.5% / 5.8%;
+                        pointer-events: none;
+                    "></div>
+
+                    <!-- Screen area -->
+                    <div style="
+                        position: absolute;
+                        inset: 1.8%;
+                        border-radius: 11.5% / 5.3%;
+                        overflow: hidden;
+                        background: #fff;
+                        display: flex;
+                        flex-direction: column;
+                    ">
+                        <!-- iOS status bar -->
+                        <div style="
+                            flex-shrink: 0;
+                            height: 5.5%;
+                            background: #f2f2f7;
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            padding: 0 6% 0 5%;
+                            position: relative;
+                            pointer-events: none;
+                        ">
+                            <!-- Dynamic Island -->
+                            <div style="
+                                position: absolute;
+                                top: 18%;
+                                left: 50%;
+                                transform: translateX(-50%);
+                                width: 26%;
+                                height: 64%;
+                                background: #0a0a0a;
+                                border-radius: 100px;
+                            "></div>
+                            <!-- Time -->
+                            <span style="font-size: clamp(0.35rem,0.6vw,0.5rem); font-weight: 600; color: #000; font-family: -apple-system, sans-serif; letter-spacing: -0.02em;">9:41</span>
+                            <!-- Status icons -->
+                            <div style="display:flex; align-items:center; gap:3px;">
+                                <!-- Signal bars -->
+                                <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                                    <rect x="0" y="5" width="2" height="3" rx="0.5" fill="#000"/>
+                                    <rect x="2.7" y="3.5" width="2" height="4.5" rx="0.5" fill="#000"/>
+                                    <rect x="5.4" y="2" width="2" height="6" rx="0.5" fill="#000"/>
+                                    <rect x="8.1" y="0" width="2" height="8" rx="0.5" fill="#000"/>
+                                </svg>
+                                <!-- WiFi -->
+                                <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                                    <path d="M5 6.5 L5 6.5" stroke="#000" stroke-width="1.5" stroke-linecap="round"/>
+                                    <path d="M3.2 4.8 Q5 3.2 6.8 4.8" stroke="#000" stroke-width="1" fill="none" stroke-linecap="round"/>
+                                    <path d="M1.5 3 Q5 0.5 8.5 3" stroke="#000" stroke-width="1" fill="none" stroke-linecap="round"/>
+                                </svg>
+                                <!-- Battery -->
+                                <svg width="14" height="8" viewBox="0 0 14 8" fill="none">
+                                    <rect x="0" y="1" width="11.5" height="6" rx="1.5" stroke="#000" stroke-width="0.8"/>
+                                    <rect x="12" y="2.5" width="1.5" height="3" rx="0.8" fill="#000"/>
+                                    <rect x="1" y="2" width="8.5" height="4" rx="0.8" fill="#34c759"/>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- App content: fixed 430px wide iframe, scaled to fit -->
+                        <div id="phone-screen" style="flex: 1; overflow: hidden; background: white; position: relative;">
+                            <iframe
+                                id="cat-iframe"
+                                src="https://www.taolinwei.com/cat-boarding-system/"
+                                style="
+                                    width: 430px;
+                                    height: 932px;
+                                    border: none;
+                                    display: block;
+                                    transform-origin: top left;
+                                    position: absolute;
+                                    top: 0; left: 0;
+                                "
+                                title="Cat Boarding System"
+                                allow="fullscreen"
+                            ></iframe>
+                        </div>
+
+                        <!-- iOS home indicator -->
+                        <div style="
+                            flex-shrink: 0;
+                            height: 3.5%;
+                            background: #f2f2f7;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        ">
+                            <div style="width: 28%; height: 4px; background: #000; border-radius: 100px; opacity: 0.2;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Side buttons (volume up/down + power) -->
+                    <div style="position:absolute; left:-1.8%; top:22%; width:2%; height:7%; background: linear-gradient(to right,#8a8a8a,#b0b0b0); border-radius:3px 0 0 3px; pointer-events:none;"></div>
+                    <div style="position:absolute; left:-1.8%; top:31%; width:2%; height:7%; background: linear-gradient(to right,#8a8a8a,#b0b0b0); border-radius:3px 0 0 3px; pointer-events:none;"></div>
+                    <div style="position:absolute; right:-1.8%; top:26%; width:2%; height:11%; background: linear-gradient(to left,#8a8a8a,#b0b0b0); border-radius:0 3px 3px 0; pointer-events:none;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT: Paper PDF -->
+        <div style="display: flex; flex-direction: column; gap: 0.6rem; overflow: hidden;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0;">
+                <div style="width: 1.6rem; height: 1.6rem; background: var(--red); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.7rem; font-weight: 700;">②</div>
+                <span style="font-size: var(--t-small); font-weight: 600;">CalibrationAGT · NeurIPS 2026 Submission</span>
+            </div>
+            <div style="flex: 1; border: 2px solid var(--border-soft); border-radius: 8px; overflow: hidden; background: #f0ede8;">
+                <object
+                    data="assets/paper.pdf#toolbar=0&navpanes=0&scrollbar=1&view=FitH"
+                    type="application/pdf"
+                    style="width: 100%; height: 100%; display: block;"
+                >
+                    <!-- fallback: embed tag -->
+                    <embed
+                        src="assets/paper.pdf#toolbar=0&navpanes=0"
+                        type="application/pdf"
+                        style="width:100%;height:100%;"
+                    />
+                </object>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 2: AGENDA ===================== -->
+<section class="slide" id="slide-2">
+    <div class="slide-header">
+        <div class="slide-header-label">Agenda</div>
+        <div class="slide-header-label red">Agenda</div>
+    </div>
+    <div class="slide-content">
+        <div class="card-grid" style="grid-template-columns: repeat(2, 1fr);">
+            <div class="card reveal">
+                <div class="card-icon">🐱</div>
+                <div class="card-title">Part 1 · Engineering</div>
+                <div class="card-desc">Cat Boarding Web App — a production app built with Claude Code in the gaps between research</div>
+            </div>
+            <div class="card reveal">
+                <div class="card-icon">🔬</div>
+                <div class="card-title">Part 2 · Research</div>
+                <div class="card-desc">CalibrationAGT — how a NeurIPS submission was completed using AI Agent</div>
+            </div>
+            <div class="card reveal">
+                <div class="card-icon">⚙️</div>
+                <div class="card-title">Part 3 · Technical Anatomy</div>
+                <div class="card-desc">How does AI Agent actually work? Tool use, Memory, Sub-agent</div>
+            </div>
+            <div class="card reveal">
+                <div class="card-icon">💭</div>
+                <div class="card-title">Part 4 · Discussion</div>
+                <div class="card-desc">Paper inflation, Senior productivity ×10 — how will research and engineering change?</div>
+            </div>
+            <div class="card reveal" style="grid-column: span 2; background: var(--bg-alt);">
+                <div class="card-icon">🎁</div>
+                <div class="card-title">Bonus · gnvitop</div>
+                <div class="card-desc">A side tool built along the way — global GPU monitoring in one command</div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">02 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 3: 工具景观 ===================== -->
+<section class="slide" id="slide-3">
+    <div class="slide-header">
+        <div class="slide-header-label">You've Heard of These</div>
+        <div class="slide-header-label red">AI Coding Agents</div>
+    </div>
+    <div class="slide-content" style="gap:var(--egap);padding-top:0.5rem;">
+        <h2 class="reveal" style="font-size:var(--t-h2);">You've Probably Heard These Names</h2>
+        <div class="reveal" style="display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;">
+            <div class="tool-badge" style="padding:0.3rem 0.7rem;font-size:var(--t-small);"><img class="tool-logo" style="width:16px;height:16px;" src="https://cdn.simpleicons.org/githubcopilot" alt="">GitHub Copilot</div>
+            <div class="tool-badge" style="padding:0.3rem 0.7rem;font-size:var(--t-small);"><img class="tool-logo" style="width:16px;height:16px;" src="https://cdn.simpleicons.org/cursor" alt="">Cursor</div>
+            <div class="tool-badge" style="padding:0.3rem 0.7rem;font-size:var(--t-small);"><img class="tool-logo" style="width:16px;height:16px;" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/codeium.svg" alt="">Windsurf</div>
+            <div class="tool-badge" style="padding:0.3rem 0.7rem;font-size:var(--t-small);"><img class="tool-logo" style="width:16px;height:16px;" src="https://cdn.simpleicons.org/googlegemini" alt="">Gemini CLI</div>
+            <div class="tool-badge highlight" style="padding:0.3rem 0.7rem;font-size:var(--t-small);"><img class="tool-logo" style="width:16px;height:16px;" src="https://cdn.simpleicons.org/anthropic" alt="">Claude Code ✦</div>
+            <div class="tool-badge" style="padding:0.3rem 0.7rem;font-size:var(--t-small);"><img class="tool-logo" style="width:16px;height:16px;" src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f99e.svg" alt="">OpenClaw</div>
+            <div class="tool-badge" style="padding:0.3rem 0.7rem;font-size:var(--t-small);"><img class="tool-logo" style="width:16px;height:16px;" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/openai.svg" alt="">Codex</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--egap);">
+            <!-- OpenClaw -->
+            <div class="reveal" style="border:1.5px solid var(--border-soft);border-radius:8px;padding:1rem;display:flex;flex-direction:column;gap:0.5rem;">
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <div style="width:24px;height:24px;background:#1a1a2e;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <span style="color:#e8321a;font-size:0.8rem;font-weight:700;">O</span>
+                    </div>
+                    <span style="font-weight:700;font-size:var(--t-body);">OpenClaw</span>
+                    <span style="font-size:var(--t-small);color:var(--ink-soft);">Personal Assistant</span>
+                </div>
+                <ul style="font-size:var(--t-small);color:var(--ink);line-height:1.7;padding-left:1.1em;margin:0;">
+                    <li>Memory remembers everything about the owner's preferences</li>
+                    <li>Heartbeat mechanism, runs 24h continuously</li>
+                    <li>Can connect to WhatsApp / Telegram</li>
+                    <li style="color:var(--ink-soft);">⚠ Stuffs tons of context each time — <strong>burns tokens</strong></li>
+                </ul>
+                <div style="margin-top:auto;font-size:var(--t-small);background:var(--bg-alt);padding:0.4rem 0.6rem;border-radius:6px;">🦞 More like a toy / personal experiment</div>
+            </div>
+            <!-- Claude Code -->
+            <div class="reveal" style="border:2px solid var(--red);border-radius:8px;padding:1rem;display:flex;flex-direction:column;gap:0.5rem;background:var(--red-light);">
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <div style="width:24px;height:24px;background:#da7756;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <img src="https://cdn.simpleicons.org/anthropic/ffffff" width="14" height="14" style="display:block;">
+                    </div>
+                    <span style="font-weight:700;font-size:var(--t-body);">Claude Code ✦</span>
+                    <span style="font-size:var(--t-small);color:var(--ink-soft);">Developer</span>
+                </div>
+                <ul style="font-size:var(--t-small);color:var(--ink);line-height:1.7;padding-left:1.1em;margin:0;">
+                    <li>Terminal CLI, native file / git operations</li>
+                    <li>Skill / Hook highly customizable</li>
+                    <li>Personal experience: <strong>better than</strong> Codex</li>
+                    <li style="color:var(--ink-mid);">Claude Cowork: for <strong>non-technical users</strong></li>
+                </ul>
+                <div style="margin-top:auto;font-size:var(--t-small);background:rgba(232,50,26,0.12);padding:0.4rem 0.6rem;border-radius:6px;color:var(--red);font-weight:600;">⚡ Today's main tool</div>
+            </div>
+            <!-- Codex -->
+            <div class="reveal" style="border:1.5px solid var(--border-soft);border-radius:8px;padding:1rem;display:flex;flex-direction:column;gap:0.5rem;">
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <div style="width:24px;height:24px;background:#10a37f;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <span style="color:#fff;font-size:0.75rem;font-weight:700;">Cx</span>
+                    </div>
+                    <span style="font-weight:700;font-size:var(--t-body);">Codex</span>
+                    <span style="font-size:var(--t-small);color:var(--ink-soft);">Cloud Sandbox</span>
+                </div>
+                <ul style="font-size:var(--t-small);color:var(--ink);line-height:1.7;padding-left:1.1em;margin:0;">
+                    <li>Runs tasks in parallel in isolated sandboxes</li>
+                    <li>No local env needed, schedule anytime</li>
+                    <li>Similar positioning to Claude Code</li>
+                    <li style="color:var(--ink-soft);">Good for batch, unattended tasks</li>
+                </ul>
+                <div style="margin-top:auto;font-size:var(--t-small);background:var(--bg-alt);padding:0.4rem 0.6rem;border-radius:6px;">☁️ Cloud parallel, async execution</div>
+            </div>
+        </div>
+        <div class="reveal" style="border-left:4px solid var(--red);padding:0.5rem 1rem;background:var(--red-light);font-size:var(--t-small);border-radius:0 6px 6px 0;">
+            <span><strong>Common core:</strong> LLM + tool calling + memory system — identical at the foundation, differing in memory design and use case</span>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">03 / 23</div>
+    </div>
+</section>
+<section class="slide" id="slide-4">
+    <div class="slide-header">
+        <div class="slide-header-label">What Is an AI Agent?</div>
+        <div class="slide-header-label red">Context Engineering</div>
+    </div>
+    <div class="slide-content" style="gap: var(--egap);">
+        <h2 class="reveal">Agent = Feed the Right Info into LLM's Context Window</h2>
+
+        <div class="two-col" style="align-items: start; gap: var(--gap);">
+            <!-- LEFT: LLM 工作原理 -->
+            <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);">
+                <p style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-soft);">How LLM Works</p>
+                <div class="code-block" style="font-size:clamp(0.65rem,0.9vw,0.78rem);line-height:1.7;"><span class='cm'>// Everything LLM sees on each call</span>
+<span class='kw'>context</span> = [
+  system_prompt,    <span class='cm'>// rules, tool list, memory files</span>
+  conversation,     <span class='cm'>// conversation history</span>
+  tool_results,     <span class='cm'>// previous step results</span>
+  your_prompt,      <span class='cm'>// what you just typed</span>
+]
+<span class='kw'>output</span> = LLM(context)  <span class='cm'>// predict next token</span></div>
+                <div class="highlight-box" style="padding:0.6rem 0.9rem;">
+                    <p style="font-size:var(--t-small);">LLM has <strong>no memory</strong> — it can only see what's in the context</p>
+                </div>
+
+                <!-- Context window sizes -->
+                <p style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-soft);margin-top:0.3rem;">Context Window Evolution</p>
+                <div style="display:flex;flex-direction:column;gap:0.4rem;font-size:clamp(0.6rem,0.85vw,0.75rem);">
+                    <div style="display:grid;grid-template-columns:10rem 1fr 5rem;gap:0.5rem;color:var(--ink-soft);font-size:0.65em;letter-spacing:0.08em;text-transform:uppercase;padding-bottom:0.2rem;border-bottom:1px solid var(--border-soft);">
+                        <span>Model</span><span></span><span style="text-align:right;">Released</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns:10rem 1fr 5rem;gap:0.5rem;align-items:center;">
+                        <span style="color:var(--ink-soft);">GPT-4o</span>
+                        <div style="height:20px;background:#f0ede8;border-radius:4px;overflow:hidden;"><div style="width:13%;height:100%;background:#bbb;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:5px;"><span style="color:#fff;font-size:0.85em;font-weight:600;white-space:nowrap;">128K</span></div></div>
+                        <span style="color:var(--ink-soft);text-align:right;">2024.05</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns:10rem 1fr 5rem;gap:0.5rem;align-items:center;">
+                        <span style="color:var(--ink-mid);">Claude Sonnet 4</span>
+                        <div style="height:20px;background:#f0ede8;border-radius:4px;overflow:hidden;"><div style="width:20%;height:100%;background:#aaa;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:5px;"><span style="color:#fff;font-size:0.85em;font-weight:600;white-space:nowrap;">200K</span></div></div>
+                        <span style="color:var(--ink-soft);text-align:right;">2025.07</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns:10rem 1fr 5rem;gap:0.5rem;align-items:center;">
+                        <span style="color:var(--ink-mid);">GPT-5.2</span>
+                        <div style="height:20px;background:#f0ede8;border-radius:4px;overflow:hidden;"><div style="width:40%;height:100%;background:#888;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:5px;"><span style="color:#fff;font-size:0.85em;font-weight:600;white-space:nowrap;">400K</span></div></div>
+                        <span style="color:var(--ink-soft);text-align:right;">2025.12</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns:10rem 1fr 5rem;gap:0.5rem;align-items:center;">
+                        <span style="font-weight:600;">GPT-5.4</span>
+                        <div style="height:20px;background:#f0ede8;border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:#555;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;"><span style="color:#fff;font-size:0.85em;font-weight:700;white-space:nowrap;">1M</span></div></div>
+                        <span style="color:var(--ink-soft);text-align:right;">2026.03</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns:10rem 1fr 5rem;gap:0.5rem;align-items:center;">
+                        <span style="color:var(--red);font-weight:600;">Claude Sonnet 4.6</span>
+                        <div style="height:20px;background:#f0ede8;border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:var(--red);border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;"><span style="color:#fff;font-size:0.85em;font-weight:700;white-space:nowrap;">1M</span></div></div>
+                        <span style="color:var(--ink-soft);text-align:right;">2026.03</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: 现实项目 vs context -->
+            <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);">
+                <p style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-soft);">But How Large Is Your Project?</p>
+                <div style="display:flex;flex-direction:column;gap:0.5rem;font-size:var(--t-small);">
+                    <div style="display:flex;justify-content:space-between;padding:0.5rem 0.75rem;background:var(--bg-alt);border-radius:6px;">
+                        <span>A NeurIPS paper</span>
+                        <span style="font-weight:600;color:var(--red);">~8K tokens ✓</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;padding:0.5rem 0.75rem;background:var(--bg-alt);border-radius:6px;">
+                        <span>A PhD thesis</span>
+                        <span style="font-weight:600;color:var(--red);">~100K tokens ✓</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;padding:0.5rem 0.75rem;background:#fff3f0;border-radius:6px;border:1px solid #ffd0c8;">
+                        <span>CalibrationAGT codebase</span>
+                        <span style="font-weight:600;color:#c0392b;">~400K tokens ⚠</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;padding:0.5rem 0.75rem;background:#fff0f0;border-radius:6px;border:1px solid #ffb0b0;">
+                        <span>Medium-sized production codebase</span>
+                        <span style="font-weight:600;color:#c0392b;">~2–5M tokens ✗</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;padding:0.5rem 0.75rem;background:#ffe8e8;border-radius:6px;border:1px solid #ff8080;">
+                        <span>Your habits + env config + docs</span>
+                        <span style="font-weight:600;color:#c0392b;">Can't fit at all ✗</span>
+                    </div>
+                </div>
+                <div class="highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);">
+                    <p style="font-size:var(--t-small);">
+                        <span><strong>What Agent does:</strong><br>
+                        Decide, for each LLM call, <em>which</em> information to stuff into context —<br>
+                        which files to read, which preferences to remember, which history to forget</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">04 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE: 工具对比 ===================== -->
+<section class="slide" id="slide-5">
+    <div class="slide-content" style="justify-content: center; align-items: center; text-align: center;">
+        <p class="reveal text-soft" style="font-size: var(--t-small); letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 1rem;">Today's Core Argument</p>
+        <h1 class="reveal" style="font-size: clamp(2rem, 5.5vw, 5rem); max-width: 22rem; line-height: 1.1; margin: 0 auto;">AI Agent Is Already Powerful Enough for <span class=&quot;text-red&quot;>Real Work</span></h1>
+        <p class="reveal text-mid" style="margin-top: var(--gap); font-size: var(--t-body); max-width: 28rem;">Not a demo. Not a toy.</p>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">05 / 23</div>
+    </div>
+</section>
+
+
+
+
+<!-- ===================== SLIDE: 为什么 Agent 适合 Research ===================== -->
+<section class="slide slide-part" id="slide-12">
+    <div class="part-number">01</div>
+    <div class="part-content">
+        <div class="part-label reveal">Part One · Engineering</div>
+        <div class="part-title reveal">Cat Boarding<br>Web App</div>
+        <div class="part-subtitle reveal">Zero to Production, Driven by Claude Code</div>
+    </div>
+    <div class="slide-footer" style="border-color: rgba(255,255,255,0.1);">
+        <div class="footer-text" style="color: rgba(255,255,255,0.3);"></div>
+        <div class="slide-num" style="color: rgba(255,255,255,0.3);">12 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 12: 背景 ===================== -->
+<section class="slide" id="slide-13">
+    <div class="slide-header">
+        <div class="slide-header-label">Engineering · Background</div>
+        <div class="slide-header-label red">Side Project</div>
+    </div>
+    <div class="slide-content" style="gap: var(--egap);">
+        <h2 class="reveal">You Know My GF Runs a Cat Boarding Business 🐱</h2>
+        <p class="reveal text-mid" style="max-width: 40rem;">We had <strong>no system at all</strong> before — everything was in our heads or on paper, total chaos.<br>
+            In between research sessions, I spent a few days building her a system with Claude Code.</p>
+        <div class="two-col reveal" style="gap: var(--egap);">
+            <div class="card">
+                <div class="card-title">📋 Before</div>
+                <div class="card-desc">Notebooks, WeChat group messages, kept in memory — check-in/out times were constantly getting mixed up</div>
+            </div>
+            <div class="card" style="border-color: var(--red); background: var(--red-light);">
+                <div class="card-title" style="color: var(--red);">✅ Now</div>
+                <div class="card-desc">Boarding management, home feeding visits, booking links, e-signatures, revenue stats — full coverage</div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">13 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 13: 系统截图 Desktop ===================== -->
+<section class="slide" id="slide-14">
+    <div class="slide-header">
+        <div class="slide-header-label">Engineering · System Demo</div>
+        <div class="slide-header-label red">Desktop</div>
+    </div>
+    <div class="slide-content" style="gap: var(--egap);">
+        <h2 class="reveal">Arigato · Cat Boarding Web App</h2>
+        <!-- Safari browser mockup -->
+        <div class="reveal" style="
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 12px 48px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.08);
+            min-height: 0;
+        ">
+            <!-- Safari toolbar -->
+            <div style="
+                flex-shrink: 0;
+                background: #ececec;
+                padding: 0.45rem 0.75rem;
+                display: flex;
+                align-items: center;
+                gap: 0.6rem;
+                border-bottom: 1px solid #d0d0d0;
+            ">
+                <!-- Traffic lights -->
+                <div style="display:flex;gap:5px;flex-shrink:0;">
+                    <div style="width:12px;height:12px;border-radius:50%;background:#ff5f57;"></div>
+                    <div style="width:12px;height:12px;border-radius:50%;background:#febc2e;"></div>
+                    <div style="width:12px;height:12px;border-radius:50%;background:#28c840;"></div>
+                </div>
+                <!-- Back/forward -->
+                <div style="display:flex;gap:4px;flex-shrink:0;margin-left:0.3rem;">
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="#999" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="#ccc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <!-- URL bar -->
+                <div style="
+                    flex: 1;
+                    background: #fff;
+                    border-radius: 6px;
+                    padding: 0.2rem 0.6rem;
+                    font-size: 0.72rem;
+                    color: #555;
+                    font-family: -apple-system, sans-serif;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.3rem;
+                    border: 1px solid #d8d8d8;
+                ">
+                    <svg width="10" height="10" viewBox="0 0 16 16" fill="none"><rect x="2" y="7" width="12" height="8" rx="1.5" stroke="#34c759" stroke-width="1.5"/><path d="M5 7V5a3 3 0 016 0v2" stroke="#34c759" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    <span>taolinwei.com/cat-boarding-system</span>
+                </div>
+                <!-- Share icon -->
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;"><path d="M8 1v9M5 4L8 1l3 3" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 9v4a1 1 0 001 1h8a1 1 0 001-1V9" stroke="#999" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <!-- Page content -->
+            <div id="safari-screen" style="flex:1;overflow:hidden;position:relative;background:#fff;">
+                <iframe
+                    id="safari-iframe"
+                    src="https://www.taolinwei.com/cat-boarding-system/"
+                    style="width:1440px;height:900px;border:none;display:block;transform-origin:top left;position:absolute;top:0;left:0;"
+                    title="阿里嘎多猫咪寄养 Web App"
+                    allow="fullscreen"
+                ></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">14 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 15: 构建过程 ===================== -->
+<section class="slide" id="slide-16">
+    <div class="slide-header">
+        <div class="slide-header-label">Engineering · Build Process</div>
+        <div class="slide-header-label red">Claude Code in Action</div>
+    </div>
+    <div class="slide-content" style="gap:var(--egap);padding-top:0.5rem;">
+
+        <!-- Pipeline label -->
+        <p class="reveal" style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;color:var(--ink-soft);text-transform:uppercase;">Traditional Web Development Pipeline</p>
+
+        <!-- Pipeline flow -->
+        <div class="reveal" style="display:flex;align-items:stretch;gap:0;justify-content:space-between;">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.6rem 0.4rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
+                <span style="font-size:1.4rem;">💬</span>
+                <span style="font-size:clamp(0.62rem,0.9vw,0.8rem);font-weight:700;color:var(--ink);">Break Down Requirements</span>
+                <span style="font-size:clamp(0.5rem,0.72vw,0.65rem);color:var(--ink-soft);text-align:center;line-height:1.4;">Natural language description<br>agent breaks down tasks</span>
+            </div>
+            <div style="display:flex;align-items:center;padding:0 0.2rem;color:var(--ink-soft);font-size:0.9rem;">→</div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.6rem 0.4rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
+                <span style="font-size:1.4rem;">🗄️</span>
+                <span style="font-size:clamp(0.62rem,0.9vw,0.8rem);font-weight:700;color:var(--ink);">Database Design</span>
+                <span style="font-size:clamp(0.5rem,0.72vw,0.65rem);color:var(--ink-soft);text-align:center;line-height:1.4;">schema.sql<br>migration scripts auto-generated</span>
+            </div>
+            <div style="display:flex;align-items:center;padding:0 0.2rem;color:var(--ink-soft);font-size:0.9rem;">→</div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.6rem 0.4rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
+                <span style="font-size:1.4rem;">🎨</span>
+                <span style="font-size:clamp(0.62rem,0.9vw,0.8rem);font-weight:700;color:var(--ink);">UI Design</span>
+                <span style="font-size:clamp(0.5rem,0.72vw,0.65rem);color:var(--ink-soft);text-align:center;line-height:1.4;">Wireframes → components<br>agent converts to HTML</span>
+            </div>
+            <div style="display:flex;align-items:center;padding:0 0.2rem;color:var(--ink-soft);font-size:0.9rem;">→</div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.6rem 0.4rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
+                <span style="font-size:1.4rem;">🖥️</span>
+                <span style="font-size:clamp(0.62rem,0.9vw,0.8rem);font-weight:700;color:var(--ink);">Frontend Dev</span>
+                <span style="font-size:clamp(0.5rem,0.72vw,0.65rem);color:var(--ink-soft);text-align:center;line-height:1.4;">Pure HTML + ES Modules<br>no framework, no build step</span>
+            </div>
+            <div style="display:flex;align-items:center;padding:0 0.2rem;color:var(--ink-soft);font-size:0.9rem;">→</div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.6rem 0.4rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
+                <span style="font-size:1.4rem;">🐛</span>
+                <span style="font-size:clamp(0.62rem,0.9vw,0.8rem);font-weight:700;color:var(--ink);">Debug &amp; Iterate</span>
+                <span style="font-size:clamp(0.5rem,0.72vw,0.65rem);color:var(--ink-soft);text-align:center;line-height:1.4;">Errors go straight to agent<br>mostly self-resolved</span>
+            </div>
+            <div style="display:flex;align-items:center;padding:0 0.2rem;color:var(--ink-soft);font-size:0.9rem;">→</div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.6rem 0.4rem;background:#111;border-radius:8px;border:1.5px solid #111;">
+                <span style="font-size:1.4rem;">🚀</span>
+                <span style="font-size:clamp(0.62rem,0.9vw,0.8rem);font-weight:700;color:#fff;">Production Launch</span>
+                <span style="font-size:clamp(0.5rem,0.72vw,0.65rem);color:#aaa;text-align:center;line-height:1.4;">Real users<br>Real business</span>
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="reveal" style="display:flex;align-items:center;gap:1rem;margin:0.2rem 0;">
+            <div style="flex:1;height:1px;background:var(--border-soft);"></div>
+            <span style="font-size:clamp(0.65rem,0.9vw,0.8rem);color:var(--ink-soft);white-space:nowrap;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;">What This Means</span>
+            <div style="flex:1;height:1px;background:var(--border-soft);"></div>
+        </div>
+
+        <!-- Vision cards — each a separate reveal -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;">
+
+            <div class="reveal" style="padding:0.8rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);display:flex;flex-direction:column;gap:0.3rem;">
+                <div style="font-size:1.3rem;">🏢</div>
+                <div style="font-size:clamp(0.72rem,1vw,0.88rem);font-weight:700;">Solo Company</div>
+                <div style="font-size:clamp(0.54rem,0.76vw,0.68rem);color:var(--ink-mid);line-height:1.5;">One person executing what used to take an entire engineering team</div>
+                <div style="margin-top:auto;padding-top:0.4rem;border-top:1px solid var(--border-soft);">
+                    <div style="font-size:clamp(0.52rem,0.72vw,0.65rem);color:var(--ink-soft);line-height:1.5;"><strong style='color:var(--ink-mid);'>Pieter Levels</strong> — 0 employees, $3.1M ARR, 70+ products<br>
+                        <strong style='color:var(--ink-mid);'>Lovable</strong> — founded by 1 person, reached $100M ARR in 8 months</div>
+                </div>
+            </div>
+
+            <div class="reveal" style="padding:0.8rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);display:flex;flex-direction:column;gap:0.3rem;">
+                <div style="font-size:1.3rem;">🔬</div>
+                <div style="font-size:clamp(0.72rem,1vw,0.88rem);font-weight:700;">Researcher's Toolbox</div>
+                <div style="font-size:clamp(0.54rem,0.76vw,0.68rem);color:var(--ink-mid);line-height:1.5;">Build whatever tool you're missing — experiment management, visualization, automation scripts</div>
+                <div style="margin-top:auto;padding-top:0.4rem;border-top:1px solid var(--border-soft);">
+                    <div style="font-size:clamp(0.52rem,0.72vw,0.65rem);color:var(--ink-soft);line-height:1.5;"><strong style='color:var(--ink-mid);'>Komodo Health</strong> — 6–8 week analysis projects cut to hours<br>
+                        <strong style='color:var(--ink-mid);'>Patrick Mineault</strong> — NeuroAI researcher, uses Claude Code for analysis pipelines</div>
+                </div>
+            </div>
+
+            <div class="reveal" style="padding:0.8rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);display:flex;flex-direction:column;gap:0.3rem;">
+                <div style="font-size:1.3rem;">💡</div>
+                <div style="font-size:clamp(0.72rem,1vw,0.88rem);font-weight:700;">Startup MVP</div>
+                <div style="font-size:clamp(0.54rem,0.76vw,0.68rem);color:var(--ink-mid);line-height:1.5;">Validating an idea drops from months to days — ideas can reach real users immediately</div>
+                <div style="margin-top:auto;padding-top:0.4rem;border-top:1px solid var(--border-soft);">
+                    <div style="font-size:clamp(0.52rem,0.72vw,0.65rem);color:var(--ink-soft);line-height:1.5;"><strong style='color:var(--ink-mid);'>Indragie</strong> — macOS app, 19k/20k lines written by Claude<br>
+                        <strong style='color:var(--ink-mid);'>Invoice management system</strong> — built in 1 day, API cost $3.65</div>
+                </div>
+            </div>
+
+            <div class="reveal" style="padding:0.8rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);display:flex;flex-direction:column;gap:0.3rem;">
+                <div style="font-size:1.3rem;">🛠️</div>
+                <div style="font-size:clamp(0.72rem,1vw,0.88rem);font-weight:700;">Self-Sufficient Daily Life</div>
+                <div style="font-size:clamp(0.54rem,0.76vw,0.68rem);color:var(--ink-mid);line-height:1.5;">Calendar sync, bill organization, personal dashboard — solve your own needs yourself</div>
+                <div style="margin-top:auto;padding-top:0.4rem;border-top:1px solid var(--border-soft);">
+                    <div style="font-size:clamp(0.52rem,0.72vw,0.65rem);color:var(--ink-soft);line-height:1.5;"><strong style='color:var(--ink-mid);'>Home Assistant community</strong> — built smart home from scratch with Claude Code<br>
+                        <strong style='color:var(--ink-mid);'>Non-programmer</strong> — Claude Opus 4 + Cursor, wrote a personal finance app with 0 lines of code</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Takeaway -->
+        <div class="reveal" style="border-left:4px solid var(--red);background:var(--red-light);border-radius:0 8px 8px 0;padding:0.75rem 1.2rem;display:flex;align-items:center;gap:1rem;">
+            <span style="font-size:1.3rem;flex-shrink:0;color:var(--red);">✦</span>
+            <p style="font-size:clamp(0.72rem,1.1vw,0.95rem);line-height:1.5;color:var(--ink);"><strong>The execution barrier has dropped dramatically</strong> — cross-domain work is no longer a bottleneck. Your ceiling is how many worthwhile things you can think to do.</p>
+        </div>
+
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">16 / 23</div>
+    </div>
+</section>
+
+
+<!-- ===================== SLIDE 6: PART 1 DIVIDER ===================== -->
+<section class="slide slide-part" id="slide-6">
+    <div class="part-number">02</div>
+    <div class="part-content">
+        <div class="part-label reveal">Part Two · Research</div>
+        <div class="part-title reveal">CalibrationAGT</div>
+        <div class="part-subtitle reveal">Confidence Calibration Under Annotation Ambiguity</div>
+    </div>
+    <div class="slide-footer" style="border-color: rgba(255,255,255,0.1);">
+        <div class="footer-text" style="color: rgba(255,255,255,0.3);"></div>
+        <div class="slide-num" style="color: rgba(255,255,255,0.3);">06 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 7: Motivation ===================== -->
+<section class="slide" id="slide-7">
+    <div class="slide-header">
+        <div class="slide-header-label">Research · Motivation</div>
+        <div class="slide-header-label red">CalibrationAGT</div>
+    </div>
+    <div class="slide-content" style="gap: var(--egap);">
+        <h2 class="reveal">How Did This Paper Start?</h2>
+        <div style="display: flex; gap: var(--gap); align-items: center;">
+            <!-- Right: ambiguity figure — first in DOM so it reveals first -->
+            <div class="reveal" style="order: 2; flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center;">
+                <img src="assets/fig_intro_ambiguity.png" alt="标注歧义示例" style="max-width: 100%; max-height: min(52vh, 380px); object-fit: contain;">
+            </div>
+            <!-- Left: timeline steps, each a reveal -->
+            <div style="order: 1; display: flex; flex-direction: column; gap: var(--egap); flex: 1; min-width: 0;">
+                <div class="reveal" style="display: flex; gap: 1.2rem; align-items: flex-start;">
+                    <div style="flex-shrink: 0; width: 2.2rem; height: 2.2rem; border: 2px solid var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: var(--t-small); font-weight: 700; color: var(--red);">01</div>
+                    <div>
+                        <p style="font-size: var(--t-body); font-weight: 600;">Conformal Prediction × Annotation Ambiguity</p>
+                        <p class="text-soft" style="font-size: var(--t-small);">When ground truth is inherently ambiguous (annotators disagree), do CP's coverage guarantees still hold?</p>
+                    </div>
+                </div>
+                <div class="reveal" style="display: flex; gap: 1.2rem; align-items: flex-start;">
+                    <div style="flex-shrink: 0; width: 2.2rem; height: 2.2rem; border: 2px solid var(--border-soft); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: var(--t-small); font-weight: 700; color: var(--ink-soft);">02</div>
+                    <div>
+                        <p style="font-size: var(--t-body); font-weight: 600;">Calibration in This Setting Hasn't Been Done</p>
+                        <p class="text-soft" style="font-size: var(--t-small);">Annotation ambiguity + calibration — even &ldquo;how to evaluate&rdquo; has no consensus</p>
+                    </div>
+                </div>
+                <div class="reveal" style="display: flex; gap: 1.2rem; align-items: flex-start;">
+                    <div style="flex-shrink: 0; width: 2.2rem; height: 2.2rem; background: var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: var(--t-small); font-weight: 700; color: white;">03</div>
+                    <div>
+                        <p style="font-size: var(--t-body); font-weight: 600;">Pivot → CalibrationAGT</p>
+                        <p class="text-soft" style="font-size: var(--t-small);">Calibration in this setting is equally worth systematic study.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">07 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE: 科研工作流 = 文字 ===================== -->
+<section class="slide" id="slide-research-workflow">
+    <div class="slide-header">
+        <div class="slide-header-label">AI Agent</div>
+        <div class="slide-header-label red">Why Research?</div>
+    </div>
+    <div class="slide-content" style="padding:var(--pad);gap:var(--gap);">
+        <h2 class="reveal">Why Is AI Agent Good for Research?</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0;align-items:start;">
+            <!-- LEFT: workflow chain -->
+            <div class="reveal" style="display:flex;flex-direction:column;gap:0.5rem;">
+                <p style="font-size:var(--t-small);color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">Every step is text</p>
+                <div style="display:flex;flex-direction:column;gap:0.3rem;">
+                    <div style="display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--ink-soft);">
+                        <span style="font-size:1rem;">📚</span>
+                        <div>
+                            <p style="font-size:var(--t-small);font-weight:600;">Literature Review</p>
+                            <p style="font-size:clamp(0.5rem,0.7vw,0.62rem);color:var(--ink-soft);">Papers, abstracts, notes — all text</p>
+                        </div>
+                    </div>
+                    <div style="text-align:center;color:var(--ink-soft);font-size:0.75rem;">↓</div>
+                    <div style="display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--ink-soft);">
+                        <span style="font-size:1rem;">💡</span>
+                        <div>
+                            <p style="font-size:var(--t-small);font-weight:600;">Research Proposal</p>
+                            <p style="font-size:clamp(0.5rem,0.7vw,0.62rem);color:var(--ink-soft);">Hypothesis, design, rationale — text</p>
+                        </div>
+                    </div>
+                    <div style="text-align:center;color:var(--ink-soft);font-size:0.75rem;">↓</div>
+                    <div style="display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--ink-soft);">
+                        <span style="font-size:1rem;">🔬</span>
+                        <div>
+                            <p style="font-size:var(--t-small);font-weight:600;">Experiment Scripts</p>
+                            <p style="font-size:clamp(0.5rem,0.7vw,0.62rem);color:var(--ink-soft);">Code is text</p>
+                        </div>
+                    </div>
+                    <div style="text-align:center;color:var(--ink-soft);font-size:0.75rem;">↓</div>
+                    <div style="display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid #e8321a;">
+                        <span style="font-size:1rem;">⚠️</span>
+                        <div>
+                            <p style="font-size:var(--t-small);font-weight:600;">Errors &amp; Results</p>
+                            <p style="font-size:clamp(0.5rem,0.7vw,0.62rem);color:var(--ink-soft);">Stack traces, CSV, logs — text with instant feedback</p>
+                        </div>
+                    </div>
+                    <div style="text-align:center;color:var(--ink-soft);font-size:0.75rem;">↓</div>
+                    <div style="display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--ink-soft);">
+                        <span style="font-size:1rem;">📊</span>
+                        <div>
+                            <p style="font-size:var(--t-small);font-weight:600;">Figures</p>
+                            <p style="font-size:clamp(0.5rem,0.7vw,0.62rem);color:var(--ink-soft);">matplotlib / seaborn script — also text</p>
+                        </div>
+                    </div>
+                    <div style="text-align:center;color:var(--ink-soft);font-size:0.75rem;">↓</div>
+                    <div style="display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.7rem;background:#111;border-radius:6px;border-left:3px solid var(--red);">
+                        <span style="font-size:1rem;">📄</span>
+                        <div>
+                            <p style="font-size:var(--t-small);font-weight:600;color:#fff;">Paper (LaTeX)</p>
+                            <p style="font-size:clamp(0.5rem,0.7vw,0.62rem);color:#888;">Everything converges — into text</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- RIGHT: why agent fits -->
+            <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);justify-content:center;height:100%;">
+                <div class="highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);">
+                    <p style="font-size:var(--t-h3);font-weight:700;line-height:1.4;">LLM = the world's best text processor</p>
+                </div>
+                <p style="font-size:var(--t-body);color:var(--ink-mid);line-height:1.6;">Every research bottleneck — reading papers, writing proposals, coding experiments, debugging — is exactly what LLMs are built for</p>
+                <div style="border-top:1px solid var(--border-soft);padding-top:var(--egap);">
+                    <p style="font-size:var(--t-small);font-weight:700;margin-bottom:0.4rem;">Killer advantage: instant feedback loop</p>
+                    <ul style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.9;padding-left:1.1em;margin:0;">
+                        <li>Error → agent reads, fixes, reruns</li>
+                        <li>Result CSV → agent plots + updates paper</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 9: Claude Code 聊天动画 ===================== -->
+<section class="slide" id="slide-why-research">
+    <div class="slide-header">
+        <div class="slide-header-label">AI Agent</div>
+        <div class="slide-header-label red">ChatGPT vs Agent</div>
+    </div>
+    <div class="slide-content" style="padding:var(--pad);gap:var(--gap);">
+        <h2 class="reveal" style="font-size:var(--t-h2);">From Copy-paste Engineer to Director</h2>
+
+        <div class="two-col" style="gap:var(--gap);align-items:start;">
+            <!-- LEFT: 以前怎么用 ChatGPT -->
+            <div style="display:flex;flex-direction:column;gap:var(--egap);">
+                <p class="reveal" style="font-size:var(--t-small);font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-soft);">Before: How We Used ChatGPT</p>
+                <div class="reveal code-block" style="font-size:clamp(0.68rem,0.9vw,0.78rem);line-height:1.75;"><span class='cm'># Experiment error → copy-paste into ChatGPT</span>
+<span style='color:#f87171;'>Error: KeyError: 'ece_true' in evaluate.py:42</span>
+                ↓  manually copy → paste → ask ChatGPT
+<span class='cm'># ChatGPT gives solution → manually paste back</span>
+<span class='kw'>Fix:</span> metrics[key] = ece_fn(logits, soft_labels)</div>
+                <div class="reveal code-block" style="font-size:clamp(0.68rem,0.9vw,0.78rem);line-height:1.75;"><span class='cm'># Experiment results → copy to ChatGPT to write LaTeX</span>
+<span style='color:#86efac;'>model,ece_voted,ece_true</span>
+<span style='color:#86efac;'>TS,0.032,0.088</span>
+                ↓  manually copy → paste → wait for ChatGPT
+<span style='color:#93c5fd;'>\begin{'{'}tabular{'}'}{'{'}lcc{'}'} ...</span></div>
+                <div class="reveal" style="padding:0.6rem 0.9rem;border-left:3px solid #888;background:var(--bg-alt);border-radius:0 6px 6px 0;font-size:var(--t-small);color:var(--ink-mid);"><strong>Pattern:</strong> Manually ferry info → ChatGPT answers → Manually carry it back<br>
+                    ChatGPT is the tool, you're the middleman</div>
+            </div>
+
+            <!-- RIGHT: 现在怎么用 Agent -->
+            <div style="display:flex;flex-direction:column;gap:var(--egap);">
+                <p class="reveal" style="font-size:var(--t-small);font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--red);">Now: How We Use Agent</p>
+                <div class="reveal code-block" style="font-size:clamp(0.68rem,0.9vw,0.78rem);line-height:1.75;"><span class='cm'># Experiment error → Agent handles automatically</span>
+<span style='color:#f87171;'>Error: KeyError: 'ece_true' in evaluate.py:42</span>
+                ↓  Agent auto-reads file, locates cause, fixes, runs tests
+<span style='color:#86efac;'>✓ All tests passed. Pushed fix.</span></div>
+                <div class="reveal code-block" style="font-size:clamp(0.68rem,0.9vw,0.78rem);line-height:1.75;"><span class='cm'># Experiment results → Agent auto-generates figures</span>
+<span style='color:#86efac;'>model,ece_voted,ece_true</span>
+<span style='color:#86efac;'>TS,0.032,0.088</span>
+                ↓  Agent reads CSV → seaborn plots → saves fig2.pdf
+<span style='color:#93c5fd;'>✓ fig2_reliability.pdf saved</span></div>
+                <div class="reveal highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);">
+                    <p style="font-size:var(--t-small);line-height:1.6;"><strong>Pattern:</strong> You only handle direction<br>
+                    Agent autonomously reads files, executes, verifies, and reports back<br>
+                    <span style='color:var(--ink-mid);'>→ You're the Director, not a Copy-paste Engineer</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 11: PART 2 DIVIDER ===================== -->
+<section class="slide" id="slide-9">
+    <div class="slide-header">
+        <div class="slide-header-label">Research · Claude Code in Action</div>
+        <div class="slide-header-label red">Live Interaction</div>
+    </div>
+    <div class="slide-content" style="padding: clamp(1rem,2vw,2rem) var(--pad); gap: 0;">
+        <!-- Claude Code terminal chrome -->
+        <div id="cc-window" style="
+            background: #1a1a1a;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: min(72vh, 580px);
+            font-family: var(--font-mono);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+        ">
+            <!-- Title bar -->
+            <div style="background:#2a2a2a;padding:0.6rem 1rem;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+                <div style="width:12px;height:12px;border-radius:50%;background:#ff5f57;"></div>
+                <div style="width:12px;height:12px;border-radius:50%;background:#febc2e;"></div>
+                <div style="width:12px;height:12px;border-radius:50%;background:#28c840;"></div>
+                <span style="margin-left:0.75rem;color:#888;font-size:0.75rem;letter-spacing:0.05em;flex:1;">claude — ~/CalibrationAGT</span>
+                <button id="cc-pause-btn" onclick="toggleCCPause()" style="background:#444;border:none;color:#ccc;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;letter-spacing:0.03em;">⏸ Pause</button>
+                <button id="cc-replay-btn" onclick="restartCCAnimation()" style="background:#333;border:none;color:#888;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;">↺ Replay</button>
+            </div>
+            <!-- Chat area -->
+            <div id="cc-chat" style="flex:1;overflow-y:auto;padding:1rem 1.25rem;display:flex;flex-direction:column;gap:0.9rem;"></div>
+            <!-- Input bar -->
+            <div style="background:#111;border-top:1px solid #333;padding:0.6rem 1rem;display:flex;align-items:center;gap:0.75rem;flex-shrink:0;">
+                <span style="color:#e8321a;font-size:0.85rem;">❯</span>
+                <div id="cc-input" style="color:#e0e0e0;font-size:clamp(0.7rem,1.1vw,0.9rem);flex:1;min-height:1.2em;"></div>
+                <div id="cc-cursor" style="width:2px;height:1.1em;background:#e8321a;animation:blink 1s step-end infinite;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">09 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE R1: Skills & Skill-Creator ===================== -->
+<section class="slide" id="slide-skills-intro">
+    <div class="slide-header">
+        <div class="slide-header-label">Research · Toolchain</div>
+        <div class="slide-header-label red">Skills &amp; Skill-Creator</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1.3fr;gap:var(--gap);padding:var(--egap) var(--pad) var(--pad);height:calc(100% - 4rem);align-items:center;">
+
+        <!-- LEFT: explanation -->
+        <div style="display:flex;flex-direction:column;gap:var(--egap);">
+            <h2 class="reveal" style="font-size:var(--t-h2);">Skills — Give Your Agent a Custom Workflow</h2>
+            <div class="reveal" style="display:flex;flex-direction:column;gap:0.6rem;">
+                <div style="padding:0.7rem 1rem;background:var(--bg-alt);border-radius:8px;border-left:3px solid var(--red);">
+                    <p style="font-size:var(--t-small);font-weight:600;margin-bottom:0.2rem;">What is a Skill?</p>
+                    <p style="font-size:clamp(0.62rem,0.9vw,0.78rem);color:var(--ink-mid);line-height:1.5;">A Markdown file describing how the Agent should complete a category of tasks. Once triggered, the Agent follows the skill's instructions to execute the full workflow.</p>
+                </div>
+                <div style="padding:0.7rem 1rem;background:var(--bg-alt);border-radius:8px;border-left:3px solid var(--ink-soft);">
+                    <p style="font-size:var(--t-small);font-weight:600;margin-bottom:0.2rem;">What is Skill-Creator?</p>
+                    <p style="font-size:clamp(0.62rem,0.9vw,0.78rem);color:var(--ink-mid);line-height:1.5;">A skill specifically for <strong>writing skills</strong>. Describe your need, and Agent automatically generates a structured workflow spec and saves it.</p>
+                </div>
+                <div style="padding:0.7rem 1rem;background:var(--bg-alt);border-radius:8px;border-left:3px solid var(--ink-soft);">
+                    <p style="font-size:var(--t-small);font-weight:600;margin-bottom:0.2rem;">Use Cases</p>
+                    <p style="font-size:clamp(0.62rem,0.9vw,0.78rem);color:var(--ink-mid);line-height:1.5;">Literature review, paper writing, experiment management, code review, data preprocessing — any repetitive workflow can be packaged as a skill</p>
+                </div>
+            </div>
+            <div class="reveal highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);">
+                <p style="font-size:clamp(0.65rem,0.95vw,0.82rem);font-weight:700;margin-bottom:0.3rem;">Skills = reusable Agent workflows — define once, invoke repeatedly</p>
+                <p style="font-size:clamp(0.58rem,0.82vw,0.7rem);color:var(--ink-mid);line-height:1.5;">Examples: <code style='background:rgba(0,0,0,0.06);padding:0.1em 0.3em;border-radius:3px;'>/paper-review</code> review workflow ·
+                    <code style='background:rgba(0,0,0,0.06);padding:0.1em 0.3em;border-radius:3px;'>/experiment-log</code> experiment record ·
+                    <code style='background:rgba(0,0,0,0.06);padding:0.1em 0.3em;border-radius:3px;'>/debug-cluster</code> GPU cluster debug ·
+                    <code style='background:rgba(0,0,0,0.06);padding:0.1em 0.3em;border-radius:3px;'>/weekly-report</code> auto weekly report</p>
+            </div>
+        </div>
+
+        <!-- RIGHT: animated terminal -->
+        <div style="background:#1a1a1a;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;height:min(66vh,500px);font-family:var(--font-mono);box-shadow:0 8px 40px rgba(0,0,0,0.18);">
+            <div style="background:#2a2a2a;padding:0.55rem 1rem;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+                <div style="width:11px;height:11px;border-radius:50%;background:#ff5f57;"></div>
+                <div style="width:11px;height:11px;border-radius:50%;background:#febc2e;"></div>
+                <div style="width:11px;height:11px;border-radius:50%;background:#28c840;"></div>
+                <span style="margin-left:0.75rem;color:#888;font-size:0.72rem;flex:1;">claude — ~/research</span>
+                <button id="skill0-pause-btn" onclick="toggleSkill0Pause()" style="background:#444;border:none;color:#ccc;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;letter-spacing:0.03em;">⏸ Pause</button>
+                <button id="skill0-replay-btn" onclick="restartSkill0Animation()" style="background:#333;border:none;color:#888;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;">↺ Replay</button>
+            </div>
+            <div id="skill0-chat" style="flex:1;overflow-y:auto;padding:0.9rem 1.1rem;font-size:clamp(0.58rem,0.85vw,0.72rem);line-height:1.7;color:#ccc;display:flex;flex-direction:column;gap:0.5rem;"></div>
+            <div style="background:#111;border-top:1px solid #333;padding:0.5rem 1rem;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+                <span style="color:#e8321a;font-size:0.85rem;">❯</span>
+                <span id="skill0-input" style="color:#ccc;font-size:clamp(0.6rem,0.85vw,0.72rem);"></span>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE R2: ai-research-paper skill ===================== -->
+<section class="slide" id="slide-skill-arp">
+    <div class="slide-header">
+        <div class="slide-header-label">Research · Skill in Action</div>
+        <div class="slide-header-label red">ai-research-paper</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:var(--gap);padding:var(--egap) var(--pad) var(--pad);height:calc(100% - 4rem);align-items:center;">
+
+        <!-- LEFT: pipeline diagram -->
+        <div class="reveal" style="display:flex;flex-direction:column;gap:0.3rem;height:100%;overflow:hidden;">
+            <p style="font-size:var(--t-small);font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-soft);">Pipeline</p>
+            <!-- Phase 0 -->
+            <div style="display:flex;gap:0.7rem;align-items:center;padding:0.4rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--red);">
+                <span style="font-size:0.95rem;flex-shrink:0;">🔧</span>
+                <div>
+                    <p style="font-size:clamp(0.62rem,0.88vw,0.76rem);font-weight:700;">Phase 0 · Setup</p>
+                    <p style="font-size:clamp(0.5rem,0.7vw,0.6rem);color:var(--ink-soft);">venue · topic · compute → config.md</p>
+                </div>
+            </div>
+            <div style="padding-left:1.4rem;color:#555;font-size:0.75rem;line-height:1;">↓</div>
+            <!-- IDEA LOOP bracket -->
+            <div style="display:flex;gap:0;align-items:stretch;">
+                <div style="width:10px;border-top:2px solid #444;border-left:2px solid #444;border-bottom:2px solid #444;border-radius:4px 0 0 4px;flex-shrink:0;margin:0.05rem 0;position:relative;">
+                    <span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-90deg);font-size:0.45rem;color:#555;white-space:nowrap;letter-spacing:0.05em;">↻ LOOP</span>
+                </div>
+                <div style="flex:1;display:flex;flex-direction:column;gap:0.22rem;padding:0.3rem 0 0.3rem 0.5rem;background:rgba(255,255,255,0.02);border-radius:0 6px 6px 0;">
+                    <p style="font-size:0.52rem;color:#555;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Idea Loop · Phase 1–5</p>
+                    <div style="display:flex;gap:0.6rem;align-items:center;padding:0.32rem 0.6rem;background:var(--bg-alt);border-radius:5px;">
+                        <span style="font-size:0.8rem;">📚</span>
+                        <div>
+                            <p style="font-size:clamp(0.58rem,0.8vw,0.68rem);font-weight:700;">Literature Review</p>
+                            <p style="font-size:clamp(0.48rem,0.65vw,0.56rem);color:var(--ink-soft);">ArXiv MCP · WebSearch · gap identification</p>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:0.6rem;align-items:center;padding:0.32rem 0.6rem;background:var(--bg-alt);border-radius:5px;">
+                        <span style="font-size:0.8rem;">💡</span>
+                        <div>
+                            <p style="font-size:clamp(0.58rem,0.8vw,0.68rem);font-weight:700;">Idea Generation</p>
+                            <p style="font-size:clamp(0.48rem,0.65vw,0.56rem);color:var(--ink-soft);">Generate 4 candidate ideas</p>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:0.6rem;align-items:center;padding:0.32rem 0.6rem;background:var(--bg-alt);border-radius:5px;border-left:2px solid #7ec8e3;">
+                        <span style="font-size:0.8rem;">🤖</span>
+                        <div>
+                            <p style="font-size:clamp(0.58rem,0.8vw,0.68rem);font-weight:700;">6-Agent Debate <span style="color:#7ec8e3;font-size:0.5rem;font-weight:400;">← subagents</span></p>
+                            <p style="font-size:clamp(0.48rem,0.65vw,0.56rem);color:var(--ink-soft);">Critic · Champion · Devil's Advocate…</p>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:0.6rem;align-items:center;padding:0.32rem 0.6rem;background:#1a1a0a;border-radius:5px;border-left:2px solid #febc2e;">
+                        <span style="font-size:0.8rem;">🚪</span>
+                        <div>
+                            <p style="font-size:clamp(0.58rem,0.8vw,0.68rem);font-weight:700;">AC Gate</p>
+                            <p style="font-size:clamp(0.48rem,0.65vw,0.56rem);color:#888;">REVISE → loop · REJECT → drop · <span style="color:#28c840;">ACCEPT</span> ↓</p>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:0.6rem;align-items:center;padding:0.32rem 0.6rem;background:var(--bg-alt);border-radius:5px;">
+                        <span style="font-size:0.8rem;">🔬</span>
+                        <div>
+                            <p style="font-size:clamp(0.58rem,0.8vw,0.68rem);font-weight:700;">Pilot Experiment</p>
+                            <p style="font-size:clamp(0.48rem,0.65vw,0.56rem);color:var(--ink-soft);">Quick feasibility check · PASS to continue</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="padding-left:1.4rem;color:#555;font-size:0.75rem;line-height:1;">↓ ACCEPT</div>
+            <!-- Post-loop phases -->
+            <div style="display:flex;gap:0.7rem;align-items:center;padding:0.4rem 0.7rem;background:var(--bg-alt);border-radius:6px;">
+                <span style="font-size:0.95rem;flex-shrink:0;">⚡</span>
+                <div>
+                    <p style="font-size:clamp(0.62rem,0.88vw,0.76rem);font-weight:700;">Full Experiments · GPU Auto</p>
+                    <p style="font-size:clamp(0.5rem,0.7vw,0.6rem);color:var(--ink-soft);">SSH · gnvitop scheduling · autonomous execution</p>
+                </div>
+            </div>
+            <div style="display:flex;gap:0.7rem;align-items:center;padding:0.4rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:2px solid #7ec8e3;">
+                <span style="font-size:0.95rem;flex-shrink:0;">📊</span>
+                <div>
+                    <p style="font-size:clamp(0.62rem,0.88vw,0.76rem);font-weight:700;">6-Agent Result Debate <span style="color:#7ec8e3;font-size:0.5rem;font-weight:400;">← subagents</span></p>
+                    <p style="font-size:clamp(0.5rem,0.7vw,0.6rem);color:var(--ink-soft);">Result interpretation · Contribution positioning</p>
+                </div>
+            </div>
+            <div style="display:flex;gap:0.7rem;align-items:center;padding:0.4rem 0.7rem;background:var(--bg-alt);border-radius:6px;">
+                <span style="font-size:0.95rem;flex-shrink:0;">✍️</span>
+                <div>
+                    <p style="font-size:clamp(0.62rem,0.88vw,0.76rem);font-weight:700;">Paper Writing + Figures</p>
+                    <p style="font-size:clamp(0.5rem,0.7vw,0.6rem);color:var(--ink-soft);">seaborn figures · parallel section writing</p>
+                </div>
+            </div>
+            <div style="display:flex;gap:0.7rem;align-items:center;padding:0.4rem 0.7rem;background:#111;border-radius:6px;border-left:3px solid var(--red);">
+                <span style="font-size:0.95rem;flex-shrink:0;">📱</span>
+                <div>
+                    <p style="font-size:clamp(0.62rem,0.88vw,0.76rem);font-weight:700;color:#fff;">Review <span style="color:#7ec8e3;font-size:0.5rem;font-weight:400;">← subagent</span> → Submit</p>
+                    <p style="font-size:clamp(0.5rem,0.7vw,0.6rem);color:#aaa;">Revisions · Telegram notification</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT: animated terminal -->
+        <div style="background:#1a1a1a;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;height:min(66vh,500px);font-family:var(--font-mono);box-shadow:0 8px 40px rgba(0,0,0,0.18);">
+            <div style="background:#2a2a2a;padding:0.55rem 1rem;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+                <div style="width:11px;height:11px;border-radius:50%;background:#ff5f57;"></div>
+                <div style="width:11px;height:11px;border-radius:50%;background:#febc2e;"></div>
+                <div style="width:11px;height:11px;border-radius:50%;background:#28c840;"></div>
+                <span style="margin-left:0.75rem;color:#888;font-size:0.72rem;flex:1;">claude — ~/CalibrationAGT</span>
+                <button id="arp-pause-btn" onclick="toggleARPPause()" style="background:#444;border:none;color:#ccc;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;letter-spacing:0.03em;">⏸ Pause</button>
+                <button id="arp-replay-btn" onclick="restartARPAnimation()" style="background:#333;border:none;color:#888;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;">↺ Replay</button>
+            </div>
+            <div id="arp-chat" style="flex:1;overflow-y:auto;padding:0.9rem 1.1rem;font-size:clamp(0.58rem,0.85vw,0.72rem);line-height:1.7;color:#ccc;display:flex;flex-direction:column;gap:0.5rem;"></div>
+            <div style="background:#111;border-top:1px solid #333;padding:0.5rem 1rem;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+                <span style="color:#e8321a;font-size:0.85rem;">❯</span>
+                <span id="arp-input" style="color:#ccc;font-size:clamp(0.6rem,0.85vw,0.72rem);"></span>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE: 抛砖引玉 ===================== -->
+<section class="slide" id="slide-brickjade">
+    <div class="slide-header">
+        <div class="slide-header-label">Research · Going Further</div>
+        <div class="slide-header-label red">Just the Beginning</div>
+    </div>
+    <div class="slide-content" style="padding:var(--pad);gap:var(--gap);justify-content:center;">
+        <div style="max-width:52rem;display:flex;flex-direction:column;gap:var(--gap);">
+            <div class="reveal">
+                <p style="font-size:var(--t-h3);line-height:1.5;"><code style='font-size:inherit;background:var(--bg-alt);padding:0.1em 0.35em;border-radius:4px;'>/ai-research-paper</code> is just a starting point —<br>any repetitive workflow can be packaged as a skill.</p>
+            </div>
+            <div class="reveal" style="border-top:2px solid var(--border-soft);padding-top:var(--gap);">
+                <p style="font-size:var(--t-small);color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.12em;font-weight:700;margin-bottom:0.6rem;">Lab colleagues have built something more systematic</p>
+                <p style="font-size:var(--t-h2);font-weight:700;line-height:1.3;">Chengcheng &amp; Jinxu</p>
+                <p style="font-size:var(--t-body);color:var(--ink-mid);margin:0.2rem 0 0.6rem;">AutoAI Research System</p>
+                <p style="font-size:var(--t-small);font-family:var(--font-mono);color:var(--ink-soft);">github.com/Sibyl-Research-Team/AutoResearch-SibylSystem</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE R3: 抛砖引玉 ===================== -->
+<section class="slide" id="slide-autoai">
+    <div class="slide-header">
+        <div class="slide-header-label">Research · More Examples</div>
+        <div class="slide-header-label red">Skills in Action</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:0.6rem;padding:var(--egap) var(--pad) var(--pad);height:calc(100% - 4rem);justify-content:center;">
+        <!-- Two terminals side by side -->
+        <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0;">
+            <!-- Terminal 1: /brainstorm -->
+            <div style="background:#1a1a1a;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;font-family:var(--font-mono);box-shadow:0 6px 30px rgba(0,0,0,0.2);">
+                <div style="background:#2a2a2a;padding:0.45rem 1rem;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+                    <div style="width:10px;height:10px;border-radius:50%;background:#ff5f57;"></div>
+                    <div style="width:10px;height:10px;border-radius:50%;background:#febc2e;"></div>
+                    <div style="width:10px;height:10px;border-radius:50%;background:#28c840;"></div>
+                    <span style="margin-left:0.6rem;color:#888;font-size:0.66rem;flex:1;">/brainstorm — ~/CalibrationAGT</span>
+                    <button id="bs1-pause-btn" onclick="toggleBs1Pause()" style="background:#444;border:none;color:#ccc;font-size:0.65rem;padding:0.18rem 0.5rem;border-radius:4px;cursor:pointer;">⏸ Pause</button>
+                    <button id="bs1-replay-btn" onclick="restartBs1Animation()" style="background:#333;border:none;color:#888;font-size:0.65rem;padding:0.18rem 0.5rem;border-radius:4px;cursor:pointer;">↺ Replay</button>
+                </div>
+                <div id="bs1-chat" style="flex:1;overflow-y:auto;padding:0.65rem 0.9rem;font-size:clamp(0.52rem,0.75vw,0.63rem);line-height:1.65;color:#ccc;display:flex;flex-direction:column;gap:0.4rem;"></div>
+                <div style="background:#111;border-top:1px solid #333;padding:0.4rem 0.9rem;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+                    <span style="color:#e8321a;font-size:0.8rem;">❯</span>
+                    <span id="bs1-input" style="color:#ccc;font-size:clamp(0.52rem,0.75vw,0.63rem);"></span>
+                </div>
+            </div>
+            <!-- Terminal 2: /frontend-slides -->
+            <div style="background:#1a1a1a;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;font-family:var(--font-mono);box-shadow:0 6px 30px rgba(0,0,0,0.2);">
+                <div style="background:#2a2a2a;padding:0.45rem 1rem;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+                    <div style="width:10px;height:10px;border-radius:50%;background:#ff5f57;"></div>
+                    <div style="width:10px;height:10px;border-radius:50%;background:#febc2e;"></div>
+                    <div style="width:10px;height:10px;border-radius:50%;background:#28c840;"></div>
+                    <span style="margin-left:0.6rem;color:#888;font-size:0.66rem;flex:1;">/frontend-slides — ~/talks</span>
+                    <button id="fs1-pause-btn" onclick="toggleFs1Pause()" style="background:#444;border:none;color:#ccc;font-size:0.65rem;padding:0.18rem 0.5rem;border-radius:4px;cursor:pointer;">⏸ Pause</button>
+                    <button id="fs1-replay-btn" onclick="restartFs1Animation()" style="background:#333;border:none;color:#888;font-size:0.65rem;padding:0.18rem 0.5rem;border-radius:4px;cursor:pointer;">↺ Replay</button>
+                </div>
+                <div id="fs1-chat" style="flex:1;overflow-y:auto;padding:0.65rem 0.9rem;font-size:clamp(0.52rem,0.75vw,0.63rem);line-height:1.65;color:#ccc;display:flex;flex-direction:column;gap:0.4rem;"></div>
+                <div style="background:#111;border-top:1px solid #333;padding:0.4rem 0.9rem;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+                    <span style="color:#e8321a;font-size:0.8rem;">❯</span>
+                    <span id="fs1-input" style="color:#ccc;font-size:clamp(0.52rem,0.75vw,0.63rem);"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 17: PART 3 DIVIDER ===================== -->
+<section class="slide slide-part" id="slide-18">
+    <div class="part-number">03</div>
+    <div class="part-content">
+        <div class="part-label reveal">Part Three · Technical Anatomy</div>
+        <div class="part-title reveal">Technical Anatomy</div>
+        <div class="part-subtitle reveal">How Does an AI Agent Actually Work?</div>
+        <div class="reveal" style="margin-top:1.5rem;font-size:clamp(0.65rem,0.9vw,0.8rem);color:rgba(255,255,255,0.45);font-style:italic;">Reference: Hung-yi Lee Machine Learning Course 2025 · NTU</div>
+    </div>
+    <div class="slide-footer" style="border-color: rgba(255,255,255,0.1);">
+        <div class="footer-text" style="color: rgba(255,255,255,0.3);"></div>
+        <div class="slide-num" style="color: rgba(255,255,255,0.3);">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 19: Tool Use ===================== -->
+<section class="slide" id="slide-20">
+    <div class="slide-header">
+        <div class="slide-header-label">Tech · Tool Use</div>
+        <div class="slide-header-label red">Function Calling</div>
+    </div>
+    <div class="slide-content" style="gap: clamp(0.4rem,1vh,0.8rem);">
+        <h2 class="reveal">How Agent "Acts": The Tool Use Loop</h2>
+        <div class="flow-diagram" style="gap: clamp(0.3rem,0.6vh,0.5rem);">
+            <div class="flow-row reveal">
+                <div class="flow-box agent">Agent receives task</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box llm">Sent to LLM (with tool list)</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box llm">[tool_use] Read("main.py")</div>
+            </div>
+            <div class="flow-row reveal" style="padding-left: 2rem;">
+                <div class="flow-arrow">↓</div>
+            </div>
+            <div class="flow-row reveal">
+                <div class="flow-box exec">Execute Read("main.py") on computer</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box result">Return file contents</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box agent">Add to context, call LLM again</div>
+            </div>
+            <div class="flow-row reveal" style="padding-left: 2rem;">
+                <div class="flow-arrow">↓ Loop until task complete</div>
+            </div>
+            <div class="flow-row reveal">
+                <div class="flow-box llm">[tool_use] Write("fix.py", ...)</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box exec">Write to file</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box result">"done" [END]</div>
+            </div>
+        </div>
+        <div class="highlight-box reveal">
+            <p>Why it's powerful: can execute <strong>any shell command</strong> — text is what LLM does best, and shell commands are text</p>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">20 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 20: Memory ===================== -->
+<section class="slide" id="slide-21">
+    <div class="slide-header">
+        <div class="slide-header-label">Tech · Memory</div>
+        <div class="slide-header-label red">Memory Architecture</div>
+    </div>
+    <div class="slide-content" style="gap: var(--gap);">
+        <h2 class="reveal"s "Soul"'>The System Prompt Holds the Agent</h2>
+        <div class="two-col reveal">
+            <ul class="bullet-list">
+                <li><strong>CLAUDE.md</strong>: project rules, coding conventions, notes</li>
+                <li><strong>memory/*.md</strong>: user preferences, past decisions, long-term memory</li>
+                <li><strong>skills/*.md</strong>: reusable workflows (skill library)</li>
+                <li><strong>Tool list</strong>: Read, Write, Bash, WebSearch…</li>
+                <li>At every LLM call, all of this is <strong>stuffed into the system prompt</strong></li>
+            </ul>
+            <div style="display: flex; flex-direction: column; gap: var(--egap);">
+                <div class="code-block"><span class='cm'># CLAUDE.md example</span>
+<span class='kw'>## Rules</span>
+- Reply in English
+- Check GPU usage before running experiments
+- Do not commit untested code
+
+<span class='kw'>## Project Context</span>
+NeurIPS 2026 submission, ddl: 5/31</div>
+                <p class="text-soft" style="font-size: var(--t-small);">A single conversation can load <strong>4000+ tokens</strong> of system info —<br>
+                    that&apos;s why the agent can continuously "remember" project state</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">21 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 21: Sub-agent ===================== -->
+<section class="slide" id="slide-22">
+    <div class="slide-header">
+        <div class="slide-header-label">Tech · Sub-agent</div>
+        <div class="slide-header-label red">Context Engineering</div>
+    </div>
+    <div class="slide-content" style="gap: var(--gap);">
+        <h2 class="reveal">Sub-agent: Solving the Context Bottleneck</h2>
+        <div class="two-col reveal">
+            <div style="display: flex; flex-direction: column; gap: var(--egap);">
+                <p class="text-mid" style="font-size: var(--t-small);">Task too big to fit in one context?<br>
+                    The main agent spawns multiple sub-agents that <strong>handle subtasks in parallel</strong>, returning only summarized results to the main context.</p>
+                <div class="arch-diagram" style="flex-direction: column; gap: 0.75rem; align-items: flex-start;">
+                    <div style="display:flex; align-items:center; gap:0.75rem;">
+                        <div class="arch-box center-box" style="min-width:5rem; padding:0.5rem 0.75rem; font-size: var(--t-small);">Main Agent</div>
+                        <span style="color:var(--ink-soft); font-size:0.85rem;">→ spawn</span>
+                        <div class="arch-box" style="min-width:5rem; padding:0.5rem 0.75rem; font-size: var(--t-small);">Sub A: Read Paper A</div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:0.75rem; padding-left: 9rem;">
+                        <span style="color:var(--ink-soft); font-size:0.85rem;">→ spawn</span>
+                        <div class="arch-box" style="min-width:5rem; padding:0.5rem 0.75rem; font-size: var(--t-small);">Sub B: Read Paper B</div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:0.75rem;">
+                        <span style="color:var(--ink-soft); font-size:0.85rem; padding-left: 0.5rem;">← Returns summary only, not full text</span>
+                    </div>
+                </div>
+            </div>
+            <ul class="bullet-list">
+                <li>Sub-agent has a <strong>lean system prompt</strong>, focused on a single subtask</li>
+                <li>Context window contains only task-relevant info — <strong>more accurate reasoning</strong></li>
+                <li>Multiple sub-agents run in parallel — <strong>faster</strong></li>
+                <li>This is the core trick of <strong>Context Engineering</strong></li>
+            </ul>
+        </div>
+        <div class="highlight-box reveal">
+            <p>When you keep delegating down, who actually does the work? — The bottom-level sub-agent calls tools and actually executes</p>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">22 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE: Context 压缩 ===================== -->
+<section class="slide" id="slide-compress">
+    <div class="slide-header">
+        <div class="slide-header-label">Tech · Context Compression</div>
+        <div class="slide-header-label red">From Hongyi Lee's Course</div>
+    </div>
+    <div class="slide-content" style="gap:var(--gap);">
+        <h2 class="reveal">Context Overflow — How to Compress?</h2>
+        <div class="two-col" style="align-items:start;gap:var(--gap);">
+            <div style="display:flex;flex-direction:column;gap:var(--egap);">
+                <div class="reveal" style="padding:0.7rem 1rem;background:var(--red-light);border:1px solid rgba(232,50,26,0.2);border-radius:8px;">
+                    <p style="font-size:var(--t-small);font-weight:700;color:var(--red);margin-bottom:0.3rem;">Why Does Context Grow So Fast?</p>
+                    <p style="font-size:var(--t-small);color:var(--ink-mid);">Tool outputs (tool observations) account for <strong style='color:var(--red);'>84%</strong> of context<br>
+                    The model's own words are only ~10%</p>
+                </div>
+                <p class="reveal" style="font-size:var(--t-small);font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.05em;">Two Compression Methods</p>
+                <div class="reveal" style="display:flex;gap:0.8rem;align-items:flex-start;">
+                    <div style="flex-shrink:0;width:1.8rem;height:1.8rem;background:var(--bg-alt);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:var(--t-small);font-weight:700;color:var(--red);">1</div>
+                    <div>
+                        <p style="font-size:var(--t-small);font-weight:600;">Observation Masking</p>
+                        <p style="font-size:var(--t-small);color:var(--ink-mid);">Replace tool output with a single line:<br>&ldquo;<em>There used to be tool output here</em>&rdquo;</p>
+                        <p style="font-size:var(--t-small);color:var(--ink-soft);margin-top:0.2rem;">Looks brutal — but experiments show it works about as well as LLM summarization</p>
+                    </div>
+                </div>
+                <div class="reveal" style="display:flex;gap:0.8rem;align-items:flex-start;">
+                    <div style="flex-shrink:0;width:1.8rem;height:1.8rem;background:var(--bg-alt);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:var(--t-small);font-weight:700;color:var(--red);">2</div>
+                    <div>
+                        <p style="font-size:var(--t-small);font-weight:600;">LLM Summarization</p>
+                        <p style="font-size:var(--t-small);color:var(--ink-mid);">History too long → compress it with LLM summarization<br>OpenClaw has this compaction mechanism built in</p>
+                    </div>
+                </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:var(--egap);">
+                <p class="reveal" style="font-size:var(--t-small);font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.05em;">Sub-agent = Automatic Compression</p>
+                <div class="reveal" style="display:flex;flex-direction:column;gap:0.5rem;font-size:var(--t-small);">
+                    <div style="padding:0.5rem 0.8rem;background:var(--bg-alt);border-radius:6px;">Main Agent spawns Sub-agent → Sub-agent accumulates its own Context</div>
+                    <div style="padding-left:1rem;color:var(--ink-soft);">↓ sub-agent return</div>
+                    <div style="padding:0.5rem 0.8rem;background:var(--bg-alt);border-radius:6px;">Sub-agent's entire conversation <strong>vanishes</strong>, only the returned sentence remains</div>
+
+                </div>
+                <div class="reveal highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);">
+                    <p style="font-size:var(--t-small);">Language models <strong>dislike</strong> compressing their own memory<br>
+                    <span style='color:var(--ink-mid);'>So compression is usually enforced by the Agent framework</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== PART 4 DIVIDER ===================== -->
+<section class="slide slide-part" id="slide-part4">
+    <div class="part-number">04</div>
+    <div class="part-content">
+        <div class="part-label reveal">Part Four · Discussion</div>
+        <div class="part-title reveal">What Has AI Agent<br>Changed?</div>
+        <div class="part-subtitle reveal">Research · Engineering · Human Value</div>
+    </div>
+    <div class="slide-footer" style="border-color: rgba(255,255,255,0.1);">
+        <div class="footer-text" style="color: rgba(255,255,255,0.3);"></div>
+        <div class="slide-num" style="color: rgba(255,255,255,0.3);">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== MINDSET ===================== -->
+<section class="slide" id="slide-mindset">
+    <div class="slide-header">
+        <div class="slide-header-label">Discussion · New Mindset</div>
+        <div class="slide-header-label red">Working in the Agent Era</div>
+    </div>
+    <div class="slide-content" style="gap: var(--gap);">
+        <div class="highlight-box reveal" style="border-left: 4px solid var(--red); background: var(--red-light); margin-bottom: 0;">
+            <p style="font-size: var(--t-h3); font-weight: 700; line-height: 1.3;">
+                <span>Work is about being accountable for <span style='color:var(--red);'>outcomes</span></span>负责</span><br>
+                <span style="font-size: 0.6em; font-weight: 400; color: var(--ink-mid);">Not the process, not the lines of code, not "I wrote it myself"</span>
+            </p>
+        </div>
+        <div class="card-grid reveal" style="grid-template-columns: repeat(3,1fr); gap: var(--egap);">
+            <div class="card" style="background: #1a1a1a; border-color: #333; padding: clamp(0.8rem,1.5vw,1.4rem);">
+                <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem;">
+                    <img src="https://karpathy.ai/assets/me_new.jpg" alt="Andrej Karpathy"
+                         style="width:2rem;height:2rem;border-radius:50%;object-fit:cover;flex-shrink:0;"
+                         onerror="this.style.display='none'">
+                    <div style="font-size: var(--t-label); color: #e8321a; letter-spacing: 0.15em; text-transform: uppercase;">Andrej Karpathy</div>
+                </div>
+                <p style="font-size: var(--t-small); color: #d0d0d0; line-height: 1.55; font-style: italic;">"Vibe coding — fully give in to the vibes, embrace exponentials, and forget that the code even exists."</p>
+                <p style="font-size: var(--t-label); color: #666; margin-top: 0.5rem;">X · Feb 2025 → now: "agentic engineering"</p>
+            </div>
+            <div class="card" style="background: #1a1a1a; border-color: #333; padding: clamp(0.8rem,1.5vw,1.4rem);">
+                <div style="font-size: var(--t-label); color: #e8321a; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.5rem;">Sam Altman · OpenAI</div>
+                <p style="font-size: var(--t-small); color: #d0d0d0; line-height: 1.55; font-style: italic;">"We may see the first AI agents join the workforce and materially change the output of companies."</p>
+                <p style="font-size: var(--t-label); color: #666; margin-top: 0.5rem;">Blog · Jan 2025</p>
+            </div>
+            <div class="card" style="background: #1a1a1a; border-color: #333; padding: clamp(0.8rem,1.5vw,1.4rem);">
+                <div style="font-size: var(--t-label); color: #e8321a; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.5rem;">Dario Amodei · Anthropic</div>
+                <p style="font-size: var(--t-small); color: #d0d0d0; line-height: 1.55; font-style: italic;">"AI could soon compress decades of scientific progress into just a few years."</p>
+                <p style="font-size: var(--t-label); color: #666; margin-top: 0.5rem;">Machines of Loving Grace · Oct 2024</p>
+            </div>
+        </div>
+        <p class="reveal text-soft" style="font-size: var(--t-small); text-align: center;">This isn't the future — it's <strong style='color:var(--ink);'>now</strong>, happening right in this presentation</p>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== REFLECTION 1: 科研 ===================== -->
+<section class="slide" id="slide-refl1">
+    <div class="slide-header">
+        <div class="slide-header-label">Discussion · Research</div>
+        <div class="slide-header-label red">Research</div>
+    </div>
+    <div class="slide-content" style="gap: var(--gap);">
+        <h2 class="reveal">The Paper Inflation Era</h2>
+        <div class="two-col" style="align-items: start; gap: var(--gap);">
+            <div style="display:flex;flex-direction:column;gap:var(--egap);">
+                <div class="reveal highlight-box" style="border-left:4px solid var(--red);">
+                    <p style="font-size:var(--t-body);"><strong>Paper Inflation</strong><br>
+                    <span class='text-soft'>Agent lets anyone churn out papers fast — hundreds per day on arxiv, reviewers already can't keep up</span></p>
+                </div>
+                <!-- arxiv growth chart -->
+                <div class="reveal" style="background:var(--bg-alt);border-radius:8px;padding:0.5rem 0.7rem;">
+                    <p style="font-size:0.6rem;color:var(--ink-soft);margin-bottom:0.3rem;">arXiv annual submissions · Source: arxiv.org/stats (2025: exceeded 28,000/month)</p>
+                    <img src="https://info.arxiv.org/help/stats/2021_by_area/newsubs.png"
+                         alt="arXiv new submissions per year by subject area (1991–2021)"
+                         style="width:100%;border-radius:4px;max-height:min(16vh,120px);object-fit:contain;"
+                         onerror="this.style.display='none'">
+                </div>
+                <ul class="bullet-list reveal" style="font-size:var(--t-small);">
+                    <li>The era of publishing &ldquo;baseline +1% accuracy&rdquo; as a paper may soon be over</li>
+                    <li>Agent can automatically do ablations, related work, figures — <strong>the barrier disappears</strong></li>
+                    <li>&ldquo;How many papers published&rdquo; as a metric will become increasingly meaningless</li>
+                </ul>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:var(--egap);">
+                <p class="reveal" style="font-size:var(--t-body);font-weight:600;color:var(--ink);">How will the evaluation system shift?</p>
+                <ul class="bullet-list reveal">
+                    <li>From <strong>quantity</strong> to <strong>impact</strong> — citation, real-world adoption</li>
+                    <li>Greater weight on asking genuinely new questions, not solving known benchmarks</li>
+                    <li>Reproducibility and open-source become more important</li>
+                </ul>
+                <div class="reveal highlight-box" style="border-left:4px solid var(--ink);">
+                    <p style="font-size:var(--t-small);">Maybe: <strong>asking the right question</strong> is the real core competency</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+
+<!-- ===================== DISCUSSION: AI on Research ===================== -->
+<section class="slide" id="slide-refl-research">
+    <div class="slide-header">
+        <div class="slide-header-label">Discussion · AI Agent's Impact</div>
+        <div class="slide-header-label red">Academic Research</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:0.5rem;padding:var(--egap) var(--pad) var(--pad);height:calc(100% - 4rem);">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;flex-shrink:0;">
+            <h2 class="reveal">Will AI Agent Replace Researchers?</h2>
+            <p style="font-size:clamp(0.52rem,0.7vw,0.62rem);color:var(--ink-soft);">参考：李宏毅 AI Agent (3/3) · NTU 2026</p>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0;align-items:center;">
+            <!-- LEFT: Andrew Hall image -->
+            <div class="reveal" style="display:flex;flex-direction:column;gap:0.5rem;">
+                <p style="font-size:clamp(0.58rem,0.78vw,0.68rem);font-weight:700;color:var(--red);">Andrew Hall (Stanford) · 「100x Research Assistant」</p>
+                <img src="https://substack-post-media.s3.amazonaws.com/public/images/2f1712c4-2659-4035-97af-c7661f3408fd_1335x922.png"
+                     alt="Cost: PhD student 16h $1040 vs Claude Code 1h $10"
+                     style="width:100%;border-radius:8px;object-fit:contain;max-height:min(55vh,420px);"
+                     onerror="this.style.opacity='0.15'">
+                <p style="font-size:clamp(0.48rem,0.65vw,0.58rem);color:var(--ink-soft);">PhD student: 16h / $1,040 &nbsp;vs&nbsp; Claude Code: 1h / $10 (<strong style='color:var(--red);'>104× cheaper</strong>)</p>
+            </div>
+            <!-- RIGHT: 但人类还没有被替代 -->
+            <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);justify-content:center;">
+                <div style="padding:0.8rem 1rem;background:var(--bg-alt);border-radius:8px;border-left:4px solid var(--ink);">
+                    <p style="font-size:var(--t-body);font-weight:700;margin-bottom:0.5rem;">But: humans haven't been replaced</p>
+                    <ul style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.9;padding-left:1.1em;margin:0;">
+                        <li>AI ideas look novel on the surface — but don't outperform humans after execution</li>
+                        <li>Accepted papers: humans intervene more on idea and experiment design</li>
+                        <li>AI excels at execution, but "what to do" still needs human judgment</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== DISCUSSION 2: 工程 ===================== -->
+<section class="slide" id="slide-refl2">
+    <div class="slide-header">
+        <div class="slide-header-label">Discussion · Engineering</div>
+        <div class="slide-header-label red">Engineering</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:0.5rem;padding:var(--egap) var(--pad) var(--pad);height:calc(100% - 4rem);">
+        <h2 class="reveal">Senior Engineers 10× Productive — Why Still Hire Juniors?</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0;">
+            <!-- LEFT: text -->
+            <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);">
+                <div class="highlight-box" style="border-left:4px solid var(--red);">
+                    <p style="font-size:var(--t-body);"><strong>Managing people vs. managing Agents</strong><br>
+                    <span class='text-soft'>Junior hires need onboarding, mentoring, review — and might even pass the blame<br>Agent follows instructions, doesn't need coddling, always available, no salary</span></p>
+                </div>
+                <ul class="bullet-list">
+                    <li>One experienced person + agent can do what used to take a team of 5</li>
+                    <li>The repetitive work juniors used to do is now fully handled by agents</li>
+                    <li>Companies' headcount calculus is being repriced</li>
+                </ul>
+                <p style="font-size:var(--t-body);font-weight:600;">Do juniors / new grads still have a shot?</p>
+                <ul class="bullet-list">
+                    <li>Yes — but the path is narrower; you need to find <strong>your irreplaceable part</strong> earlier</li>
+                    <li>Systems judgment, user communication, defining what actually needs to be built</li>
+                    <li>Those who can command agents are the new era's <strong>10x engineer</strong></li>
+                </ul>
+                <div class="highlight-box">
+                    <p style="font-size:var(--t-small);">This isn't pessimism — it's a new starting line<br>
+                    <span style='color:var(--ink-soft);'>What used to take 5 years to build end-to-end might now take 1</span></p>
+                </div>
+            </div>
+            <!-- RIGHT: Anthropic stats + Claude report images -->
+            <div class="reveal" style="display:flex;flex-direction:column;gap:0.5rem;">
+                <div style="padding:0.6rem 0.8rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--red);">
+                    <p style="font-size:var(--t-small);font-weight:700;color:var(--red);margin-bottom:0.3rem;">Anthropic Labor Market Study (2026)</p>
+                    <ul style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.8;padding-left:1em;margin:0;">
+                        <li>Programmers: AI covers 75% of job tasks</li>
+                        <li>AI-exposed jobs: avg. earnings 47% higher than unexposed</li>
+                        <li>Job seekers aged 22–25: 14% drop in employment rate</li>
+                    </ul>
+                </div>
+                <div style="flex:1;display:flex;align-items:center;justify-content:center;">
+                    <img class="zh-img" src="assets/claude_report_cn.jpg" alt="Claude Workforce Report (Chinese)"
+                         style="display:none"
+                         onerror="this.style.opacity='0.2'">
+                    <img class="en-img" src="assets/claude_report_en.webp" alt="Claude Career Report (English)"
+                         style="width:100%;max-height:min(52vh,400px);object-fit:contain;border-radius:8px;"
+                         onerror="this.style.opacity='0.2'">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 22: gnvitop BONUS ===================== -->
+<section class="slide" id="slide-22b">
+    <div class="slide-header">
+        <div class="slide-header-label red">🎁 Bonus</div>
+        <div class="slide-header-label">Tool Recommendation</div>
+    </div>
+    <div class="slide-content" style="gap: var(--gap);">
+        <h2 class="reveal">gnvitop — Global GPU Monitor</h2>
+        <div class="two-col text-img reveal" style="align-items: start;">
+            <div style="display: flex; flex-direction: column; gap: var(--egap);">
+                <p class="text-mid">While building these two projects, I always needed to know <strong>which GPU was free</strong>.<br>
+                    With all the agents going wild, you still have to fight for GPUs yourself.</p>
+                <div class="code-block">
+pip install gnvitop
+gnvitop
+                </div>
+                <ul class="bullet-list" style="font-size: var(--t-small);">
+                    <li>Auto-reads ~/.ssh/config, SSHs into all servers</li>
+                    <li>Live web dashboard showing all GPU status</li>
+                    <li>Supports ProxyJump bastion hosts</li>
+                    <li>Current user processes <strong>highlighted in blue</strong></li>
+                </ul>
+            </div>
+            <img src="https://github.com/user-attachments/assets/2ca35564-c891-4af9-9b30-5ebb0949ba99" alt="gnvitop dashboard" class="screenshot" style="max-height: min(45vh, 360px);" onerror="this.style.display='none'">
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text">github.com/Linwei94/gnvitop</div>
+        <div class="slide-num">23 / 23</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 23: Q&A ===================== -->
+<section class="slide" id="slide-23">
+    <div class="slide-content" style="justify-content: center; align-items: center; text-align: center;">
+        <p class="reveal text-soft" style="font-size: var(--t-small); letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 1rem;">Thanks</p>
+        <h1 class="reveal" style="font-size: var(--t-hero);">Q &amp; A</h1>
+        <div class="reveal" style="margin-top: var(--gap); display: flex; flex-direction: column; gap: 0.5rem; align-items: center;">
+            <p class="text-soft" style="font-size: var(--t-small); font-family: var(--font-mono);">github.com/Linwei94/talks</p>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text">Linwei Tao · 2026.03.18</div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+<script>
+/* ===========================================
+   PHONE IFRAME SCALE
+   =========================================== */
+function scalePhoneIframe() {
+    const screen = document.getElementById('phone-screen');
+    const iframe = document.getElementById('cat-iframe');
+    if (!screen || !iframe) return;
+    const containerW = screen.offsetWidth;
+    const containerH = screen.offsetHeight;
+    const scaleW = containerW / 430;
+    const scaleH = containerH / 932;
+    const scale = Math.min(scaleW, scaleH);
+    iframe.style.transform = `scale(${scale})`;
+    // center if there's leftover space
+    const scaledW = 430 * scale;
+    const scaledH = 932 * scale;
+    iframe.style.left = ((containerW - scaledW) / 2) + 'px';
+    iframe.style.top = ((containerH - scaledH) / 2) + 'px';
+    // allow the iframe to scroll internally
+    iframe.style.overflow = 'auto';
+}
+window.addEventListener('load', scalePhoneIframe);
+window.addEventListener('resize', scalePhoneIframe);
+setTimeout(scalePhoneIframe, 500);
+
+function scaleSafariIframe() {
+    const screen = document.getElementById('safari-screen');
+    const iframe = document.getElementById('safari-iframe');
+    if (!screen || !iframe) return;
+    const scale = screen.offsetWidth / 1440;
+    iframe.style.transform = `scale(${scale})`;
+    iframe.style.height = (screen.offsetHeight / scale) + 'px';
+}
+window.addEventListener('load', scaleSafariIframe);
+window.addEventListener('resize', scaleSafariIframe);
+setTimeout(scaleSafariIframe, 500);
+
+/* ===========================================
+   CLAUDE CODE CHAT ANIMATION
+   =========================================== */
+
+// Script: each entry is { role, text } or { tool, args, result }
+
+const CC_SCRIPT = [
+    { role: 'user', text: 'I\'m researching confidence calibration where ground truth is ambiguous — different annotators disagree on the same image. Has anyone studied this?' },
+    { role: 'claude', text: 'Let me search the literature first.' },
+    { tool: 'WebSearch', args: '"calibration ambiguous labels annotator disagreement"', result: '47 results, filtering...' },
+    { tool: 'WebSearch', args: '"soft label calibration ECE annotator agreement"', result: 'Key papers: Soft Calibration (ICML 2023), CrowdKit, CROWDLAB' },
+    { tool: 'Write', args: 'literature_review.md', result: 'Written 34 lines of survey notes' },
+    { role: 'claude', text: 'Survey complete. Core finding:\n  ECE_voted (against majority-vote labels) vs ECE_true (against true distribution)\n  — this distinction has barely been studied ← that\'s your gap' },
+    { role: 'user', text: 'Exactly! Help me design and implement an ambiguity-aware calibrator' },
+    { role: 'claude', text: 'Let me look at your existing code structure first...' },
+    { tool: 'Read', args: 'src/calibrators/base.py', result: 'Read 128 lines (BaseCalibrator class)' },
+    { tool: 'Read', args: 'src/metrics/ece.py', result: 'Read 84 lines (standard ECE implementation)' },
+    { tool: 'Write', args: 'src/calibrators/agt_calibrator.py', result: 'Written 156 lines (AGTCalibrator + soft label support)' },
+    { tool: 'Write', args: 'src/metrics/ece_true.py', result: 'Written 67 lines (ECE_true, ECE_voted metrics)' },
+    { tool: 'Bash', args: 'python -m pytest src/tests/test_agt.py -v', result: '........  8 passed in 1.23s ✓' },
+    { tool: 'Bash', args: 'python experiments/run_baseline.py --dataset CIFAR-10H', result: '  Temperature Scaling: ECE_voted=0.032  ECE_true=0.088  ← ECE_true is much higher!\n  AGT Calibrator:      ECE_voted=0.031  ECE_true=0.041  ✓' },
+    { role: 'claude', text: 'Hypothesis validated. Temperature Scaling was optimizing the wrong metric.' },
+    { role: 'user', text: 'Run ablation experiments on xuchang-lab1, xuchang-lab2, linwei-lab2 in parallel with different seeds' },
+    { tool: 'Bash', args: "ssh xuchang-lab1 'python train.py --seed 0 --dataset CIFAR-10H > logs/s0.log &'", result: '[1] 23847' },
+    { tool: 'Bash', args: "ssh xuchang-lab2 'python train.py --seed 1 --dataset ChaosNLI > logs/s1.log &'", result: '[1] 31092' },
+    { tool: 'Bash', args: "ssh linwei-lab2  'python train.py --seed 2 --dataset ISIC > logs/s2.log &'", result: '[1] 8834' },
+    { role: 'claude', text: 'All three launched in parallel, ETA ~2 hours. Results will be in results/ablation/' },
+    { role: 'user', text: 'Results are in — write them up as a NeurIPS-format paper' },
+    { tool: 'Read', args: 'results/ablation/summary.csv', result: 'Read 45 lines (3 datasets × 5 methods × 3 seeds)' },
+    { tool: 'Bash', args: 'python scripts/gen_figures.py', result: '✓ fig1_toy_example.pdf\n✓ fig2_reliability_diagrams.pdf\n✓ fig3_ablation_results.pdf' },
+    { tool: 'Write', args: 'paper/main.tex', result: 'Written 847 lines (NeurIPS 2026 template)' },
+    { tool: 'Bash', args: 'cd paper && pdflatex main.tex', result: 'Output written on main.pdf (9 pages). ✓' },
+    { role: 'claude', text: 'Paper draft complete — 9 pages. Want me to revise any section?' },
+];
+
+let ccAnimationRunning = false;
+let ccPaused = false;
+let ccGeneration = 0;
+
+function pauseLabel(p) { return p ? '▶ Resume' : '⏸ Pause'; }
+function replayLabel() { return '↺ Replay'; }
+
+function toggleCCPause() {
+    ccPaused = !ccPaused;
+    const btn = document.getElementById('cc-pause-btn');
+    if (btn) btn.textContent = pauseLabel(ccPaused);
+}
+
+function restartCCAnimation() {
+    ccGeneration++;
+    ccAnimationRunning = false;
+    ccPaused = false;
+    const btn = document.getElementById('cc-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
+    const chat = document.getElementById('cc-chat');
+    if (chat) { chat.innerHTML = ''; }
+    const input = document.getElementById('cc-input');
+    if (input) input.textContent = '';
+    setTimeout(runCCAnimation, 200);
+}
+
+async function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+async function waitIfPaused() {
+    while (ccPaused) await sleep(100);
+}
+
+async function typeText(el, text, speed = 40) {
+    const chat = document.getElementById('cc-chat');
+    for (const ch of text) {
+        await waitIfPaused();
+        el.textContent += ch;
+        if (chat) chat.scrollTop = chat.scrollHeight;
+        await sleep(ch === '\n' ? 55 : speed);
+    }
+}
+
+function appendBubble(chat, role) {
+    const wrap = document.createElement('div');
+    wrap.style.cssText = `display:flex;gap:0.6rem;align-items:flex-start;${role==='user'?'flex-direction:row-reverse;':''}`;
+    const avatar = document.createElement('div');
+    avatar.style.cssText = `flex-shrink:0;width:1.6rem;height:1.6rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;`;
+    if (role === 'user') {
+        avatar.style.background = '#e8321a'; avatar.style.color = '#fff'; avatar.textContent = 'L';
+    } else {
+        avatar.style.background = '#da7756';
+        avatar.innerHTML = `<img src="https://cdn.simpleicons.org/anthropic/ffffff" width="15" height="15" style="display:block;">`;
+    }
+    const bubble = document.createElement('div');
+    const isUser = role === 'user';
+    bubble.style.cssText = `max-width:82%;padding:0.45rem 0.8rem;border-radius:${isUser?'10px 3px 10px 10px':'3px 10px 10px 10px'};font-size:clamp(0.62rem,0.95vw,0.78rem);line-height:1.55;white-space:pre-wrap;background:${isUser?'#e8321a':'#252525'};color:${isUser?'#fff':'#d0d0d0'};font-family:${isUser?'var(--font-cn)':'var(--font-mono)'};`;
+    wrap.appendChild(avatar);
+    wrap.appendChild(bubble);
+    chat.appendChild(wrap);
+    chat.scrollTop = chat.scrollHeight;
+    return bubble;
+}
+
+function appendToolCall(chat, tool, args, result) {
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'margin:0.1rem 0 0.1rem 2.2rem;';
+    wrap.innerHTML = `<div style="font-family:var(--font-mono);font-size:clamp(0.58rem,0.88vw,0.72rem);color:#888;">` +
+        `<span style="color:#7ec8e3;">⏺ ${tool}</span><span style="color:#aaa;">(${args})</span><br>` +
+        `<span style="color:#666;padding-left:1.2rem;">⎿ ${result.replace(/\n/g,'<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;')}</span></div>`;
+    chat.appendChild(wrap);
+    chat.scrollTop = chat.scrollHeight;
+    return wrap;
+}
+
+async function runCCAnimation() {
+    const chat = document.getElementById('cc-chat');
+    const inputEl = document.getElementById('cc-input');
+    if (!chat || !inputEl || ccAnimationRunning) return;
+    const myGen = ccGeneration;
+    ccAnimationRunning = true;
+    chat.innerHTML = '';
+
+        for (const msg of CC_SCRIPT) {
+        if (!ccAnimationRunning || ccGeneration !== myGen) break;
+        await waitIfPaused();
+
+        if (msg.role === 'user') {
+            await sleep(350);
+            inputEl.textContent = '';
+            await typeText(inputEl, msg.text, 32);
+            await sleep(600);
+            inputEl.textContent = '';
+            const bubble = appendBubble(chat, 'user');
+            bubble.textContent = msg.text;
+            await sleep(400);
+        } else if (msg.role === 'claude') {
+            await sleep(300);
+            const bubble = appendBubble(chat, 'claude');
+            await typeText(bubble, msg.text, 18);
+            await sleep(500);
+        } else if (msg.tool) {
+            await sleep(200);
+            // Show tool call line by line
+            const wrap = document.createElement('div');
+            wrap.style.cssText = 'margin:0.1rem 0 0.1rem 2.2rem;font-family:var(--font-mono);font-size:clamp(0.58rem,0.88vw,0.72rem);';
+            const callLine = document.createElement('div');
+            callLine.innerHTML = `<span style="color:#7ec8e3;">⏺ ${msg.tool}</span><span style="color:#888;">(${msg.args})</span>`;
+            wrap.appendChild(callLine);
+            chat.appendChild(wrap);
+            chat.scrollTop = chat.scrollHeight;
+            await sleep(300);
+            await waitIfPaused();
+            const resultLine = document.createElement('div');
+            resultLine.style.cssText = 'color:#555;padding-left:1.2rem;';
+            resultLine.innerHTML = `⎿ <span id="rtl_${Date.now()}"></span>`;
+            wrap.appendChild(resultLine);
+            const span = resultLine.querySelector('span');
+            await typeText(span, msg.result, 12);
+            await sleep(200);
+        }
+    }
+    inputEl.textContent = '';
+    if (ccGeneration === myGen) ccAnimationRunning = false;
+}
+
+/* ===========================================
+   TITLE SLIDE CC ANIMATION (looping)
+   =========================================== */
+
+let cc0AnimationRunning = false;
+
+function appendBubble0(chat, role) {
+    const wrap = document.createElement('div');
+    wrap.style.cssText = `display:flex;gap:0.55rem;align-items:flex-start;${role==='user'?'flex-direction:row-reverse;':''}`;
+    const avatar = document.createElement('div');
+    avatar.style.cssText = `flex-shrink:0;width:1.5rem;height:1.5rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;`;
+    if (role === 'user') {
+        avatar.style.background = '#e8321a'; avatar.style.color = '#fff'; avatar.textContent = 'L';
+    } else {
+        avatar.style.background = '#da7756';
+        avatar.innerHTML = `<img src="https://cdn.simpleicons.org/anthropic/ffffff" width="14" height="14" style="display:block;">`;
+    }
+    const bubble = document.createElement('div');
+    const isUser = role === 'user';
+    bubble.style.cssText = `max-width:84%;padding:0.4rem 0.75rem;border-radius:${isUser?'10px 3px 10px 10px':'3px 10px 10px 10px'};font-size:clamp(0.58rem,0.88vw,0.72rem);line-height:1.5;white-space:pre-wrap;background:${isUser?'#e8321a':'#252525'};color:${isUser?'#fff':'#d0d0d0'};font-family:${isUser?'var(--font-cn)':'var(--font-mono)'};`;
+    wrap.appendChild(avatar);
+    wrap.appendChild(bubble);
+    chat.appendChild(wrap);
+    chat.scrollTop = chat.scrollHeight;
+    return bubble;
+}
+
+async function typeText0(el, text, speed = 35) {
+    const chat = document.getElementById('cc0-chat');
+    for (const ch of text) {
+        if (!cc0AnimationRunning) return;
+        el.textContent += ch;
+        if (chat) chat.scrollTop = chat.scrollHeight;
+        await sleep(ch === '\n' ? 50 : speed);
+    }
+}
+
+async function runCC0Animation() {
+    const chat = document.getElementById('cc0-chat');
+    const inputEl = document.getElementById('cc0-input');
+    if (!chat || !inputEl) return;
+    cc0AnimationRunning = true;
+
+    while (cc0AnimationRunning) {
+        chat.innerHTML = '';
+        inputEl.textContent = '';
+
+        for (const msg of CC_SCRIPT) {
+            if (!cc0AnimationRunning) break;
+
+            if (msg.role === 'user') {
+                await sleep(300);
+                inputEl.textContent = '';
+                await typeText0(inputEl, msg.text, 28);
+                await sleep(500);
+                inputEl.textContent = '';
+                const bubble = appendBubble0(chat, 'user');
+                bubble.textContent = msg.text;
+                await sleep(350);
+            } else if (msg.role === 'claude') {
+                await sleep(250);
+                const bubble = appendBubble0(chat, 'claude');
+                await typeText0(bubble, msg.text, 16);
+                await sleep(450);
+            } else if (msg.tool) {
+                await sleep(180);
+                const wrap = document.createElement('div');
+                wrap.style.cssText = 'margin:0.05rem 0 0.05rem 2rem;font-family:var(--font-mono);font-size:clamp(0.55rem,0.82vw,0.67rem);';
+                const callLine = document.createElement('div');
+                callLine.innerHTML = `<span style="color:#7ec8e3;">⏺ ${msg.tool}</span><span style="color:#888;">(${msg.args})</span>`;
+                wrap.appendChild(callLine);
+                chat.appendChild(wrap);
+                chat.scrollTop = chat.scrollHeight;
+                await sleep(250);
+                if (!cc0AnimationRunning) break;
+                const resultLine = document.createElement('div');
+                resultLine.style.cssText = 'color:#555;padding-left:1.1rem;';
+                resultLine.innerHTML = `⎿ <span></span>`;
+                wrap.appendChild(resultLine);
+                const span = resultLine.querySelector('span');
+                await typeText0(span, msg.result, 10);
+                await sleep(180);
+            }
+        }
+
+        if (!cc0AnimationRunning) break;
+        // Brief pause before looping
+        inputEl.textContent = '';
+        await sleep(2000);
+    }
+    cc0AnimationRunning = false;
+}
+
+/* ===========================================
+   SLIDE PRESENTATION CONTROLLER
+   =========================================== */
+class SlidePresentation {
+    constructor() {
+        this.slides = Array.from(document.querySelectorAll('.slide'));
+        this.total = this.slides.length;
+        this.current = 0;
+        this.isScrolling = false;
+
+        this.setupIntersectionObserver();
+        this.setupKeyboardNav();
+        this.setupTouchNav();
+        this.setupWheelNav();
+        this.setupProgressBar();
+        this.setupNavDots();
+
+        // Mark first slide visible
+        setTimeout(() => this.slides[0].classList.add('visible'), 100);
+    }
+
+    setupIntersectionObserver() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    this.current = this.slides.indexOf(entry.target);
+                    this.updateUI();
+                    // Music: only on slide-1
+                    if (entry.target.id === 'slide-1') {
+                        ambience.start();
+                    } else {
+                        ambience.stop();
+                    }
+                    // Animations — always restart from beginning on slide entry
+                    if (entry.target.id === 'slide-9') {
+                        setTimeout(restartCCAnimation, 400);
+                    }
+                    if (entry.target.id === 'slide-skills-intro') {
+                        setTimeout(restartSkill0Animation, 400);
+                    }
+                    if (entry.target.id === 'slide-skill-arp') {
+                        setTimeout(restartARPAnimation, 400);
+                    }
+                    if (entry.target.id === 'slide-autoai') {
+                        setTimeout(restartBs1Animation, 400);
+                        setTimeout(restartFs1Animation, 700);
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+
+        this.slides.forEach(s => observer.observe(s));
+    }
+
+    getBuildItems(slide) {
+        // Only slides with 3+ reveal items and not part-dividers or title use build mode
+        if (slide.classList.contains('slide-part')) return [];
+        if (slide.id === 'slide-1') return [];
+        const items = Array.from(slide.querySelectorAll('.reveal'));
+        return items.length >= 3 ? items : [];
+    }
+
+    revealNext() {
+        const slide = this.slides[this.current];
+        const items = this.getBuildItems(slide);
+        if (items.length === 0) return false;
+        const nextHidden = items.find(el => !el.classList.contains('step-shown'));
+        if (!nextHidden) return false;
+        nextHidden.classList.add('step-shown');
+        return true;
+    }
+
+    goTo(index) {
+        index = Math.max(0, Math.min(this.total - 1, index));
+        const slide = this.slides[index];
+        // Reset build state on new slide
+        this.slides.forEach(s => {
+            s.classList.remove('build-active');
+            s.querySelectorAll('.reveal').forEach(el => el.classList.remove('step-shown'));
+        });
+        const items = this.getBuildItems(slide);
+        if (items.length >= 3) {
+            slide.classList.add('build-active');
+            // Show first item immediately
+            if (items[0]) items[0].classList.add('step-shown');
+        }
+        slide.scrollIntoView({ behavior: 'smooth' });
+        this.current = index;
+        this.updateUI();
+    }
+
+    setupKeyboardNav() {
+        document.addEventListener('keydown', e => {
+            if (e.target.getAttribute('contenteditable') === 'true') return;
+            if (['ArrowDown','ArrowRight','Space','PageDown'].includes(e.code)) {
+                e.preventDefault();
+                if (!this.revealNext()) this.goTo(this.current + 1);
+            } else if (['ArrowUp','ArrowLeft','PageUp'].includes(e.code)) {
+                e.preventDefault(); this.goTo(this.current - 1);
+            } else if (e.key === 'Home') { this.goTo(0); }
+            else if (e.key === 'End') { this.goTo(this.total - 1); }
+        });
+    }
+
+    setupWheelNav() {
+        let lastWheel = 0;
+        document.addEventListener('wheel', e => {
+            e.preventDefault();
+            const now = Date.now();
+            if (now - lastWheel < 800) return;
+            lastWheel = now;
+            if (e.deltaY > 0) {
+                if (!this.revealNext()) this.goTo(this.current + 1);
+            } else {
+                this.goTo(this.current - 1);
+            }
+        }, { passive: false });
+    }
+
+    setupTouchNav() {
+        let startY = 0;
+        document.addEventListener('touchstart', e => { startY = e.touches[0].clientY; }, { passive: true });
+        document.addEventListener('touchend', e => {
+            const diff = startY - e.changedTouches[0].clientY;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    if (!this.revealNext()) this.goTo(this.current + 1);
+                } else {
+                    this.goTo(this.current - 1);
+                }
+            }
+        }, { passive: true });
+    }
+
+    setupProgressBar() {
+        this.bar = document.getElementById('progressBar');
+    }
+
+    setupNavDots() {
+        const nav = document.getElementById('navDots');
+        const partLabels = {
+            'slide-6':     'Part 2 · Research',
+            'slide-12':    'Part 1 · Engineering',
+            'slide-18':    'Part 3 · 技术解剖',
+            'slide-part4': 'Part 4 · 讨论',
+        };
+        this.dotEls = [];
+        this.slides.forEach((slide, i) => {
+            const isPart = slide.classList.contains('slide-part');
+            const label = partLabels[slide.id];
+            if (isPart) {
+                const btn = document.createElement('button');
+                btn.className = 'nav-dot-part';
+                btn.innerHTML = `<span class="part-label">${label || ''}</span><div class="part-diamond"></div>`;
+                btn.addEventListener('click', () => this.goTo(i));
+                nav.appendChild(btn);
+                this.dotEls.push(btn);
+            } else {
+                const dot = document.createElement('button');
+                dot.className = 'nav-dot';
+                dot.setAttribute('aria-label', `Slide ${i + 1}`);
+                dot.addEventListener('click', () => this.goTo(i));
+                nav.appendChild(dot);
+                this.dotEls.push(dot);
+            }
+        });
+    }
+
+    updateUI() {
+        const pct = this.total > 1 ? (this.current / (this.total - 1)) * 100 : 0;
+        if (this.bar) this.bar.style.width = pct + '%';
+        if (this.dotEls) {
+            this.dotEls.forEach((d, i) => d.classList.toggle('active', i === this.current));
+        }
+    }
+}
+
+/* ===========================================
+   INLINE EDITOR
+   =========================================== */
+class InlineEditor {
+    constructor() {
+        this.isActive = false;
+        this.editables = [];
+        this.saveKey = 'slides-content-v1';
+        this.hideTimeout = null;
+
+        this.toggle = document.getElementById('editToggle');
+        this.hotzone = document.getElementById('editHotzone');
+        this.setupHotzone();
+        this.setupKeyboard();
+        this.loadSaved();
+    }
+
+    setupHotzone() {
+        this.hotzone.addEventListener('mouseenter', () => {
+            clearTimeout(this.hideTimeout);
+            this.toggle.classList.add('show');
+        });
+        this.hotzone.addEventListener('mouseleave', () => {
+            this.hideTimeout = setTimeout(() => {
+                if (!this.isActive) this.toggle.classList.remove('show');
+            }, 400);
+        });
+        this.toggle.addEventListener('mouseenter', () => clearTimeout(this.hideTimeout));
+        this.toggle.addEventListener('mouseleave', () => {
+            this.hideTimeout = setTimeout(() => {
+                if (!this.isActive) this.toggle.classList.remove('show');
+            }, 400);
+        });
+        this.toggle.addEventListener('click', () => this.toggleEditMode());
+        this.hotzone.addEventListener('click', () => this.toggleEditMode());
+    }
+
+    setupKeyboard() {
+        document.addEventListener('keydown', e => {
+            if ((e.key === 'e' || e.key === 'E') && !e.target.getAttribute('contenteditable')) {
+                this.toggleEditMode();
+            }
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                this.save();
+            }
+        });
+    }
+
+    toggleEditMode() {
+        this.isActive = !this.isActive;
+        document.body.classList.toggle('edit-mode', this.isActive);
+        this.toggle.textContent = this.isActive ? '💾 保存 (Ctrl+S)' : '✏ 编辑';
+        this.toggle.classList.toggle('active', this.isActive);
+        this.toggle.classList.add('show');
+
+        const selector = 'h1,h2,h3,p,li,.card-title,.card-desc,.part-title,.part-subtitle,.footer-text';
+        document.querySelectorAll(selector).forEach(el => {
+            el.setAttribute('contenteditable', this.isActive ? 'true' : 'false');
+        });
+
+        if (!this.isActive) { this.save(); this.toggle.classList.remove('show'); }
+    }
+
+    save() {
+        const data = {};
+        document.querySelectorAll('[contenteditable]').forEach((el, i) => {
+            data[i] = el.innerHTML;
+        });
+        localStorage.setItem(this.saveKey, JSON.stringify(data));
+        if (this.isActive) {
+            this.toggle.textContent = '✅ 已保存';
+            setTimeout(() => { this.toggle.textContent = '💾 保存 (Ctrl+S)'; }, 1500);
+        }
+    }
+
+    loadSaved() {
+        const saved = localStorage.getItem(this.saveKey);
+        if (!saved) return;
+        try {
+            const data = JSON.parse(saved);
+            document.querySelectorAll('h1,h2,h3,p,li,.card-title,.card-desc,.part-title,.part-subtitle,.footer-text').forEach((el, i) => {
+                if (data[i] !== undefined) el.innerHTML = data[i];
+            });
+        } catch(e) {}
+    }
+}
+
+// Init
+const presentation = new SlidePresentation();
+const editor = new InlineEditor();
+
+/* ===========================================
+   INTERSTELLAR AMBIENCE — Hans Zimmer OST
+   =========================================== */
+// The <audio autoplay muted> element is in the HTML — browsers always allow muted autoplay.
+// We grab it here and unmute+fade in immediately on load.
+class CyberpunkAmbience {
+    constructor() {
+        this.audio = document.getElementById('bg-music');
+        this.playing = false;
+        this._fadeInterval = null;
+    }
+
+    start() {
+        if (this.playing || !this.audio) return;
+        this.playing = true;
+        this._indicator(true);
+        this.audio.muted = false;
+        // Don't reset volume to 0 if already audible (prevents glitch on quick back-nav)
+        if (this.audio.volume === 0) {
+            this.audio.volume = 0;
+        }
+        this.audio.play().then(() => this._fadeTo(0.55, 3000)).catch(() => {
+            this.playing = false; this._indicator(false);
+        });
+    }
+
+    stop() {
+        if (!this.playing || !this.audio) return;
+        // Keep playing=true during fade so start() won't double-fire
+        this._indicator(false);
+        this._fadeTo(0, 2500, () => {
+            this.audio.pause();
+            this.audio.muted = true;
+            this.playing = false;
+        });
+    }
+
+    _fadeTo(target, ms, onDone) {
+        clearInterval(this._fadeInterval);
+        const steps = 50;
+        const interval = ms / steps;
+        const start = this.audio ? this.audio.volume : 0;
+        const delta = (target - start) / steps;
+        let i = 0;
+        this._fadeInterval = setInterval(() => {
+            i++;
+            if (!this.audio) { clearInterval(this._fadeInterval); return; }
+            this.audio.volume = Math.max(0, Math.min(1, start + delta * i));
+            if (i >= steps) {
+                clearInterval(this._fadeInterval);
+                if (onDone) onDone();
+            }
+        }, interval);
+    }
+
+    _indicator(on) {
+        const el = document.getElementById('music-indicator');
+        if (el) el.style.opacity = on ? '1' : '0';
+    }
+}
+
+const ambience = new CyberpunkAmbience();
+
+// Play on slide 0, stop when leaving
+const _origGoTo = presentation.goTo.bind(presentation);
+presentation.goTo = function(index) {
+    _origGoTo(index);
+    if (index === 0) { ambience.start(); }
+    else if (ambience.playing) { ambience.stop(); }
+};
+
+// Auto-start music + terminal on page load
+window.addEventListener('load', () => {
+    setTimeout(runCC0Animation, 600);
+
+    const el = document.getElementById('bg-music');
+    if (!el) return;
+
+    // Muted play is ALWAYS allowed — start muted, then unmute
+    el.muted = true;
+    el.volume = 0;
+    el.play().then(() => {
+        // Muted play succeeded → unmute and fade in
+        el.muted = false;
+        ambience.playing = true;
+        ambience._indicator(true);
+        ambience._fadeTo(0.55, 4000);
+    }).catch(() => {
+        // Even muted failed (very rare) → wait for first user gesture
+        const onGesture = () => ambience.start();
+        document.addEventListener('keydown', onGesture, { once: true });
+        document.addEventListener('click',   onGesture, { once: true });
+    });
+});
+
+// Also restart cc0 when navigating back to slide 0
+const _origGoTo2 = presentation.goTo.bind(presentation);
+presentation.goTo = function(index) {
+    _origGoTo2(index);
+    if (index === 0 && !cc0AnimationRunning) {
+        setTimeout(runCC0Animation, 300);
+    } else if (index !== 0) {
+        cc0AnimationRunning = false;
+    }
+};
+
+/* ===========================================
+   SKILL-CREATOR ANIMATION
+   =========================================== */
+
+const SKILL0_SCRIPT = [
+    { role: 'user', text: '/skill-creator' },
+    { tool: 'Read', args: '~/.claude/skills/', result: 'Found 15 skills: gpu-experiment, paper-review, daily-summary...' },
+    { role: 'claude', text: 'What skill do you want to create?\nDescribe the trigger scenario and what you want the agent to do.' },
+    { role: 'user', text: 'literature-review: given a research direction, auto-survey papers and summarize the gap' },
+    { role: 'claude', text: 'Got it. What format should the output be after the survey?\nE.g., chronological, grouped by method, or a ready-made related work paragraph?' },
+    { role: 'user', text: 'List the top 10 papers with one-line summaries, then write a gap analysis' },
+    { role: 'claude', text: 'Search scope — arXiv only, or also Semantic Scholar / Google Scholar?' },
+    { role: 'user', text: 'arXiv as the primary source, then a Google Scholar pass to catch stragglers' },
+    { role: 'claude', text: 'Got it. Drafting the skill spec now.' },
+    { tool: 'mcp__arxiv__search_papers', args: '"literature review automation survey NeurIPS 2024"', result: '12 results — reviewing common survey structures' },
+    { tool: 'Write', args: '~/.claude/skills/literature-review.md', result: 'Written: 487 lines' },
+    { role: 'claude', text: 'Draft ready. Structure:\n1. Receive research keyword\n2. arXiv search → top 10 by citation count\n3. One-line summary per paper\n4. Google Scholar supplementary search\n5. Output gap analysis paragraph\n\nAny adjustments?' },
+    { role: 'user', text: 'Change step 3 to three sentences: method, dataset, conclusion' },
+    { tool: 'Write', args: '~/.claude/skills/literature-review.md', result: 'Updated: summary template → method / dataset / conclusion' },
+    { role: 'claude', text: '✓ Skill literature-review created.\n\nType /literature-review to trigger it next time.' },
+];
+
+let skill0Running = false;
+let skill0Paused = false;
+
+function toggleSkill0Pause() {
+    skill0Paused = !skill0Paused;
+    const btn = document.getElementById('skill0-pause-btn');
+    if (btn) btn.textContent = pauseLabel(skill0Paused);
+}
+
+function appendBubbleSkill(chat, role) {
+    const wrap = document.createElement('div');
+    wrap.style.cssText = `display:flex;gap:0.6rem;align-items:flex-start;${role==='user'?'flex-direction:row-reverse;':''}`;
+    const avatar = document.createElement('div');
+    avatar.style.cssText = `flex-shrink:0;width:1.5rem;height:1.5rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;`;
+    if (role === 'user') {
+        avatar.style.background = '#e8321a'; avatar.style.color = '#fff'; avatar.textContent = 'L';
+    } else {
+        avatar.style.background = '#da7756';
+        avatar.innerHTML = `<img src="https://cdn.simpleicons.org/anthropic/ffffff" width="14" height="14" style="display:block;">`;
+    }
+    const bubble = document.createElement('div');
+    const isUser = role === 'user';
+    bubble.style.cssText = `max-width:85%;padding:0.45rem 0.8rem;border-radius:${isUser?'10px 3px 10px 10px':'3px 10px 10px 10px'};font-size:clamp(0.6rem,0.9vw,0.74rem);line-height:1.55;white-space:pre-wrap;background:${isUser?'#e8321a':'#252525'};color:${isUser?'#fff':'#d0d0d0'};font-family:${isUser?'var(--font-cn)':'var(--font-mono)'};`;
+    wrap.appendChild(avatar); wrap.appendChild(bubble);
+    chat.appendChild(wrap); chat.scrollTop = chat.scrollHeight;
+    return bubble;
+}
+
+async function typeTextSkill(el, text, chat, speed = 22, isPaused = null) {
+    for (const ch of text) {
+        if (isPaused) while (isPaused()) await sleep(50);
+        el.textContent += ch;
+        if (chat) chat.scrollTop = chat.scrollHeight;
+        await sleep(ch === '\n' ? 45 : speed);
+    }
+}
+
+async function runSkill0Animation() {
+    const chat = document.getElementById('skill0-chat');
+    const inputEl = document.getElementById('skill0-input');
+    if (!chat || !inputEl || skill0Running) return;
+    skill0Running = true;
+    skill0Paused = false;
+    const btn = document.getElementById('skill0-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
+    chat.innerHTML = '';
+    const ip = () => skill0Paused;
+        for (const msg of SKILL0_SCRIPT) {
+        if (!skill0Running) break;
+        while (skill0Paused) await sleep(50);
+        if (msg.role === 'user') {
+            await sleep(300);
+            inputEl.textContent = '';
+            await typeTextSkill(inputEl, msg.text, null, 30, ip);
+            await sleep(500);
+            inputEl.textContent = '';
+            const bubble = appendBubbleSkill(chat, 'user');
+            bubble.textContent = msg.text;
+            await sleep(350);
+        } else if (msg.role === 'claude') {
+            await sleep(280);
+            const bubble = appendBubbleSkill(chat, 'claude');
+            await typeTextSkill(bubble, msg.text, chat, 16, ip);
+            await sleep(450);
+        } else if (msg.tool) {
+            await sleep(180);
+            const wrap = document.createElement('div');
+            wrap.style.cssText = 'margin:0.05rem 0 0.05rem 2rem;font-family:var(--font-mono);font-size:clamp(0.56rem,0.82vw,0.68rem);';
+            const callLine = document.createElement('div');
+            callLine.innerHTML = `<span style="color:#7ec8e3;">⏺ ${msg.tool}</span><span style="color:#888;">(${msg.args})</span>`;
+            wrap.appendChild(callLine); chat.appendChild(wrap); chat.scrollTop = chat.scrollHeight;
+            await sleep(280);
+            const resultLine = document.createElement('div');
+            resultLine.style.cssText = 'color:#555;padding-left:1.1rem;';
+            const span = document.createElement('span');
+            resultLine.appendChild(span); wrap.appendChild(resultLine);
+            await typeTextSkill(span, '⎿ ' + msg.result, chat, 10, ip);
+            await sleep(180);
+        }
+    }
+    inputEl.textContent = '';
+    skill0Running = false;
+}
+
+function restartSkill0Animation() {
+    skill0Running = false;
+    skill0Paused = false;
+    const btn = document.getElementById('skill0-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
+    const chat = document.getElementById('skill0-chat');
+    if (chat) chat.innerHTML = '';
+    const input = document.getElementById('skill0-input');
+    if (input) input.textContent = '';
+    setTimeout(runSkill0Animation, 200);
+}
+
+/* ===========================================
+   AI-RESEARCH-PAPER ANIMATION
+   =========================================== */
+
+const ARP_SCRIPT = [
+    { role: 'user', text: '/ai-research-paper' },
+    { role: 'claude', text: 'Phase 0: Setup\nTarget venue / research topic / compute resources?' },
+    { role: 'user', text: 'venue: NeurIPS 2026\ntopic: calibration under annotator disagreement\ncompute: 4x A100 (jinxu-lab1)' },
+    { tool: 'Write', args: 'plan/config.md', result: 'Saved: venue · topic · compute config' },
+    { role: 'claude', text: '── Phase 1: Literature Review ──' },
+    { tool: 'mcp__arxiv__search_papers', args: '"calibration annotator disagreement soft labels"', result: '53 results · top-12 parsed and summarized' },
+    { tool: 'WebSearch', args: '"ECE soft label NeurIPS ICML 2024"', result: 'CROWDLAB · SoftCalib (ICML23) · DiRA identified' },
+    { tool: 'Write', args: 'plan/literature.md', result: '12 papers · gap: ECE_voted vs ECE_true unstudied' },
+    { role: 'claude', text: '── Phase 2-3: Idea Generation + 6-Agent Debate ──\nGenerating 4 candidates, spawning subagent debate...' },
+    { tool: 'Agent', args: 'IdeaDebate × 6 subagents · idea_pool.md', result: 'Subagent[Critic]:   Idea-3 assumption too strong, needs annotation budget prior\nSubagent[Champion]: Idea-1 clean formulation, fits NeurIPS style\nSubagent[Devil]:    Idea-2 baseline too weak, reviewer will object\nSubagent[Reviewer]: Idea-1 clear gap, quantifiable contribution\n…(6 rounds complete)' },
+    { role: 'claude', text: '── AC Gate ──\n[ACCEPT] Idea-1: ECE Decomposition Framework\nReason: novel · feasible · clear gap' },
+    { role: 'claude', text: '── Phase 4: Pilot Experiment ──\nChecking GPU availability...' },
+    { tool: 'Bash', args: 'gnvitop --agent', result: 'jinxu-lab1  GPU 0: available=true\njinxu-lab1  GPU 1: available=true' },
+    { tool: 'Bash', args: 'ssh jinxu-lab1 "python pilot/run.py --seed 0"', result: 'ECE_voted=0.082 · ECE_true=0.041 · Δ=0.041 ✓' },
+    { role: 'claude', text: 'Pilot PASSED — strong effect, launching full experiments.\nScheduling all 4 GPUs autonomously...' },
+    { tool: 'Bash', args: 'ssh jinxu-lab1 "nohup python run_all.py --gpus 0,1,2,3 &"', result: 'Launched · ETA 4h · monitoring enabled' },
+    { role: 'claude', text: '── Phase 7: 6-Agent Result Debate ──' },
+    { tool: 'Agent', args: 'ResultDebate × 6 subagents · results/', result: 'Subagent[Stats]:    ECE↓31% vs voted baseline\nSubagent[Reviewer]: contribution narrative clear\nConsensus: strong empirical result, ready to write' },
+    { role: 'claude', text: '── Phase 8: Paper Writing ──' },
+    { tool: 'Bash', args: 'python scripts/gen_figures.py', result: '✓ fig1_decomp.pdf · fig2_reliability.pdf · fig3_ablation.pdf' },
+    { tool: 'Write', args: 'paper/main.tex', result: 'NeurIPS 2026 template · 9 pages · all sections' },
+    { tool: 'Agent', args: 'InternalReview subagent · main.tex', result: 'Sec 3.2: inconsistent notation · Related Work missing DiRA citation\n→ 2 issues fixed' },
+    { role: 'claude', text: '✓ Pipeline complete. 9-page draft, internal review passed.\n📱 Telegram notification sent.' },
+];
+
+let arpRunning = false;
+let arpPaused = false;
+
+function toggleARPPause() {
+    arpPaused = !arpPaused;
+    const btn = document.getElementById('arp-pause-btn');
+    if (btn) btn.textContent = pauseLabel(arpPaused);
+}
+
+async function runARPAnimation() {
+    const chat = document.getElementById('arp-chat');
+    const inputEl = document.getElementById('arp-input');
+    if (!chat || !inputEl || arpRunning) return;
+    arpRunning = true;
+    arpPaused = false;
+    const btn = document.getElementById('arp-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
+    chat.innerHTML = '';
+    const ip = () => arpPaused;
+        for (const msg of ARP_SCRIPT) {
+        if (!arpRunning) break;
+        while (arpPaused) await sleep(50);
+        if (msg.role === 'user') {
+            await sleep(300);
+            inputEl.textContent = '';
+            await typeTextSkill(inputEl, msg.text, null, 28, ip);
+            await sleep(500);
+            inputEl.textContent = '';
+            const bubble = appendBubbleSkill(chat, 'user');
+            bubble.textContent = msg.text;
+            await sleep(350);
+        } else if (msg.role === 'claude') {
+            await sleep(280);
+            const bubble = appendBubbleSkill(chat, 'claude');
+            await typeTextSkill(bubble, msg.text, chat, 14, ip);
+            await sleep(450);
+        } else if (msg.tool) {
+            await sleep(180);
+            const wrap = document.createElement('div');
+            wrap.style.cssText = 'margin:0.05rem 0 0.05rem 2rem;font-family:var(--font-mono);font-size:clamp(0.56rem,0.82vw,0.68rem);';
+            const callLine = document.createElement('div');
+            callLine.innerHTML = `<span style="color:#7ec8e3;">⏺ ${msg.tool}</span><span style="color:#888;">(${msg.args})</span>`;
+            wrap.appendChild(callLine); chat.appendChild(wrap); chat.scrollTop = chat.scrollHeight;
+            await sleep(280);
+            const resultLine = document.createElement('div');
+            resultLine.style.cssText = 'color:#555;padding-left:1.1rem;';
+            const span = document.createElement('span');
+            resultLine.appendChild(span); wrap.appendChild(resultLine);
+            await typeTextSkill(span, '⎿ ' + msg.result, chat, 10, ip);
+            await sleep(180);
+        }
+    }
+    inputEl.textContent = '';
+    arpRunning = false;
+}
+
+function restartARPAnimation() {
+    arpRunning = false;
+    arpPaused = false;
+    const btn = document.getElementById('arp-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
+    const chat = document.getElementById('arp-chat');
+    if (chat) chat.innerHTML = '';
+    const input = document.getElementById('arp-input');
+    if (input) input.textContent = '';
+    setTimeout(runARPAnimation, 200);
+}
+
+/* ===========================================
+   BRAINSTORM ANIMATION
+   =========================================== */
+
+const BS1_SCRIPT = [
+    { role: 'user', text: '/brainstorm' },
+    { role: 'claude', text: 'What direction do you want to explore?\nA vague intuition or rough question is fine.' },
+    { role: 'user', text: 'I want to study LLM calibration under soft-label settings, but I\'m not sure which angle to take' },
+    { role: 'claude', text: 'Sure, exploring 5 directions:\n\n1. ECE decomposition: ECE_voted vs ECE_true — almost no one has done this\n2. Annotator predictor: train the model to learn annotators, not majority vote\n3. Bayesian aggregation: replace point labels with distributions\n4. Training objective: is soft CE naturally better calibrated than hard CE?\n5. Zero-shot transfer: can soft calibration generalize cross-dataset?' },
+    { role: 'user', text: '1 is most interesting — how do you do the ECE decomposition?' },
+    { role: 'claude', text: 'ECE_voted = gap(confidence, majority-vote accuracy)\nECE_true  = gap(confidence, soft label distribution)\n\nKey insight: even when ECE_voted = 0, ECE_true can still be large.\nThe model "fools" the hard labels but never learns true uncertainty.\nA toy example demonstrates this vividly — great for a talk.' },
+    { role: 'user', text: 'Which baselines should I use?' },
+    { role: 'claude', text: '4 tiers covering the landscape:\n• Temperature Scaling — the classic\n• Label Smoothing — common soft alternative\n• CROWDLAB — designed for annotator disagreement\n• SoftCalib (ICML 23) — closest prior work to your direction\n\nReviewers will appreciate this coverage.' },
+];
+
+let bs1Running = false;
+let bs1Paused = false;
+
+function toggleBs1Pause() {
+    bs1Paused = !bs1Paused;
+    const btn = document.getElementById('bs1-pause-btn');
+    if (btn) btn.textContent = pauseLabel(bs1Paused);
+}
+
+async function runBs1Animation() {
+    const chat = document.getElementById('bs1-chat');
+    const inputEl = document.getElementById('bs1-input');
+    if (!chat || !inputEl || bs1Running) return;
+    bs1Running = true;
+    bs1Paused = false;
+    const btn = document.getElementById('bs1-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
+    chat.innerHTML = '';
+    const ip = () => bs1Paused;
+        for (const msg of BS1_SCRIPT) {
+        if (!bs1Running) break;
+        while (bs1Paused) await sleep(50);
+        if (msg.role === 'user') {
+            await sleep(300);
+            inputEl.textContent = '';
+            await typeTextSkill(inputEl, msg.text, null, 30, ip);
+            await sleep(450);
+            inputEl.textContent = '';
+            const bubble = appendBubbleSkill(chat, 'user');
+            bubble.textContent = msg.text;
+            await sleep(300);
+        } else if (msg.role === 'claude') {
+            await sleep(260);
+            const bubble = appendBubbleSkill(chat, 'claude');
+            await typeTextSkill(bubble, msg.text, chat, 12, ip);
+            await sleep(400);
+        } else if (msg.tool) {
+            await sleep(180);
+            const wrap = document.createElement('div');
+            wrap.style.cssText = 'margin:0.05rem 0 0.05rem 2rem;font-family:var(--font-mono);font-size:clamp(0.5rem,0.72vw,0.62rem);';
+            const callLine = document.createElement('div');
+            callLine.innerHTML = '<span style="color:#7ec8e3;">\u23FA ' + msg.tool + '</span><span style="color:#888;">(' + msg.args + ')</span>';
+            wrap.appendChild(callLine); chat.appendChild(wrap); chat.scrollTop = chat.scrollHeight;
+            await sleep(260);
+            const resultLine = document.createElement('div');
+            resultLine.style.cssText = 'color:#555;padding-left:1.1rem;';
+            const span = document.createElement('span');
+            resultLine.appendChild(span); wrap.appendChild(resultLine);
+            await typeTextSkill(span, '\u23BF ' + msg.result, chat, 10, ip);
+            await sleep(160);
+        }
+    }
+    inputEl.textContent = '';
+    bs1Running = false;
+}
+
+function restartBs1Animation() {
+    bs1Running = false;
+    bs1Paused = false;
+    const btn = document.getElementById('bs1-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
+    const chat = document.getElementById('bs1-chat');
+    if (chat) chat.innerHTML = '';
+    const input = document.getElementById('bs1-input');
+    if (input) input.textContent = '';
+    setTimeout(runBs1Animation, 200);
+}
+
+/* ===========================================
+   FRONTEND-SLIDES ANIMATION
+   =========================================== */
+
+const FS1_SCRIPT = [
+    { role: 'user', text: '/frontend-slides' },
+    { role: 'claude', text: 'What topic are the slides for?\nFeel free to mention style, page count, and purpose.' },
+    { role: 'user', text: 'Group meeting — presenting calibration research, 5-min lightning talk, 7 slides' },
+    { role: 'claude', text: 'Which style?\nA) Academic rigorous (dark bg + charts)\nB) Visual impact (large text + color blocks)\nC) Clean minimal (white bg + data)' },
+    { role: 'user', text: 'A, and add an animation on slide 3 showing the ECE decomposition' },
+    { role: 'claude', text: 'Planning 7-slide structure:\n1. Title — research question + one-line summary\n2. Motivation — ECE_voted vs ECE_true\n3. Key Insight ← animation: hard → soft decomposition\n4. Method — equations + diagram\n5. Experiments — datasets · baselines\n6. Results — main results + ablation\n7. Takeaways\n\nGenerating...' },
+    { tool: 'Write', args: 'slides/index.html', result: '✓ 7 slides · dark academic style · slide 3 SVG animation · standalone HTML' },
+    { role: 'claude', text: 'Done. Open slides/index.html to preview.\nSlide 3 animation triggers on click to match your pacing.' },
+    { role: 'user', text: 'Add a reliability diagram to slide 6' },
+    { tool: 'Edit', args: 'slides/index.html — slide-6', result: '✓ Inline SVG · ECE_voted(red) vs ECE_true(blue) comparison' },
+    { role: 'claude', text: 'Updated. The contrast is clear — should land well at the group meeting.' },
+];
+
+let fs1Running = false;
+let fs1Paused = false;
+
+function toggleFs1Pause() {
+    fs1Paused = !fs1Paused;
+    const btn = document.getElementById('fs1-pause-btn');
+    if (btn) btn.textContent = pauseLabel(fs1Paused);
+}
+
+async function runFs1Animation() {
+    const chat = document.getElementById('fs1-chat');
+    const inputEl = document.getElementById('fs1-input');
+    if (!chat || !inputEl || fs1Running) return;
+    fs1Running = true;
+    fs1Paused = false;
+    const btn = document.getElementById('fs1-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
+    chat.innerHTML = '';
+    const ip = () => fs1Paused;
+        for (const msg of FS1_SCRIPT) {
+        if (!fs1Running) break;
+        while (fs1Paused) await sleep(50);
+        if (msg.role === 'user') {
+            await sleep(300);
+            inputEl.textContent = '';
+            await typeTextSkill(inputEl, msg.text, null, 30, ip);
+            await sleep(450);
+            inputEl.textContent = '';
+            const bubble = appendBubbleSkill(chat, 'user');
+            bubble.textContent = msg.text;
+            await sleep(300);
+        } else if (msg.role === 'claude') {
+            await sleep(260);
+            const bubble = appendBubbleSkill(chat, 'claude');
+            await typeTextSkill(bubble, msg.text, chat, 12, ip);
+            await sleep(400);
+        } else if (msg.tool) {
+            await sleep(180);
+            const wrap = document.createElement('div');
+            wrap.style.cssText = 'margin:0.05rem 0 0.05rem 2rem;font-family:var(--font-mono);font-size:clamp(0.5rem,0.72vw,0.62rem);';
+            const callLine = document.createElement('div');
+            callLine.innerHTML = '<span style="color:#7ec8e3;">\u23FA ' + msg.tool + '</span><span style="color:#888;">(' + msg.args + ')</span>';
+            wrap.appendChild(callLine); chat.appendChild(wrap); chat.scrollTop = chat.scrollHeight;
+            await sleep(260);
+            const resultLine = document.createElement('div');
+            resultLine.style.cssText = 'color:#555;padding-left:1.1rem;';
+            const span = document.createElement('span');
+            resultLine.appendChild(span); wrap.appendChild(resultLine);
+            await typeTextSkill(span, '\u23BF ' + msg.result, chat, 10, ip);
+            await sleep(160);
+        }
+    }
+    inputEl.textContent = '';
+    fs1Running = false;
+}
+
+function restartFs1Animation() {
+    fs1Running = false;
+    fs1Paused = false;
+    const btn = document.getElementById('fs1-pause-btn');
+    if (btn) btn.textContent = pauseLabel(false);
+    const chat = document.getElementById('fs1-chat');
+    if (chat) chat.innerHTML = '';
+    const input = document.getElementById('fs1-input');
+    if (input) input.textContent = '';
+    setTimeout(runFs1Animation, 200);
+}
+
+
+</script>
+
+
+</body>
+</html>
