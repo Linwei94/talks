@@ -1930,12 +1930,22 @@ NeurIPS 2026 submission, ddl: 5/31</div>
                 <p style="font-size: var(--t-label); color: #666; margin-top: 0.5rem;">X · Feb 2025 → now: "agentic engineering"</p>
             </div>
             <div class="card" style="background: #1a1a1a; border-color: #333; padding: clamp(0.8rem,1.5vw,1.4rem);">
-                <div style="font-size: var(--t-label); color: #e8321a; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.5rem;">Sam Altman · OpenAI</div>
+                <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Sam_Altman_2024_%28cropped%29.jpg/400px-Sam_Altman_2024_%28cropped%29.jpg" alt="Sam Altman"
+                         style="width:2rem;height:2rem;border-radius:50%;object-fit:cover;flex-shrink:0;"
+                         onerror="this.style.display='none'">
+                    <div style="font-size: var(--t-label); color: #e8321a; letter-spacing: 0.15em; text-transform: uppercase;">Sam Altman · OpenAI</div>
+                </div>
                 <p style="font-size: var(--t-small); color: #d0d0d0; line-height: 1.55; font-style: italic;">"We may see the first AI agents join the workforce and materially change the output of companies."</p>
                 <p style="font-size: var(--t-label); color: #666; margin-top: 0.5rem;">Blog · Jan 2025</p>
             </div>
             <div class="card" style="background: #1a1a1a; border-color: #333; padding: clamp(0.8rem,1.5vw,1.4rem);">
-                <div style="font-size: var(--t-label); color: #e8321a; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.5rem;">Dario Amodei · Anthropic</div>
+                <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Dario_Amodei%2C_CEO_of_Anthropic.png/400px-Dario_Amodei%2C_CEO_of_Anthropic.png" alt="Dario Amodei"
+                         style="width:2rem;height:2rem;border-radius:50%;object-fit:cover;flex-shrink:0;"
+                         onerror="this.style.display='none'">
+                    <div style="font-size: var(--t-label); color: #e8321a; letter-spacing: 0.15em; text-transform: uppercase;">Dario Amodei · Anthropic</div>
+                </div>
                 <p style="font-size: var(--t-small); color: #d0d0d0; line-height: 1.55; font-style: italic;">"AI could soon compress decades of scientific progress into just a few years."</p>
                 <p style="font-size: var(--t-label); color: #666; margin-top: 0.5rem;">Machines of Loving Grace · Oct 2024</p>
             </div>
@@ -2047,24 +2057,23 @@ NeurIPS 2026 submission, ddl: 5/31</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0;">
             <!-- LEFT: text -->
             <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);">
-                <div class="highlight-box" style="border-left:4px solid var(--red);">
-                    <p style="font-size:var(--t-body);"><strong>Managing people vs. managing Agents</strong><br>
-                    <span class='text-soft'>Junior hires need onboarding, mentoring, review — and might even pass the blame<br>Agent follows instructions, doesn't need coddling, always available, no salary</span></p>
-                </div>
+                <p style="font-size:var(--t-body);font-weight:700;color:var(--ink);">Managing people vs. managing Agents</p>
                 <ul class="bullet-list">
-                    <li>One experienced person + agent can do what used to take a team of 5</li>
-                    <li>The repetitive work juniors used to do is now fully handled by agents</li>
+                    <li>Junior hires: onboard, mentor, review — and might still pass the blame</li>
+                    <li>Agent: follows instructions, always available, no salary, no ego</li>
+                    <li>One experienced person + agent = what used to take a team of 5</li>
+                    <li>Repetitive junior-level work is now fully handled by agents</li>
                     <li>Companies' headcount calculus is being repriced</li>
                 </ul>
-                <p style="font-size:var(--t-body);font-weight:600;">Do juniors / new grads still have a shot?</p>
+                <p style="font-size:var(--t-body);font-weight:700;color:var(--ink);margin-top:0.3rem;">Do juniors / new grads still have a shot?</p>
                 <ul class="bullet-list">
-                    <li>Yes — but the path is narrower; you need to find <strong>your irreplaceable part</strong> earlier</li>
-                    <li>Systems judgment, user communication, defining what actually needs to be built</li>
-                    <li>Those who can command agents are the new era's <strong>10x engineer</strong></li>
+                    <li>Yes — but the path is narrower; find your irreplaceable part earlier</li>
+                    <li>Systems judgment · user communication · defining the real requirement</li>
+                    <li>Those who can direct agents are the new era's <strong>10× engineer</strong></li>
+                    <li>End-to-end solo project used to take 5 years — now maybe 1</li>
                 </ul>
-                <div class="highlight-box">
-                    <p style="font-size:var(--t-small);">This isn't pessimism — it's a new starting line<br>
-                    <span style='color:var(--ink-soft);'>What used to take 5 years to build end-to-end might now take 1</span></p>
+                <div class="highlight-box" style="border-left:3px solid var(--red);margin-top:0.2rem;">
+                    <p style="font-size:var(--t-small);color:var(--ink);">This isn't pessimism — it's a new starting line</p>
                 </div>
             </div>
             <!-- RIGHT: Anthropic stats + Claude report images -->
@@ -2102,22 +2111,19 @@ NeurIPS 2026 submission, ddl: 5/31</div>
     </div>
     <div class="slide-content" style="gap: var(--gap);">
         <h2 class="reveal">gnvitop — Global GPU Monitor</h2>
-        <div class="two-col text-img reveal" style="align-items: start;">
+        <div class="two-col text-img reveal" style="align-items: center; gap: var(--gap);">
             <div style="display: flex; flex-direction: column; gap: var(--egap);">
-                <p class="text-mid">While building these two projects, I always needed to know <strong>which GPU was free</strong>.<br>
-                    With all the agents going wild, you still have to fight for GPUs yourself.</p>
-                <div class="code-block">
-pip install gnvitop
-gnvitop
-                </div>
-                <ul class="bullet-list" style="font-size: var(--t-small);">
-                    <li>Auto-reads ~/.ssh/config, SSHs into all servers</li>
+                <p class="text-mid" style="line-height:1.6;">While building these two projects, I always needed to know <strong>which GPU was free</strong>.<br><span style='color:var(--ink-soft);font-size:0.95em;'>All the agents are going wild — but GPUs you still have to fight for yourself.</span></p>
+                <div class="code-block" style="font-size:var(--t-body);">pip install gnvitop
+gnvitop</div>
+                <ul class="bullet-list">
+                    <li>Auto-reads <code>~/.ssh/config</code>, SSHs into all servers</li>
                     <li>Live web dashboard showing all GPU status</li>
                     <li>Supports ProxyJump bastion hosts</li>
-                    <li>Current user processes <strong>highlighted in blue</strong></li>
+                    <li>Current user's processes highlighted in <strong style='color:#7ec8e3;'>blue</strong></li>
                 </ul>
             </div>
-            <img src="https://github.com/user-attachments/assets/2ca35564-c891-4af9-9b30-5ebb0949ba99" alt="gnvitop dashboard" class="screenshot" style="max-height: min(45vh, 360px);" onerror="this.style.display='none'">
+            <img src="https://github.com/user-attachments/assets/2ca35564-c891-4af9-9b30-5ebb0949ba99" alt="gnvitop dashboard" class="screenshot" style="max-height: min(48vh, 380px); border-radius: 8px;" onerror="this.style.display='none'">
         </div>
     </div>
     <div class="slide-footer">
@@ -2185,34 +2191,6 @@ setTimeout(scaleSafariIframe, 500);
 
 // Script: each entry is { role, text } or { tool, args, result }
 
-const CC_SCRIPT = [
-    { role: 'user', text: 'I\'m researching confidence calibration where ground truth is ambiguous — different annotators disagree on the same image. Has anyone studied this?' },
-    { role: 'claude', text: 'Let me search the literature first.' },
-    { tool: 'WebSearch', args: '"calibration ambiguous labels annotator disagreement"', result: '47 results, filtering...' },
-    { tool: 'WebSearch', args: '"soft label calibration ECE annotator agreement"', result: 'Key papers: Soft Calibration (ICML 2023), CrowdKit, CROWDLAB' },
-    { tool: 'Write', args: 'literature_review.md', result: 'Written 34 lines of survey notes' },
-    { role: 'claude', text: 'Survey complete. Core finding:\n  ECE_voted (against majority-vote labels) vs ECE_true (against true distribution)\n  — this distinction has barely been studied ← that\'s your gap' },
-    { role: 'user', text: 'Exactly! Help me design and implement an ambiguity-aware calibrator' },
-    { role: 'claude', text: 'Let me look at your existing code structure first...' },
-    { tool: 'Read', args: 'src/calibrators/base.py', result: 'Read 128 lines (BaseCalibrator class)' },
-    { tool: 'Read', args: 'src/metrics/ece.py', result: 'Read 84 lines (standard ECE implementation)' },
-    { tool: 'Write', args: 'src/calibrators/agt_calibrator.py', result: 'Written 156 lines (AGTCalibrator + soft label support)' },
-    { tool: 'Write', args: 'src/metrics/ece_true.py', result: 'Written 67 lines (ECE_true, ECE_voted metrics)' },
-    { tool: 'Bash', args: 'python -m pytest src/tests/test_agt.py -v', result: '........  8 passed in 1.23s ✓' },
-    { tool: 'Bash', args: 'python experiments/run_baseline.py --dataset CIFAR-10H', result: '  Temperature Scaling: ECE_voted=0.032  ECE_true=0.088  ← ECE_true is much higher!\n  AGT Calibrator:      ECE_voted=0.031  ECE_true=0.041  ✓' },
-    { role: 'claude', text: 'Hypothesis validated. Temperature Scaling was optimizing the wrong metric.' },
-    { role: 'user', text: 'Run ablation experiments on xuchang-lab1, xuchang-lab2, linwei-lab2 in parallel with different seeds' },
-    { tool: 'Bash', args: "ssh xuchang-lab1 'python train.py --seed 0 --dataset CIFAR-10H > logs/s0.log &'", result: '[1] 23847' },
-    { tool: 'Bash', args: "ssh xuchang-lab2 'python train.py --seed 1 --dataset ChaosNLI > logs/s1.log &'", result: '[1] 31092' },
-    { tool: 'Bash', args: "ssh linwei-lab2  'python train.py --seed 2 --dataset ISIC > logs/s2.log &'", result: '[1] 8834' },
-    { role: 'claude', text: 'All three launched in parallel, ETA ~2 hours. Results will be in results/ablation/' },
-    { role: 'user', text: 'Results are in — write them up as a NeurIPS-format paper' },
-    { tool: 'Read', args: 'results/ablation/summary.csv', result: 'Read 45 lines (3 datasets × 5 methods × 3 seeds)' },
-    { tool: 'Bash', args: 'python scripts/gen_figures.py', result: '✓ fig1_toy_example.pdf\n✓ fig2_reliability_diagrams.pdf\n✓ fig3_ablation_results.pdf' },
-    { tool: 'Write', args: 'paper/main.tex', result: 'Written 847 lines (NeurIPS 2026 template)' },
-    { tool: 'Bash', args: 'cd paper && pdflatex main.tex', result: 'Output written on main.pdf (9 pages). ✓' },
-    { role: 'claude', text: 'Paper draft complete — 9 pages. Want me to revise any section?' },
-];
 
 let ccAnimationRunning = false;
 let ccPaused = false;
@@ -2296,7 +2274,7 @@ async function runCCAnimation() {
     ccAnimationRunning = true;
     chat.innerHTML = '';
 
-        for (const msg of CC_SCRIPT) {
+    for (const msg of CC_SCRIPT) {
         if (!ccAnimationRunning || ccGeneration !== myGen) break;
         await waitIfPaused();
 
@@ -2812,23 +2790,6 @@ presentation.goTo = function(index) {
    SKILL-CREATOR ANIMATION
    =========================================== */
 
-const SKILL0_SCRIPT = [
-    { role: 'user', text: '/skill-creator' },
-    { tool: 'Read', args: '~/.claude/skills/', result: 'Found 15 skills: gpu-experiment, paper-review, daily-summary...' },
-    { role: 'claude', text: 'What skill do you want to create?\nDescribe the trigger scenario and what you want the agent to do.' },
-    { role: 'user', text: 'literature-review: given a research direction, auto-survey papers and summarize the gap' },
-    { role: 'claude', text: 'Got it. What format should the output be after the survey?\nE.g., chronological, grouped by method, or a ready-made related work paragraph?' },
-    { role: 'user', text: 'List the top 10 papers with one-line summaries, then write a gap analysis' },
-    { role: 'claude', text: 'Search scope — arXiv only, or also Semantic Scholar / Google Scholar?' },
-    { role: 'user', text: 'arXiv as the primary source, then a Google Scholar pass to catch stragglers' },
-    { role: 'claude', text: 'Got it. Drafting the skill spec now.' },
-    { tool: 'mcp__arxiv__search_papers', args: '"literature review automation survey NeurIPS 2024"', result: '12 results — reviewing common survey structures' },
-    { tool: 'Write', args: '~/.claude/skills/literature-review.md', result: 'Written: 487 lines' },
-    { role: 'claude', text: 'Draft ready. Structure:\n1. Receive research keyword\n2. arXiv search → top 10 by citation count\n3. One-line summary per paper\n4. Google Scholar supplementary search\n5. Output gap analysis paragraph\n\nAny adjustments?' },
-    { role: 'user', text: 'Change step 3 to three sentences: method, dataset, conclusion' },
-    { tool: 'Write', args: '~/.claude/skills/literature-review.md', result: 'Updated: summary template → method / dataset / conclusion' },
-    { role: 'claude', text: '✓ Skill literature-review created.\n\nType /literature-review to trigger it next time.' },
-];
 
 let skill0Running = false;
 let skill0Paused = false;
@@ -2877,7 +2838,7 @@ async function runSkill0Animation() {
     if (btn) btn.textContent = pauseLabel(false);
     chat.innerHTML = '';
     const ip = () => skill0Paused;
-        for (const msg of SKILL0_SCRIPT) {
+    for (const msg of SKILL0_SCRIPT) {
         if (!skill0Running) break;
         while (skill0Paused) await sleep(50);
         if (msg.role === 'user') {
@@ -2930,31 +2891,6 @@ function restartSkill0Animation() {
    AI-RESEARCH-PAPER ANIMATION
    =========================================== */
 
-const ARP_SCRIPT = [
-    { role: 'user', text: '/ai-research-paper' },
-    { role: 'claude', text: 'Phase 0: Setup\nTarget venue / research topic / compute resources?' },
-    { role: 'user', text: 'venue: NeurIPS 2026\ntopic: calibration under annotator disagreement\ncompute: 4x A100 (jinxu-lab1)' },
-    { tool: 'Write', args: 'plan/config.md', result: 'Saved: venue · topic · compute config' },
-    { role: 'claude', text: '── Phase 1: Literature Review ──' },
-    { tool: 'mcp__arxiv__search_papers', args: '"calibration annotator disagreement soft labels"', result: '53 results · top-12 parsed and summarized' },
-    { tool: 'WebSearch', args: '"ECE soft label NeurIPS ICML 2024"', result: 'CROWDLAB · SoftCalib (ICML23) · DiRA identified' },
-    { tool: 'Write', args: 'plan/literature.md', result: '12 papers · gap: ECE_voted vs ECE_true unstudied' },
-    { role: 'claude', text: '── Phase 2-3: Idea Generation + 6-Agent Debate ──\nGenerating 4 candidates, spawning subagent debate...' },
-    { tool: 'Agent', args: 'IdeaDebate × 6 subagents · idea_pool.md', result: 'Subagent[Critic]:   Idea-3 assumption too strong, needs annotation budget prior\nSubagent[Champion]: Idea-1 clean formulation, fits NeurIPS style\nSubagent[Devil]:    Idea-2 baseline too weak, reviewer will object\nSubagent[Reviewer]: Idea-1 clear gap, quantifiable contribution\n…(6 rounds complete)' },
-    { role: 'claude', text: '── AC Gate ──\n[ACCEPT] Idea-1: ECE Decomposition Framework\nReason: novel · feasible · clear gap' },
-    { role: 'claude', text: '── Phase 4: Pilot Experiment ──\nChecking GPU availability...' },
-    { tool: 'Bash', args: 'gnvitop --agent', result: 'jinxu-lab1  GPU 0: available=true\njinxu-lab1  GPU 1: available=true' },
-    { tool: 'Bash', args: 'ssh jinxu-lab1 "python pilot/run.py --seed 0"', result: 'ECE_voted=0.082 · ECE_true=0.041 · Δ=0.041 ✓' },
-    { role: 'claude', text: 'Pilot PASSED — strong effect, launching full experiments.\nScheduling all 4 GPUs autonomously...' },
-    { tool: 'Bash', args: 'ssh jinxu-lab1 "nohup python run_all.py --gpus 0,1,2,3 &"', result: 'Launched · ETA 4h · monitoring enabled' },
-    { role: 'claude', text: '── Phase 7: 6-Agent Result Debate ──' },
-    { tool: 'Agent', args: 'ResultDebate × 6 subagents · results/', result: 'Subagent[Stats]:    ECE↓31% vs voted baseline\nSubagent[Reviewer]: contribution narrative clear\nConsensus: strong empirical result, ready to write' },
-    { role: 'claude', text: '── Phase 8: Paper Writing ──' },
-    { tool: 'Bash', args: 'python scripts/gen_figures.py', result: '✓ fig1_decomp.pdf · fig2_reliability.pdf · fig3_ablation.pdf' },
-    { tool: 'Write', args: 'paper/main.tex', result: 'NeurIPS 2026 template · 9 pages · all sections' },
-    { tool: 'Agent', args: 'InternalReview subagent · main.tex', result: 'Sec 3.2: inconsistent notation · Related Work missing DiRA citation\n→ 2 issues fixed' },
-    { role: 'claude', text: '✓ Pipeline complete. 9-page draft, internal review passed.\n📱 Telegram notification sent.' },
-];
 
 let arpRunning = false;
 let arpPaused = false;
@@ -2975,7 +2911,7 @@ async function runARPAnimation() {
     if (btn) btn.textContent = pauseLabel(false);
     chat.innerHTML = '';
     const ip = () => arpPaused;
-        for (const msg of ARP_SCRIPT) {
+    for (const msg of ARP_SCRIPT) {
         if (!arpRunning) break;
         while (arpPaused) await sleep(50);
         if (msg.role === 'user') {
@@ -3028,16 +2964,6 @@ function restartARPAnimation() {
    BRAINSTORM ANIMATION
    =========================================== */
 
-const BS1_SCRIPT = [
-    { role: 'user', text: '/brainstorm' },
-    { role: 'claude', text: 'What direction do you want to explore?\nA vague intuition or rough question is fine.' },
-    { role: 'user', text: 'I want to study LLM calibration under soft-label settings, but I\'m not sure which angle to take' },
-    { role: 'claude', text: 'Sure, exploring 5 directions:\n\n1. ECE decomposition: ECE_voted vs ECE_true — almost no one has done this\n2. Annotator predictor: train the model to learn annotators, not majority vote\n3. Bayesian aggregation: replace point labels with distributions\n4. Training objective: is soft CE naturally better calibrated than hard CE?\n5. Zero-shot transfer: can soft calibration generalize cross-dataset?' },
-    { role: 'user', text: '1 is most interesting — how do you do the ECE decomposition?' },
-    { role: 'claude', text: 'ECE_voted = gap(confidence, majority-vote accuracy)\nECE_true  = gap(confidence, soft label distribution)\n\nKey insight: even when ECE_voted = 0, ECE_true can still be large.\nThe model "fools" the hard labels but never learns true uncertainty.\nA toy example demonstrates this vividly — great for a talk.' },
-    { role: 'user', text: 'Which baselines should I use?' },
-    { role: 'claude', text: '4 tiers covering the landscape:\n• Temperature Scaling — the classic\n• Label Smoothing — common soft alternative\n• CROWDLAB — designed for annotator disagreement\n• SoftCalib (ICML 23) — closest prior work to your direction\n\nReviewers will appreciate this coverage.' },
-];
 
 let bs1Running = false;
 let bs1Paused = false;
@@ -3058,7 +2984,7 @@ async function runBs1Animation() {
     if (btn) btn.textContent = pauseLabel(false);
     chat.innerHTML = '';
     const ip = () => bs1Paused;
-        for (const msg of BS1_SCRIPT) {
+    for (const msg of BS1_SCRIPT) {
         if (!bs1Running) break;
         while (bs1Paused) await sleep(50);
         if (msg.role === 'user') {
@@ -3111,19 +3037,6 @@ function restartBs1Animation() {
    FRONTEND-SLIDES ANIMATION
    =========================================== */
 
-const FS1_SCRIPT = [
-    { role: 'user', text: '/frontend-slides' },
-    { role: 'claude', text: 'What topic are the slides for?\nFeel free to mention style, page count, and purpose.' },
-    { role: 'user', text: 'Group meeting — presenting calibration research, 5-min lightning talk, 7 slides' },
-    { role: 'claude', text: 'Which style?\nA) Academic rigorous (dark bg + charts)\nB) Visual impact (large text + color blocks)\nC) Clean minimal (white bg + data)' },
-    { role: 'user', text: 'A, and add an animation on slide 3 showing the ECE decomposition' },
-    { role: 'claude', text: 'Planning 7-slide structure:\n1. Title — research question + one-line summary\n2. Motivation — ECE_voted vs ECE_true\n3. Key Insight ← animation: hard → soft decomposition\n4. Method — equations + diagram\n5. Experiments — datasets · baselines\n6. Results — main results + ablation\n7. Takeaways\n\nGenerating...' },
-    { tool: 'Write', args: 'slides/index.html', result: '✓ 7 slides · dark academic style · slide 3 SVG animation · standalone HTML' },
-    { role: 'claude', text: 'Done. Open slides/index.html to preview.\nSlide 3 animation triggers on click to match your pacing.' },
-    { role: 'user', text: 'Add a reliability diagram to slide 6' },
-    { tool: 'Edit', args: 'slides/index.html — slide-6', result: '✓ Inline SVG · ECE_voted(red) vs ECE_true(blue) comparison' },
-    { role: 'claude', text: 'Updated. The contrast is clear — should land well at the group meeting.' },
-];
 
 let fs1Running = false;
 let fs1Paused = false;
@@ -3144,7 +3057,7 @@ async function runFs1Animation() {
     if (btn) btn.textContent = pauseLabel(false);
     chat.innerHTML = '';
     const ip = () => fs1Paused;
-        for (const msg of FS1_SCRIPT) {
+    for (const msg of FS1_SCRIPT) {
         if (!fs1Running) break;
         while (fs1Paused) await sleep(50);
         if (msg.role === 'user') {
