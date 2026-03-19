@@ -522,7 +522,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                     AI Agent for Research <span class="text-red">&amp;</span> Engineering
                 </h1>
                 <p class="reveal" style="margin-top: var(--gap); max-width: 32rem;">
-                    <span data-en="Web App · NeurIPS Submission · Technical Deep Dive · Discussion">Web App · NeurIPS 投稿 · 技术解剖 · 讨论</span><br>
+                    <span data-en="Web App · Top-venue Paper · Technical Deep Dive · Discussion">Web App · 顶刊文章 · 技术解剖 · 讨论</span><br>
                     <span class="text-soft" data-en="The Steam Engine Moment of the Information Age">信息时代的蒸汽机时刻</span>
                 </p>
             </div>
@@ -718,7 +718,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
         <div style="display: flex; flex-direction: column; gap: 0.6rem; overflow: hidden;">
             <div style="display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0;">
                 <div style="width: 1.6rem; height: 1.6rem; background: var(--red); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.7rem; font-weight: 700;">②</div>
-                <span style="font-size: var(--t-small); font-weight: 600;" data-en="CalibrationAGT · NeurIPS 2026 Submission">CalibrationAGT · NeurIPS 2026 投稿</span>
+                <span style="font-size: var(--t-small); font-weight: 600;" data-en="CalibrationAGT · Top-venue Paper">CalibrationAGT · 顶刊文章</span>
             </div>
             <div style="flex: 1; border: 2px solid var(--border-soft); border-radius: 8px; overflow: hidden; background: #f0ede8;">
                 <object
@@ -754,7 +754,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
             <div class="card reveal">
                 <div class="card-icon">🔬</div>
                 <div class="card-title">Part 2 · Research</div>
-                <div class="card-desc" data-en="CalibrationAGT — how a NeurIPS submission was completed using AI Agent">CalibrationAGT — 一篇 NeurIPS 投稿是怎么用 AI Agent 完成的</div>
+                <div class="card-desc" data-en="CalibrationAGT — how a top-venue paper was completed using AI Agent">CalibrationAGT — 一篇顶刊文章是怎么用 AI Agent 完成的</div>
             </div>
             <div class="card reveal">
                 <div class="card-icon">⚙️</div>
@@ -929,7 +929,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                 <p style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-soft);" data-en="But How Large Is Your Project?">但你的项目有多大？</p>
                 <div style="display:flex;flex-direction:column;gap:0.5rem;font-size:var(--t-small);">
                     <div style="display:flex;justify-content:space-between;padding:0.5rem 0.75rem;background:var(--bg-alt);border-radius:6px;">
-                        <span data-en="A NeurIPS paper">一篇 NeurIPS 论文</span>
+                        <span data-en="A top-venue paper">一篇顶刊文章</span>
                         <span style="font-weight:600;color:var(--red);">~8K tokens ✓</span>
                     </div>
                     <div style="display:flex;justify-content:space-between;padding:0.5rem 0.75rem;background:var(--bg-alt);border-radius:6px;">
@@ -1840,7 +1840,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
 - Do not commit untested code
 
 <span class='kw'>## Project Context</span>
-NeurIPS 2026 submission, ddl: 5/31">
+顶刊投稿, ddl: 5/31">
 <span class="cm"># CLAUDE.md 示例</span>
 <span class="kw">## Rules</span>
 - 用中文回复
@@ -1848,7 +1848,7 @@ NeurIPS 2026 submission, ddl: 5/31">
 - 不要 commit 未测试的代码
 
 <span class="kw">## Project Context</span>
-NeurIPS 2026 投稿，ddl: 5/31
+顶刊投稿，ddl: 5/31
                 </div>
                 <p class="text-soft" style="font-size: var(--t-small);" data-en='A single conversation can load <strong>4000+ tokens</strong> of system info —<br>
                     that&apos;s why the agent can continuously "remember" project state'>
@@ -2292,10 +2292,10 @@ const CC_SCRIPT = [
     { tool: 'Bash', args: "ssh xuchang-lab2 'python train.py --seed 1 --dataset ChaosNLI > logs/s1.log &'", result: '[1] 31092' },
     { tool: 'Bash', args: "ssh linwei-lab2  'python train.py --seed 2 --dataset ISIC > logs/s2.log &'", result: '[1] 8834' },
     { role: 'claude', text: '三台已并行启动，预计 2 小时完成。结果写到 results/ablation/' },
-    { role: 'user', text: '结果出来了，帮我写成 NeurIPS 格式的论文' },
+    { role: 'user', text: '结果出来了，帮我写成顶刊格式的论文' },
     { tool: 'Read', args: 'results/ablation/summary.csv', result: '读取 45 行 (3 datasets × 5 methods × 3 seeds)' },
     { tool: 'Bash', args: 'python scripts/gen_figures.py', result: '✓ fig1_toy_example.pdf\n✓ fig2_reliability_diagrams.pdf\n✓ fig3_ablation_results.pdf' },
-    { tool: 'Write', args: 'paper/main.tex', result: '已写入 847 行 (NeurIPS 2026 template)' },
+    { tool: 'Write', args: 'paper/main.tex', result: '已写入 847 行（顶刊模板）' },
     { tool: 'Bash', args: 'cd paper && pdflatex main.tex', result: 'Output written on main.pdf (9 pages). ✓' },
     { role: 'claude', text: '论文草稿完成，共 9 页。需要我调整某个部分吗？' },
 ];
@@ -2908,7 +2908,7 @@ const SKILL0_SCRIPT = [
     { role: 'claude', text: '好的。搜索范围只用 arxiv，还是也搜 semantic scholar / Google Scholar？' },
     { role: 'user', text: 'arxiv 为主，最后加一下 Google Scholar 补漏' },
     { role: 'claude', text: '收到，我来起草 skill 规范。' },
-    { tool: 'mcp__arxiv__search_papers', args: '"literature review automation survey NeurIPS 2024"', result: '12 results — reviewing common survey structures' },
+    { tool: 'mcp__arxiv__search_papers', args: '"literature review automation survey top-venue 2024"', result: '12 results — reviewing common survey structures' },
     { tool: 'Write', args: '~/.claude/skills/literature-review.md', result: 'Written: 487 lines' },
     { role: 'claude', text: '草稿写好了，结构如下：\n1. 接收研究方向关键词\n2. arxiv 检索 → 按引用排序 top 10\n3. 每篇生成一句话摘要\n4. Google Scholar 补充检索\n5. 输出 gap 分析段落\n\n要调整吗？' },
     { role: 'user', text: '第3步改成三句话，包含：方法、数据集、结论' },
@@ -3019,14 +3019,14 @@ function restartSkill0Animation() {
 const ARP_SCRIPT = [
     { role: 'user', text: '/ai-research-paper' },
     { role: 'claude', text: 'Phase 0: Setup\n目标会议 / 研究方向 / 计算资源？' },
-    { role: 'user', text: 'venue: NeurIPS 2026\ntopic: calibration under annotator disagreement\ncompute: 4x A100 (jinxu-lab1)' },
+    { role: 'user', text: 'venue: top-venue 2026\ntopic: calibration under annotator disagreement\ncompute: 4x A100 (jinxu-lab1)' },
     { tool: 'Write', args: 'plan/config.md', result: 'Saved: venue · topic · compute config' },
     { role: 'claude', text: '── Phase 1: Literature Review ──' },
     { tool: 'mcp__arxiv__search_papers', args: '"calibration annotator disagreement soft labels"', result: '53 results · top-12 parsed and summarized' },
-    { tool: 'WebSearch', args: '"ECE soft label NeurIPS ICML 2024"', result: 'CROWDLAB · SoftCalib (ICML23) · DiRA identified' },
+    { tool: 'WebSearch', args: '"ECE soft label top-venue ICML 2024"', result: 'CROWDLAB · SoftCalib (ICML23) · DiRA identified' },
     { tool: 'Write', args: 'plan/literature.md', result: '12 papers · gap: ECE_voted vs ECE_true unstudied' },
     { role: 'claude', text: '── Phase 2-3: Idea Generation + 6-Agent Debate ──\n生成 4 个候选，启动 subagent 辩论…' },
-    { tool: 'Agent', args: 'IdeaDebate × 6 subagents · idea_pool.md', result: 'Subagent[Critic]:   Idea-3 假设过强，需要 annotation budget 先验\nSubagent[Champion]: Idea-1 形式简洁，NeurIPS 风格契合\nSubagent[Devil]:    Idea-2 baseline 太弱，reviewer 会质疑\nSubagent[Reviewer]: Idea-1 gap 清晰，contribution 可量化\n…（6 轮 debate 完成）' },
+    { tool: 'Agent', args: 'IdeaDebate × 6 subagents · idea_pool.md', result: 'Subagent[Critic]:   Idea-3 假设过强，需要 annotation budget 先验\nSubagent[Champion]: Idea-1 形式简洁，顶刊风格契合\nSubagent[Devil]:    Idea-2 baseline 太弱，reviewer 会质疑\nSubagent[Reviewer]: Idea-1 gap 清晰，contribution 可量化\n…（6 轮 debate 完成）' },
     { role: 'claude', text: '── AC Gate ──\n[ACCEPT] Idea-1: ECE 分解框架\n理由：novel · feasible · gap 明确' },
     { role: 'claude', text: '── Phase 4: Pilot Experiment ──\n检查 GPU 可用性…' },
     { tool: 'Bash', args: 'gnvitop --agent', result: 'jinxu-lab1  GPU 0: available=true\njinxu-lab1  GPU 1: available=true' },
@@ -3037,7 +3037,7 @@ const ARP_SCRIPT = [
     { tool: 'Agent', args: 'ResultDebate × 6 subagents · results/', result: 'Subagent[Stats]:    ECE↓31% vs voted baseline\nSubagent[Reviewer]: contribution narrative clear\nConsensus: strong empirical result, ready to write' },
     { role: 'claude', text: '── Phase 8: Paper Writing ──' },
     { tool: 'Bash', args: 'python scripts/gen_figures.py', result: '✓ fig1_decomp.pdf · fig2_reliability.pdf · fig3_ablation.pdf' },
-    { tool: 'Write', args: 'paper/main.tex', result: 'NeurIPS 2026 template · 9 pages · all sections' },
+    { tool: 'Write', args: 'paper/main.tex', result: '顶刊模板 · 9 pages · all sections' },
     { tool: 'Agent', args: 'InternalReview subagent · main.tex', result: 'Sec 3.2: 公式符号不一致 · Related Work 缺 DiRA 引用\n→ 2 处已修正' },
     { role: 'claude', text: '✓ 全流程完成。9 页草稿，通过 internal review。\n📱 Telegram 通知已发送。' },
 ];
