@@ -168,13 +168,15 @@ img {
 }
 .nav-dot-part .part-label {
     font-size: 0.6rem; font-weight: 600; letter-spacing: 0.06em;
-    color: var(--ink-soft); opacity: 0;
-    transition: opacity 0.3s; white-space: nowrap;
+    color: var(--ink-soft);
+    max-width: 0; overflow: hidden; opacity: 0;
+    transition: max-width 0.3s, opacity 0.3s; white-space: nowrap;
     font-family: var(--font-cn);
     text-transform: uppercase;
+    pointer-events: none;
 }
 .nav-dot-part:hover .part-label,
-.nav-dot-part.active .part-label { opacity: 1; }
+.nav-dot-part.active .part-label { max-width: 200px; opacity: 1; }
 .nav-dot-part.active .part-diamond { background: var(--red); opacity: 1; transform: rotate(45deg) scale(1.3); }
 .nav-dot-part:hover .part-diamond { opacity: 0.8; }
 
@@ -426,7 +428,7 @@ img {
     border-left: 3px solid var(--red);
     padding: clamp(0.6rem, 1.2vw, 1rem) clamp(1rem, 1.8vw, 1.5rem);
     font-family: var(--font-mono);
-    font-size: clamp(0.7rem, 1.1vw, 0.95rem);
+    font-size: var(--t-small);
     color: #333;
     line-height: 1.6;
     border-radius: 0 4px 4px 0;
@@ -508,7 +510,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
 <button class="edit-toggle" id="editToggle">✏ Edit</button>
 
 <!-- ===================== SLIDE 1: TITLE ===================== -->
-<section class="slide" id="slide-1">
+<section class="slide" id="slide-cover">
     <div class="slide-header">
         <div class="slide-header-label">Lab Seminar · 2026.03.20</div>
         <div class="slide-header-label">Linwei Tao</div>
@@ -567,7 +569,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                 ambient
             </span>
         </div>
-        <div class="slide-num">01 / 23</div>
+        <div class="slide-num">01 / 43</div>
     </div>
 </section>
 
@@ -739,7 +741,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
 </section>
 
 <!-- ===================== SLIDE 2: AGENDA ===================== -->
-<section class="slide" id="slide-2">
+<section class="slide" id="slide-agenda">
     <div class="slide-header">
         <div class="slide-header-label">Agenda</div>
         <div class="slide-header-label red">Agenda</div>
@@ -750,37 +752,41 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                 <div class="card-icon">🐱</div>
                 <div class="card-title">Part 1 · Engineering</div>
                 <div class="card-desc">Cat Boarding Web App — a production app built with Claude Code in the gaps between research</div>
+                <div style="margin-top:0.5rem;font-size:var(--t-label);color:var(--red);letter-spacing:0.05em;">~5 min</div>
             </div>
             <div class="card reveal">
                 <div class="card-icon">🔬</div>
                 <div class="card-title">Part 2 · Research</div>
                 <div class="card-desc">CalibrationAGT — how a top-venue paper was completed using AI Agent</div>
+                <div style="margin-top:0.5rem;font-size:var(--t-label);color:var(--red);letter-spacing:0.05em;">~20 min</div>
             </div>
             <div class="card reveal">
                 <div class="card-icon">⚙️</div>
                 <div class="card-title">Part 3 · Technical Anatomy</div>
                 <div class="card-desc">How does AI Agent actually work? Tool use, Memory, Sub-agent</div>
+                <div style="margin-top:0.5rem;font-size:var(--t-label);color:var(--red);letter-spacing:0.05em;">~10 min</div>
             </div>
             <div class="card reveal">
                 <div class="card-icon">💭</div>
                 <div class="card-title">Part 4 · Discussion</div>
                 <div class="card-desc">Paper inflation, Senior productivity ×10 — how will research and engineering change?</div>
+                <div style="margin-top:0.5rem;font-size:var(--t-label);color:var(--red);letter-spacing:0.05em;">~20 min</div>
             </div>
             <div class="card reveal" style="grid-column: span 2; background: var(--bg-alt);">
                 <div class="card-icon">🎁</div>
-                <div class="card-title">🎁 Bonus</div>
+                <div class="card-title">Bonus</div>
                 <div class="card-desc">Stay tuned</div>
             </div>
         </div>
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">02 / 23</div>
+        <div class="slide-num">02 / 43</div>
     </div>
 </section>
 
 <!-- ===================== SLIDE 3: 工具景观 ===================== -->
-<section class="slide" id="slide-3">
+<section class="slide" id="slide-ai-agents">
     <div class="slide-header">
         <div class="slide-header-label">You've Heard of These</div>
         <div class="slide-header-label red">AI Coding Agents</div>
@@ -798,117 +804,157 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
         </div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--egap);">
             <!-- OpenClaw -->
-            <div class="reveal" style="border:1.5px solid var(--border-soft);border-radius:8px;padding:1rem;display:flex;flex-direction:column;gap:0.5rem;">
+            <div class="reveal" style="border:1.5px solid var(--border-soft);border-radius:8px;padding:1rem;display:flex;flex-direction:column;gap:0.8rem;">
                 <div style="display:flex;align-items:center;gap:0.5rem;">
                     <div style="width:24px;height:24px;background:#1a1a2e;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                         <span style="color:#e8321a;font-size:0.8rem;font-weight:700;">O</span>
                     </div>
                     <span style="font-weight:700;font-size:var(--t-body);">OpenClaw</span>
-                    <span style="font-size:var(--t-small);color:var(--ink-soft);">Personal Assistant</span>
                 </div>
-                <ul style="font-size:var(--t-small);color:var(--ink);line-height:1.7;padding-left:1.1em;margin:0;">
-                    <li>Memory remembers everything about the owner's preferences</li>
-                    <li>Heartbeat mechanism, runs 24h continuously</li>
-                    <li>Can connect to WhatsApp / Telegram</li>
-                    <li style="color:var(--ink-soft);">⚠ Stuffs tons of context each time — <strong>burns tokens</strong></li>
+                <ul style="font-size:var(--t-body);color:var(--ink);line-height:2;padding-left:1.1em;margin:0;">
+                    <li>General personal assistant, not a coding tool</li>
+                    <li>Powerful memory design — but burns tokens</li>
+                    <li>Chat via WhatsApp / Telegram / 15+ apps</li>
                 </ul>
-                <div style="margin-top:auto;font-size:var(--t-small);background:var(--bg-alt);padding:0.4rem 0.6rem;border-radius:6px;">🦞 More like a toy / personal experiment</div>
             </div>
             <!-- Claude Code -->
-            <div class="reveal" style="border:2px solid var(--red);border-radius:8px;padding:1rem;display:flex;flex-direction:column;gap:0.5rem;background:var(--red-light);">
+            <div class="reveal" style="border:2px solid var(--red);border-radius:8px;padding:1rem;display:flex;flex-direction:column;gap:0.8rem;background:var(--red-light);">
                 <div style="display:flex;align-items:center;gap:0.5rem;">
                     <div style="width:24px;height:24px;background:#da7756;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                         <img src="https://cdn.simpleicons.org/anthropic/ffffff" width="14" height="14" style="display:block;">
                     </div>
                     <span style="font-weight:700;font-size:var(--t-body);">Claude Code ✦</span>
-                    <span style="font-size:var(--t-small);color:var(--ink-soft);">Developer</span>
+                    <span style="font-size:var(--t-small);color:var(--red);font-weight:600;">Today's tool</span>
                 </div>
-                <ul style="font-size:var(--t-small);color:var(--ink);line-height:1.7;padding-left:1.1em;margin:0;">
-                    <li>Terminal CLI, native file / git operations</li>
-                    <li>Skill / Hook highly customizable</li>
-                    <li>Personal experience: <strong>better than</strong> Codex</li>
-                    <li style="color:var(--ink-mid);">Claude Cowork: for <strong>non-technical users</strong></li>
+                <ul style="font-size:var(--t-body);color:var(--ink);line-height:2;padding-left:1.1em;margin:0;">
+                    <li>Rich ecosystem: Skills, MCP, Hook — highly extensible</li>
+                    <li>Best for vibe coding &amp; vibe research</li>
                 </ul>
-                <div style="margin-top:auto;font-size:var(--t-small);background:rgba(232,50,26,0.12);padding:0.4rem 0.6rem;border-radius:6px;color:var(--red);font-weight:600;">⚡ Today's main tool</div>
             </div>
             <!-- Codex -->
-            <div class="reveal" style="border:1.5px solid var(--border-soft);border-radius:8px;padding:1rem;display:flex;flex-direction:column;gap:0.5rem;">
+            <div class="reveal" style="border:1.5px solid var(--border-soft);border-radius:8px;padding:1rem;display:flex;flex-direction:column;gap:0.8rem;">
                 <div style="display:flex;align-items:center;gap:0.5rem;">
                     <div style="width:24px;height:24px;background:#10a37f;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                         <span style="color:#fff;font-size:0.75rem;font-weight:700;">Cx</span>
                     </div>
                     <span style="font-weight:700;font-size:var(--t-body);">Codex</span>
-                    <span style="font-size:var(--t-small);color:var(--ink-soft);">Cloud Sandbox</span>
+                    <span style="font-size:var(--t-small);color:var(--ink-soft);">GPT-5.4</span>
                 </div>
-                <ul style="font-size:var(--t-small);color:var(--ink);line-height:1.7;padding-left:1.1em;margin:0;">
-                    <li>Runs tasks in parallel in isolated sandboxes</li>
-                    <li>No local env needed, schedule anytime</li>
-                    <li>Similar positioning to Claude Code</li>
-                    <li style="color:var(--ink-soft);">Good for batch, unattended tasks</li>
+                <ul style="font-size:var(--t-body);color:var(--ink);line-height:2;padding-left:1.1em;margin:0;">
+                    <li>Claude Code's main rival — model keeps improving</li>
+                    <li>Ecosystem still catching up — fewer skills &amp; integrations</li>
                 </ul>
-                <div style="margin-top:auto;font-size:var(--t-small);background:var(--bg-alt);padding:0.4rem 0.6rem;border-radius:6px;">☁️ Cloud parallel, async execution</div>
             </div>
         </div>
-        <div class="reveal" style="border-left:4px solid var(--red);padding:0.5rem 1rem;background:var(--red-light);font-size:var(--t-small);border-radius:0 6px 6px 0;">
-            <span><strong>Common core:</strong> LLM + tool calling + memory system — same underlying mechanism, differing in memory management and use case</span>
+        <div class="reveal" style="border-left:4px solid var(--red);padding:0.5rem 1rem;background:var(--red-light);font-size:var(--t-body);border-radius:0 6px 6px 0;">
+            <span><strong>Core difference:</strong> developer &amp; research Agent vs personal life assistant</span>
         </div>
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">03 / 23</div>
+        <div class="slide-num">04 / 43</div>
     </div>
 </section>
-<section class="slide" id="slide-4">
+
+<!-- ===================== SLIDE 3b: AI Agent 的本质 slogan ===================== -->
+<section class="slide" id="slide-agent-essence-intro">
+    <div class="slide-content" style="justify-content:center;align-items:center;text-align:center;">
+        <h1 class="reveal" style="font-size:clamp(2rem,5.5vw,4.5rem);font-weight:700;line-height:1.15;margin:0 auto;">The Essence of<br><span class='text-red'>AI Agent</span></h1>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">05 / 43</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 4a: LLM 工作原理 ===================== -->
+<section class="slide" id="slide-context-modules">
     <div class="slide-header">
         <div class="slide-header-label">What Is an AI Agent?</div>
         <div class="slide-header-label red">Context Engineering</div>
     </div>
-    <div class="slide-content" style="gap: var(--egap);">
-        <h2 class="reveal">Agent = Feed the Right Info into LLM's Context Window</h2>
+    <div class="slide-content" style="gap: var(--gap);">
+        <h2 class="reveal">Agent Has No Memory — It Only Sees the Context</h2>
+        <p class="reveal" style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-soft);">Everything LLM sees on each call:</p>
 
+        <!-- Context blocks — each appears one at a time -->
+        <div style="display:flex;flex-direction:column;gap:0.35rem;font-family:monospace;">
+
+            <div class="reveal" style="display:flex;border-radius:7px;overflow:hidden;border:1px solid #252525;">
+                <div style="background:#1c2a1c;color:#7ec88a;padding:0.65rem 1rem;font-size:var(--t-body);font-weight:700;white-space:nowrap;display:flex;align-items:center;min-width:7.5rem;">[ sys rules ]</div>
+                <div style="background:#1a1a1a;color:#c8c8c8;padding:0.65rem 1.2rem;font-size:var(--t-body);flex:1;display:flex;align-items:center;">CLAUDE.md · tool list · memory files</div>
+            </div>
+
+            <div class="reveal" style="display:flex;border-radius:7px;overflow:hidden;border:1px solid #252525;">
+                <div style="background:#1c221e;color:#7ec8b0;padding:0.65rem 1rem;font-size:var(--t-body);font-weight:700;white-space:nowrap;display:flex;align-items:center;min-width:7.5rem;">[ history   ]</div>
+                <div style="background:#1a1a1a;color:#c8c8c8;padding:0.65rem 1.2rem;font-size:var(--t-body);flex:1;display:flex;align-items:center;">you: "analyse this" → Claude: "reading file..."</div>
+            </div>
+
+            <div class="reveal" style="display:flex;border-radius:7px;overflow:hidden;border:1px solid #252525;">
+                <div style="background:#261e14;color:#c8a46e;padding:0.65rem 1rem;font-size:var(--t-body);font-weight:700;white-space:nowrap;display:flex;align-items:center;min-width:7.5rem;">[ tool out  ]</div>
+                <div style="background:#1a1a1a;color:#c8c8c8;padding:0.65rem 1.2rem;font-size:var(--t-body);flex:1;display:flex;align-items:center;">Read(main.py) → 500 lines of code</div>
+            </div>
+
+            <div class="reveal" style="display:flex;border-radius:7px;overflow:hidden;border:1px solid #3a2020;">
+                <div style="background:#2a1a1a;color:#e87a7a;padding:0.65rem 1rem;font-size:var(--t-body);font-weight:700;white-space:nowrap;display:flex;align-items:center;min-width:7.5rem;">[ input ▶   ]</div>
+                <div style="background:#1e1616;color:#e0c8c8;padding:0.65rem 1.2rem;font-size:var(--t-body);flex:1;display:flex;align-items:center;">"now write the tests"</div>
+            </div>
+
+            <div class="reveal" style="display:flex;align-items:center;gap:0.8rem;padding:0.7rem 1rem;background:#111;border-radius:7px;border:1px solid #2a2a2a;">
+                <span style="color:#555;font-size:var(--t-body);">↓</span>
+                <span style="color:#888;font-size:var(--t-small);">// packed together → sent to LLM</span>
+                <span style="margin-left:auto;color:#aaa;font-size:var(--t-body);"><span style="color:#7eb8e8;font-weight:700;">output</span> = LLM(context) &nbsp;<span style="color:#555;">// predict next token</span></span>
+            </div>
+
+        </div>
+
+        <div class="highlight-box reveal" style="padding:0.9rem 1.2rem;">
+            <p style="font-size:var(--t-body);">Agent has <strong>no memory</strong> — it can only see what's in the context</p>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">06 / 43</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 4b: Context Window 进化 ===================== -->
+<section class="slide" id="slide-context-window">
+    <div class="slide-header">
+        <div class="slide-header-label">What Is an AI Agent?</div>
+        <div class="slide-header-label red">Context Engineering</div>
+    </div>
+    <div class="slide-content" style="gap: var(--gap);">
+        <h2 class="reveal">Context Window Is Growing — But Still Not Enough</h2>
         <div class="two-col" style="align-items: start; gap: var(--gap);">
-            <!-- LEFT: LLM 工作原理 -->
+            <!-- LEFT: Context window sizes -->
             <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);">
-                <p style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-soft);">How LLM Works</p>
-                <div class="code-block" style="font-size:clamp(0.78rem,0.9vw,0.78rem);line-height:1.7;"><span class='cm'>// Everything LLM sees on each call</span>
-<span class='kw'>context</span> = [
-  system_prompt,    <span class='cm'>// rules, tool list, memory files</span>
-  conversation,     <span class='cm'>// conversation history</span>
-  tool_results,     <span class='cm'>// previous step results</span>
-  your_prompt,      <span class='cm'>// what you just typed</span>
-]
-<span class='kw'>output</span> = LLM(context)  <span class='cm'>// predict next token</span></div>
-                <div class="highlight-box" style="padding:0.6rem 0.9rem;">
-                    <p style="font-size:var(--t-small);">LLM has <strong>no memory</strong> — it can only see what's in the context</p>
-                </div>
-
-                <!-- Context window sizes -->
-                <p style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-soft);margin-top:0.3rem;">Context Window Evolution</p>
-                <div style="display:flex;flex-direction:column;gap:0.4rem;font-size:var(--t-small);">
-                    <div style="display:grid;grid-template-columns:10rem 1fr 5rem;gap:0.5rem;color:var(--ink-soft);font-size:0.65em;letter-spacing:0.08em;text-transform:uppercase;padding-bottom:0.2rem;border-bottom:1px solid var(--border-soft);">
+                <p style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-soft);">Context Window Evolution</p>
+                <div style="display:flex;flex-direction:column;gap:0.5rem;font-size:var(--t-small);">
+                    <div style="display:grid;grid-template-columns:9rem 1fr 4.5rem;gap:0.5rem;color:var(--ink-soft);font-size:0.65em;letter-spacing:0.08em;text-transform:uppercase;padding-bottom:0.2rem;border-bottom:1px solid var(--border-soft);">
                         <span>Model</span><span></span><span style="text-align:right;">Released</span>
                     </div>
-                    <div style="display:grid;grid-template-columns:10rem 1fr 5rem;gap:0.5rem;align-items:center;">
+                    <div style="display:grid;grid-template-columns:9rem 1fr 4.5rem;gap:0.5rem;align-items:center;">
                         <span style="color:var(--ink-soft);">GPT-4o</span>
                         <div style="height:20px;background:#f0ede8;border-radius:4px;overflow:hidden;"><div style="width:13%;height:100%;background:#bbb;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:5px;"><span style="color:#fff;font-size:0.85em;font-weight:600;white-space:nowrap;">128K</span></div></div>
                         <span style="color:var(--ink-soft);text-align:right;">2024.05</span>
                     </div>
-                    <div style="display:grid;grid-template-columns:10rem 1fr 5rem;gap:0.5rem;align-items:center;">
+                    <div style="display:grid;grid-template-columns:9rem 1fr 4.5rem;gap:0.5rem;align-items:center;">
                         <span style="color:var(--ink-mid);">Claude Sonnet 4</span>
                         <div style="height:20px;background:#f0ede8;border-radius:4px;overflow:hidden;"><div style="width:20%;height:100%;background:#aaa;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:5px;"><span style="color:#fff;font-size:0.85em;font-weight:600;white-space:nowrap;">200K</span></div></div>
                         <span style="color:var(--ink-soft);text-align:right;">2025.07</span>
                     </div>
-                    <div style="display:grid;grid-template-columns:10rem 1fr 5rem;gap:0.5rem;align-items:center;">
+                    <div style="display:grid;grid-template-columns:9rem 1fr 4.5rem;gap:0.5rem;align-items:center;">
                         <span style="color:var(--ink-mid);">GPT-5.2</span>
                         <div style="height:20px;background:#f0ede8;border-radius:4px;overflow:hidden;"><div style="width:40%;height:100%;background:#888;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:5px;"><span style="color:#fff;font-size:0.85em;font-weight:600;white-space:nowrap;">400K</span></div></div>
                         <span style="color:var(--ink-soft);text-align:right;">2025.12</span>
                     </div>
-                    <div style="display:grid;grid-template-columns:10rem 1fr 5rem;gap:0.5rem;align-items:center;">
+                    <div style="display:grid;grid-template-columns:9rem 1fr 4.5rem;gap:0.5rem;align-items:center;">
                         <span style="font-weight:600;">GPT-5.4</span>
                         <div style="height:20px;background:#f0ede8;border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:#555;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;"><span style="color:#fff;font-size:0.85em;font-weight:700;white-space:nowrap;">1M</span></div></div>
                         <span style="color:var(--ink-soft);text-align:right;">2026.03</span>
                     </div>
-                    <div style="display:grid;grid-template-columns:10rem 1fr 5rem;gap:0.5rem;align-items:center;">
+                    <div style="display:grid;grid-template-columns:9rem 1fr 4.5rem;gap:0.5rem;align-items:center;">
                         <span style="color:var(--red);font-weight:600;">Claude Sonnet 4.6</span>
                         <div style="height:20px;background:#f0ede8;border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:var(--red);border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;"><span style="color:#fff;font-size:0.85em;font-weight:700;white-space:nowrap;">1M</span></div></div>
                         <span style="color:var(--ink-soft);text-align:right;">2026.03</span>
@@ -919,54 +965,82 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
             <!-- RIGHT: 现实项目 vs context -->
             <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);">
                 <p style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-soft);">But How Large Is Your Project?</p>
-                <div style="display:flex;flex-direction:column;gap:0.5rem;font-size:var(--t-small);">
-                    <div style="display:flex;justify-content:space-between;padding:0.5rem 0.75rem;background:var(--bg-alt);border-radius:6px;">
+                <div style="display:flex;flex-direction:column;gap:0.5rem;font-size:var(--t-body);">
+                    <div style="display:flex;justify-content:space-between;padding:0.6rem 0.9rem;background:var(--bg-alt);border-radius:6px;">
                         <span>A top-venue paper</span>
                         <span style="font-weight:600;color:var(--red);">~8K tokens ✓</span>
                     </div>
-                    <div style="display:flex;justify-content:space-between;padding:0.5rem 0.75rem;background:var(--bg-alt);border-radius:6px;">
+                    <div style="display:flex;justify-content:space-between;padding:0.6rem 0.9rem;background:var(--bg-alt);border-radius:6px;">
                         <span>A PhD thesis</span>
                         <span style="font-weight:600;color:var(--red);">~100K tokens ✓</span>
                     </div>
-                    <div style="display:flex;justify-content:space-between;padding:0.5rem 0.75rem;background:#fff3f0;border-radius:6px;border:1px solid #ffd0c8;">
+                    <div style="display:flex;justify-content:space-between;padding:0.6rem 0.9rem;background:#fff3f0;border-radius:6px;border:1px solid #ffd0c8;">
                         <span>CalibrationAGT codebase</span>
                         <span style="font-weight:600;color:#c0392b;">~400K tokens ⚠</span>
                     </div>
-                    <div style="display:flex;justify-content:space-between;padding:0.5rem 0.75rem;background:#fff0f0;border-radius:6px;border:1px solid #ffb0b0;">
+                    <div style="display:flex;justify-content:space-between;padding:0.6rem 0.9rem;background:#fff0f0;border-radius:6px;border:1px solid #ffb0b0;">
                         <span>Medium-sized production codebase</span>
                         <span style="font-weight:600;color:#c0392b;">~2–5M tokens ✗</span>
                     </div>
-                    <div style="display:flex;justify-content:space-between;padding:0.5rem 0.75rem;background:#ffe8e8;border-radius:6px;border:1px solid #ff8080;">
+                    <div style="display:flex;justify-content:space-between;padding:0.6rem 0.9rem;background:#ffe8e8;border-radius:6px;border:1px solid #ff8080;">
                         <span>Your habits + env config + docs</span>
                         <span style="font-weight:600;color:#c0392b;">Can't fit at all ✗</span>
                     </div>
-                </div>
-                <div class="highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);">
-                    <p style="font-size:var(--t-small);">
-                        <span><strong>What Agent does:</strong><br>
-                        Decide, for each LLM call, <em>which</em> information to stuff into context —<br>
-                        which files to read, which preferences to remember, which history to forget</span>
-                    </p>
                 </div>
             </div>
         </div>
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">04 / 23</div>
+        <div class="slide-num">07 / 43</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 4c: Agent 做的事 ===================== -->
+<section class="slide" id="slide-agent-job">
+    <div class="slide-header">
+        <div class="slide-header-label">What Is an AI Agent?</div>
+        <div class="slide-header-label red">Context Engineering</div>
+    </div>
+    <div class="slide-content" style="gap:var(--gap);justify-content:center;">
+        <h2 class="reveal">Agent's Core Job: Decide What to Feed</h2>
+        <div class="reveal" style="display:flex;flex-direction:column;gap:1.2rem;max-width:680px;margin:0 auto;">
+            <div class="highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);padding:1.4rem 1.6rem;">
+                <p style="font-size:var(--t-h3);font-weight:700;margin-bottom:0.6rem;">What Agent does:</p>
+                <p style="font-size:var(--t-body);line-height:1.8;">For every LLM call, decide <em>which</em> information goes into context —<br>which files to read, which preferences to remember, which history to drop</p>
+            </div>
+            <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;text-align:center;">
+                <div style="padding:0.9rem;background:var(--bg-alt);border-radius:8px;">
+                    <p style="font-size:1.4rem;margin-bottom:0.3rem;">📂</p>
+                    <p style="font-size:var(--t-body);font-weight:600;">Which files to read</p>
+                </div>
+                <div style="padding:0.9rem;background:var(--bg-alt);border-radius:8px;">
+                    <p style="font-size:1.4rem;margin-bottom:0.3rem;">🧠</p>
+                    <p style="font-size:var(--t-body);font-weight:600;">Which prefs to keep</p>
+                </div>
+                <div style="padding:0.9rem;background:var(--bg-alt);border-radius:8px;">
+                    <p style="font-size:1.4rem;margin-bottom:0.3rem;">🗑️</p>
+                    <p style="font-size:var(--t-body);font-weight:600;">Which history to drop</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">08 / 43</div>
     </div>
 </section>
 
 <!-- ===================== SLIDE: 工具对比 ===================== -->
-<section class="slide" id="slide-5">
+<section class="slide" id="slide-repriced">
     <div class="slide-content" style="justify-content: center; align-items: center; text-align: center;">
-        <p class="reveal text-soft" style="font-size: var(--t-small); letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 1rem;">Today's Core Argument</p>
-        <h1 class="reveal" style="font-size: clamp(2rem, 5.5vw, 5rem); max-width: 22rem; line-height: 1.1; margin: 0 auto;">AI Agent Is Already Powerful Enough for <span class=&quot;text-red&quot;>Real Work</span></h1>
-        <p class="reveal text-mid" style="margin-top: var(--gap); font-size: var(--t-body); max-width: 28rem;">Not a demo. Not a toy.</p>
+        <p class="reveal text-soft" style="font-size: var(--t-small); letter-spacing: 0.25em; text-transform: uppercase; margin: 0 auto 1rem; text-align: center;">Today's Core Argument</p>
+        <h1 class="reveal" style="font-size: clamp(2rem, 5.5vw, 5rem); max-width: 22rem; line-height: 1.1; margin: 0 auto; text-align: center;">Productivity Is Being <span class="text-red">Repriced</span></h1>
+        <p class="reveal text-mid" style="margin: var(--gap) auto 0; font-size: var(--t-body); max-width: 28rem; text-align: center;">A structural shift in efficiency, not just a new tool.</p>
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">05 / 23</div>
+        <div class="slide-num">09 / 43</div>
     </div>
 </section>
 
@@ -974,7 +1048,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
 
 
 <!-- ===================== SLIDE: 为什么 Agent 适合 Research ===================== -->
-<section class="slide slide-part" id="slide-12">
+<section class="slide slide-part" id="slide-part-engineering">
     <div class="part-number">01</div>
     <div class="part-content">
         <div class="part-label reveal">Part One · Engineering</div>
@@ -983,12 +1057,12 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer" style="border-color: rgba(255,255,255,0.1);">
         <div class="footer-text" style="color: rgba(255,255,255,0.3);"></div>
-        <div class="slide-num" style="color: rgba(255,255,255,0.3);">12 / 23</div>
+        <div class="slide-num" style="color: rgba(255,255,255,0.3);">10 / 43</div>
     </div>
 </section>
 
 <!-- ===================== SLIDE 12: 背景 ===================== -->
-<section class="slide" id="slide-13">
+<section class="slide" id="slide-side-project">
     <div class="slide-header">
         <div class="slide-header-label">Engineering · Background</div>
         <div class="slide-header-label red">Side Project</div>
@@ -997,25 +1071,25 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
         <h2 class="reveal">You Know My GF Runs a Cat Boarding Business 🐱</h2>
         <p class="reveal text-mid" style="max-width: 40rem;">We had <strong>no system at all</strong> before — everything was in our heads or on paper, total chaos.<br>
             In between research sessions, I spent a few days building her a system with Claude Code.</p>
-        <div class="two-col reveal" style="gap: var(--egap);">
-            <div class="card">
+        <div class="two-col" style="gap: var(--egap);">
+            <div class="card reveal">
                 <div class="card-title">📋 Before</div>
-                <div class="card-desc">Notebooks, WeChat group messages, kept in memory — check-in/out times were constantly getting mixed up</div>
+                <div class="card-desc" style="font-size:var(--t-body);">Notebooks, WeChat group messages, kept in memory — check-in/out times were constantly getting mixed up</div>
             </div>
-            <div class="card" style="border-color: var(--red); background: var(--red-light);">
+            <div class="card reveal" style="border-color: var(--red); background: var(--red-light);">
                 <div class="card-title" style="color: var(--red);">✅ Now</div>
-                <div class="card-desc">Boarding management, home visits, booking links, e-signatures, revenue tracking — complete feature set</div>
+                <div class="card-desc" style="font-size:var(--t-body);">Boarding management, home visits, booking links, e-signatures, revenue tracking — complete feature set</div>
             </div>
         </div>
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">13 / 23</div>
+        <div class="slide-num">11 / 43</div>
     </div>
 </section>
 
 <!-- ===================== SLIDE 13: 系统截图 Desktop ===================== -->
-<section class="slide" id="slide-14">
+<section class="slide" id="slide-demo">
     <div class="slide-header">
         <div class="slide-header-label">Engineering · System Demo</div>
         <div class="slide-header-label red">Desktop</div>
@@ -1079,7 +1153,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                     id="safari-iframe"
                     src="https://www.taolinwei.com/cat-boarding-system/"
                     style="width:1440px;height:900px;border:none;display:block;transform-origin:top left;position:absolute;top:0;left:0;"
-                    title="阿里嘎多猫咪寄养 Web App"
+                    title="Arigato Cat Boarding Web App"
                     allow="fullscreen"
                 ></iframe>
             </div>
@@ -1087,12 +1161,12 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">14 / 23</div>
+        <div class="slide-num">12 / 43</div>
     </div>
 </section>
 
 <!-- ===================== SLIDE 15: 构建过程 ===================== -->
-<section class="slide" id="slide-16">
+<section class="slide" id="slide-build-process">
     <div class="slide-header">
         <div class="slide-header-label">Engineering · Build Process</div>
         <div class="slide-header-label red">Claude Code in Action</div>
@@ -1100,56 +1174,73 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     <div class="slide-content" style="gap:var(--egap);padding-top:0.5rem;">
 
         <!-- Pipeline label -->
-        <p class="reveal" style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;color:var(--ink-soft);text-transform:uppercase;">Traditional Web Development Pipeline</p>
+        <p class="reveal" style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;color:var(--ink-soft);text-transform:uppercase;">Traditional Web Development</p>
 
-        <!-- Pipeline flow -->
-        <div class="reveal" style="display:flex;align-items:stretch;gap:0;justify-content:space-between;">
-            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.6rem 0.4rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
-                <span style="font-size:1.4rem;">💬</span>
-                <span style="font-size:clamp(0.78rem,0.9vw,0.8rem);font-weight:700;color:var(--ink);">Break Down Requirements</span>
-                <span style="font-size:var(--t-small);color:var(--ink-soft);text-align:center;line-height:1.4;">Natural language description<br>agent breaks down tasks</span>
+        <!-- Pipeline flow — each card+arrow reveals separately -->
+        <div style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr auto 1fr auto 1fr;align-items:stretch;gap:0.2rem;">
+
+            <div class="reveal" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.3rem;padding:0.7rem 0.4rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
+                <span style="font-size:var(--t-small);font-weight:700;color:var(--ink);">Break Down Requirements</span>
+                <span style="font-size:var(--t-small);color:var(--ink-soft);text-align:center;line-height:1.4;">Requirements doc<br>feature breakdown + schedule</span>
             </div>
-            <div style="display:flex;align-items:center;padding:0 0.2rem;color:var(--ink-soft);font-size:0.9rem;">→</div>
-            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.6rem 0.4rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
-                <span style="font-size:1.4rem;">🗄️</span>
-                <span style="font-size:clamp(0.78rem,0.9vw,0.8rem);font-weight:700;color:var(--ink);">Database Design</span>
-                <span style="font-size:var(--t-small);color:var(--ink-soft);text-align:center;line-height:1.4;">schema.sql<br>migration scripts auto-generated</span>
+            <div class="reveal" style="display:flex;align-items:center;padding:0 0.1rem;color:var(--ink-soft);font-size:0.9rem;">→</div>
+            <div class="reveal" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.3rem;padding:0.7rem 0.4rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
+                <span style="font-size:var(--t-small);font-weight:700;color:var(--ink);">Database Design</span>
+                <span style="font-size:var(--t-small);color:var(--ink-soft);text-align:center;line-height:1.4;">schema.sql<br>hand-written migrations</span>
             </div>
-            <div style="display:flex;align-items:center;padding:0 0.2rem;color:var(--ink-soft);font-size:0.9rem;">→</div>
-            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.6rem 0.4rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
-                <span style="font-size:1.4rem;">🎨</span>
-                <span style="font-size:clamp(0.78rem,0.9vw,0.8rem);font-weight:700;color:var(--ink);">UI Design</span>
-                <span style="font-size:var(--t-small);color:var(--ink-soft);text-align:center;line-height:1.4;">Wireframes → components<br>agent converts to HTML</span>
+            <div class="reveal" style="display:flex;align-items:center;padding:0 0.1rem;color:var(--ink-soft);font-size:0.9rem;">→</div>
+            <div class="reveal" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.3rem;padding:0.7rem 0.4rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
+                <span style="font-size:var(--t-small);font-weight:700;color:var(--ink);">UI Design</span>
+                <span style="font-size:var(--t-small);color:var(--ink-soft);text-align:center;line-height:1.4;">Wireframes → components<br>hand-coded HTML + CSS</span>
             </div>
-            <div style="display:flex;align-items:center;padding:0 0.2rem;color:var(--ink-soft);font-size:0.9rem;">→</div>
-            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.6rem 0.4rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
-                <span style="font-size:1.4rem;">🖥️</span>
-                <span style="font-size:clamp(0.78rem,0.9vw,0.8rem);font-weight:700;color:var(--ink);">Frontend Dev</span>
+            <div class="reveal" style="display:flex;align-items:center;padding:0 0.1rem;color:var(--ink-soft);font-size:0.9rem;">→</div>
+            <div class="reveal" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.3rem;padding:0.7rem 0.4rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
+                <span style="font-size:var(--t-small);font-weight:700;color:var(--ink);">Frontend Dev</span>
                 <span style="font-size:var(--t-small);color:var(--ink-soft);text-align:center;line-height:1.4;">Pure HTML + ES Modules<br>no framework, no build step</span>
             </div>
-            <div style="display:flex;align-items:center;padding:0 0.2rem;color:var(--ink-soft);font-size:0.9rem;">→</div>
-            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.6rem 0.4rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
-                <span style="font-size:1.4rem;">🐛</span>
-                <span style="font-size:clamp(0.78rem,0.9vw,0.8rem);font-weight:700;color:var(--ink);">Debug &amp; Iterate</span>
-                <span style="font-size:var(--t-small);color:var(--ink-soft);text-align:center;line-height:1.4;">Errors go straight to agent<br>mostly self-resolved</span>
+            <div class="reveal" style="display:flex;align-items:center;padding:0 0.1rem;color:var(--ink-soft);font-size:0.9rem;">→</div>
+            <div class="reveal" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.3rem;padding:0.7rem 0.4rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
+                <span style="font-size:var(--t-small);font-weight:700;color:var(--ink);">Debug &amp; Iterate</span>
+                <span style="font-size:var(--t-small);color:var(--ink-soft);text-align:center;line-height:1.4;">Stack Overflow + docs<br>manual debugging</span>
             </div>
-            <div style="display:flex;align-items:center;padding:0 0.2rem;color:var(--ink-soft);font-size:0.9rem;">→</div>
-            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.6rem 0.4rem;background:#111;border-radius:8px;border:1.5px solid #111;">
-                <span style="font-size:1.4rem;">🚀</span>
-                <span style="font-size:clamp(0.78rem,0.9vw,0.8rem);font-weight:700;color:#fff;">Production Launch</span>
+            <div class="reveal" style="display:flex;align-items:center;padding:0 0.1rem;color:var(--ink-soft);font-size:0.9rem;">→</div>
+            <div class="reveal" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.3rem;padding:0.7rem 0.4rem;background:#111;border-radius:8px;border:1.5px solid #111;">
+                <span style="font-size:var(--t-small);font-weight:700;color:#fff;">Production Launch</span>
                 <span style="font-size:var(--t-small);color:#aaa;text-align:center;line-height:1.4;">Real users<br>Real business</span>
+            </div>
+
+        </div>
+
+        <!-- Agent pipeline label -->
+        <p class="reveal" style="font-size:var(--t-small);font-weight:600;letter-spacing:0.05em;color:var(--red);text-transform:uppercase;">With Claude Code ✦</p>
+
+        <!-- Agent: single card -->
+        <div class="reveal" style="display:flex;align-items:stretch;gap:0.8rem;">
+            <div style="flex:1;padding:0.9rem 1.2rem;background:#1a1008;border-radius:8px;border:1.5px solid var(--red);display:flex;flex-direction:column;gap:0.5rem;">
+                <p style="font-size:var(--t-small);font-weight:700;color:#f0c080;letter-spacing:0.04em;">App Development</p>
+                <div style="display:flex;align-items:flex-start;gap:0.6rem;">
+                    <span style="font-size:var(--t-small);color:#888;white-space:nowrap;padding-top:0.1rem;">You:</span>
+                    <span style="font-size:var(--t-body);color:#e8c89a;line-height:1.5;">I want to build a cat boarding app.</span>
+                </div>
+            </div>
+            <div style="display:flex;align-items:center;color:var(--red);font-size:1.1rem;">→</div>
+            <div style="flex:1;padding:0.9rem 1.2rem;background:#111;border-radius:8px;border:1.5px solid #333;display:flex;flex-direction:column;gap:0.4rem;justify-content:center;">
+                <p style="font-size:var(--t-small);color:#555;">✓ schema.sql generated</p>
+                <p style="font-size:var(--t-small);color:#555;">✓ HTML + CSS written</p>
+                <p style="font-size:var(--t-small);color:#555;">✓ errors auto-fixed</p>
+                <p style="font-size:var(--t-small);color:#888;font-weight:600;">✓ ready to deploy</p>
             </div>
         </div>
 
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">— / 23</div>
+        <div class="slide-num">13 / 43</div>
     </div>
 </section>
 
-<!-- ===================== SLIDE 16b: What This Means ===================== -->
-<section class="slide" id="slide-16b">
+<!-- ===================== SLIDE 16b: 这意味着什么 ===================== -->
+<section class="slide" id="slide-engineering-impact">
     <div class="slide-header">
         <div class="slide-header-label">Engineering · Implications</div>
         <div class="slide-header-label red">What This Means</div>
@@ -1161,60 +1252,48 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
             <div class="reveal" style="padding:1.2rem;background:var(--bg-alt);border-radius:10px;border:1.5px solid var(--border-soft);display:flex;flex-direction:column;gap:0.5rem;">
                 <div style="font-size:1.6rem;">🏢</div>
                 <div style="font-size:var(--t-body);font-weight:700;">Solo Company</div>
-                <div style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.6;">One person can now execute what used to require an entire engineering team</div>
-                <div style="font-size:var(--t-small);color:var(--ink-soft);line-height:1.6;border-top:1px solid var(--border-soft);padding-top:0.4rem;">
-                    <strong>Pieter Levels</strong> — 0 employees · $3.1M ARR · 70+ products<br>
-                    <strong>Lovable</strong> — 1 founder · $100M ARR in 8 months
-                </div>
+                <div style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.6;">One person doing what once needed a full team</div>
+                <div style="font-size:var(--t-small);color:var(--ink-soft);line-height:1.6;border-top:1px solid var(--border-soft);padding-top:0.4rem;"><strong>Pieter Levels</strong> — $3.1M ARR · 70+ products<br><strong>Lovable</strong> — $100M ARR in 8 months</div>
             </div>
 
             <div class="reveal" style="padding:1.2rem;background:var(--bg-alt);border-radius:10px;border:1.5px solid var(--border-soft);display:flex;flex-direction:column;gap:0.5rem;">
                 <div style="font-size:1.6rem;">🔬</div>
                 <div style="font-size:var(--t-body);font-weight:700;">Researcher's Toolbox</div>
-                <div style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.6;">Build whatever tool you're missing — experiment management, visualization, automation</div>
-                <div style="font-size:var(--t-small);color:var(--ink-soft);line-height:1.6;border-top:1px solid var(--border-soft);padding-top:0.4rem;">
-                    <strong>Komodo Health</strong> — 6–8 week analysis cut to hours<br>
-                    <strong>Patrick Mineault</strong> — NeuroAI researcher, Claude Code for analysis pipelines
-                </div>
+                <div style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.6;">Build whatever tool you're missing</div>
+                <div style="font-size:var(--t-small);color:var(--ink-soft);line-height:1.6;border-top:1px solid var(--border-soft);padding-top:0.4rem;"><strong>Komodo Health</strong> — 6–8 weeks → hours<br><strong>Patrick Mineault</strong> — NeuroAI · analysis pipelines</div>
             </div>
 
             <div class="reveal" style="padding:1.2rem;background:var(--bg-alt);border-radius:10px;border:1.5px solid var(--border-soft);display:flex;flex-direction:column;gap:0.5rem;">
                 <div style="font-size:1.6rem;">💡</div>
                 <div style="font-size:var(--t-body);font-weight:700;">Startup MVP</div>
-                <div style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.6;">Validating an idea drops from months to days — reach real users immediately</div>
-                <div style="font-size:var(--t-small);color:var(--ink-soft);line-height:1.6;border-top:1px solid var(--border-soft);padding-top:0.4rem;">
-                    <strong>Indragie</strong> — macOS app · 19k/20k lines by Claude<br>
-                    <strong>Invoice system</strong> — built in 1 day · API cost $3.65
-                </div>
+                <div style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.6;">Validate an idea in days, not months</div>
+                <div style="font-size:var(--t-small);color:var(--ink-soft);line-height:1.6;border-top:1px solid var(--border-soft);padding-top:0.4rem;"><strong>Indragie</strong> — macOS app · 19k lines by Claude<br><strong>Invoice system</strong> — 1 day · $3.65 API cost</div>
             </div>
 
             <div class="reveal" style="padding:1.2rem;background:var(--bg-alt);border-radius:10px;border:1.5px solid var(--border-soft);display:flex;flex-direction:column;gap:0.5rem;">
                 <div style="font-size:1.6rem;">🛠️</div>
                 <div style="font-size:var(--t-body);font-weight:700;">Self-Sufficient Living</div>
-                <div style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.6;">Calendar sync · bill tracking · personal dashboard — build what you need</div>
-                <div style="font-size:var(--t-small);color:var(--ink-soft);line-height:1.6;border-top:1px solid var(--border-soft);padding-top:0.4rem;">
-                    <strong>Home Assistant community</strong> — smart home from scratch with Claude Code<br>
-                    <strong>Non-programmer</strong> — Claude Opus 4 + Cursor · personal finance app · 0 lines of code
-                </div>
+                <div style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.6;">Build what you need, when you need it</div>
+                <div style="font-size:var(--t-small);color:var(--ink-soft);line-height:1.6;border-top:1px solid var(--border-soft);padding-top:0.4rem;"><strong>Home Assistant community</strong> — smart home w/ Claude Code<br><strong>Non-programmer</strong> — finance app · 0 lines of code</div>
             </div>
 
         </div>
 
         <div class="reveal" style="border-left:4px solid var(--red);background:var(--red-light);border-radius:0 8px 8px 0;padding:0.9rem 1.4rem;display:flex;align-items:center;gap:1rem;">
             <span style="font-size:1.4rem;flex-shrink:0;color:var(--red);">✦</span>
-            <p style="font-size:var(--t-body);line-height:1.5;color:var(--ink);"><strong>The execution barrier has dropped dramatically</strong> — cross-domain work is no longer a bottleneck. Your ceiling is how many worthwhile things you can think to do.</p>
+            <p style="font-size:var(--t-body);line-height:1.5;color:var(--ink);"><strong>The execution barrier has dropped</strong> — your ceiling is how many worthwhile things you can think to do.</p>
         </div>
 
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">— / 23</div>
+        <div class="slide-num">14 / 43</div>
     </div>
 </section>
 
 
 <!-- ===================== SLIDE 6: PART 1 DIVIDER ===================== -->
-<section class="slide slide-part" id="slide-6">
+<section class="slide slide-part" id="slide-part-research">
     <div class="part-number">02</div>
     <div class="part-content">
         <div class="part-label reveal">Part Two · Research</div>
@@ -1223,12 +1302,12 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer" style="border-color: rgba(255,255,255,0.1);">
         <div class="footer-text" style="color: rgba(255,255,255,0.3);"></div>
-        <div class="slide-num" style="color: rgba(255,255,255,0.3);">06 / 23</div>
+        <div class="slide-num" style="color: rgba(255,255,255,0.3);">15 / 43</div>
     </div>
 </section>
 
 <!-- ===================== SLIDE 7: Motivation ===================== -->
-<section class="slide" id="slide-7">
+<section class="slide" id="slide-motivation">
     <div class="slide-header">
         <div class="slide-header-label">Research · Motivation</div>
         <div class="slide-header-label red">CalibrationAGT</div>
@@ -1238,7 +1317,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
         <div style="display: flex; gap: var(--gap); align-items: center;">
             <!-- Right: ambiguity figure — first in DOM so it reveals first -->
             <div class="reveal" style="order: 2; flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center;">
-                <img src="assets/fig_intro_ambiguity.png" alt="标注歧义示例" style="max-width: 100%; max-height: min(52vh, 380px); object-fit: contain;">
+                <img src="assets/fig_intro_ambiguity.png" alt="Annotation Ambiguity Example" style="max-width: 100%; max-height: min(85vh, 640px); object-fit: contain;">
             </div>
             <!-- Left: timeline steps, each a reveal -->
             <div style="order: 1; display: flex; flex-direction: column; gap: var(--egap); flex: 1; min-width: 0;">
@@ -1268,149 +1347,98 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">07 / 23</div>
+        <div class="slide-num">16 / 43</div>
     </div>
 </section>
 
 <!-- ===================== SLIDE: 科研工作流 = 文字 ===================== -->
-<section class="slide" id="slide-research-workflow">
+<section class="slide build-mode" id="slide-research-workflow">
     <div class="slide-header">
-        <div class="slide-header-label">AI Agent</div>
-        <div class="slide-header-label red">Why Research?</div>
+        <div class="slide-header-label">Research · Workflow</div>
+        <div class="slide-header-label red">Every Step Is Text</div>
     </div>
-    <div class="slide-content" style="padding:var(--pad);gap:var(--gap);">
-        <h2 class="reveal">Why Is AI Agent Good for Research?</h2>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0;align-items:start;">
-            <!-- LEFT: workflow chain -->
-            <div class="reveal" style="display:flex;flex-direction:column;gap:0.5rem;">
-                <p style="font-size:var(--t-small);color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">Every step is text</p>
-                <div style="display:flex;flex-direction:column;gap:0.3rem;">
-                    <div style="display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--ink-soft);">
-                        <span style="font-size:1rem;">📚</span>
-                        <div>
-                            <p style="font-size:var(--t-small);font-weight:600;">Literature Review</p>
-                            <p style="font-size:var(--t-small);color:var(--ink-soft);">Papers, abstracts, notes — all text</p>
-                        </div>
-                    </div>
-                    <div style="text-align:center;color:var(--ink-soft);font-size:0.75rem;">↓</div>
-                    <div style="display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--ink-soft);">
-                        <span style="font-size:1rem;">💡</span>
-                        <div>
-                            <p style="font-size:var(--t-small);font-weight:600;">Research Proposal</p>
-                            <p style="font-size:var(--t-small);color:var(--ink-soft);">Hypothesis, design, rationale — text</p>
-                        </div>
-                    </div>
-                    <div style="text-align:center;color:var(--ink-soft);font-size:0.75rem;">↓</div>
-                    <div style="display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--ink-soft);">
-                        <span style="font-size:1rem;">🔬</span>
-                        <div>
-                            <p style="font-size:var(--t-small);font-weight:600;">Experiment Scripts</p>
-                            <p style="font-size:var(--t-small);color:var(--ink-soft);">Code is text</p>
-                        </div>
-                    </div>
-                    <div style="text-align:center;color:var(--ink-soft);font-size:0.75rem;">↓</div>
-                    <div style="display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid #e8321a;">
-                        <span style="font-size:1rem;">⚠️</span>
-                        <div>
-                            <p style="font-size:var(--t-small);font-weight:600;">Errors &amp; Results</p>
-                            <p style="font-size:var(--t-small);color:var(--ink-soft);">Stack traces, CSV, logs — text with instant feedback</p>
-                        </div>
-                    </div>
-                    <div style="text-align:center;color:var(--ink-soft);font-size:0.75rem;">↓</div>
-                    <div style="display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.7rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--ink-soft);">
-                        <span style="font-size:1rem;">📊</span>
-                        <div>
-                            <p style="font-size:var(--t-small);font-weight:600;">Figures</p>
-                            <p style="font-size:var(--t-small);color:var(--ink-soft);">matplotlib / seaborn script — also text</p>
-                        </div>
-                    </div>
-                    <div style="text-align:center;color:var(--ink-soft);font-size:0.75rem;">↓</div>
-                    <div style="display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.7rem;background:#111;border-radius:6px;border-left:3px solid var(--red);">
-                        <span style="font-size:1rem;">📄</span>
-                        <div>
-                            <p style="font-size:var(--t-small);font-weight:600;color:#fff;">Paper (LaTeX)</p>
-                            <p style="font-size:var(--t-small);color:#888;">Everything converges — into text</p>
-                        </div>
-                    </div>
-                </div>
+    <div class="slide-content" style="padding:var(--pad);gap:var(--egap);">
+        <h2 class="reveal">Breaking Down Research in AI — Every Step Is Just Text</h2>
+        <div style="display:flex;flex-direction:column;gap:0.4rem;flex:1;justify-content:center;">
+            <div class="reveal" style="display:flex;align-items:center;gap:0.9rem;padding:0.6rem 1rem;background:var(--bg-alt);border-radius:8px;border-left:3px solid var(--ink-soft);">
+                <span style="font-size:1.3rem;">📚</span>
+                <div><p style="font-size:var(--t-body);font-weight:600;">Literature Review — papers, abstracts, notes · All text</p></div>
             </div>
-            <!-- RIGHT: why agent fits -->
-            <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);justify-content:center;height:100%;">
-                <div class="highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);">
-                    <p style="font-size:var(--t-h3);font-weight:700;line-height:1.4;">LLM = the most powerful text processor ever built</p>
-                </div>
-                <p style="font-size:var(--t-body);color:var(--ink-mid);line-height:1.6;">Every research bottleneck — reading papers, writing proposals, coding experiments, debugging — is exactly what LLMs are built for</p>
-                <div style="border-top:1px solid var(--border-soft);padding-top:var(--egap);">
-                    <p style="font-size:var(--t-small);font-weight:700;margin-bottom:0.4rem;">Key advantage: instant feedback loop</p>
-                    <ul style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.9;padding-left:1.1em;margin:0;">
-                        <li>Error → agent reads, fixes, reruns</li>
-                        <li>Result CSV → agent plots + updates paper</li>
-                    </ul>
-                </div>
+            <div class="reveal" style="text-align:center;color:var(--ink-soft);">↓</div>
+            <div class="reveal" style="display:flex;align-items:center;gap:0.9rem;padding:0.6rem 1rem;background:var(--bg-alt);border-radius:8px;border-left:3px solid var(--ink-soft);">
+                <span style="font-size:1.3rem;">💡</span>
+                <div><p style="font-size:var(--t-body);font-weight:600;">Research Proposal — hypothesis, design, rationale · Text</p></div>
+            </div>
+            <div class="reveal" style="text-align:center;color:var(--ink-soft);">↓</div>
+            <div class="reveal" style="display:flex;align-items:center;gap:0.9rem;padding:0.6rem 1rem;background:var(--bg-alt);border-radius:8px;border-left:3px solid var(--ink-soft);">
+                <span style="font-size:1.3rem;">🔬</span>
+                <div><p style="font-size:var(--t-body);font-weight:600;">Experiment Scripts — code is text</p></div>
+            </div>
+            <div class="reveal" style="text-align:center;color:var(--ink-soft);">↓</div>
+            <div class="reveal" style="display:flex;align-items:center;gap:0.9rem;padding:0.6rem 1rem;background:var(--bg-alt);border-radius:8px;border-left:3px solid var(--red);">
+                <span style="font-size:1.3rem;">⚠️</span>
+                <div><p style="font-size:var(--t-body);font-weight:600;">Errors &amp; Results — stack traces, CSV, logs · Text with instant feedback</p></div>
+            </div>
+            <div class="reveal" style="text-align:center;color:var(--ink-soft);">↓</div>
+            <div class="reveal" style="display:flex;align-items:center;gap:0.9rem;padding:0.6rem 1rem;background:var(--bg-alt);border-radius:8px;border-left:3px solid var(--ink-soft);">
+                <span style="font-size:1.3rem;">📊</span>
+                <div><p style="font-size:var(--t-body);font-weight:600;">Figures — matplotlib / seaborn script · Also text</p></div>
+            </div>
+            <div class="reveal" style="text-align:center;color:var(--ink-soft);">↓</div>
+            <div class="reveal" style="display:flex;align-items:center;gap:0.9rem;padding:0.6rem 1rem;background:#111;border-radius:8px;border-left:3px solid var(--red);">
+                <span style="font-size:1.3rem;">📄</span>
+                <div><p style="font-size:var(--t-body);font-weight:600;color:#fff;">Paper (LaTeX) — everything converges · Into text</p></div>
             </div>
         </div>
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">— / 23</div>
+        <div class="slide-num">17 / 43</div>
     </div>
 </section>
 
-<!-- ===================== SLIDE 9: Claude Code 聊天动画 ===================== -->
+<!-- ===================== SLIDE: Agent 天然适合科研 ===================== -->
+<!-- ===================== SLIDE 9: LLM vs Agent ===================== -->
 <section class="slide" id="slide-why-research">
     <div class="slide-header">
-        <div class="slide-header-label">AI Agent</div>
-        <div class="slide-header-label red">ChatGPT vs Agent</div>
+        <div class="slide-header-label">Research · Background</div>
+        <div class="slide-header-label red">LLM → Agent</div>
     </div>
     <div class="slide-content" style="padding:var(--pad);gap:var(--gap);">
-        <h2 class="reveal" style="font-size:var(--t-h2);">From Copy-paste Engineer to Director</h2>
+        <h2 class="reveal" style="font-size:var(--t-h2);">From LLM to Agent</h2>
 
         <div class="two-col" style="gap:var(--gap);align-items:start;">
-            <!-- LEFT: 以前怎么用 ChatGPT -->
+            <!-- LEFT: 以前 -->
             <div style="display:flex;flex-direction:column;gap:var(--egap);">
-                <p class="reveal" style="font-size:var(--t-small);font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-soft);">Before: How We Used ChatGPT</p>
-                <div class="reveal code-block" style="font-size:clamp(0.78rem,0.9vw,0.78rem);line-height:1.75;"><span class='cm'># Experiment error → copy-paste into ChatGPT</span>
-<span style='color:#f87171;'>Error: KeyError: 'ece_true' in evaluate.py:42</span>
-                ↓  manually copy → paste → ask ChatGPT
-<span class='cm'># ChatGPT gives solution → manually paste back</span>
-<span class='kw'>Fix:</span> metrics[key] = ece_fn(logits, soft_labels)</div>
-                <div class="reveal code-block" style="font-size:clamp(0.78rem,0.9vw,0.78rem);line-height:1.75;"><span class='cm'># Experiment results → copy to ChatGPT to write LaTeX</span>
-<span style='color:#86efac;'>model,ece_voted,ece_true</span>
-<span style='color:#86efac;'>TS,0.032,0.088</span>
-                ↓  manually copy → paste → wait for ChatGPT
-<span style='color:#93c5fd;'>\begin{'{'}tabular{'}'}{'{'}lcc{'}'} ...</span></div>
-                <div class="reveal" style="padding:0.6rem 0.9rem;border-left:3px solid #888;background:var(--bg-alt);border-radius:0 6px 6px 0;font-size:var(--t-small);color:var(--ink-mid);"><strong>Pattern:</strong> Manually ferry info → ChatGPT answers → Manually carry it back<br>
-                    ChatGPT is the tool, you're the middleman</div>
+                <p class="reveal" style="font-size:var(--t-body);font-weight:700;color:var(--ink-soft);">Before: ChatGPT</p>
+                <div class="reveal code-block" style="font-size:var(--t-small);line-height:1.9;"><span class='cm'># Error → copy, paste, ask, copy back</span>
+<span style='color:#f87171;'>Error: KeyError: 'ece_true'</span>
+↓  manually copy → paste → ask ChatGPT
+<span class='kw'>Fix:</span> metrics[key] = ece_fn(logits, labels)</div>
+                <div class="reveal" style="padding:0.8rem 1rem;border-left:3px solid #555;background:var(--bg-alt);border-radius:0 8px 8px 0;font-size:var(--t-body);color:var(--ink-mid);">You are the middleman — manually ferrying information back and forth</div>
             </div>
 
-            <!-- RIGHT: 现在怎么用 Agent -->
+            <!-- RIGHT: 现在 Agent -->
             <div style="display:flex;flex-direction:column;gap:var(--egap);">
-                <p class="reveal" style="font-size:var(--t-small);font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--red);">Now: How We Use Agent</p>
-                <div class="reveal code-block" style="font-size:clamp(0.78rem,0.9vw,0.78rem);line-height:1.75;"><span class='cm'># Experiment error → Agent handles automatically</span>
-<span style='color:#f87171;'>Error: KeyError: 'ece_true' in evaluate.py:42</span>
-                ↓  Agent auto-reads file, locates cause, fixes, runs tests
-<span style='color:#86efac;'>✓ All tests passed. Pushed fix.</span></div>
-                <div class="reveal code-block" style="font-size:clamp(0.78rem,0.9vw,0.78rem);line-height:1.75;"><span class='cm'># Experiment results → Agent auto-generates figures</span>
-<span style='color:#86efac;'>model,ece_voted,ece_true</span>
-<span style='color:#86efac;'>TS,0.032,0.088</span>
-                ↓  Agent reads CSV → seaborn plots → saves fig2.pdf
-<span style='color:#93c5fd;'>✓ fig2_reliability.pdf saved</span></div>
+                <p class="reveal" style="font-size:var(--t-body);font-weight:700;color:var(--red);">Now: Agent</p>
+                <div class="reveal code-block" style="font-size:var(--t-small);line-height:1.9;"><span class='cm'># Error → Agent handles it end-to-end</span>
+<span style='color:#f87171;'>Error: KeyError: 'ece_true'</span>
+↓  Agent reads, locates, fixes, runs tests
+<span style='color:#86efac;'>✓ All tests passed. Fix pushed.</span></div>
                 <div class="reveal highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);">
-                    <p style="font-size:var(--t-small);line-height:1.6;"><strong>Pattern:</strong> You only handle direction<br>
-                    Agent autonomously reads files, executes, verifies, and reports back<br>
-                    <span style='color:var(--ink-mid);'>→ You're the Director, not a Copy-paste Engineer</span></p>
+                    <p style="font-size:var(--t-body);line-height:1.6;">You set the direction — Agent reads, executes, verifies<br><span style='color:var(--ink-mid);'>→ You're the Director, not the middleman</span></p>
                 </div>
             </div>
         </div>
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">— / 23</div>
+        <div class="slide-num">18 / 43</div>
     </div>
 </section>
 
 <!-- ===================== SLIDE 11: PART 2 DIVIDER ===================== -->
-<section class="slide" id="slide-9">
+<section class="slide" id="slide-cc-demo">
     <div class="slide-header">
         <div class="slide-header-label">Research · Claude Code in Action</div>
         <div class="slide-header-label red">Live Interaction</div>
@@ -1433,7 +1461,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                 <div style="width:12px;height:12px;border-radius:50%;background:#febc2e;"></div>
                 <div style="width:12px;height:12px;border-radius:50%;background:#28c840;"></div>
                 <span style="margin-left:0.75rem;color:#888;font-size:0.75rem;letter-spacing:0.05em;flex:1;">claude — ~/CalibrationAGT</span>
-                <button id="cc-pause-btn" onclick="toggleCCPause()" style="background:#444;border:none;color:#ccc;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;letter-spacing:0.03em;">⏸ Pause</button>
+                <button id="cc-pause-btn" onclick="toggleCCPause()" style="background:#444;border:none;color:#ccc;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;letter-spacing:0.03em;">▶ Start</button>
                 <button id="cc-replay-btn" onclick="restartCCAnimation()" style="background:#333;border:none;color:#888;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;">↺ Replay</button>
             </div>
             <!-- Chat area -->
@@ -1448,7 +1476,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">09 / 23</div>
+        <div class="slide-num">19 / 43</div>
     </div>
 </section>
 
@@ -1462,23 +1490,23 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
 
         <!-- LEFT: explanation -->
         <div style="display:flex;flex-direction:column;gap:var(--egap);">
-            <h2 class="reveal" style="font-size:var(--t-h2);">Skills — Give Your Agent a Custom Workflow</h2>
-            <div class="reveal" style="display:flex;flex-direction:column;gap:0.6rem;">
-                <div style="padding:0.7rem 1rem;background:var(--bg-alt);border-radius:8px;border-left:3px solid var(--red);">
+            <h2 class="reveal" style="font-size:var(--t-h2);">Skills — Custom Workflows for Your Agent</h2>
+            <div style="display:flex;flex-direction:column;gap:0.6rem;">
+                <div class="reveal" style="padding:0.7rem 1rem;background:var(--bg-alt);border-radius:8px;border-left:3px solid var(--red);">
                     <p style="font-size:var(--t-small);font-weight:600;margin-bottom:0.2rem;">What is a Skill?</p>
-                    <p style="font-size:clamp(0.78rem,0.9vw,0.78rem);color:var(--ink-mid);line-height:1.5;">A Markdown file describing how the Agent should complete a category of tasks. Once triggered, the Agent follows the skill's instructions to execute the full workflow.</p>
+                    <p style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.5;">A Markdown file telling the Agent how to handle a task category. Trigger it — the Agent runs the full workflow.</p>
                 </div>
-                <div style="padding:0.7rem 1rem;background:var(--bg-alt);border-radius:8px;border-left:3px solid var(--ink-soft);">
+                <div class="reveal" style="padding:0.7rem 1rem;background:var(--bg-alt);border-radius:8px;border-left:3px solid var(--ink-soft);">
                     <p style="font-size:var(--t-small);font-weight:600;margin-bottom:0.2rem;">What is Skill-Creator?</p>
-                    <p style="font-size:clamp(0.78rem,0.9vw,0.78rem);color:var(--ink-mid);line-height:1.5;">A skill specifically for <strong>writing skills</strong>. Describe your need, and Agent automatically generates a structured workflow spec and saves it.</p>
+                    <p style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.5;">A skill for <strong>writing skills</strong>. Describe your need — Agent writes the spec.</p>
                 </div>
-                <div style="padding:0.7rem 1rem;background:var(--bg-alt);border-radius:8px;border-left:3px solid var(--ink-soft);">
+                <div class="reveal" style="padding:0.7rem 1rem;background:var(--bg-alt);border-radius:8px;border-left:3px solid var(--ink-soft);">
                     <p style="font-size:var(--t-small);font-weight:600;margin-bottom:0.2rem;">Use Cases</p>
-                    <p style="font-size:clamp(0.78rem,0.9vw,0.78rem);color:var(--ink-mid);line-height:1.5;">Literature review, paper writing, experiment management, code review, data preprocessing — any repetitive workflow can be packaged as a skill</p>
+                    <p style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.5;">Literature review · paper writing · experiments · code review · data preprocessing — any repeatable workflow</p>
                 </div>
             </div>
             <div class="reveal highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);">
-                <p style="font-size:clamp(0.78rem,0.95vw,0.82rem);font-weight:700;margin-bottom:0.3rem;">Skills = reusable Agent workflows — define once, invoke repeatedly</p>
+                <p style="font-size:var(--t-small);font-weight:700;margin-bottom:0.3rem;">Skills = reusable workflows — define once, invoke repeatedly</p>
                 <p style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.5;">Examples: <code style='background:rgba(0,0,0,0.06);padding:0.1em 0.3em;border-radius:3px;'>/paper-review</code> review workflow ·
                     <code style='background:rgba(0,0,0,0.06);padding:0.1em 0.3em;border-radius:3px;'>/experiment-log</code> experiment record ·
                     <code style='background:rgba(0,0,0,0.06);padding:0.1em 0.3em;border-radius:3px;'>/debug-cluster</code> GPU cluster debug ·
@@ -1493,7 +1521,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                 <div style="width:11px;height:11px;border-radius:50%;background:#febc2e;"></div>
                 <div style="width:11px;height:11px;border-radius:50%;background:#28c840;"></div>
                 <span style="margin-left:0.75rem;color:#888;font-size:0.72rem;flex:1;">claude — ~/research</span>
-                <button id="skill0-pause-btn" onclick="toggleSkill0Pause()" style="background:#444;border:none;color:#ccc;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;letter-spacing:0.03em;">⏸ Pause</button>
+                <button id="skill0-pause-btn" onclick="toggleSkill0Pause()" style="background:#444;border:none;color:#ccc;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;letter-spacing:0.03em;">▶ Start</button>
                 <button id="skill0-replay-btn" onclick="restartSkill0Animation()" style="background:#333;border:none;color:#888;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;">↺ Replay</button>
             </div>
             <div id="skill0-chat" style="flex:1;overflow-y:auto;padding:0.9rem 1.1rem;font-size:var(--t-small);line-height:1.7;color:#ccc;display:flex;flex-direction:column;gap:0.5rem;"></div>
@@ -1505,7 +1533,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">— / 23</div>
+        <div class="slide-num">20 / 43</div>
     </div>
 </section>
 
@@ -1612,7 +1640,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                 <div style="width:11px;height:11px;border-radius:50%;background:#febc2e;"></div>
                 <div style="width:11px;height:11px;border-radius:50%;background:#28c840;"></div>
                 <span style="margin-left:0.75rem;color:#888;font-size:0.72rem;flex:1;">claude — ~/CalibrationAGT</span>
-                <button id="arp-pause-btn" onclick="toggleARPPause()" style="background:#444;border:none;color:#ccc;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;letter-spacing:0.03em;">⏸ Pause</button>
+                <button id="arp-pause-btn" onclick="toggleARPPause()" style="background:#444;border:none;color:#ccc;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;letter-spacing:0.03em;">▶ Start</button>
                 <button id="arp-replay-btn" onclick="restartARPAnimation()" style="background:#333;border:none;color:#888;font-size:0.7rem;padding:0.2rem 0.6rem;border-radius:4px;cursor:pointer;">↺ Replay</button>
             </div>
             <div id="arp-chat" style="flex:1;overflow-y:auto;padding:0.9rem 1.1rem;font-size:var(--t-small);line-height:1.7;color:#ccc;display:flex;flex-direction:column;gap:0.5rem;"></div>
@@ -1624,7 +1652,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">— / 23</div>
+        <div class="slide-num">21 / 43</div>
     </div>
 </section>
 
@@ -1640,7 +1668,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                 <p style="font-size:var(--t-h3);line-height:1.5;"><code style='font-size:inherit;background:var(--bg-alt);padding:0.1em 0.35em;border-radius:4px;'>/ai-research-paper</code> is just a starting point —<br>any repetitive workflow can be packaged as a skill.</p>
             </div>
             <div class="reveal" style="border-top:2px solid var(--border-soft);padding-top:var(--gap);">
-                <p style="font-size:var(--t-small);color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.12em;font-weight:700;margin-bottom:0.6rem;">Lab colleagues have built something more systematic</p>
+                <p style="font-size:var(--t-small);color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.12em;font-weight:700;margin-bottom:0.6rem;">More automated research pipelines exist</p>
                 <p style="font-size:var(--t-h2);font-weight:700;line-height:1.3;">Chengcheng &amp; Jinxu</p>
                 <p style="font-size:var(--t-body);color:var(--ink-mid);margin:0.2rem 0 0.6rem;">AutoAI Research System</p>
                 <p style="font-size:var(--t-small);font-family:var(--font-mono);color:var(--ink-soft);">github.com/Sibyl-Research-Team/AutoResearch-SibylSystem</p>
@@ -1649,7 +1677,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">— / 23</div>
+        <div class="slide-num">22 / 43</div>
     </div>
 </section>
 
@@ -1669,7 +1697,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                     <div style="width:10px;height:10px;border-radius:50%;background:#febc2e;"></div>
                     <div style="width:10px;height:10px;border-radius:50%;background:#28c840;"></div>
                     <span style="margin-left:0.6rem;color:#888;font-size:0.66rem;flex:1;">/brainstorm — ~/CalibrationAGT</span>
-                    <button id="bs1-pause-btn" onclick="toggleBs1Pause()" style="background:#444;border:none;color:#ccc;font-size:0.65rem;padding:0.18rem 0.5rem;border-radius:4px;cursor:pointer;">⏸ Pause</button>
+                    <button id="bs1-pause-btn" onclick="toggleBs1Pause()" style="background:#444;border:none;color:#ccc;font-size:0.65rem;padding:0.18rem 0.5rem;border-radius:4px;cursor:pointer;">▶ Start</button>
                     <button id="bs1-replay-btn" onclick="restartBs1Animation()" style="background:#333;border:none;color:#888;font-size:0.65rem;padding:0.18rem 0.5rem;border-radius:4px;cursor:pointer;">↺ Replay</button>
                 </div>
                 <div id="bs1-chat" style="flex:1;overflow-y:auto;padding:0.65rem 0.9rem;font-size:var(--t-small);line-height:1.65;color:#ccc;display:flex;flex-direction:column;gap:0.4rem;"></div>
@@ -1685,7 +1713,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                     <div style="width:10px;height:10px;border-radius:50%;background:#febc2e;"></div>
                     <div style="width:10px;height:10px;border-radius:50%;background:#28c840;"></div>
                     <span style="margin-left:0.6rem;color:#888;font-size:0.66rem;flex:1;">/frontend-slides — ~/talks</span>
-                    <button id="fs1-pause-btn" onclick="toggleFs1Pause()" style="background:#444;border:none;color:#ccc;font-size:0.65rem;padding:0.18rem 0.5rem;border-radius:4px;cursor:pointer;">⏸ Pause</button>
+                    <button id="fs1-pause-btn" onclick="toggleFs1Pause()" style="background:#444;border:none;color:#ccc;font-size:0.65rem;padding:0.18rem 0.5rem;border-radius:4px;cursor:pointer;">▶ Start</button>
                     <button id="fs1-replay-btn" onclick="restartFs1Animation()" style="background:#333;border:none;color:#888;font-size:0.65rem;padding:0.18rem 0.5rem;border-radius:4px;cursor:pointer;">↺ Replay</button>
                 </div>
                 <div id="fs1-chat" style="flex:1;overflow-y:auto;padding:0.65rem 0.9rem;font-size:var(--t-small);line-height:1.65;color:#ccc;display:flex;flex-direction:column;gap:0.4rem;"></div>
@@ -1698,60 +1726,271 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">— / 23</div>
+        <div class="slide-num">23 / 43</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE: Research Tips ===================== -->
+<section class="slide" id="slide-research-tips">
+    <div class="slide-header">
+        <div class="slide-header-label">Research · Usage Tips</div>
+        <div class="slide-header-label red">Tips</div>
+    </div>
+    <div class="slide-content" style="gap:var(--gap);">
+        <h2 class="reveal">Tips for Using Claude Code</h2>
+        <div style="display:flex;flex-direction:column;gap:var(--egap);">
+            <div class="reveal" style="display:flex;gap:1rem;align-items:flex-start;">
+                <div style="flex-shrink:0;width:1.8rem;height:1.8rem;background:var(--bg-alt);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:var(--t-small);font-weight:700;color:var(--red);">1</div>
+                <div>
+                    <p style="font-size:var(--t-body);font-weight:600;">Run in tmux on a server — session persists across disconnects</p>
+                    <p style="font-size:var(--t-small);color:var(--ink-soft);">VS Code plugin cannot guarantee session continuity</p>
+                </div>
+            </div>
+            <div class="reveal" style="display:flex;gap:1rem;align-items:flex-start;">
+                <div style="flex-shrink:0;width:1.8rem;height:1.8rem;background:var(--bg-alt);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:var(--t-small);font-weight:700;color:var(--red);">2</div>
+                <div>
+                    <p style="font-size:var(--t-body);font-weight:600;">VS Code plugin is great for instant tasks — e.g. making slides</p>
+                    <p style="font-size:var(--t-small);color:var(--ink-soft);">Good for short, focused tasks that finish quickly</p>
+                </div>
+            </div>
+            <div class="reveal" style="display:flex;gap:1rem;align-items:flex-start;">
+                <div style="flex-shrink:0;width:1.8rem;height:1.8rem;background:var(--bg-alt);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:var(--t-small);font-weight:700;color:var(--red);">3</div>
+                <div>
+                    <p style="font-size:var(--t-body);font-weight:600;">Terminal: use Ghostty — officially recommended by Anthropic</p>
+                    <p style="font-size:var(--t-small);color:var(--ink-soft);">Claude Code is still early-stage — Ghostty has the fewest bugs</p>
+                </div>
+            </div>
+            <div class="reveal" style="display:flex;gap:1rem;align-items:flex-start;">
+                <div style="flex-shrink:0;width:1.8rem;height:1.8rem;background:var(--bg-alt);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:var(--t-small);font-weight:700;color:var(--red);">4</div>
+                <div>
+                    <p style="font-size:var(--t-body);font-weight:600;">Chrome extension worth trying — can directly control the browser UI</p>
+                    <p style="font-size:var(--t-small);color:var(--ink-soft);">Better compatibility than the local desktop app</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">24 / 43</div>
+    </div>
+</section>
+<!-- ===================== SLIDE: Pricing ===================== -->
+<section class="slide" id="slide-pricing">
+    <div class="slide-header">
+        <div class="slide-header-label">Research · Usage Tips</div>
+        <div class="slide-header-label red">Pricing</div>
+    </div>
+    <div class="slide-content" style="gap:var(--gap);">
+        <h2 class="reveal">Pricing</h2>
+        <div class="two-col reveal" style="align-items:start;gap:var(--gap);">
+
+            <!-- Claude Code -->
+            <div style="display:flex;flex-direction:column;gap:0.6rem;">
+                <p style="font-size:var(--t-small);font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-soft);">Claude Code</p>
+                <div style="display:flex;flex-direction:column;gap:0.5rem;">
+                    <div style="padding:0.9rem 1.1rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
+                        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.3rem;">
+                            <span style="font-size:var(--t-body);font-weight:700;">Pro</span>
+                            <span style="font-size:1.2rem;font-weight:700;color:var(--ink);">$20 <span style="font-size:var(--t-small);font-weight:400;color:var(--ink-soft);">/ mo</span></span>
+                        </div>
+                        <p style="font-size:var(--t-small);color:var(--ink-mid);">Light use — ~4 hours of focused work per day</p>
+                    </div>
+                    <div style="padding:0.9rem 1.1rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
+                        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.3rem;">
+                            <span style="font-size:var(--t-body);font-weight:700;">Max · 5×</span>
+                            <span style="font-size:1.2rem;font-weight:700;color:var(--ink);">$100 <span style="font-size:var(--t-small);font-weight:400;color:var(--ink-soft);">/ mo</span></span>
+                        </div>
+                        <p style="font-size:var(--t-small);color:var(--ink-mid);">Sufficient for most — daily research + project work covered</p>
+                    </div>
+                    <div style="padding:0.9rem 1.1rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--red);">
+                        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.3rem;">
+                            <span style="font-size:var(--t-body);font-weight:700;">Max · 20×</span>
+                            <span style="font-size:1.2rem;font-weight:700;color:var(--red);">$200 <span style="font-size:var(--t-small);font-weight:400;color:var(--ink-soft);">/ mo</span></span>
+                        </div>
+                        <p style="font-size:var(--t-small);color:var(--ink-mid);">Run 5–10 projects in parallel simultaneously</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Codex -->
+            <div style="display:flex;flex-direction:column;gap:0.6rem;">
+                <p style="font-size:var(--t-small);font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-soft);">Codex (OpenAI)</p>
+                <div style="display:flex;flex-direction:column;gap:0.5rem;">
+                    <div style="padding:0.9rem 1.1rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
+                        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.3rem;">
+                            <span style="font-size:var(--t-body);font-weight:700;">ChatGPT Plus</span>
+                            <span style="font-size:1.2rem;font-weight:700;color:var(--ink);">$20 <span style="font-size:var(--t-small);font-weight:400;color:var(--ink-soft);">/ mo</span></span>
+                        </div>
+                        <p style="font-size:var(--t-small);color:var(--ink-mid);">Limited Codex access included</p>
+                    </div>
+                    <div style="padding:0.9rem 1.1rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);">
+                        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.3rem;">
+                            <span style="font-size:var(--t-body);font-weight:700;">ChatGPT Pro</span>
+                            <span style="font-size:1.2rem;font-weight:700;color:var(--ink);">$200 <span style="font-size:var(--t-small);font-weight:400;color:var(--ink-soft);">/ mo</span></span>
+                        </div>
+                        <p style="font-size:var(--t-small);color:var(--ink-mid);">Parallel tasks, 5h rolling cap + weekly limit — not truly unlimited</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">25 / 43</div>
     </div>
 </section>
 
 <!-- ===================== SLIDE 17: PART 3 DIVIDER ===================== -->
-<section class="slide slide-part" id="slide-18">
+<section class="slide slide-part" id="slide-part-tech">
     <div class="part-number">03</div>
     <div class="part-content">
         <div class="part-label reveal">Part Three · Technical Anatomy</div>
         <div class="part-title reveal">Technical Anatomy</div>
         <div class="part-subtitle reveal">How Does an AI Agent Actually Work?</div>
-        <div class="reveal" style="margin-top:1.5rem;font-size:clamp(0.78rem,0.9vw,0.8rem);color:rgba(255,255,255,0.45);font-style:italic;">Reference: Hung-yi Lee Machine Learning Course 2025 · NTU</div>
+        <div class="reveal" style="margin-top:1.5rem;font-size:var(--t-small);color:rgba(255,255,255,0.45);font-style:italic;">Reference: Hung-yi Lee Machine Learning Course 2025 · NTU</div>
     </div>
     <div class="slide-footer" style="border-color: rgba(255,255,255,0.1);">
         <div class="footer-text" style="color: rgba(255,255,255,0.3);"></div>
-        <div class="slide-num" style="color: rgba(255,255,255,0.3);">— / 23</div>
+        <div class="slide-num" style="color: rgba(255,255,255,0.3);">26 / 43</div>
+    </div>
+</section>
+
+
+<!-- ===================== SLIDE 21: Sub-agent ===================== -->
+<section class="slide" id="slide-subagent">
+    <div class="slide-header">
+        <div class="slide-header-label">Tech · Sub-agent</div>
+        <div class="slide-header-label red">Context Engineering</div>
+    </div>
+    <div class="slide-content" style="gap: var(--gap);">
+        <h2 class="reveal">Sub-agent: Solving the Context Bottleneck</h2>
+        <div class="two-col">
+            <!-- LEFT: description + diagram -->
+            <div class="reveal" style="display: flex; flex-direction: column; gap: var(--egap);">
+                <p class="text-mid" style="font-size: var(--t-body);">Task too big to fit in one context?<br>
+                    The main agent spawns multiple sub-agents that <strong>handle subtasks in parallel</strong>, returning only summarized results to the main context.</p>
+                <div class="arch-diagram" style="flex-direction: column; gap: 0.9rem; align-items: flex-start;">
+                    <div style="display:flex; align-items:center; gap:0.9rem;">
+                        <div class="arch-box center-box" style="min-width:6rem; padding:0.6rem 1rem; font-size: var(--t-body);">Main Agent</div>
+                        <span style="color:var(--ink-soft); font-size:var(--t-body);">→ spawn</span>
+                        <div class="arch-box" style="min-width:6rem; padding:0.6rem 1rem; font-size: var(--t-body);">Sub A: Read Paper A</div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:0.9rem; padding-left: 10.5rem;">
+                        <span style="color:var(--ink-soft); font-size:var(--t-body);">→ spawn</span>
+                        <div class="arch-box" style="min-width:6rem; padding:0.6rem 1rem; font-size: var(--t-body);">Sub B: Read Paper B</div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:0.9rem;">
+                        <span style="color:var(--ink-soft); font-size:var(--t-body); padding-left: 0.5rem;">← Returns summary only, not full text</span>
+                    </div>
+                </div>
+            </div>
+            <!-- RIGHT: bullets one by one -->
+            <ul class="bullet-list">
+                <li class="reveal">Sub-agent has a <strong>lean system prompt</strong>, focused on a single subtask</li>
+                <li class="reveal">Multiple sub-agents run in parallel — <strong>faster</strong></li>
+                <li class="reveal">Context window contains only task-relevant info — <strong>more accurate reasoning</strong></li>
+            </ul>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">27 / 43</div>
+    </div>
+</section>
+<!-- ===================== SLIDE: Context 压缩 A ===================== -->
+<section class="slide" id="slide-compress-a">
+    <div class="slide-header">
+        <div class="slide-header-label">Tech · Context Compression</div>
+        <div class="slide-header-label red">From Hongyi Lee's Course</div>
+    </div>
+    <div class="slide-content" style="gap:var(--gap);">
+        <h2 class="reveal">Context Overflow — How to Compress? (1/2)</h2>
+        <div class="reveal" style="padding:0.9rem 1.2rem;background:var(--red-light);border:1px solid rgba(232,50,26,0.2);border-radius:8px;">
+            <p style="font-size:var(--t-body);font-weight:700;color:var(--red);margin-bottom:0.4rem;">Why Does Context Grow So Fast?</p>
+            <p style="font-size:var(--t-body);color:var(--ink-mid);">Tool outputs (tool observations) account for <strong style='color:var(--red);'>84%</strong> of context<br>The model's own words are only ~10%</p>
+        </div>
+        <p class="reveal" style="font-size:var(--t-small);font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.05em;">Method 1 of 2</p>
+        <div class="reveal" style="display:flex;gap:1rem;align-items:flex-start;padding:1rem;background:var(--bg-alt);border-radius:8px;">
+            <div style="flex-shrink:0;width:2.2rem;height:2.2rem;background:#1a1a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:var(--t-body);font-weight:700;color:var(--red);">1</div>
+            <div style="display:flex;flex-direction:column;gap:0.4rem;">
+                <p style="font-size:var(--t-body);font-weight:700;">Observation Masking</p>
+                <p style="font-size:var(--t-body);color:var(--ink-mid);">Replace tool output with a single line:<br>&ldquo;<em>There used to be tool output here</em>&rdquo;</p>
+                <p style="font-size:var(--t-small);color:var(--ink-soft);margin-top:0.2rem;">Looks brutal — but experiments show it works about as well as LLM summarization</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text">Source: Hongyi Lee Machine Learning 2025 · NTU</div>
+        <div class="slide-num">28 / 43</div>
+    </div>
+</section>
+<!-- ===================== SLIDE: Context 压缩 B ===================== -->
+<section class="slide" id="slide-compress-b">
+    <div class="slide-header">
+        <div class="slide-header-label">Tech · Context Compression</div>
+        <div class="slide-header-label red">From Hongyi Lee's Course</div>
+    </div>
+    <div class="slide-content" style="gap:var(--gap);">
+        <h2 class="reveal">Context Overflow — How to Compress? (2/2)</h2>
+        <div class="reveal" style="display:flex;gap:1rem;align-items:flex-start;padding:1rem;background:var(--bg-alt);border-radius:8px;">
+            <div style="flex-shrink:0;width:2.2rem;height:2.2rem;background:#1a1a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:var(--t-body);font-weight:700;color:var(--red);">2</div>
+            <div style="display:flex;flex-direction:column;gap:0.4rem;">
+                <p style="font-size:var(--t-body);font-weight:700;">LLM Summarization</p>
+                <p style="font-size:var(--t-body);color:var(--ink-mid);">History too long → compress it with LLM summarization<br>Claude Code has this compaction mechanism built in</p>
+            </div>
+        </div>
+        <p class="reveal" style="font-size:var(--t-small);font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.05em;">Sub-agent = Automatic Compression</p>
+        <div class="reveal" style="display:flex;flex-direction:column;gap:0.6rem;font-size:var(--t-body);">
+            <div style="padding:0.6rem 1rem;background:var(--bg-alt);border-radius:6px;">Main Agent spawns Sub-agent → Sub-agent accumulates its own Context</div>
+            <div style="padding-left:1.2rem;color:var(--ink-soft);">↓ sub-agent return</div>
+            <div style="padding:0.6rem 1rem;background:var(--bg-alt);border-radius:6px;">Sub-agent's entire conversation <strong>vanishes</strong>, only the returned sentence remains</div>
+        </div>
+        <div class="reveal highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);">
+            <p style="font-size:var(--t-body);">Language models <strong>dislike</strong> compressing their own memory<br><span style='color:var(--ink-mid);'>So compression is usually enforced by the Agent framework</span></p>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text">Source: Hongyi Lee Machine Learning 2025 · NTU</div>
+        <div class="slide-num">29 / 43</div>
     </div>
 </section>
 
 <!-- ===================== SLIDE 19: Tool Use ===================== -->
-<section class="slide" id="slide-20">
+<section class="slide" id="slide-tool-use">
     <div class="slide-header">
         <div class="slide-header-label">Tech · Tool Use</div>
         <div class="slide-header-label red">Function Calling</div>
     </div>
     <div class="slide-content" style="gap: clamp(0.4rem,1vh,0.8rem);">
         <h2 class="reveal">How Agent "Acts": The Tool Use Loop</h2>
-        <div class="flow-diagram" style="gap: clamp(0.3rem,0.6vh,0.5rem);">
+        <div class="flow-diagram" style="gap: clamp(0.3rem,0.6vh,0.5rem);font-size:var(--t-small);">
             <div class="flow-row reveal">
-                <div class="flow-box agent">Agent receives task</div>
+                <div class="flow-box agent" style="font-size:var(--t-small);">Agent receives task</div>
                 <div class="flow-arrow">→</div>
-                <div class="flow-box llm">Sent to LLM (with tool list)</div>
+                <div class="flow-box llm" style="font-size:var(--t-small);">Sent to LLM (with tool list)</div>
                 <div class="flow-arrow">→</div>
-                <div class="flow-box llm">[tool_use] Read("main.py")</div>
+                <div class="flow-box llm" style="font-size:var(--t-small);">[tool_use] Read("main.py")</div>
             </div>
             <div class="flow-row reveal" style="padding-left: 2rem;">
                 <div class="flow-arrow">↓</div>
             </div>
             <div class="flow-row reveal">
-                <div class="flow-box exec">Execute Read("main.py") on computer</div>
+                <div class="flow-box exec" style="font-size:var(--t-small);">Execute Read("main.py") on computer</div>
                 <div class="flow-arrow">→</div>
-                <div class="flow-box result">Return file contents</div>
+                <div class="flow-box result" style="font-size:var(--t-small);">Return file contents</div>
                 <div class="flow-arrow">→</div>
-                <div class="flow-box agent">Add to context, call LLM again</div>
+                <div class="flow-box agent" style="font-size:var(--t-small);">Add to context, call LLM again</div>
             </div>
             <div class="flow-row reveal" style="padding-left: 2rem;">
                 <div class="flow-arrow">↓ Loop until task complete</div>
             </div>
             <div class="flow-row reveal">
-                <div class="flow-box llm">[tool_use] Write("fix.py", ...)</div>
+                <div class="flow-box llm" style="font-size:var(--t-small);">[tool_use] Write("fix.py", ...)</div>
                 <div class="flow-arrow">→</div>
-                <div class="flow-box exec">Write to file</div>
+                <div class="flow-box exec" style="font-size:var(--t-small);">Write to file</div>
                 <div class="flow-arrow">→</div>
-                <div class="flow-box result">"done" [END]</div>
+                <div class="flow-box result" style="font-size:var(--t-small);">"done" [END]</div>
             </div>
         </div>
         <div class="highlight-box reveal">
@@ -1760,18 +1999,18 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">20 / 23</div>
+        <div class="slide-num">30 / 43</div>
     </div>
 </section>
 
 <!-- ===================== SLIDE 20: Memory ===================== -->
-<section class="slide" id="slide-21">
+<section class="slide" id="slide-memory">
     <div class="slide-header">
         <div class="slide-header-label">Tech · Memory</div>
         <div class="slide-header-label red">Memory Architecture</div>
     </div>
     <div class="slide-content" style="gap: var(--gap);">
-        <h2 class="reveal"s "Soul"'>The System Prompt Holds the Agent</h2>
+        <h2 class="reveal">The System Prompt Holds the Agent&#39;s "Soul"</h2>
         <div class="two-col reveal">
             <ul class="bullet-list">
                 <li><strong>CLAUDE.md</strong>: project rules, coding conventions, notes</li>
@@ -1788,7 +2027,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
 - Do not commit untested code
 
 <span class='kw'>## Project Context</span>
-top-venue submission, ddl: 5/31</div>
+Top-venue paper, ddl: 5/31</div>
                 <p class="text-soft" style="font-size: var(--t-small);">A single conversation can load <strong>4000+ tokens</strong> of system info —<br>
                     that&apos;s why the agent can continuously "remember" project state</p>
             </div>
@@ -1796,109 +2035,73 @@ top-venue submission, ddl: 5/31</div>
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">21 / 23</div>
+        <div class="slide-num">31 / 43</div>
     </div>
 </section>
 
-<!-- ===================== SLIDE 21: Sub-agent ===================== -->
-<section class="slide" id="slide-22">
+
+
+<!-- ===================== SLIDE 32: Hooks / Cron / Memory ===================== -->
+<section class="slide" id="slide-persistence">
     <div class="slide-header">
-        <div class="slide-header-label">Tech · Sub-agent</div>
-        <div class="slide-header-label red">Context Engineering</div>
+        <div class="slide-header-label">Tech · Persistence</div>
+        <div class="slide-header-label red">Hooks · Cron · Memory</div>
     </div>
     <div class="slide-content" style="gap: var(--gap);">
-        <h2 class="reveal">Sub-agent: Solving the Context Bottleneck</h2>
-        <div class="two-col reveal">
-            <div style="display: flex; flex-direction: column; gap: var(--egap);">
-                <p class="text-mid" style="font-size: var(--t-small);">Task too big to fit in one context?<br>
-                    The main agent spawns multiple sub-agents that <strong>handle subtasks in parallel</strong>, returning only summarized results to the main context.</p>
-                <div class="arch-diagram" style="flex-direction: column; gap: 0.75rem; align-items: flex-start;">
-                    <div style="display:flex; align-items:center; gap:0.75rem;">
-                        <div class="arch-box center-box" style="min-width:5rem; padding:0.5rem 0.75rem; font-size: var(--t-small);">Main Agent</div>
-                        <span style="color:var(--ink-soft); font-size:0.85rem;">→ spawn</span>
-                        <div class="arch-box" style="min-width:5rem; padding:0.5rem 0.75rem; font-size: var(--t-small);">Sub A: Read Paper A</div>
-                    </div>
-                    <div style="display:flex; align-items:center; gap:0.75rem; padding-left: 9rem;">
-                        <span style="color:var(--ink-soft); font-size:0.85rem;">→ spawn</span>
-                        <div class="arch-box" style="min-width:5rem; padding:0.5rem 0.75rem; font-size: var(--t-small);">Sub B: Read Paper B</div>
-                    </div>
-                    <div style="display:flex; align-items:center; gap:0.75rem;">
-                        <span style="color:var(--ink-soft); font-size:0.85rem; padding-left: 0.5rem;">← Returns summary only, not full text</span>
-                    </div>
-                </div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);">
+
+            <div class="reveal" style="padding:1.2rem;background:var(--bg-alt);border-radius:10px;border:1.5px solid var(--border-soft);display:flex;flex-direction:column;gap:0.6rem;">
+                <div style="font-size:1.6rem;">🪝</div>
+                <div style="font-size:var(--t-body);font-weight:700;">Hooks</div>
+                <div style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.6;">Run shell commands before / after any tool call — validate, log, notify</div>
+                <div class="code-block" style="font-size:clamp(0.55rem,0.85vw,0.7rem);margin-top:0.2rem;"><span class='cm'># settings.json</span>
+hooks:
+  PostToolUse:
+    - command: <span class='str'>&#34;notify.sh&#34;</span>
+      match: Bash</div>
             </div>
-            <ul class="bullet-list">
-                <li>Sub-agent has a <strong>lean system prompt</strong>, focused on a single subtask</li>
-                <li>Context window contains only task-relevant info — <strong>more accurate reasoning</strong></li>
-                <li>Multiple sub-agents run in parallel — <strong>faster</strong></li>
-                <li>This is the core trick of <strong>Context Engineering</strong></li>
-            </ul>
+
+            <div class="reveal" style="padding:1.2rem;background:var(--bg-alt);border-radius:10px;border:1.5px solid var(--border-soft);display:flex;flex-direction:column;gap:0.6rem;">
+                <div style="font-size:1.6rem;">⏱</div>
+                <div style="font-size:var(--t-body);font-weight:700;">Cron</div>
+                <div style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.6;">Schedule agent runs at fixed intervals — monitor experiments, track papers, send digests</div>
+                <div class="code-block" style="font-size:clamp(0.55rem,0.85vw,0.7rem);margin-top:0.2rem;"><span class='cm'># every 30 min</span>
+CronCreate(
+  <span class='str'>&#34;*/30 * * * *&#34;</span>,
+  <span class='str'>&#34;check experiments&#34;</span>
+)</div>
+            </div>
+
+            <div class="reveal" style="padding:1.2rem;background:var(--bg-alt);border-radius:10px;border:1.5px solid var(--border-soft);display:flex;flex-direction:column;gap:0.6rem;">
+                <div style="font-size:1.6rem;">🧠</div>
+                <div style="font-size:var(--t-body);font-weight:700;">Auto-Memory</div>
+                <div style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.6;">Agent writes structured memory files — persisted across all future sessions</div>
+                <div class="code-block" style="font-size:clamp(0.55rem,0.85vw,0.7rem);margin-top:0.2rem;"><span class='cm'># ~/.claude/projects/</span>
+MEMORY.md       <span class='cm'># index</span>
+memory/
+  user.md       <span class='cm'># preferences</span>
+  project.md    <span class='cm'># current goals</span></div>
+            </div>
+
         </div>
-        <div class="highlight-box reveal">
-            <p>Who ultimately executes? — The lowest-level sub-agent calls tools and performs the actual work</p>
+
+        <div class="reveal" style="border-left:4px solid var(--red);background:var(--red-light);border-radius:0 8px 8px 0;padding:0.9rem 1.4rem;display:flex;align-items:center;gap:1rem;">
+            <span style="font-size:1.4rem;flex-shrink:0;color:var(--red);">✦</span>
+            <p style="font-size:var(--t-body);line-height:1.5;color:var(--ink);"><strong>Agent as a persistent teammate</strong> — remembers context across sessions, reacts to events automatically, and schedules its own check-ins.</p>
         </div>
+
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">22 / 23</div>
+        <div class="slide-num">32 / 43</div>
     </div>
 </section>
 
-<!-- ===================== SLIDE: Context 压缩 ===================== -->
-<section class="slide" id="slide-compress">
-    <div class="slide-header">
-        <div class="slide-header-label">Tech · Context Compression</div>
-        <div class="slide-header-label red">From Hongyi Lee's Course</div>
-    </div>
-    <div class="slide-content" style="gap:var(--gap);">
-        <h2 class="reveal">Context Overflow — How to Compress?</h2>
-        <div class="two-col" style="align-items:start;gap:var(--gap);">
-            <div style="display:flex;flex-direction:column;gap:var(--egap);">
-                <div class="reveal" style="padding:0.7rem 1rem;background:var(--red-light);border:1px solid rgba(232,50,26,0.2);border-radius:8px;">
-                    <p style="font-size:var(--t-small);font-weight:700;color:var(--red);margin-bottom:0.3rem;">Why Does Context Grow So Fast?</p>
-                    <p style="font-size:var(--t-small);color:var(--ink-mid);">Tool outputs (tool observations) account for <strong style='color:var(--red);'>84%</strong> of context<br>
-                    The model's own words are only ~10%</p>
-                </div>
-                <p class="reveal" style="font-size:var(--t-small);font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.05em;">Two Compression Methods</p>
-                <div class="reveal" style="display:flex;gap:0.8rem;align-items:flex-start;">
-                    <div style="flex-shrink:0;width:1.8rem;height:1.8rem;background:var(--bg-alt);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:var(--t-small);font-weight:700;color:var(--red);">1</div>
-                    <div>
-                        <p style="font-size:var(--t-small);font-weight:600;">Observation Masking</p>
-                        <p style="font-size:var(--t-small);color:var(--ink-mid);">Replace tool output with a single line:<br>&ldquo;<em>There used to be tool output here</em>&rdquo;</p>
-                        <p style="font-size:var(--t-small);color:var(--ink-soft);margin-top:0.2rem;">Looks brutal — but experiments show it works about as well as LLM summarization</p>
-                    </div>
-                </div>
-                <div class="reveal" style="display:flex;gap:0.8rem;align-items:flex-start;">
-                    <div style="flex-shrink:0;width:1.8rem;height:1.8rem;background:var(--bg-alt);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:var(--t-small);font-weight:700;color:var(--red);">2</div>
-                    <div>
-                        <p style="font-size:var(--t-small);font-weight:600;">LLM Summarization</p>
-                        <p style="font-size:var(--t-small);color:var(--ink-mid);">History too long → compress it with LLM summarization<br>OpenClaw has this compaction mechanism built in</p>
-                    </div>
-                </div>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:var(--egap);">
-                <p class="reveal" style="font-size:var(--t-small);font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.05em;">Sub-agent = Automatic Compression</p>
-                <div class="reveal" style="display:flex;flex-direction:column;gap:0.5rem;font-size:var(--t-small);">
-                    <div style="padding:0.5rem 0.8rem;background:var(--bg-alt);border-radius:6px;">Main Agent spawns Sub-agent → Sub-agent accumulates its own Context</div>
-                    <div style="padding-left:1rem;color:var(--ink-soft);">↓ sub-agent return</div>
-                    <div style="padding:0.5rem 0.8rem;background:var(--bg-alt);border-radius:6px;">Sub-agent's entire conversation <strong>vanishes</strong>, only the returned sentence remains</div>
 
-                </div>
-                <div class="reveal highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);">
-                    <p style="font-size:var(--t-small);">Language models <strong>dislike</strong> compressing their own memory<br>
-                    <span style='color:var(--ink-mid);'>So compression is usually enforced by the Agent framework</span></p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="slide-footer">
-        <div class="footer-text"></div>
-        <div class="slide-num">— / 23</div>
-    </div>
-</section>
 
 <!-- ===================== PART 4 DIVIDER ===================== -->
-<section class="slide slide-part" id="slide-part4">
+<section class="slide slide-part" id="slide-part-discussion">
     <div class="part-number">04</div>
     <div class="part-content">
         <div class="part-label reveal">Part Four · Discussion</div>
@@ -1907,7 +2110,7 @@ top-venue submission, ddl: 5/31</div>
     </div>
     <div class="slide-footer" style="border-color: rgba(255,255,255,0.1);">
         <div class="footer-text" style="color: rgba(255,255,255,0.3);"></div>
-        <div class="slide-num" style="color: rgba(255,255,255,0.3);">— / 23</div>
+        <div class="slide-num" style="color: rgba(255,255,255,0.3);">33 / 43</div>
     </div>
 </section>
 
@@ -1920,7 +2123,7 @@ top-venue submission, ddl: 5/31</div>
     <div class="slide-content" style="gap: var(--gap);">
         <div class="highlight-box reveal" style="border-left: 4px solid var(--red); background: var(--red-light); margin-bottom: 0;">
             <p style="font-size: var(--t-h3); font-weight: 700; line-height: 1.3;">
-                <span>Work is about being accountable for <span style='color:var(--red);'>outcomes</span></span>负责</span><br>
+                <span>Work is about being accountable for <span style='color:var(--red);'>outcomes</span></span><br>
                 <span style="font-size: 0.6em; font-weight: 400; color: var(--ink-mid);">Not the process, not the lines of code, not "I wrote it myself"</span>
             </p>
         </div>
@@ -1933,82 +2136,128 @@ top-venue submission, ddl: 5/31</div>
                     <div style="font-size: var(--t-label); color: #e8321a; letter-spacing: 0.15em; text-transform: uppercase;">Andrej Karpathy</div>
                 </div>
                 <p style="font-size: var(--t-small); color: #d0d0d0; line-height: 1.55; font-style: italic;">"Vibe coding — fully give in to the vibes, embrace exponentials, and forget that the code even exists."</p>
-                <p style="font-size: var(--t-label); color: #666; margin-top: 0.5rem;">X · Feb 2025 → now: "agentic engineering"</p>
+                <p style="font-size: var(--t-label); color: #888; line-height: 1.5; margin-top: 0.3rem;"></p>
+                <p style="font-size: var(--t-label); color: #555; margin-top: 0.4rem;">X · Feb 2025 → now: "agentic engineering"</p>
             </div>
             <div class="card" style="background: #1a1a1a; border-color: #333; padding: clamp(0.8rem,1.5vw,1.4rem);">
                 <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem;">
-                    <img src="assets/sam_altman.svg" alt="Sam Altman"
+                    <img src="assets/sam_altman.jpg" alt="Sam Altman"
                          style="width:2rem;height:2rem;border-radius:50%;object-fit:cover;flex-shrink:0;">
                     <div style="font-size: var(--t-label); color: #e8321a; letter-spacing: 0.15em; text-transform: uppercase;">Sam Altman · OpenAI</div>
                 </div>
                 <p style="font-size: var(--t-small); color: #d0d0d0; line-height: 1.55; font-style: italic;">"We may see the first AI agents join the workforce and materially change the output of companies."</p>
-                <p style="font-size: var(--t-label); color: #666; margin-top: 0.5rem;">Blog · Jan 2025</p>
+                <p style="font-size: var(--t-label); color: #888; line-height: 1.5; margin-top: 0.3rem;"></p>
+                <p style="font-size: var(--t-label); color: #555; margin-top: 0.4rem;">Blog · Jan 2025</p>
             </div>
             <div class="card" style="background: #1a1a1a; border-color: #333; padding: clamp(0.8rem,1.5vw,1.4rem);">
                 <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem;">
-                    <img src="assets/dario_amodei.svg" alt="Dario Amodei"
+                    <img src="assets/dario_amodei.jpg" alt="Dario Amodei"
                          style="width:2rem;height:2rem;border-radius:50%;object-fit:cover;flex-shrink:0;">
                     <div style="font-size: var(--t-label); color: #e8321a; letter-spacing: 0.15em; text-transform: uppercase;">Dario Amodei · Anthropic</div>
                 </div>
                 <p style="font-size: var(--t-small); color: #d0d0d0; line-height: 1.55; font-style: italic;">"AI could soon compress decades of scientific progress into just a few years."</p>
-                <p style="font-size: var(--t-label); color: #666; margin-top: 0.5rem;">Machines of Loving Grace · Oct 2024</p>
+                <p style="font-size: var(--t-label); color: #888; line-height: 1.5; margin-top: 0.3rem;"></p>
+                <p style="font-size: var(--t-label); color: #555; margin-top: 0.4rem;">Machines of Loving Grace · Oct 2024</p>
             </div>
         </div>
-        <p class="reveal text-soft" style="font-size: var(--t-small); text-align: center;">This isn't the future — it's <strong style='color:var(--ink);'>now</strong>, happening right in this presentation</p>
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">— / 23</div>
+        <div class="slide-num">34 / 43</div>
     </div>
 </section>
 
 <!-- ===================== REFLECTION 1: 科研 ===================== -->
-<section class="slide" id="slide-refl1">
+<section class="slide" id="slide-paper-inflation">
     <div class="slide-header">
         <div class="slide-header-label">Discussion · Research</div>
         <div class="slide-header-label red">Research</div>
     </div>
     <div class="slide-content" style="gap: var(--gap);">
         <h2 class="reveal">The Paper Inflation Era</h2>
-        <div class="two-col" style="align-items: start; gap: var(--gap);">
-            <div style="display:flex;flex-direction:column;gap:var(--egap);">
-                <div class="reveal highlight-box" style="border-left:4px solid var(--red);">
-                    <p style="font-size:var(--t-body);"><strong>Paper Inflation</strong><br>
-                    <span class='text-soft'>Agent lets anyone churn out papers fast — hundreds per day on arxiv, reviewers already can't keep up</span></p>
-                </div>
-                <!-- arxiv growth chart -->
-                <div class="reveal" style="background:var(--bg-alt);border-radius:8px;padding:0.5rem 0.7rem;">
-                    <p style="font-size:0.6rem;color:var(--ink-soft);margin-bottom:0.3rem;">arXiv annual submissions · Source: arxiv.org/stats (2025: exceeded 28,000/month)</p>
-                    <img src="https://info.arxiv.org/help/stats/2021_by_area/newsubs.png"
-                         alt="arXiv new submissions per year by subject area (1991–2021)"
-                         style="width:100%;border-radius:4px;max-height:min(16vh,120px);object-fit:contain;"
-                         onerror="this.style.display='none'">
-                </div>
-                <ul class="bullet-list reveal" style="font-size:var(--t-small);">
-                    <li>The era of publishing &ldquo;baseline +1% accuracy&rdquo; as a paper may soon be over</li>
-                    <li>Agent can automatically do ablations, related work, figures — <strong>the barrier disappears</strong></li>
-                    <li>&ldquo;How many papers published&rdquo; as a metric will become increasingly meaningless</li>
-                </ul>
+        <div class="reveal highlight-box" style="border-left:4px solid var(--red);">
+            <p style="font-size:var(--t-body);">Agent lets anyone churn out papers fast — hundreds per day on arxiv, reviewers already can't keep up</p>
+        </div>
+        <!-- arxiv growth chart -->
+        <div class="reveal" style="background:var(--bg-alt);border-radius:8px;padding:0.7rem 1rem;flex:1;">
+            <p style="font-size:var(--t-label);color:var(--ink-soft);margin-bottom:0.5rem;">arXiv annual submissions · arxiv.org/stats (2025: exceeded 28,000/month)</p>
+            <img src="https://info.arxiv.org/help/stats/2021_by_area/newsubs.png"
+                 alt="arXiv new submissions per year by subject area (1991–2021)"
+                 style="width:100%;border-radius:4px;max-height:min(32vh,260px);object-fit:contain;"
+                 onerror="this.style.display='none'">
+        </div>
+        <ul class="bullet-list reveal">
+            <li>The era of publishing &ldquo;baseline +1% accuracy&rdquo; as a paper may soon be over</li>
+            <li>&ldquo;How many papers published&rdquo; as a metric will become increasingly meaningless</li>
+        </ul>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text" style="font-size:var(--t-label);color:var(--ink-soft);">Source: arXiv Blog (Nov 2024) · blog.arxiv.org/2024/11/04 · arxiv.org/stats/monthly_submissions</div>
+        <div class="slide-num">35 / 43</div>
+    </div>
+</section>
+
+<!-- ===================== REFLECTION 1b: Evaluation System ===================== -->
+<section class="slide" id="slide-eval-system">
+    <div class="slide-header">
+        <div class="slide-header-label">Discussion · Research</div>
+        <div class="slide-header-label red">Research</div>
+    </div>
+    <div class="slide-content" style="gap: var(--gap);justify-content:center;">
+        <h2 class="reveal">How Will the Evaluation System Shift?</h2>
+        <ul class="bullet-list" style="font-size:var(--t-body);">
+            <li class="reveal">From <strong>quantity</strong> to <strong>impact</strong> — citation, real-world adoption</li>
+            <li class="reveal">Greater weight on genuinely new questions, not solving known benchmarks</li>
+            <li class="reveal">Reproducibility and open-source become more important — agents can reproduce your work from docs alone, this may become a mandatory standard</li>
+        </ul>
+        <div class="reveal highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);">
+            <p style="font-size:var(--t-body);">Maybe: <strong>asking the right question</strong> is the real core competency</p>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">36 / 43</div>
+    </div>
+</section>
+
+
+<!-- ===================== DISCUSSION: Agents4Science ===================== -->
+<section class="slide" id="slide-agents4science">
+    <div class="slide-header">
+        <div class="slide-header-label">Discussion · Research</div>
+        <div class="slide-header-label red">Agents4Science 2025</div>
+    </div>
+    <div class="slide-content" style="gap:var(--gap);">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;flex-shrink:0;">
+            <h2 class="reveal">The First AI-Only Academic Conference</h2>
+            <p style="font-size:var(--t-small);color:var(--ink-soft);">Stanford · Oct 2025 · agents4science.stanford.edu</p>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0;align-items:center;">
+            <div class="reveal" style="display:flex;flex-direction:column;gap:0.5rem;">
+                <img src="assets/agent4science.png"
+                     alt="Agents4Science 2025 conference statistics figure"
+                     style="width:100%;border-radius:8px;object-fit:contain;max-height:min(48vh,360px);"
+                     onerror="this.style.opacity='0.15'">
             </div>
-            <div style="display:flex;flex-direction:column;gap:var(--egap);">
-                <p class="reveal" style="font-size:var(--t-body);font-weight:600;color:var(--ink);">How will the evaluation system shift?</p>
-                <ul class="bullet-list reveal">
-                    <li>From <strong>quantity</strong> to <strong>impact</strong> — citation, real-world adoption</li>
-                    <li>Greater weight on asking genuinely new questions, not solving known benchmarks</li>
-                    <li>Reproducibility and open-source become more important</li>
+            <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);">
+                <ul class="bullet-list" style="font-size:var(--t-body);">
+                    <li>314 submitted · 48 accepted (~16%)</li>
+                    <li>AI as sole first author + reviewer on every paper</li>
+                    <li>Accepted papers: more human input on hypothesis &amp; experimental design</li>
+                    <li>AI reviews consistent but shallow — "neither interesting nor important"</li>
+                    <li>~44% of submissions had hallucinated references</li>
                 </ul>
-                <div class="reveal highlight-box" style="border-left:4px solid var(--ink);">
-                    <p style="font-size:var(--t-small);">Maybe: <strong>asking the right question</strong> is the real core competency</p>
+                <div class="highlight-box" style="border-left:4px solid var(--red);background:var(--red-light);">
+                    <p style="font-size:var(--t-body);">AI can generate papers — but asking the <strong>right question</strong> still needs humans</p>
                 </div>
             </div>
         </div>
     </div>
     <div class="slide-footer">
-        <div class="footer-text"></div>
-        <div class="slide-num">— / 23</div>
+        <div class="footer-text" style="font-size:var(--t-label);color:var(--ink-soft);">Source: Badal et al. (2025) · arxiv.org/abs/2511.15534 · agents4science.stanford.edu</div>
+        <div class="slide-num">37 / 43</div>
     </div>
 </section>
-
 
 <!-- ===================== DISCUSSION: AI on Research ===================== -->
 <section class="slide" id="slide-refl-research">
@@ -2019,24 +2268,24 @@ top-venue submission, ddl: 5/31</div>
     <div style="display:flex;flex-direction:column;gap:0.5rem;padding:var(--egap) var(--pad) var(--pad);height:calc(100% - 4rem);">
         <div style="display:flex;justify-content:space-between;align-items:baseline;flex-shrink:0;">
             <h2 class="reveal">Will AI Agent Replace Researchers?</h2>
-            <p style="font-size:var(--t-small);color:var(--ink-soft);">参考：李宏毅 AI Agent (3/3) · NTU 2026</p>
+            <p style="font-size:var(--t-small);color:var(--ink-soft);">Ref: Hung-yi Lee · AI Agent (3/3) · NTU 2026</p>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0;align-items:center;">
-            <!-- LEFT: Andrew Hall image -->
-            <div class="reveal" style="display:flex;flex-direction:column;gap:0.5rem;">
-                <p style="font-size:var(--t-small);font-weight:700;color:var(--red);">Andrew Hall (Stanford) · 「100x Research Assistant」</p>
+            <!-- LEFT: Cost comparison image -->
+            <div class="reveal" style="display:flex;flex-direction:column;gap:0.5rem;align-items:center;">
+                <p style="font-size:var(--t-small);font-weight:700;color:var(--red);">Andrew Hall (Stanford) · "100x Research Assistant"</p>
                 <img src="https://substack-post-media.s3.amazonaws.com/public/images/2f1712c4-2659-4035-97af-c7661f3408fd_1335x922.png"
                      alt="Cost: PhD student 16h $1040 vs Claude Code 1h $10"
-                     style="width:100%;border-radius:8px;object-fit:contain;max-height:min(55vh,420px);"
+                     style="width:100%;border-radius:8px;object-fit:contain;max-height:min(48vh,360px);"
                      onerror="this.style.opacity='0.15'">
-                <p style="font-size:var(--t-small);color:var(--ink-soft);">PhD student: 16h / $1,040 &nbsp;vs&nbsp; Claude Code: 1h / $10 (<strong style='color:var(--red);'>104× cheaper</strong>)</p>
+                <p style="font-size:var(--t-label);color:var(--ink-soft);text-align:center;">PhD student: 16h / $1,040 &nbsp;vs&nbsp; Claude Code: 1h / $10 (104× cheaper)</p>
             </div>
             <!-- RIGHT: 但人类还没有被替代 -->
             <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);justify-content:center;">
                 <div style="padding:0.8rem 1rem;background:var(--bg-alt);border-radius:8px;border-left:4px solid var(--ink);">
-                    <p style="font-size:var(--t-body);font-weight:700;margin-bottom:0.5rem;">But: humans haven't been replaced</p>
-                    <ul style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.9;padding-left:1.1em;margin:0;">
-                        <li>AI ideas look novel on the surface — but don't outperform humans after execution</li>
+                    <p style="font-size:var(--t-h3);font-weight:700;margin-bottom:0.6rem;">But: humans haven't been replaced</p>
+                    <ul style="font-size:var(--t-body);color:var(--ink-mid);line-height:1.9;padding-left:1.1em;margin:0;">
+                        <li>AI ideas look novel — but don't outperform humans after execution</li>
                         <li>Accepted papers: humans intervene more on idea and experiment design</li>
                         <li>AI excels at execution, but "what to do" still needs human judgment</li>
                     </ul>
@@ -2045,13 +2294,13 @@ top-venue submission, ddl: 5/31</div>
         </div>
     </div>
     <div class="slide-footer">
-        <div class="footer-text"></div>
-        <div class="slide-num">— / 23</div>
+        <div class="footer-text" style="font-size:var(--t-label);color:var(--ink-soft);">Sources: Andy Hall, freesystems.substack.com · AI Ideas paper ICLR 2025 (arxiv.org/abs/2409.04109)</div>
+        <div class="slide-num">38 / 43</div>
     </div>
 </section>
 
 <!-- ===================== DISCUSSION 2: 工程 ===================== -->
-<section class="slide" id="slide-refl2">
+<section class="slide" id="slide-senior-productivity">
     <div class="slide-header">
         <div class="slide-header-label">Discussion · Engineering</div>
         <div class="slide-header-label red">Engineering</div>
@@ -2062,7 +2311,7 @@ top-venue submission, ddl: 5/31</div>
             <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);">
                 <p style="font-size:var(--t-body);font-weight:700;color:var(--ink);">People vs. Agents</p>
                 <ul class="bullet-list">
-                    <li>Juniors: onboard · mentor · review · pass blame</li>
+                    <li>Juniors: onboard · mentor · review</li>
                     <li>Agent: follows orders · always on · no salary</li>
                     <li>1 person + agent = team of 5</li>
                     <li>Junior's repetitive work? Agent handles it all</li>
@@ -2084,13 +2333,13 @@ top-venue submission, ddl: 5/31</div>
         </div>
     </div>
     <div class="slide-footer">
-        <div class="footer-text"></div>
-        <div class="slide-num">— / 23</div>
+        <div class="footer-text" style="font-size:var(--t-label);color:var(--ink-soft);">Ref: Sam Altman (X, Feb 2025) · Anthropic Economic Index · anthropic.com/research/labor-market-impacts</div>
+        <div class="slide-num">39 / 43</div>
     </div>
 </section>
 
-<!-- ===================== DISCUSSION 2b: Anthropic Data ===================== -->
-<section class="slide" id="slide-refl2b">
+<!-- ===================== DISCUSSION 2b: Anthropic 数据 ===================== -->
+<section class="slide" id="slide-engineering-discussion">
     <div class="slide-header">
         <div class="slide-header-label">Discussion · Engineering</div>
         <div class="slide-header-label red">Engineering</div>
@@ -2102,10 +2351,15 @@ top-venue submission, ddl: 5/31</div>
                 <ul class="bullet-list" style="font-size:var(--t-body);line-height:2;">
                     <li>Programmers: AI covers <strong>75%</strong> of job tasks</li>
                     <li>AI-exposed jobs: avg. earnings <strong>47% higher</strong> than unexposed</li>
-                    <li>Job seekers aged 22–25: <strong>14% drop</strong> in employment rate</li>
+                    <li>Workers aged 22–25 in high-AI-exposure occupations: <strong>13% drop</strong> in employment (Stanford, 2025)</li>
+                    <li>Global workforce: <strong>3.3 billion</strong> workers worldwide</li>
+                    <li>Affected workers: <strong>1.1 billion</strong> — roughly <strong>1 in 3</strong> globally</li>
                 </ul>
             </div>
             <div class="reveal" style="display:flex;align-items:center;justify-content:center;">
+                <img class="zh-img" src="assets/claude_report_cn.jpg" alt="Claude Workforce Report (Chinese)"
+                     style="display:none"
+                     onerror="this.style.opacity='0.2'">
                 <img class="en-img" src="assets/claude_report_en.webp" alt="Claude Career Report (English)"
                      style="width:100%;max-height:min(65vh,480px);object-fit:contain;border-radius:8px;"
                      onerror="this.style.opacity='0.2'">
@@ -2113,13 +2367,26 @@ top-venue submission, ddl: 5/31</div>
         </div>
     </div>
     <div class="slide-footer">
+        <div class="footer-text" style="font-size:var(--t-label);color:var(--ink-soft);">Sources: Anthropic (Mar 2026) anthropic.com/research/labor-market-impacts · Dallas Fed (Jan 2026) dallasfed.org/research/economics/2026/0106</div>
+        <div class="slide-num">40 / 43</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE: BONUS DIVIDER ===================== -->
+<section class="slide slide-part" id="slide-bonus-divider">
+    <div class="slide-content" style="justify-content: center; align-items: center; text-align: center;">
+        <div class="part-label reveal">🎁 Bonus</div>
+        <div class="part-title reveal">gnvitop<br>Global GPU Monitor</div>
+        <div class="part-subtitle reveal">A side project built during research — one command to monitor all your lab GPUs</div>
+    </div>
+    <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">— / 23</div>
+        <div class="slide-num">41 / 43</div>
     </div>
 </section>
 
 <!-- ===================== SLIDE 22: gnvitop BONUS ===================== -->
-<section class="slide" id="slide-22b">
+<section class="slide" id="slide-tools-rec">
     <div class="slide-header">
         <div class="slide-header-label red">🎁 Bonus</div>
         <div class="slide-header-label">Tool Recommendation</div>
@@ -2143,12 +2410,12 @@ gnvitop              <span style="color:#555;"># run</span></div>
     </div>
     <div class="slide-footer">
         <div class="footer-text">github.com/Linwei94/gnvitop</div>
-        <div class="slide-num">23 / 23</div>
+        <div class="slide-num">42 / 43</div>
     </div>
 </section>
 
 <!-- ===================== SLIDE 23: Q&A ===================== -->
-<section class="slide" id="slide-23">
+<section class="slide" id="slide-qa">
     <div class="slide-content" style="justify-content: center; align-items: center; text-align: center;">
         <p class="reveal text-soft" style="font-size: var(--t-small); letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 1rem;">Thanks</p>
         <h1 class="reveal" style="font-size: var(--t-hero);">Q &amp; A</h1>
@@ -2157,8 +2424,8 @@ gnvitop              <span style="color:#555;"># run</span></div>
         </div>
     </div>
     <div class="slide-footer">
-        <div class="footer-text">Linwei Tao · 2026.03.18</div>
-        <div class="slide-num">— / 23</div>
+        <div class="footer-text">Linwei Tao · 2026.03.20</div>
+        <div class="slide-num">43 / 43</div>
     </div>
 </section>
 
@@ -2206,6 +2473,35 @@ setTimeout(scaleSafariIframe, 500);
 
 // Script: each entry is { role, text } or { tool, args, result }
 
+const CC_SCRIPT = [
+    { role: 'user', text: 'I\'m studying confidence calibration — the ground truth is inherently ambiguous because annotators disagree. Has anyone worked on this?' },
+    { role: 'claude', text: 'Let me search the literature.' },
+    { tool: 'WebSearch', args: '"calibration ambiguous labels annotator disagreement"', result: '47 results returned, filtering...' },
+    { tool: 'WebSearch', args: '"soft label calibration ECE annotator agreement"', result: 'Key papers found: Soft Calibration (ICML 2023), CrowdKit, CROWDLAB' },
+    { tool: 'Write', args: 'literature_review.md', result: '34 lines of review notes written' },
+    { role: 'claude', text: 'Review done. Key finding:\n  ECE_voted (evaluating majority-vote labels) vs ECE_true (evaluating true distribution)\n  — almost no one has systematically studied this gap ← this is your contribution' },
+    { role: 'user', text: 'Exactly! Design an ambiguity-aware calibrator and implement it' },
+    { role: 'claude', text: 'Reading your existing code structure first...' },
+    { tool: 'Read', args: 'src/calibrators/base.py', result: 'Read 128 lines (BaseCalibrator class)' },
+    { tool: 'Read', args: 'src/metrics/ece.py', result: 'Read 84 lines (standard ECE implementation)' },
+    { tool: 'Write', args: 'src/calibrators/agt_calibrator.py', result: 'Written: 156 lines (AGTCalibrator + soft label support)' },
+    { tool: 'Write', args: 'src/metrics/ece_true.py', result: 'Written: 67 lines (ECE_true, ECE_voted metrics)' },
+    { tool: 'Bash', args: 'python -m pytest src/tests/test_agt.py -v', result: '........  8 passed in 1.23s ✓' },
+    { tool: 'Bash', args: 'python experiments/run_baseline.py --dataset CIFAR-10H', result: '  Temperature Scaling: ECE_voted=0.032  ECE_true=0.088  ← ECE_true is actually higher!\n  AGT Calibrator:      ECE_voted=0.031  ECE_true=0.041  ✓' },
+    { role: 'claude', text: 'Hypothesis confirmed. Temperature Scaling was optimizing the wrong metric.' },
+    { role: 'user', text: 'Run ablation experiments on xuchang-lab1, xuchang-lab2, linwei-lab2 in parallel with different seeds' },
+    { tool: 'Bash', args: "ssh xuchang-lab1 'python train.py --seed 0 --dataset CIFAR-10H > logs/s0.log &'", result: '[1] 23847' },
+    { tool: 'Bash', args: "ssh xuchang-lab2 'python train.py --seed 1 --dataset ChaosNLI > logs/s1.log &'", result: '[1] 31092' },
+    { tool: 'Bash', args: "ssh linwei-lab2  'python train.py --seed 2 --dataset ISIC > logs/s2.log &'", result: '[1] 8834' },
+    { role: 'claude', text: 'All three launched in parallel. ETA ~2 hours. Results will be written to results/ablation/' },
+    { role: 'user', text: 'Results are in — write them up as a top-venue paper' },
+    { tool: 'Read', args: 'results/ablation/summary.csv', result: 'Read 45 rows (3 datasets × 5 methods × 3 seeds)' },
+    { tool: 'Bash', args: 'python scripts/gen_figures.py', result: '✓ fig1_toy_example.pdf\n✓ fig2_reliability_diagrams.pdf\n✓ fig3_ablation_results.pdf' },
+    { tool: 'Write', args: 'paper/main.tex', result: 'Written: 847 lines (top-venue template)' },
+    { tool: 'Bash', args: 'cd paper && pdflatex main.tex', result: 'Output written on main.pdf (9 pages). ✓' },
+    { role: 'claude', text: 'Paper draft complete — 9 pages. Want me to revise any section?' },
+];
+
 
 let ccAnimationRunning = false;
 let ccPaused = false;
@@ -2215,6 +2511,7 @@ function pauseLabel(p) { return p ? '▶ Resume' : '⏸ Pause'; }
 function replayLabel() { return '↺ Replay'; }
 
 function toggleCCPause() {
+    if (!ccAnimationRunning) { restartCCAnimation(); return; }
     ccPaused = !ccPaused;
     const btn = document.getElementById('cc-pause-btn');
     if (btn) btn.textContent = pauseLabel(ccPaused);
@@ -2239,7 +2536,7 @@ async function waitIfPaused() {
     while (ccPaused) await sleep(100);
 }
 
-async function typeText(el, text, speed = 40) {
+async function typeText(el, text, speed = 60) {
     const chat = document.getElementById('cc-chat');
     for (const ch of text) {
         await waitIfPaused();
@@ -2359,7 +2656,7 @@ function appendBubble0(chat, role) {
     return bubble;
 }
 
-async function typeText0(el, text, speed = 35) {
+async function typeText0(el, text, speed = 55) {
     const chat = document.getElementById('cc0-chat');
     for (const ch of text) {
         if (!cc0AnimationRunning) return;
@@ -2453,26 +2750,13 @@ class SlidePresentation {
                     entry.target.classList.add('visible');
                     this.current = this.slides.indexOf(entry.target);
                     this.updateUI();
-                    // Music: only on slide-1
-                    if (entry.target.id === 'slide-1') {
+                    // Music: only on slide-cover
+                    if (entry.target.id === 'slide-cover') {
                         ambience.start();
                     } else {
                         ambience.stop();
                     }
-                    // Animations — always restart from beginning on slide entry
-                    if (entry.target.id === 'slide-9') {
-                        setTimeout(restartCCAnimation, 400);
-                    }
-                    if (entry.target.id === 'slide-skills-intro') {
-                        setTimeout(restartSkill0Animation, 400);
-                    }
-                    if (entry.target.id === 'slide-skill-arp') {
-                        setTimeout(restartARPAnimation, 400);
-                    }
-                    if (entry.target.id === 'slide-autoai') {
-                        setTimeout(restartBs1Animation, 400);
-                        setTimeout(restartFs1Animation, 700);
-                    }
+                    // Animations — reset on slide entry, user must click ▶ to start
                 }
             });
         }, { threshold: 0.5 });
@@ -2483,7 +2767,7 @@ class SlidePresentation {
     getBuildItems(slide) {
         // Only slides with 3+ reveal items and not part-dividers or title use build mode
         if (slide.classList.contains('slide-part')) return [];
-        if (slide.id === 'slide-1') return [];
+        if (slide.id === 'slide-cover') return [];
         const items = Array.from(slide.querySelectorAll('.reveal'));
         return items.length >= 3 ? items : [];
     }
@@ -2567,10 +2851,10 @@ class SlidePresentation {
     setupNavDots() {
         const nav = document.getElementById('navDots');
         const partLabels = {
-            'slide-6':     'Part 2 · Research',
-            'slide-12':    'Part 1 · Engineering',
-            'slide-18':    'Part 3 · 技术解剖',
-            'slide-part4': 'Part 4 · 讨论',
+            'slide-part-research':     'Part 2 · Research',
+            'slide-part-engineering':    'Part 1 · Engineering',
+            'slide-part-tech':    'Part 3 · Technical Anatomy',
+            'slide-part-discussion': 'Part 4 · Discussion',
         };
         this.dotEls = [];
         this.slides.forEach((slide, i) => {
@@ -2655,7 +2939,7 @@ class InlineEditor {
     toggleEditMode() {
         this.isActive = !this.isActive;
         document.body.classList.toggle('edit-mode', this.isActive);
-        this.toggle.textContent = this.isActive ? '💾 保存 (Ctrl+S)' : '✏ 编辑';
+        this.toggle.textContent = this.isActive ? '💾 Save (Ctrl+S)' : '✏ Edit';
         this.toggle.classList.toggle('active', this.isActive);
         this.toggle.classList.add('show');
 
@@ -2674,8 +2958,8 @@ class InlineEditor {
         });
         localStorage.setItem(this.saveKey, JSON.stringify(data));
         if (this.isActive) {
-            this.toggle.textContent = '✅ 已保存';
-            setTimeout(() => { this.toggle.textContent = '💾 保存 (Ctrl+S)'; }, 1500);
+            this.toggle.textContent = '✅ Saved';
+            setTimeout(() => { this.toggle.textContent = '💾 Save (Ctrl+S)'; }, 1500);
         }
     }
 
@@ -2805,11 +3089,30 @@ presentation.goTo = function(index) {
    SKILL-CREATOR ANIMATION
    =========================================== */
 
+const SKILL0_SCRIPT = [
+    { role: 'user', text: '/skill-creator' },
+    { tool: 'Read', args: '~/.claude/skills/', result: 'Found 15 skills: gpu-experiment, paper-review, daily-summary...' },
+    { role: 'claude', text: 'What skill do you want to create?\nDescribe the trigger scenario and what the agent should do.' },
+    { role: 'user', text: 'literature-review: given a research direction, auto-survey papers and summarize gaps' },
+    { role: 'claude', text: 'Got it. What output format after the survey?\nE.g. chronological, by method, or write a related-work paragraph directly?' },
+    { role: 'user', text: 'Top 10 papers + one-sentence abstract each, then a gap analysis' },
+    { role: 'claude', text: 'Search scope — arxiv only, or also Semantic Scholar / Google Scholar?' },
+    { role: 'user', text: 'Mainly arxiv, then Google Scholar to catch anything missed' },
+    { role: 'claude', text: 'Got it. Drafting the skill spec now.' },
+    { tool: 'mcp__arxiv__search_papers', args: '"literature review automation survey top-venue 2024"', result: '12 results — reviewing common survey structures' },
+    { tool: 'Write', args: '~/.claude/skills/literature-review.md', result: 'Written: 487 lines' },
+    { role: 'claude', text: 'Draft ready. Structure:\n1. Receive research direction keywords\n2. arxiv search → top 10 by citation\n3. One-sentence abstract per paper\n4. Google Scholar supplement search\n5. Output gap analysis paragraph\n\nAny adjustments?' },
+    { role: 'user', text: 'Step 3: change to three sentences covering method, dataset, and conclusion' },
+    { tool: 'Write', args: '~/.claude/skills/literature-review.md', result: 'Updated: summary template → method / dataset / conclusion' },
+    { role: 'claude', text: '✓ Skill literature-review created.\n\nType /literature-review to invoke it next time.' },
+];
+
 
 let skill0Running = false;
 let skill0Paused = false;
 
 function toggleSkill0Pause() {
+    if (!skill0Running) { restartSkill0Animation(); return; }
     skill0Paused = !skill0Paused;
     const btn = document.getElementById('skill0-pause-btn');
     if (btn) btn.textContent = pauseLabel(skill0Paused);
@@ -2834,7 +3137,7 @@ function appendBubbleSkill(chat, role) {
     return bubble;
 }
 
-async function typeTextSkill(el, text, chat, speed = 22, isPaused = null) {
+async function typeTextSkill(el, text, chat, speed = 35, isPaused = null) {
     for (const ch of text) {
         if (isPaused) while (isPaused()) await sleep(50);
         el.textContent += ch;
@@ -2859,7 +3162,7 @@ async function runSkill0Animation() {
         if (msg.role === 'user') {
             await sleep(300);
             inputEl.textContent = '';
-            await typeTextSkill(inputEl, msg.text, null, 30, ip);
+            await typeTextSkill(inputEl, msg.text, null, 45, ip);
             await sleep(500);
             inputEl.textContent = '';
             const bubble = appendBubbleSkill(chat, 'user');
@@ -2868,7 +3171,7 @@ async function runSkill0Animation() {
         } else if (msg.role === 'claude') {
             await sleep(280);
             const bubble = appendBubbleSkill(chat, 'claude');
-            await typeTextSkill(bubble, msg.text, chat, 16, ip);
+            await typeTextSkill(bubble, msg.text, chat, 28, ip);
             await sleep(450);
         } else if (msg.tool) {
             await sleep(180);
@@ -2882,7 +3185,7 @@ async function runSkill0Animation() {
             resultLine.style.cssText = 'color:#555;padding-left:1.1rem;';
             const span = document.createElement('span');
             resultLine.appendChild(span); wrap.appendChild(resultLine);
-            await typeTextSkill(span, '⎿ ' + msg.result, chat, 10, ip);
+            await typeTextSkill(span, '⎿ ' + msg.result, chat, 18, ip);
             await sleep(180);
         }
     }
@@ -2906,11 +3209,38 @@ function restartSkill0Animation() {
    AI-RESEARCH-PAPER ANIMATION
    =========================================== */
 
+const ARP_SCRIPT = [
+    { role: 'user', text: '/ai-research-paper' },
+    { role: 'claude', text: 'Phase 0: Setup\nTarget venue / research direction / compute resources?' },
+    { role: 'user', text: 'venue: top-venue 2026\ntopic: calibration under annotator disagreement\ncompute: 4x A100 (jinxu-lab1)' },
+    { tool: 'Write', args: 'plan/config.md', result: 'Saved: venue · topic · compute config' },
+    { role: 'claude', text: '── Phase 1: Literature Review ──' },
+    { tool: 'mcp__arxiv__search_papers', args: '"calibration annotator disagreement soft labels"', result: '53 results · top-12 parsed and summarized' },
+    { tool: 'WebSearch', args: '"ECE soft label top-venue ICML 2024"', result: 'CROWDLAB · SoftCalib (ICML23) · DiRA identified' },
+    { tool: 'Write', args: 'plan/literature.md', result: '12 papers · gap: ECE_voted vs ECE_true unstudied' },
+    { role: 'claude', text: '── Phase 2-3: Idea Generation + 6-Agent Debate ──\nGenerating 4 candidates, launching subagent debate…' },
+    { tool: 'Agent', args: 'IdeaDebate × 6 subagents · idea_pool.md', result: 'Subagent[Critic]:   Idea-3 assumption too strong, needs annotation budget prior\nSubagent[Champion]: Idea-1 clean formulation, fits top-venue style\nSubagent[Devil]:    Idea-2 baseline too weak, reviewers will question\nSubagent[Reviewer]: Idea-1 clear gap, quantifiable contribution\n…(6-round debate complete)' },
+    { role: 'claude', text: '── AC Gate ──\n[ACCEPT] Idea-1: ECE decomposition framework\nRationale: novel · feasible · gap well-defined' },
+    { role: 'claude', text: '── Phase 4: Pilot Experiment ──\nChecking GPU availability…' },
+    { tool: 'Bash', args: 'gnvitop --agent', result: 'jinxu-lab1  GPU 0: available=true\njinxu-lab1  GPU 1: available=true' },
+    { tool: 'Bash', args: 'ssh jinxu-lab1 "python pilot/run.py --seed 0"', result: 'ECE_voted=0.082 · ECE_true=0.041 · Δ=0.041 ✓' },
+    { role: 'claude', text: 'Pilot PASS — strong signal. Moving to full experiments.\nScheduling 4 GPUs autonomously…' },
+    { tool: 'Bash', args: 'ssh jinxu-lab1 "nohup python run_all.py --gpus 0,1,2,3 &"', result: 'Launched · ETA 4h · monitoring enabled' },
+    { role: 'claude', text: '── Phase 7: 6-Agent Result Debate ──' },
+    { tool: 'Agent', args: 'ResultDebate × 6 subagents · results/', result: 'Subagent[Stats]:    ECE↓31% vs voted baseline\nSubagent[Reviewer]: contribution narrative clear\nConsensus: strong empirical result, ready to write' },
+    { role: 'claude', text: '── Phase 8: Paper Writing ──' },
+    { tool: 'Bash', args: 'python scripts/gen_figures.py', result: '✓ fig1_decomp.pdf · fig2_reliability.pdf · fig3_ablation.pdf' },
+    { tool: 'Write', args: 'paper/main.tex', result: 'Top-venue template · 9 pages · all sections' },
+    { tool: 'Agent', args: 'InternalReview subagent · main.tex', result: 'Sec 3.2: notation inconsistency · Related Work missing DiRA citation\n→ 2 issues fixed' },
+    { role: 'claude', text: '✓ Full pipeline complete. 9-page draft, passed internal review.\n📱 Telegram notification sent.' },
+];
+
 
 let arpRunning = false;
 let arpPaused = false;
 
 function toggleARPPause() {
+    if (!arpRunning) { restartARPAnimation(); return; }
     arpPaused = !arpPaused;
     const btn = document.getElementById('arp-pause-btn');
     if (btn) btn.textContent = pauseLabel(arpPaused);
@@ -2932,7 +3262,7 @@ async function runARPAnimation() {
         if (msg.role === 'user') {
             await sleep(300);
             inputEl.textContent = '';
-            await typeTextSkill(inputEl, msg.text, null, 28, ip);
+            await typeTextSkill(inputEl, msg.text, null, 42, ip);
             await sleep(500);
             inputEl.textContent = '';
             const bubble = appendBubbleSkill(chat, 'user');
@@ -2941,7 +3271,7 @@ async function runARPAnimation() {
         } else if (msg.role === 'claude') {
             await sleep(280);
             const bubble = appendBubbleSkill(chat, 'claude');
-            await typeTextSkill(bubble, msg.text, chat, 14, ip);
+            await typeTextSkill(bubble, msg.text, chat, 25, ip);
             await sleep(450);
         } else if (msg.tool) {
             await sleep(180);
@@ -2955,7 +3285,7 @@ async function runARPAnimation() {
             resultLine.style.cssText = 'color:#555;padding-left:1.1rem;';
             const span = document.createElement('span');
             resultLine.appendChild(span); wrap.appendChild(resultLine);
-            await typeTextSkill(span, '⎿ ' + msg.result, chat, 10, ip);
+            await typeTextSkill(span, '⎿ ' + msg.result, chat, 18, ip);
             await sleep(180);
         }
     }
@@ -2980,13 +3310,18 @@ function restartARPAnimation() {
    =========================================== */
 const BS1_SCRIPT = [
     { role: 'user', text: '/brainstorm' },
-    { role: 'claude', text: "What are you exploring? Topic, audience, goal — anything goes." },
-    { role: 'user', text: "I need to give a talk on AI Agents to a PhD group next week. Want depth without going too theoretical." },
-    { role: 'claude', text: "A few angles to consider:\n\n1. Tooling walkthrough (how to use)\n2. Under-the-hood (tool use / context)\n3. Real case studies (what you've built)\n4. Impact on research\n\nSuggestion: 3 as the spine, 2 for depth, 4 as reflection.\nWhat agent projects are worth sharing?" },
-    { role: 'user', text: "ai-research-paper skill, and gnvitop" },
-    { role: 'claude', text: "Great material. Draft structure:\n\n· Part 1 — LLM vs Agent: the key difference\n· Part 2 — ai-research-paper: full live demo\n· Part 3 — Tool use & context mechanics\n· Part 4 — Research impact: inflation & opportunity\n\ngnvitop as a bonus at the end — light finish.\n~30 mins, good pacing." },
-    { role: 'user', text: "How do I frame Part 4 without fear-mongering?" },
-    { role: 'claude', text: "Perspective is everything:\n✓ Lead with data, not drama (Anthropic labor report)\n✓ Separate \"execution\" from \"judgment\" — the latter isn't replaceable yet\n✓ Give actionable takeaways: command agents = the new 10x engineer\n✓ End on \"opportunity window\", not \"crisis\"" },
+    { tool: 'Read', args: 'CLAUDE.md', result: 'Project: academic talk slides · Audience: PhD group · Tool: Claude Code' },
+    { tool: 'Glob', args: 'slides/**', result: 'zh.html, en.html, index.html, assets/' },
+    { tool: 'Bash', args: 'git log --oneline -5', result: 'refactor: split zh + en\nfeat: bilingual support\nAdd HTML slides' },
+    { role: 'claude', text: 'Checked project structure and commits.\n\nWhat\'s the audience background — mostly researchers, or do some write code?' },
+    { role: 'user', text: 'Mixed, mostly CV folks, ~20 people, some write code' },
+    { role: 'claude', text: 'How long is the talk?' },
+    { role: 'user', text: '40 min + Q&A' },
+    { role: 'claude', text: 'Which material do you most want to feature: CalibrationAGT, or tools like gnvitop?' },
+    { role: 'user', text: 'CalibrationAGT as the main story, gnvitop as a bonus' },
+    { role: 'claude', text: 'Three approaches:\n\n① Case-driven — demo first, theory as footnotes\n② Principles + case — explain tool use / context, then demo (recommended)\n③ Social impact — start from research ecosystem shifts\n\nRecommend ②: depth with a concrete anchor. Which one?' },
+    { role: 'user', text: '② works for me' },
+    { role: 'claude', text: 'Confirmed. Writing spec to docs/superpowers/specs/ and committing.' },
 ];
 
 
@@ -2994,6 +3329,7 @@ let bs1Running = false;
 let bs1Paused = false;
 
 function toggleBs1Pause() {
+    if (!bs1Running) { restartBs1Animation(); return; }
     bs1Paused = !bs1Paused;
     const btn = document.getElementById('bs1-pause-btn');
     if (btn) btn.textContent = pauseLabel(bs1Paused);
@@ -3015,7 +3351,7 @@ async function runBs1Animation() {
         if (msg.role === 'user') {
             await sleep(300);
             inputEl.textContent = '';
-            await typeTextSkill(inputEl, msg.text, null, 30, ip);
+            await typeTextSkill(inputEl, msg.text, null, 45, ip);
             await sleep(450);
             inputEl.textContent = '';
             const bubble = appendBubbleSkill(chat, 'user');
@@ -3024,7 +3360,7 @@ async function runBs1Animation() {
         } else if (msg.role === 'claude') {
             await sleep(260);
             const bubble = appendBubbleSkill(chat, 'claude');
-            await typeTextSkill(bubble, msg.text, chat, 12, ip);
+            await typeTextSkill(bubble, msg.text, chat, 22, ip);
             await sleep(400);
         } else if (msg.tool) {
             await sleep(180);
@@ -3038,7 +3374,7 @@ async function runBs1Animation() {
             resultLine.style.cssText = 'color:#555;padding-left:1.1rem;';
             const span = document.createElement('span');
             resultLine.appendChild(span); wrap.appendChild(resultLine);
-            await typeTextSkill(span, '\u23BF ' + msg.result, chat, 10, ip);
+            await typeTextSkill(span, '⎿ ' + msg.result, chat, 18, ip);
             await sleep(160);
         }
     }
@@ -3063,15 +3399,15 @@ function restartBs1Animation() {
    =========================================== */
 const FS1_SCRIPT = [
     { role: 'user', text: '/frontend-slides' },
-    { role: 'claude', text: "What kind of slides do you need?\nTopic, audience, style, page count — tell me anything." },
-    { role: 'user', text: "AI Agent talk for an academic audience. Dark minimal style, ~20 slides, with terminal animations." },
-    { role: 'claude', text: "Planned structure:\nCover · Parts 1–4 · Bonus · Q&A\n\nTerminal animations use typewriter effect to simulate real Claude conversations.\nGenerating now…" },
+    { role: 'claude', text: 'What slides can I help you build?\nTopic, audience, style, page count — just tell me.' },
+    { role: 'user', text: 'AI Agent talk, academic audience, dark minimal style, ~20 slides, with terminal animations' },
+    { role: 'claude', text: 'Structure plan:\nCover · Parts 1–4 (4–5 slides each) · Bonus · Q&A\n\nTerminal animations via typewriter effect, simulating real Claude conversations.\nGenerating…' },
     { tool: 'Write', args: 'slides/zh.html', result: '✓ 22 slides · dark Swiss Modern · 5 terminal animations · bilingual architecture' },
-    { role: 'user', text: "Make separate zh/en HTML files with a language picker landing page" },
-    { tool: 'Write', args: 'gen_en.py · en.html · index.html', result: '✓ auto-generated English version · bulk data-en substitution · 3-file architecture' },
-    { role: 'user', text: "Add pause and replay buttons to every terminal" },
-    { tool: 'Edit', args: 'zh.html — 5 terminals', result: '✓ isPaused() callbacks · ⏸/▶/↺ controls · animations can freeze mid-stream' },
-    { role: 'claude', text: "Done. These slides were built with an agent —\nwhat you're watching is its own creation story." },
+    { role: 'user', text: 'Make separate zh/en HTML files, entry page lets user pick language' },
+    { tool: 'Write', args: 'gen_en.py · en.html · index.html', result: '✓ English version auto-generated · data-en batch substitution · 3-file architecture' },
+    { role: 'user', text: 'Add pause and replay buttons to each terminal' },
+    { tool: 'Edit', args: 'zh.html — 5 terminals', result: '✓ isPaused() callback · ⏸/▶/↺ controls · animations can be frozen mid-way' },
+    { role: 'claude', text: 'Done. These slides were built with an agent —\nwhat you\'re watching is the very process that made them.' },
 ];
 
 
@@ -3079,6 +3415,7 @@ let fs1Running = false;
 let fs1Paused = false;
 
 function toggleFs1Pause() {
+    if (!fs1Running) { restartFs1Animation(); return; }
     fs1Paused = !fs1Paused;
     const btn = document.getElementById('fs1-pause-btn');
     if (btn) btn.textContent = pauseLabel(fs1Paused);
@@ -3100,7 +3437,7 @@ async function runFs1Animation() {
         if (msg.role === 'user') {
             await sleep(300);
             inputEl.textContent = '';
-            await typeTextSkill(inputEl, msg.text, null, 30, ip);
+            await typeTextSkill(inputEl, msg.text, null, 45, ip);
             await sleep(450);
             inputEl.textContent = '';
             const bubble = appendBubbleSkill(chat, 'user');
@@ -3109,7 +3446,7 @@ async function runFs1Animation() {
         } else if (msg.role === 'claude') {
             await sleep(260);
             const bubble = appendBubbleSkill(chat, 'claude');
-            await typeTextSkill(bubble, msg.text, chat, 12, ip);
+            await typeTextSkill(bubble, msg.text, chat, 22, ip);
             await sleep(400);
         } else if (msg.tool) {
             await sleep(180);
@@ -3123,7 +3460,7 @@ async function runFs1Animation() {
             resultLine.style.cssText = 'color:#555;padding-left:1.1rem;';
             const span = document.createElement('span');
             resultLine.appendChild(span); wrap.appendChild(resultLine);
-            await typeTextSkill(span, '\u23BF ' + msg.result, chat, 10, ip);
+            await typeTextSkill(span, '⎿ ' + msg.result, chat, 18, ip);
             await sleep(160);
         }
     }
@@ -3146,6 +3483,18 @@ function restartFs1Animation() {
 
 </script>
 
+<script>
+/* DEBUG: inject slide id into header center */
+document.querySelectorAll('.slide').forEach(slide => {
+  const header = slide.querySelector('.slide-header');
+  if (!header) return;
+  const tag = document.createElement('div');
+  tag.textContent = '#' + slide.id;
+  tag.style.cssText = 'position:absolute;left:50%;transform:translateX(-50%);font-size:0.6rem;font-family:monospace;color:#888;letter-spacing:0.05em;user-select:text;cursor:text;';
+  header.style.position = 'relative';
+  header.appendChild(tag);
+});
+</script>
 
 </body>
 </html>

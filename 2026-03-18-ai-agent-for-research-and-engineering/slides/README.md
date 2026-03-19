@@ -1,11 +1,10 @@
-# AI Agent for Research and Engineering
+# Slides
 
-**Date:** 2026-03-18
+See the [talk README](../README.md) for setup instructions and content overview.
 
-## Abstract
-
-_TODO: Add abstract_
-
-## Slides
-
-Slides are available in the [slides/](./slides/) directory.
+| File | Description |
+|------|-------------|
+| `index.html` | Language picker (entry point) |
+| `zh.html` | Chinese slides — source of truth |
+| `en.html` | English slides — generated, do not edit directly |
+| `gen_en.py` | Generates `en.html` from `zh.html` |

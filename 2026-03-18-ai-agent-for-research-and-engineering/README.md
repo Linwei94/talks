@@ -1,53 +1,62 @@
 # AI Agent for Research and Engineering
 
 **Date:** 2026-03-18
-**Venue:** Lab Seminar
+**Venue:** Lab Seminar, School of Computer Science, USYD
 **Duration:** 50 min + Q&A
+**Languages:** Chinese (primary) · English
 
-用两个真实项目说明 AI Agent 已经可以干真实的事：一篇 NeurIPS 2026 投稿（CalibrationAGT）和一个生产级全栈 app（阿里嘎多猫咪寄养系统），同时完成。
+## Abstract
 
-## 启动幻灯片
+AI agents can now handle substantial parts of real research and engineering work. This talk walks through two concrete projects built entirely with Claude Code: a NeurIPS 2026 submission on confidence calibration (CalibrationAGT) and a production-ready full-stack web app (Arigato Cat Boarding System) — developed in parallel. The second half covers the technical internals of how agents work (tools, memory, sub-agents, hooks) and discusses how research and engineering workflows are changing.
+
+## Slides
+
+Open `slides/index.html` in a browser to choose your language, or go directly to:
+
+- `slides/zh.html` — Chinese
+- `slides/en.html` — English
+
+**Serve locally** (recommended, some assets require HTTP):
 
 ```bash
 cd slides
 python3 -m http.server 8080
+# open http://localhost:8080
 ```
 
-然后在浏览器打开 `http://localhost:8080`。
+**Navigation:** `→` / `Space` next · `←` previous · scroll / swipe also works
+**Edit mode:** press `E` to edit any text inline, `Ctrl+S` to save to localStorage
 
-**局域网访问（投影用）：**
+## Content
 
-```bash
-python3 -m http.server 8080 --bind 0.0.0.0
-```
+| Part | Topic | Duration |
+|------|-------|----------|
+| Intro | What is an AI Agent? Context window as a workspace | 5 min |
+| Part 1 | CalibrationAGT — full NeurIPS submission pipeline with Claude | 15 min |
+| Part 2 | Arigato Cat Boarding — production full-stack app, Claude Code only | 12 min |
+| Part 3 | Technical deep dive: tool use, memory, sub-agents, hooks, cron | 10 min |
+| Part 4 | Discussion: how research and engineering change in the agent era | 8 min |
 
-打开 `http://<your-ip>:8080`（用 `hostname -I` 查本机 IP）。
-
-**操作：**
-- `→` / `Space` 下一张，`←` 上一张
-- 直接滚动或触控滑动也可以
-- 按 `E` 进入编辑模式，点击文字直接修改，`Ctrl+S` 保存到 localStorage
-
-## 内容结构
-
-| Part | 主题 | 时长 |
-|------|------|------|
-| 开场 | AI Agent 是什么，context 的本质 | 5 min |
-| Part 1 | CalibrationAGT — NeurIPS 投稿全流程 | 15 min |
-| Part 2 | 猫咪寄养管理系统 — 生产级 app 全程 Claude Code | 12 min |
-| Part 3 | 技术解剖：Tool use、Memory、Sub-agent | 10 min |
-| Part 4 | 反思：科研和工程在 Agent 时代会怎么变？ | 8 min |
-| Bonus | gnvitop — GPU 监控小工具 | 2 min |
-
-## 文件结构
+## Files
 
 ```
 slides/
-├── index.html          # 完整幻灯片（单文件，零依赖）
+├── index.html       # language picker
+├── zh.html          # Chinese slides (source of truth)
+├── en.html          # English slides (generated — do not edit directly)
+├── gen_en.py        # generates en.html from zh.html
 └── assets/
-    ├── paper.pdf                    # CalibrationAGT 论文
-    ├── toy_example.png              # ECE_voted vs ECE_true 示意图
-    ├── fig_intro_ambiguity.png      # 标注歧义图
-    ├── desktop_tab_boarding.png     # 猫咪系统桌面截图
+    ├── paper.pdf                  # CalibrationAGT paper
+    ├── fig_intro_ambiguity.png    # annotation ambiguity figure
+    ├── agent4science.png          # Agents4Science conference stats
+    ├── claude_report_cn.jpg       # Claude Workforce Report (CN)
+    ├── claude_report_en.webp      # Claude Workforce Report (EN)
     └── ...
+```
+
+To regenerate `en.html` after editing `zh.html`:
+
+```bash
+cd slides
+python3 gen_en.py
 ```

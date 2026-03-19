@@ -87,6 +87,7 @@ for name in ['CC_SCRIPT', 'SKILL0_SCRIPT', 'ARP_SCRIPT', 'BS1_SCRIPT', 'FS1_SCRI
 # ─── 4. Fix button labels to English static text ─────────────────────────────
 content = content.replace('>⏸ 暂停<', '>⏸ Pause<')
 content = content.replace('>↺ 重播<', '>↺ Replay<')
+content = content.replace('>▶ 开始<', '>▶ Start<')
 
 # Replace pauseLabel / replayLabel functions with static English
 content = re.sub(
@@ -132,9 +133,29 @@ content = content.replace('/* 投影优化字号：偏大 */', '/* Projection-op
 content = re.sub(r'<!-- =+ SLIDE \d+: [^=]+=+ -->', lambda m: m.group(0), content)
 # iframe title attribute
 content = content.replace('title="猫咪寄养系统"', 'title="Cat Boarding System"')
+content = content.replace('title="阿里嘎多猫咪寄养 Web App"', 'title="Arigato Cat Boarding Web App"')
 # Alt attributes on zh-img/en-img
 content = content.replace('alt="Claude职业报告（中文）"', 'alt="Claude Workforce Report (Chinese)"')
 content = content.replace('alt="Claude Workforce Report (EN)"', 'alt="Claude Workforce Report (English)"')
+content = content.replace('alt="标注歧义示例"', 'alt="Annotation Ambiguity Example"')
+
+# ─── 11. Additional Chinese → English replacements ────────────────────────────
+# JS nav dot labels
+content = content.replace("'slide-part-tech':    'Part 3 · 技术解剖'", "'slide-part-tech':    'Part 3 · Technical Anatomy'")
+content = content.replace("'slide-part-discussion': 'Part 4 · 讨论'", "'slide-part-discussion': 'Part 4 · Discussion'")
+# Edit-mode UI strings
+content = content.replace("this.isActive ? '💾 保存 (Ctrl+S)' : '✏ 编辑'", "this.isActive ? '💾 Save (Ctrl+S)' : '✏ Edit'")
+content = content.replace("this.toggle.textContent = '✅ 已保存'", "this.toggle.textContent = '✅ Saved'")
+content = content.replace("'💾 保存 (Ctrl+S)'; }, 1500)", "'💾 Save (Ctrl+S)'; }, 1500)")
+# East Asian quotes → English quotes for the Andrew Hall article
+content = content.replace('「100x Research Assistant」', '"100x Research Assistant"')
+# gnvitop code block comments
+content = content.replace('# 安装</span>', '# install</span>')
+content = content.replace('# 使用</span>', '# run</span>')
+# Fix stray '负责' left by nested-span data-en replacement bug
+content = content.replace('</span></span>负责</span><br>', '</span></span><br>')
+# Agenda slide footnote (slides-agenda title)
+content = content.replace('title="AI Agent for Research and Engineering"', 'title="AI Agent for Research and Engineering — Linwei Tao"', 1)
 
 # ─── 10. en-img visibility: make sure en-img is shown by default ──────────────
 # Since we removed the CSS data-lang rules, en-img might still be display:none in static CSS
