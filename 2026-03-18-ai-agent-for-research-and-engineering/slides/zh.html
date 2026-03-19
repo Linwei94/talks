@@ -2130,10 +2130,9 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
         <div class="slide-header-label" data-en="Discussion · Engineering">讨论 · 工程</div>
         <div class="slide-header-label red">Engineering</div>
     </div>
-    <div style="display:flex;flex-direction:column;gap:0.5rem;padding:var(--egap) var(--pad) var(--pad);height:calc(100% - 4rem);">
+    <div class="slide-content" style="gap:var(--gap);">
         <h2 class="reveal" data-en="Senior Engineers 10× Productive — Why Still Hire Juniors?">Senior 工程师生产力 ×10，还要招新人干嘛？</h2>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0;">
-            <!-- LEFT: text -->
             <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);">
                 <p style="font-size:var(--t-body);font-weight:700;color:var(--ink);" data-en="Managing people vs. managing Agents">管人 vs 管 Agent</p>
                 <ul class="bullet-list">
@@ -2143,35 +2142,50 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                     <li data-en="Repetitive junior-level work is now fully handled by agents">Junior 做的重复性工作，agent 全包了</li>
                     <li data-en="Companies' headcount calculus is being repriced">公司的 headcount 逻辑正在被重新定价</li>
                 </ul>
-                <p style="font-size:var(--t-body);font-weight:700;color:var(--ink);margin-top:0.3rem;" data-en="Do juniors / new grads still have a shot?">那 junior / 新人 还有机会吗？</p>
+            </div>
+            <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);">
+                <p style="font-size:var(--t-body);font-weight:700;color:var(--ink);" data-en="Do juniors / new grads still have a shot?">那 junior / 新人 还有机会吗？</p>
                 <ul class="bullet-list">
                     <li data-en="Yes — but the path is narrower; find your irreplaceable part earlier">有——但路变窄了，要更早找到不可替代的那部分</li>
                     <li data-en="Systems judgment · user communication · defining the real requirement">系统判断力 · 用户沟通 · 定义真正的需求</li>
                     <li data-en="Those who can direct agents are the new era's <strong>10× engineer</strong>">能驾驭 agent 的人，是新时代的 <strong>10× engineer</strong></li>
                     <li data-en="End-to-end solo project used to take 5 years — now maybe 1">以前要 5 年才能独立做完一个完整系统，现在可能 1 年</li>
                 </ul>
-                <div class="highlight-box" style="border-left:3px solid var(--red);margin-top:0.2rem;">
+                <div class="highlight-box reveal" style="border-left:3px solid var(--red);margin-top:0.2rem;">
                     <p style="font-size:var(--t-small);color:var(--ink);" data-en="This isn't pessimism — it's a new starting line">这不是悲观——是新的起点</p>
                 </div>
             </div>
-            <!-- RIGHT: Anthropic stats + Claude report images -->
-            <div class="reveal" style="display:flex;flex-direction:column;gap:0.5rem;">
-                <div style="padding:0.6rem 0.8rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--red);">
-                    <p style="font-size:var(--t-small);font-weight:700;color:var(--red);margin-bottom:0.3rem;" data-en="Anthropic Labor Market Study (2026)">Anthropic 劳动力市场研究（2026）</p>
-                    <ul style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.8;padding-left:1em;margin:0;">
-                        <li data-en="Programmers: AI covers 75% of job tasks">程序员岗位：AI 覆盖 75% 的工作任务</li>
-                        <li data-en="AI-exposed jobs: avg. earnings 47% higher than unexposed">受影响岗位的平均薪资比未受影响岗位高 47%</li>
-                        <li data-en="Job seekers aged 22–25: 14% drop in employment rate">22–25 岁求职者：就业率下降 14%</li>
-                    </ul>
-                </div>
-                <div style="flex:1;display:flex;align-items:center;justify-content:center;">
-                    <img class="zh-img" src="assets/claude_report_cn.jpg" alt="Claude职业报告（中文）"
-                         style="width:100%;max-height:min(52vh,400px);object-fit:contain;border-radius:8px;"
-                         onerror="this.style.opacity='0.2'">
-                    <img class="en-img" src="assets/claude_report_en.webp" alt="Claude Career Report (English)"
-                         style="width:100%;max-height:min(52vh,400px);object-fit:contain;border-radius:8px;"
-                         onerror="this.style.opacity='0.2'">
-                </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== DISCUSSION 2b: Anthropic 数据 ===================== -->
+<section class="slide" id="slide-refl2b">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="Discussion · Engineering">讨论 · 工程</div>
+        <div class="slide-header-label red">Engineering</div>
+    </div>
+    <div class="slide-content" style="gap:var(--gap);justify-content:center;">
+        <h2 class="reveal" data-en="Anthropic Labor Market Study (2026)">Anthropic 劳动力市场研究（2026）</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0;align-items:center;">
+            <div class="reveal" style="display:flex;flex-direction:column;gap:var(--gap);">
+                <ul class="bullet-list" style="font-size:var(--t-body);line-height:2;">
+                    <li data-en="Programmers: AI covers <strong>75%</strong> of job tasks">程序员岗位：AI 覆盖 <strong>75%</strong> 的工作任务</li>
+                    <li data-en="AI-exposed jobs: avg. earnings <strong>47% higher</strong> than unexposed">受影响岗位的平均薪资比未受影响岗位高 <strong>47%</strong></li>
+                    <li data-en="Job seekers aged 22–25: <strong>14% drop</strong> in employment rate">22–25 岁求职者：就业率下降 <strong>14%</strong></li>
+                </ul>
+            </div>
+            <div class="reveal" style="display:flex;align-items:center;justify-content:center;">
+                <img class="zh-img" src="assets/claude_report_cn.jpg" alt="Claude职业报告（中文）"
+                     style="width:100%;max-height:min(65vh,480px);object-fit:contain;border-radius:8px;"
+                     onerror="this.style.opacity='0.2'">
+                <img class="en-img" src="assets/claude_report_en.webp" alt="Claude Career Report (English)"
+                     style="width:100%;max-height:min(65vh,480px);object-fit:contain;border-radius:8px;"
+                     onerror="this.style.opacity='0.2'">
             </div>
         </div>
     </div>
@@ -2191,11 +2205,11 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
         <h2 class="reveal" data-en="gnvitop — Global GPU Monitor">gnvitop — 全局 GPU 监控</h2>
         <div class="two-col text-img reveal" style="align-items: center; gap: var(--gap);">
             <div style="display: flex; flex-direction: column; gap: var(--egap);">
-                <p class="text-mid" style="line-height:1.6;" data-en="While building these two projects, I always needed to know <strong>which GPU was free</strong>.<br><span style='color:var(--ink-soft);font-size:0.95em;'>All the agents are going wild — but GPUs you still have to fight for yourself.</span>">
-                    做这两个项目的时候，我经常需要知道<strong>哪个 GPU 是空的</strong>。<br>
-                    <span style="color:var(--ink-soft);font-size:0.95em;">各种 agent 大乱斗打得热闹，GPU 还是要靠自己抢。</span>
+                <p class="text-mid" style="line-height:1.6;" data-en="Real-time GPU monitoring across all lab servers —<br><span style='color:var(--ink-soft);font-size:0.95em;'>see which cards are idle, check if you're hogging too many.</span>">
+                    实时监控所有服务器的 GPU 状态——<br>
+                    <span style="color:var(--ink-soft);font-size:0.95em;">看看有没有闲置的卡，也看看自己是不是用了太多卡。</span>
                 </p>
-                <div class="code-block" style="font-size:var(--t-body);">pip install gnvitop  <span style="color:#555;"># 安装</span>
+                <div class="code-block" style="font-size:var(--t-body);">pip install gnvitop  <span style="color:#555;"># 安装</span><br>
 gnvitop              <span style="color:#555;"># 使用</span></div>
                 <ul class="bullet-list">
                     <li data-en="Auto-reads <code>~/.ssh/config</code>, SSHs into all servers">自动读 <code>~/.ssh/config</code>，SSH 进所有服务器</li>

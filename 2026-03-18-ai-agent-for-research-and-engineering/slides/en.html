@@ -2052,10 +2052,9 @@ top-venue submission, ddl: 5/31</div>
         <div class="slide-header-label">Discussion · Engineering</div>
         <div class="slide-header-label red">Engineering</div>
     </div>
-    <div style="display:flex;flex-direction:column;gap:0.5rem;padding:var(--egap) var(--pad) var(--pad);height:calc(100% - 4rem);">
+    <div class="slide-content" style="gap:var(--gap);">
         <h2 class="reveal">Senior Engineers 10× Productive — Why Still Hire Juniors?</h2>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0;">
-            <!-- LEFT: text -->
             <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);">
                 <p style="font-size:var(--t-body);font-weight:700;color:var(--ink);">Managing people vs. managing Agents</p>
                 <ul class="bullet-list">
@@ -2065,35 +2064,47 @@ top-venue submission, ddl: 5/31</div>
                     <li>Repetitive junior-level work is now fully handled by agents</li>
                     <li>Companies' headcount calculus is being repriced</li>
                 </ul>
-                <p style="font-size:var(--t-body);font-weight:700;color:var(--ink);margin-top:0.3rem;">Do juniors / new grads still have a shot?</p>
+            </div>
+            <div class="reveal" style="display:flex;flex-direction:column;gap:var(--egap);">
+                <p style="font-size:var(--t-body);font-weight:700;color:var(--ink);">Do juniors / new grads still have a shot?</p>
                 <ul class="bullet-list">
                     <li>Yes — but the path is narrower; find your irreplaceable part earlier</li>
                     <li>Systems judgment · user communication · defining the real requirement</li>
                     <li>Those who can direct agents are the new era's <strong>10× engineer</strong></li>
                     <li>End-to-end solo project used to take 5 years — now maybe 1</li>
                 </ul>
-                <div class="highlight-box" style="border-left:3px solid var(--red);margin-top:0.2rem;">
+                <div class="highlight-box reveal" style="border-left:3px solid var(--red);margin-top:0.2rem;">
                     <p style="font-size:var(--t-small);color:var(--ink);">This isn't pessimism — it's a new starting line</p>
                 </div>
             </div>
-            <!-- RIGHT: Anthropic stats + Claude report images -->
-            <div class="reveal" style="display:flex;flex-direction:column;gap:0.5rem;">
-                <div style="padding:0.6rem 0.8rem;background:var(--bg-alt);border-radius:6px;border-left:3px solid var(--red);">
-                    <p style="font-size:var(--t-small);font-weight:700;color:var(--red);margin-bottom:0.3rem;">Anthropic Labor Market Study (2026)</p>
-                    <ul style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.8;padding-left:1em;margin:0;">
-                        <li>Programmers: AI covers 75% of job tasks</li>
-                        <li>AI-exposed jobs: avg. earnings 47% higher than unexposed</li>
-                        <li>Job seekers aged 22–25: 14% drop in employment rate</li>
-                    </ul>
-                </div>
-                <div style="flex:1;display:flex;align-items:center;justify-content:center;">
-                    <img class="zh-img" src="assets/claude_report_cn.jpg" alt="Claude Workforce Report (Chinese)"
-                         style="display:none"
-                         onerror="this.style.opacity='0.2'">
-                    <img class="en-img" src="assets/claude_report_en.webp" alt="Claude Career Report (English)"
-                         style="width:100%;max-height:min(52vh,400px);object-fit:contain;border-radius:8px;"
-                         onerror="this.style.opacity='0.2'">
-                </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">— / 23</div>
+    </div>
+</section>
+
+<!-- ===================== DISCUSSION 2b: Anthropic Data ===================== -->
+<section class="slide" id="slide-refl2b">
+    <div class="slide-header">
+        <div class="slide-header-label">Discussion · Engineering</div>
+        <div class="slide-header-label red">Engineering</div>
+    </div>
+    <div class="slide-content" style="gap:var(--gap);justify-content:center;">
+        <h2 class="reveal">Anthropic Labor Market Study (2026)</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0;align-items:center;">
+            <div class="reveal" style="display:flex;flex-direction:column;gap:var(--gap);">
+                <ul class="bullet-list" style="font-size:var(--t-body);line-height:2;">
+                    <li>Programmers: AI covers <strong>75%</strong> of job tasks</li>
+                    <li>AI-exposed jobs: avg. earnings <strong>47% higher</strong> than unexposed</li>
+                    <li>Job seekers aged 22–25: <strong>14% drop</strong> in employment rate</li>
+                </ul>
+            </div>
+            <div class="reveal" style="display:flex;align-items:center;justify-content:center;">
+                <img class="en-img" src="assets/claude_report_en.webp" alt="Claude Career Report (English)"
+                     style="width:100%;max-height:min(65vh,480px);object-fit:contain;border-radius:8px;"
+                     onerror="this.style.opacity='0.2'">
             </div>
         </div>
     </div>
@@ -2113,8 +2124,8 @@ top-venue submission, ddl: 5/31</div>
         <h2 class="reveal">gnvitop — Global GPU Monitor</h2>
         <div class="two-col text-img reveal" style="align-items: center; gap: var(--gap);">
             <div style="display: flex; flex-direction: column; gap: var(--egap);">
-                <p class="text-mid" style="line-height:1.6;">While building these two projects, I always needed to know <strong>which GPU was free</strong>.<br><span style='color:var(--ink-soft);font-size:0.95em;'>All the agents are going wild — but GPUs you still have to fight for yourself.</span></p>
-                <div class="code-block" style="font-size:var(--t-body);">pip install gnvitop  <span style="color:#555;"># install</span>
+                <p class="text-mid" style="line-height:1.6;">Real-time GPU monitoring across all lab servers —<br><span style='color:var(--ink-soft);font-size:0.95em;'>see which cards are idle, check if you're hogging too many.</span></p>
+                <div class="code-block" style="font-size:var(--t-body);">pip install gnvitop  <span style="color:#555;"># install</span><br>
 gnvitop              <span style="color:#555;"># run</span></div>
                 <ul class="bullet-list">
                     <li>Auto-reads <code>~/.ssh/config</code>, SSHs into all servers</li>
