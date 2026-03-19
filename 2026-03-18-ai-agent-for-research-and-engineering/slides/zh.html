@@ -523,7 +523,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                 </h1>
                 <p class="reveal" style="margin-top: var(--gap); max-width: 32rem;">
                     <span data-en="Web App · NeurIPS Submission · Technical Deep Dive · Discussion">Web App · NeurIPS 投稿 · 技术解剖 · 讨论</span><br>
-                    <span class="text-soft" data-en="One person · One week · Top-venue paper + production app">一人 · 一周 · 顶会投稿 + 生产级 app</span>
+                    <span class="text-soft" data-en="The Steam Engine Moment of the Information Age">信息时代的蒸汽机时刻</span>
                 </p>
             </div>
         </div>
@@ -3116,13 +3116,13 @@ function restartARPAnimation() {
    =========================================== */
 const BS1_SCRIPT = [
     { role: 'user', text: '/brainstorm' },
-    { role: 'claude', text: '想探索什么方向？\n模糊的直觉或问题都可以。' },
-    { role: 'user', text: '我想研究 LLM 在 soft-label 设置下的 calibration，但不知道从哪个角度切入' },
-    { role: 'claude', text: '好，发散 5 个方向：\n\n1. ECE 分解：ECE_voted vs ECE_true 拆开——文献里几乎没人做\n2. Annotator predictor：让模型学人，而非多数投票\n3. Bayesian aggregation：用分布代替 point label\n4. 训练目标：soft CE 是否天然比 hard CE 更 calibrated？\n5. 零样本迁移：soft calibration 能否 cross-dataset？' },
-    { role: 'user', text: '1 最有意思，怎么做 ECE 分解？' },
-    { role: 'claude', text: 'ECE_voted = gap(confidence, majority-vote accuracy)\nECE_true  = gap(confidence, soft label distribution)\n\n关键洞察：即使 ECE_voted = 0，ECE_true 仍可能很大。\n模型"骗过"了 hard label，但没学到真实 uncertainty。\n一个 toy example 就能 demonstrate，很好讲。' },
-    { role: 'user', text: 'baseline 选什么？' },
-    { role: 'claude', text: '推荐 4 个层次：\n• Temperature Scaling — 经典\n• Label Smoothing — soft 常见替代\n• CROWDLAB — annotator disagreement 专用\n• SoftCalib (ICML 23) — 最接近你方向的 prior work\n\nreviewer 会认可这个覆盖度。' },
+    { role: 'claude', text: '想探索什么？方向、受众、目标随便说。' },
+    { role: 'user', text: '下周要给 PhD 组做个 AI Agent 讲座，想讲得有深度但别太理论' },
+    { role: 'claude', text: '好。几条主线可以选：\n\n1. 工具介绍（怎么用）\n2. 原理剖析（tool use / context）\n3. 真实案例（你做了什么）\n4. 对科研的影响\n\n建议：3 做主线，2 做支撑，4 收尾反思。\n你有什么值得分享的 agent 项目？' },
+    { role: 'user', text: 'ai-research-paper skill，还有 gnvitop，感觉都挺有意思的' },
+    { role: 'claude', text: '很好的素材。结构草稿：\n\n· Part 1 — LLM vs Agent 的本质区别\n· Part 2 — ai-research-paper 全程演示\n· Part 3 — Tool use / 上下文机制解剖\n· Part 4 — 科研影响：通胀、替代与机会\n\ngnvitop 放最后当彩蛋，轻松收尾。约 30 分钟。' },
+    { role: 'user', text: 'Part 4 怎么讲才不显得在贩卖焦虑？' },
+    { role: 'claude', text: '关键是视角：\n✓ 用数据，不煽情（Anthropic 劳动力报告）\n✓ 区分"执行"和"判断"——后者暂时无法替代\n✓ 给行动建议：能驾驭 agent = 新时代 10x engineer\n✓ 结尾锚定在"机会窗口"，不是"危机"' },
 ];
 
 
@@ -3199,16 +3199,15 @@ function restartBs1Animation() {
    =========================================== */
 const FS1_SCRIPT = [
     { role: 'user', text: '/frontend-slides' },
-    { role: 'claude', text: '帮你做什么主题的 slides？\n风格、页数、用途都可以说。' },
-    { role: 'user', text: '给 group meeting，介绍 calibration 研究，5 分钟 lightning talk，7 页' },
-    { role: 'claude', text: '风格偏哪种？\nA) 学术严谨（黑底 + 图表）\nB) 视觉冲击（大字 + 色块）\nC) 简洁极简（白底 + 数据）' },
-    { role: 'user', text: 'A，第3页加个动画展示 ECE 分解' },
-    { role: 'claude', text: '规划 7 页结构：\n1. Title — 研究问题 + 一句话摘要\n2. Motivation — ECE_voted vs ECE_true\n3. Key Insight ← 动画：hard → soft 分解\n4. Method — 公式 + 图示\n5. Experiments — 数据集 · baselines\n6. Results — 主结果 + ablation\n7. Takeaways\n\n生成中…' },
-    { tool: 'Write', args: 'slides/index.html', result: '✓ 7 slides · 黑底学术风 · 第3页 SVG 动画 · 独立 HTML' },
-    { role: 'claude', text: '完成。open slides/index.html 预览。\n第3页动画配合讲解节奏点击触发。' },
-    { role: 'user', text: '第6页加 reliability diagram' },
-    { tool: 'Edit', args: 'slides/index.html — slide-6', result: '✓ 内联 SVG · ECE_voted(红) vs ECE_true(蓝) 对比' },
-    { role: 'claude', text: '已更新。对比很直观，group meeting 效果应该不错。' },
+    { role: 'claude', text: '帮你做什么 slides？\n主题、受众、风格、页数都可以说。' },
+    { role: 'user', text: 'AI Agent 讲座，学术受众，黑底极简风，约 20 页，要有 terminal 动画' },
+    { role: 'claude', text: '结构规划：\n封面 · Part 1–4 各 4–5 页 · Bonus · Q&A\n\nTerminal 动画用 typewriter 效果，模拟真实 Claude 对话。\n生成中…' },
+    { tool: 'Write', args: 'slides/zh.html', result: '✓ 22 slides · 黑底 Swiss Modern 风 · 5 个 terminal 动画 · 双语架构' },
+    { role: 'user', text: '做成 zh/en 两套独立 html，入口页让用户选语言' },
+    { tool: 'Write', args: 'gen_en.py · en.html · index.html', result: '✓ 自动生成英文版 · data-en 批量替换 · 三文件架构' },
+    { role: 'user', text: '每个 terminal 加暂停和重播按钮' },
+    { tool: 'Edit', args: 'zh.html — 5 个 terminal', result: '✓ isPaused() 回调 · ⏸/▶/↺ 控制 · 动画可中途冻结' },
+    { role: 'claude', text: '完成。这个 slides 本身就是用 agent 做的——\n你现在看到的，就是它自己的制作过程。' },
 ];
 
 
