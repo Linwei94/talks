@@ -8,6 +8,7 @@ Public talks and presentations. Each is a self-contained HTML slide deck — no 
 |------|-------|-------|
 | 2026-03-18 | [AI Agent for Research and Engineering](./2026-03-18-ai-agent-for-research-and-engineering/) | Lab Seminar, USYD |
 
+
 ## Quick Start
 
 ```bash
