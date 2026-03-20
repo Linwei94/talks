@@ -3646,18 +3646,5 @@ function restartFs1Animation() {
 
 </script>
 
-<script>
-/* DEBUG: inject slide id into header center */
-document.querySelectorAll('.slide').forEach(slide => {
-  const header = slide.querySelector('.slide-header');
-  if (!header) return;
-  const tag = document.createElement('div');
-  tag.textContent = '#' + slide.id;
-  tag.style.cssText = 'position:absolute;left:50%;transform:translateX(-50%);font-size:0.6rem;font-family:monospace;color:#888;letter-spacing:0.05em;user-select:text;cursor:text;';
-  header.style.position = 'relative';
-  header.appendChild(tag);
-});
-</script>
-
 </body>
 </html>
