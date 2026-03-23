@@ -12,6 +12,46 @@
 /* ===========================================
    THEME: Swiss Modern × Projection Optimized × English
    =========================================== */
+
+/* check-anim: 父级 step-shown 后自动按延迟依次跳出 */
+@keyframes checkSlideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes checkPop {
+    0%   { transform: scale(0.3); opacity: 0; }
+    60%  { transform: scale(1.4); opacity: 1; }
+    100% { transform: scale(1);   opacity: 1; }
+}
+.check-anim {
+    font-size: var(--t-small);
+    color: #999;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+}
+.check-anim .check-icon {
+    color: #4caf50;
+    font-weight: 700;
+    display: inline-block;
+    opacity: 0;
+}
+.step-shown .check-anim {
+    animation: checkSlideIn 0.35s ease forwards;
+    animation-delay: var(--delay, 0s);
+}
+.step-shown .check-anim .check-icon {
+    animation: checkPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-delay: var(--delay, 0s);
+}
+.check-final {
+    color: #ccc;
+    font-weight: 600;
+}
+.check-final .check-icon {
+    color: #ff9800;
+}
 :root {
     --bg:        #ffffff;
     --bg-alt:    #f7f6f2;
@@ -512,7 +552,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
 <!-- ===================== SLIDE 1: TITLE ===================== -->
 <section class="slide" id="slide-cover">
     <div class="slide-header">
-        <div class="slide-header-label">Lab Seminar · 2026.03.20</div>
+        <div class="slide-header-label">Seminar · 2026.03.24</div>
         <div class="slide-header-label">Linwei Tao</div>
     </div>
     <div class="slide-content" style="display:grid;grid-template-columns:1fr 1.15fr;gap:var(--gap);align-items:center;padding:var(--pad);">
@@ -569,7 +609,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                 ambient
             </span>
         </div>
-        <div class="slide-num">01 / 43</div>
+        <div class="slide-num">01 / 46</div>
     </div>
 </section>
 
@@ -680,7 +720,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                         <div id="phone-screen" style="flex: 1; overflow: hidden; background: white; position: relative;">
                             <iframe
                                 id="cat-iframe"
-                                src="https://www.taolinwei.com/cat-boarding-system/"
+                                src="http://10.165.232.227:8081/"
                                 style="
                                     width: 430px;
                                     height: 932px;
@@ -781,7 +821,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">02 / 43</div>
+        <div class="slide-num">02 / 46</div>
     </div>
 </section>
 
@@ -852,7 +892,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">04 / 43</div>
+        <div class="slide-num">03 / 46</div>
     </div>
 </section>
 
@@ -863,7 +903,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">05 / 43</div>
+        <div class="slide-num">04 / 46</div>
     </div>
 </section>
 
@@ -914,7 +954,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">06 / 43</div>
+        <div class="slide-num">05 / 46</div>
     </div>
 </section>
 
@@ -992,7 +1032,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">07 / 43</div>
+        <div class="slide-num">06 / 46</div>
     </div>
 </section>
 
@@ -1027,7 +1067,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">08 / 43</div>
+        <div class="slide-num">07 / 46</div>
     </div>
 </section>
 
@@ -1040,7 +1080,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">09 / 43</div>
+        <div class="slide-num">08 / 46</div>
     </div>
 </section>
 
@@ -1057,7 +1097,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer" style="border-color: rgba(255,255,255,0.1);">
         <div class="footer-text" style="color: rgba(255,255,255,0.3);"></div>
-        <div class="slide-num" style="color: rgba(255,255,255,0.3);">10 / 43</div>
+        <div class="slide-num" style="color: rgba(255,255,255,0.3);">09 / 46</div>
     </div>
 </section>
 
@@ -1084,7 +1124,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">11 / 43</div>
+        <div class="slide-num">10 / 46</div>
     </div>
 </section>
 
@@ -1151,7 +1191,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
             <div id="safari-screen" style="flex:1;overflow:hidden;position:relative;background:#fff;">
                 <iframe
                     id="safari-iframe"
-                    src="https://www.taolinwei.com/cat-boarding-system/"
+                    src="http://10.165.232.227:8081/"
                     style="width:1440px;height:900px;border:none;display:block;transform-origin:top left;position:absolute;top:0;left:0;"
                     title="Arigato Cat Boarding Web App"
                     allow="fullscreen"
@@ -1161,7 +1201,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">12 / 43</div>
+        <div class="slide-num">11 / 46</div>
     </div>
 </section>
 
@@ -1224,18 +1264,18 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                 </div>
             </div>
             <div style="display:flex;align-items:center;color:var(--red);font-size:1.1rem;">→</div>
-            <div style="flex:1;padding:0.9rem 1.2rem;background:#111;border-radius:8px;border:1.5px solid #333;display:flex;flex-direction:column;gap:0.4rem;justify-content:center;">
-                <p style="font-size:var(--t-small);color:#555;">✓ schema.sql generated</p>
-                <p style="font-size:var(--t-small);color:#555;">✓ HTML + CSS written</p>
-                <p style="font-size:var(--t-small);color:#555;">✓ errors auto-fixed</p>
-                <p style="font-size:var(--t-small);color:#888;font-weight:600;">✓ ready to deploy</p>
+            <div class="reveal" style="flex:1;padding:0.9rem 1.2rem;background:#111;border-radius:8px;border:1.5px solid #333;display:flex;flex-direction:column;gap:0.5rem;justify-content:center;">
+                <p class="check-anim" style="--delay:0.1s">✓ schema.sql generated</p>
+                <p class="check-anim" style="--delay:0.7s">✓ HTML + CSS written</p>
+                <p class="check-anim" style="--delay:1.3s">✓ errors auto-fixed</p>
+                <p class="check-anim check-final" style="--delay:1.9s">✓ ready to deploy</p>
             </div>
         </div>
 
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">13 / 43</div>
+        <div class="slide-num">12 / 46</div>
     </div>
 </section>
 
@@ -1287,7 +1327,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">14 / 43</div>
+        <div class="slide-num">13 / 46</div>
     </div>
 </section>
 
@@ -1302,7 +1342,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer" style="border-color: rgba(255,255,255,0.1);">
         <div class="footer-text" style="color: rgba(255,255,255,0.3);"></div>
-        <div class="slide-num" style="color: rgba(255,255,255,0.3);">15 / 43</div>
+        <div class="slide-num" style="color: rgba(255,255,255,0.3);">14 / 46</div>
     </div>
 </section>
 
@@ -1314,40 +1354,32 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-content" style="gap: var(--egap);">
         <h2 class="reveal">How Did This Paper Start?</h2>
-        <div style="display: flex; gap: var(--gap); align-items: center;">
-            <!-- Right: ambiguity figure — first in DOM so it reveals first -->
-            <div class="reveal" style="order: 2; flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center;">
-                <img src="assets/fig_intro_ambiguity.png" alt="Annotation Ambiguity Example" style="max-width: 100%; max-height: min(85vh, 640px); object-fit: contain;">
+        <!-- Image: appears first, centered, larger -->
+        <div class="reveal" style="display: flex; justify-content: center;">
+            <img src="assets/fig_intro_ambiguity.png" alt="Annotation Ambiguity Example" style="max-width: 100%; max-height: min(50vh, 420px); object-fit: contain; width: 80%;">
+        </div>
+        <!-- Three columns: left / center / right, each a reveal -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--gap);">
+            <div class="reveal" style="padding: 1rem 1.2rem; background: var(--bg-alt); border-radius: 10px; border-top: 3px solid var(--red); display: flex; flex-direction: column; gap: 0.5rem;">
+                <div style="width: 2rem; height: 2rem; border: 2px solid var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: var(--t-small); font-weight: 700; color: var(--red);">01</div>
+                <p style="font-size: var(--t-body); font-weight: 600;">Conformal Prediction × Annotation Ambiguity</p>
+                <p class="text-soft" style="font-size: var(--t-small);">When ground truth is inherently ambiguous (annotators disagree), do CP's coverage guarantees still hold?</p>
             </div>
-            <!-- Left: timeline steps, each a reveal -->
-            <div style="order: 1; display: flex; flex-direction: column; gap: var(--egap); flex: 1; min-width: 0;">
-                <div class="reveal" style="display: flex; gap: 1.2rem; align-items: flex-start;">
-                    <div style="flex-shrink: 0; width: 2.2rem; height: 2.2rem; border: 2px solid var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: var(--t-small); font-weight: 700; color: var(--red);">01</div>
-                    <div>
-                        <p style="font-size: var(--t-body); font-weight: 600;">Conformal Prediction × Annotation Ambiguity</p>
-                        <p class="text-soft" style="font-size: var(--t-small);">When ground truth is inherently ambiguous (annotators disagree), do CP's coverage guarantees still hold?</p>
-                    </div>
-                </div>
-                <div class="reveal" style="display: flex; gap: 1.2rem; align-items: flex-start;">
-                    <div style="flex-shrink: 0; width: 2.2rem; height: 2.2rem; border: 2px solid var(--border-soft); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: var(--t-small); font-weight: 700; color: var(--ink-soft);">02</div>
-                    <div>
-                        <p style="font-size: var(--t-body); font-weight: 600;">Calibration in This Setting Hasn't Been Done</p>
-                        <p class="text-soft" style="font-size: var(--t-small);">Annotation ambiguity + calibration — even &ldquo;how to evaluate&rdquo; has no consensus</p>
-                    </div>
-                </div>
-                <div class="reveal" style="display: flex; gap: 1.2rem; align-items: flex-start;">
-                    <div style="flex-shrink: 0; width: 2.2rem; height: 2.2rem; background: var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: var(--t-small); font-weight: 700; color: white;">03</div>
-                    <div>
-                        <p style="font-size: var(--t-body); font-weight: 600;">Pivot → CalibrationAGT</p>
-                        <p class="text-soft" style="font-size: var(--t-small);">Calibration in this setting is equally worth systematic study.</p>
-                    </div>
-                </div>
+            <div class="reveal" style="padding: 1rem 1.2rem; background: var(--bg-alt); border-radius: 10px; border-top: 3px solid var(--border-soft); display: flex; flex-direction: column; gap: 0.5rem;">
+                <div style="width: 2rem; height: 2rem; border: 2px solid var(--border-soft); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: var(--t-small); font-weight: 700; color: var(--ink-soft);">02</div>
+                <p style="font-size: var(--t-body); font-weight: 600;">Calibration in This Setting Hasn't Been Done</p>
+                <p class="text-soft" style="font-size: var(--t-small);">Annotation ambiguity + calibration — even &ldquo;how to evaluate&rdquo; has no consensus</p>
+            </div>
+            <div class="reveal" style="padding: 1rem 1.2rem; background: #1a0a0a; border-radius: 10px; border-top: 3px solid var(--red); display: flex; flex-direction: column; gap: 0.5rem;">
+                <div style="width: 2rem; height: 2rem; background: var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: var(--t-small); font-weight: 700; color: white;">03</div>
+                <p style="font-size: var(--t-body); font-weight: 600;">Pivot → CalibrationAGT</p>
+                <p class="text-soft" style="font-size: var(--t-small);">Calibration in this setting is equally worth systematic study.</p>
             </div>
         </div>
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">16 / 43</div>
+        <div class="slide-num">15 / 46</div>
     </div>
 </section>
 
@@ -1393,7 +1425,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">17 / 43</div>
+        <div class="slide-num">16 / 46</div>
     </div>
 </section>
 
@@ -1433,7 +1465,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">18 / 43</div>
+        <div class="slide-num">17 / 46</div>
     </div>
 </section>
 
@@ -1476,7 +1508,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">19 / 43</div>
+        <div class="slide-num">18 / 46</div>
     </div>
 </section>
 
@@ -1533,7 +1565,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">20 / 43</div>
+        <div class="slide-num">19 / 46</div>
     </div>
 </section>
 
@@ -1652,7 +1684,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">21 / 43</div>
+        <div class="slide-num">20 / 46</div>
     </div>
 </section>
 
@@ -1663,21 +1695,60 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
         <div class="slide-header-label red">Just the Beginning</div>
     </div>
     <div class="slide-content" style="padding:var(--pad);gap:var(--gap);justify-content:center;">
-        <div style="max-width:52rem;display:flex;flex-direction:column;gap:var(--gap);">
+        <div style="max-width:56rem;display:flex;flex-direction:column;gap:var(--gap);">
             <div class="reveal">
                 <p style="font-size:var(--t-h3);line-height:1.5;"><code style='font-size:inherit;background:var(--bg-alt);padding:0.1em 0.35em;border-radius:4px;'>/ai-research-paper</code> is just a starting point —<br>any repetitive workflow can be packaged as a skill.</p>
             </div>
-            <div class="reveal" style="border-top:2px solid var(--border-soft);padding-top:var(--gap);">
-                <p style="font-size:var(--t-small);color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.12em;font-weight:700;margin-bottom:0.6rem;">More automated research pipelines exist</p>
-                <p style="font-size:var(--t-h2);font-weight:700;line-height:1.3;">Chengcheng &amp; Jinxu</p>
-                <p style="font-size:var(--t-body);color:var(--ink-mid);margin:0.2rem 0 0.6rem;">AutoAI Research System</p>
-                <p style="font-size:var(--t-small);font-family:var(--font-mono);color:var(--ink-soft);">github.com/Sibyl-Research-Team/AutoResearch-SibylSystem</p>
+
+            <!-- AutoResearch 推荐 -->
+            <div class="reveal" style="display:flex;align-items:center;gap:var(--gap);padding:1rem 1.4rem;background:var(--bg-alt);border-radius:12px;border:1.5px solid var(--border-soft);">
+                <!-- 左：文字 -->
+                <div style="flex:1;display:flex;flex-direction:column;gap:0.5rem;">
+                    <p style="font-size:var(--t-small);font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.08em;">更自动化的 Research Pipeline</p>
+                    <p style="font-size:var(--t-body);font-weight:700;color:var(--ink);">AutoResearch · SibylSystem</p>
+                    <p style="font-size:var(--t-small);color:var(--ink-soft);font-family:var(--font-mono);">github.com/Sibyl-Research-Team/<br>AutoResearch-SibylSystem</p>
+                    <!-- 实时星标 GitHub style -->
+                    <div style="display:inline-flex;align-items:stretch;border-radius:6px;overflow:hidden;border:1px solid #d0d7de;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:0.78rem;margin-top:0.3rem;width:fit-content;">
+                        <div style="display:flex;align-items:center;gap:5px;padding:4px 10px;background:#f6f8fa;border-right:1px solid #d0d7de;color:#24292f;font-weight:600;">
+                            <svg aria-hidden="true" height="14" viewBox="0 0 16 16" width="14" style="fill:#e3b341;flex-shrink:0;"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg>
+                            Star
+                        </div>
+                        <div style="display:flex;align-items:center;padding:4px 10px;background:#f6f8fa;color:#24292f;font-weight:600;min-width:2.5rem;justify-content:center;">
+                            <span id="autoai-stars">…</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 右：二维码 -->
+                <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:0.4rem;">
+                    <div id="autoai-qr" style="width:110px;height:110px;background:#fff;border-radius:8px;padding:6px;display:flex;align-items:center;justify-content:center;"></div>
+                    <p style="font-size:var(--t-label);color:var(--ink-soft);">扫码访问</p>
+                </div>
             </div>
         </div>
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">22 / 43</div>
+        <div class="slide-num">21 / 46</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE: LUMI-lab Figure 1 ===================== -->
+<section class="slide" id="slide-lumi-fig1">
+    <div class="slide-header">
+        <div class="slide-header-label">Research · Example</div>
+        <div class="slide-header-label red">LUMI-lab · Cell 2026</div>
+    </div>
+    <div class="slide-content" style="gap:var(--egap);align-items:center;">
+        <h2 class="reveal">AI Agent × Wet Lab: Self-Driving Molecular Discovery</h2>
+        <div class="reveal" style="display:flex;flex-direction:column;align-items:center;gap:0.5rem;flex:1;min-height:0;">
+            <img src="assets/lumi_page-04.png" alt="LUMI-lab Figure 1"
+                 style="max-width:100%;max-height:min(72vh,560px);object-fit:contain;border-radius:8px;box-shadow:0 4px 24px rgba(0,0,0,0.10);">
+            <p style="font-size:var(--t-label);color:var(--ink-soft);text-align:center;">Figure 1: LUMI-lab overview — foundation model + active learning + robotic lab → 1,700 LNPs → 20.3% lung gene editing in vivo</p>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text" style="font-size:var(--t-label);color:var(--ink-soft);">LUMI-lab · Cell 2026 · doi:10.1016/j.cell.2026.01.012</div>
+        <div class="slide-num">22 / 46</div>
     </div>
 </section>
 
@@ -1726,7 +1797,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">23 / 43</div>
+        <div class="slide-num">23 / 46</div>
     </div>
 </section>
 
@@ -1771,7 +1842,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">24 / 43</div>
+        <div class="slide-num">24 / 46</div>
     </div>
 </section>
 <!-- ===================== SLIDE: Pricing ===================== -->
@@ -1837,7 +1908,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">25 / 43</div>
+        <div class="slide-num">25 / 46</div>
     </div>
 </section>
 
@@ -1852,7 +1923,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer" style="border-color: rgba(255,255,255,0.1);">
         <div class="footer-text" style="color: rgba(255,255,255,0.3);"></div>
-        <div class="slide-num" style="color: rgba(255,255,255,0.3);">26 / 43</div>
+        <div class="slide-num" style="color: rgba(255,255,255,0.3);">26 / 46</div>
     </div>
 </section>
 
@@ -1895,7 +1966,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">27 / 43</div>
+        <div class="slide-num">27 / 46</div>
     </div>
 </section>
 <!-- ===================== SLIDE: Context 压缩 A ===================== -->
@@ -1922,7 +1993,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text">Source: Hongyi Lee Machine Learning 2025 · NTU</div>
-        <div class="slide-num">28 / 43</div>
+        <div class="slide-num">28 / 46</div>
     </div>
 </section>
 <!-- ===================== SLIDE: Context 压缩 B ===================== -->
@@ -1952,7 +2023,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text">Source: Hongyi Lee Machine Learning 2025 · NTU</div>
-        <div class="slide-num">29 / 43</div>
+        <div class="slide-num">29 / 46</div>
     </div>
 </section>
 
@@ -1999,7 +2070,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">30 / 43</div>
+        <div class="slide-num">30 / 46</div>
     </div>
 </section>
 
@@ -2035,7 +2106,7 @@ Top-venue paper, ddl: 5/31</div>
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">31 / 43</div>
+        <div class="slide-num">31 / 46</div>
     </div>
 </section>
 
@@ -2094,7 +2165,7 @@ memory/
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">32 / 43</div>
+        <div class="slide-num">32 / 46</div>
     </div>
 </section>
 
@@ -2110,7 +2181,7 @@ memory/
     </div>
     <div class="slide-footer" style="border-color: rgba(255,255,255,0.1);">
         <div class="footer-text" style="color: rgba(255,255,255,0.3);"></div>
-        <div class="slide-num" style="color: rgba(255,255,255,0.3);">33 / 43</div>
+        <div class="slide-num" style="color: rgba(255,255,255,0.3);">33 / 46</div>
     </div>
 </section>
 
@@ -2163,7 +2234,7 @@ memory/
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">34 / 43</div>
+        <div class="slide-num">34 / 46</div>
     </div>
 </section>
 
@@ -2193,7 +2264,7 @@ memory/
     </div>
     <div class="slide-footer">
         <div class="footer-text" style="font-size:var(--t-label);color:var(--ink-soft);">Source: arXiv Blog (Nov 2024) · blog.arxiv.org/2024/11/04 · arxiv.org/stats/monthly_submissions</div>
-        <div class="slide-num">35 / 43</div>
+        <div class="slide-num">35 / 46</div>
     </div>
 </section>
 
@@ -2216,7 +2287,7 @@ memory/
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">36 / 43</div>
+        <div class="slide-num">36 / 46</div>
     </div>
 </section>
 
@@ -2255,7 +2326,7 @@ memory/
     </div>
     <div class="slide-footer">
         <div class="footer-text" style="font-size:var(--t-label);color:var(--ink-soft);">Source: Badal et al. (2025) · arxiv.org/abs/2511.15534 · agents4science.stanford.edu</div>
-        <div class="slide-num">37 / 43</div>
+        <div class="slide-num">37 / 46</div>
     </div>
 </section>
 
@@ -2295,7 +2366,7 @@ memory/
     </div>
     <div class="slide-footer">
         <div class="footer-text" style="font-size:var(--t-label);color:var(--ink-soft);">Sources: Andy Hall, freesystems.substack.com · AI Ideas paper ICLR 2025 (arxiv.org/abs/2409.04109)</div>
-        <div class="slide-num">38 / 43</div>
+        <div class="slide-num">38 / 46</div>
     </div>
 </section>
 
@@ -2334,7 +2405,7 @@ memory/
     </div>
     <div class="slide-footer">
         <div class="footer-text" style="font-size:var(--t-label);color:var(--ink-soft);">Ref: Sam Altman (X, Feb 2025) · Anthropic Economic Index · anthropic.com/research/labor-market-impacts</div>
-        <div class="slide-num">39 / 43</div>
+        <div class="slide-num">39 / 46</div>
     </div>
 </section>
 
@@ -2368,7 +2439,114 @@ memory/
     </div>
     <div class="slide-footer">
         <div class="footer-text" style="font-size:var(--t-label);color:var(--ink-soft);">Sources: Anthropic (Mar 2026) anthropic.com/research/labor-market-impacts · Dallas Fed (Jan 2026) dallasfed.org/research/economics/2026/0106</div>
-        <div class="slide-num">40 / 43</div>
+        <div class="slide-num">40 / 46</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 41: Agent Harness 概念 ===================== -->
+<section class="slide" id="slide-agent-harness-intro">
+    <div class="slide-header">
+        <div class="slide-header-label">Discussion · Engineering</div>
+        <div class="slide-header-label red">Agent Harness</div>
+    </div>
+    <div class="slide-content" style="gap:var(--gap);">
+        <h2 class="reveal">Harness &gt; Model</h2>
+
+        <!-- 定义 -->
+        <div class="reveal" style="padding:0.8rem 1.2rem;background:var(--red-light);border-radius:8px;border-left:4px solid var(--red);">
+            <p style="font-size:var(--t-body);color:var(--ink);line-height:1.6;"><strong>Agent Harness</strong> = scaffolding around the model: tool definitions, prompts, workflows, context management. Same model. Different harness. Completely different results.</p>
+        </div>
+
+        <!-- 三个数据卡片 -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--gap);">
+
+            <!-- Anthropic / CORE-Bench -->
+            <div class="reveal" style="padding:1rem 1.2rem;background:var(--bg-alt);border-radius:10px;border-top:3px solid var(--red);display:flex;flex-direction:column;gap:0.4rem;">
+                <p style="font-size:var(--t-label);font-weight:700;color:var(--ink-soft);letter-spacing:0.07em;text-transform:uppercase;">Anthropic · CORE-Bench</p>
+                <div style="display:flex;align-items:baseline;gap:0.6rem;margin:0.2rem 0;">
+                    <span style="font-size:var(--t-h2);font-weight:800;color:var(--ink-soft);">42%</span>
+                    <span style="font-size:1.2rem;color:var(--red);">→</span>
+                    <span style="font-size:var(--t-h2);font-weight:800;color:var(--red);">78%</span>
+                </div>
+                <p style="font-size:var(--t-small);color:var(--ink-soft);line-height:1.5;">Same model (Claude Opus 4.5). Switched from a generic scaffold to Claude Code harness. +36 points.</p>
+            </div>
+
+            <!-- LangChain -->
+            <div class="reveal" style="padding:1rem 1.2rem;background:var(--bg-alt);border-radius:10px;border-top:3px solid var(--border);display:flex;flex-direction:column;gap:0.4rem;">
+                <p style="font-size:var(--t-label);font-weight:700;color:var(--ink-soft);letter-spacing:0.07em;text-transform:uppercase;">LangChain · Terminal Bench 2.0</p>
+                <div style="display:flex;align-items:baseline;gap:0.6rem;margin:0.2rem 0;">
+                    <span style="font-size:var(--t-h2);font-weight:800;color:var(--ink-soft);">52.8%</span>
+                    <span style="font-size:1.2rem;color:var(--red);">→</span>
+                    <span style="font-size:var(--t-h2);font-weight:800;color:var(--ink);">66.5%</span>
+                </div>
+                <p style="font-size:var(--t-small);color:var(--ink-soft);line-height:1.5;">Model unchanged. Added self-verification loops, context engineering, loop detection. Top 30 → Top 5.</p>
+            </div>
+
+            <!-- OpenAI -->
+            <div class="reveal" style="padding:1rem 1.2rem;background:var(--bg-alt);border-radius:10px;border-top:3px solid var(--ink-soft);display:flex;flex-direction:column;gap:0.4rem;">
+                <p style="font-size:var(--t-label);font-weight:700;color:var(--ink-soft);letter-spacing:0.07em;text-transform:uppercase;">OpenAI · Codex Harness</p>
+                <div style="display:flex;align-items:baseline;gap:0.5rem;margin:0.2rem 0;">
+                    <span style="font-size:var(--t-h3);font-weight:800;color:var(--ink);">0 行</span>
+                    <span style="font-size:var(--t-small);color:var(--ink-soft);">人工代码</span>
+                </div>
+                <p style="font-size:var(--t-small);color:var(--ink-soft);line-height:1.5;">Built a 1M-line production app in 5 months with 3 engineers — 1/10th normal dev time. Every line written by Codex agents.</p>
+            </div>
+
+        </div>
+
+        <!-- 核心洞见 -->
+        <div class="reveal" style="padding:0.7rem 1.2rem;background:var(--bg-alt);border-radius:8px;border:1.5px solid var(--border-soft);display:flex;align-items:center;gap:0.8rem;">
+            <span style="font-size:1.4rem;">💡</span>
+            <p style="font-size:var(--t-body);color:var(--ink-mid);"><strong>Progressive Disclosure</strong>: show the model only what it needs, when it needs it — this single mechanism explains most harness improvements.</p>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text" style="font-size:var(--t-label);color:var(--ink-soft);">Sources: Anthropic · Effective Harnesses for Long-Running Agents · LangChain · OpenAI · CORE-Bench</div>
+        <div class="slide-num">41 / 46</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 42: Agent Harness 三原则 ===================== -->
+<section class="slide" id="slide-agent-harness-principles">
+    <div class="slide-header">
+        <div class="slide-header-label">Discussion · Engineering</div>
+        <div class="slide-header-label red">Agent Harness</div>
+    </div>
+    <div class="slide-content" style="gap:var(--gap);">
+        <h2 class="reveal">Three Principles of Harness Engineering</h2>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--gap);flex:1;align-items:stretch;">
+
+            <!-- 原则一 -->
+            <div class="reveal" style="padding:1rem 1.2rem;background:var(--bg-alt);border-radius:10px;border-top:3px solid var(--red);display:flex;flex-direction:column;gap:0.6rem;">
+                <div style="font-size:var(--t-label);font-weight:700;color:var(--red);letter-spacing:0.06em;text-transform:uppercase;">工具描述要精确</div>
+                <p style="font-size:var(--t-body);font-weight:700;color:var(--ink);">Tell the agent exactly when NOT to use a tool</p>
+                <p style="font-size:var(--t-small);color:var(--ink-soft);line-height:1.6;">One engineer connected 12 tools. The agent kept calling the same endpoint twice with different params. He cut to 4 tools with precise descriptions — 40% fewer useless calls.</p>
+            </div>
+
+            <!-- 原则二 -->
+            <div class="reveal" style="padding:1rem 1.2rem;background:var(--bg-alt);border-radius:10px;border-top:3px solid var(--border);display:flex;flex-direction:column;gap:0.6rem;">
+                <div style="font-size:var(--t-label);font-weight:700;color:var(--ink-soft);letter-spacing:0.06em;text-transform:uppercase;">工具越少越好</div>
+                <p style="font-size:var(--t-body);font-weight:700;color:var(--ink);">One rule in a config file beats adding a new tool</p>
+                <p style="font-size:var(--t-small);color:var(--ink-soft);line-height:1.6;">Vercel's agent had a huge toolbox. Agent got confused, made redundant calls. They stripped it down to bare bash access. Success rate: 100%. Speed: 3.5× faster.</p>
+            </div>
+
+            <!-- 原则三 -->
+            <div class="reveal" style="padding:1rem 1.2rem;background:var(--bg-alt);border-radius:10px;border-top:3px solid var(--ink);display:flex;flex-direction:column;gap:0.6rem;">
+                <div style="font-size:var(--t-label);font-weight:700;color:var(--ink);letter-spacing:0.06em;text-transform:uppercase;">定期做减法</div>
+                <p style="font-size:var(--t-body);font-weight:700;color:var(--ink);">The harness you built for last year's model may be hurting today's</p>
+                <p style="font-size:var(--t-small);color:var(--ink-soft);line-height:1.6;">Manus rewrote their harness 5 times in 6 months, stripping complexity each time. One engineer deleted an entire memory system on a Thursday — by Friday, response latency dropped 2.3s.</p>
+            </div>
+        </div>
+
+        <!-- 引言 -->
+        <div class="reveal" style="padding:0.7rem 1.2rem;background:var(--red-light);border-radius:8px;border-left:3px solid var(--red);">
+            <p style="font-size:var(--t-small);color:var(--ink-mid);font-style:italic;">"As models get stronger, we should be getting out of the model\'s way." — Peak Ji, Chief Scientist, Manus</p>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text" style="font-size:var(--t-label);color:var(--ink-soft);">Sources: Martin Fowler · OpenAI Harness Engineering · Anthropic · Manus · Vercel</div>
+        <div class="slide-num">42 / 46</div>
     </div>
 </section>
 
@@ -2381,7 +2559,7 @@ memory/
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">41 / 43</div>
+        <div class="slide-num">43 / 46</div>
     </div>
 </section>
 
@@ -2410,7 +2588,7 @@ gnvitop              <span style="color:#555;"># run</span></div>
     </div>
     <div class="slide-footer">
         <div class="footer-text">github.com/Linwei94/gnvitop</div>
-        <div class="slide-num">42 / 43</div>
+        <div class="slide-num">44 / 46</div>
     </div>
 </section>
 
@@ -2425,7 +2603,7 @@ gnvitop              <span style="color:#555;"># run</span></div>
     </div>
     <div class="slide-footer">
         <div class="footer-text">Linwei Tao · 2026.03.20</div>
-        <div class="slide-num">43 / 43</div>
+        <div class="slide-num">45 / 46</div>
     </div>
 </section>
 
@@ -3483,6 +3661,64 @@ function restartFs1Animation() {
 
 </script>
 
+<!-- QR Code library -->
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script>
+(function initAutoAiBlock() {
+    const REPO = 'Sibyl-Research-Team/AutoResearch-SibylSystem';
+    const REPO_URL = 'https://github.com/' + REPO;
 
+    // Generate QR code once
+    function buildQR() {
+        const el = document.getElementById('autoai-qr');
+        if (!el || el._qr_done) return;
+        el._qr_done = true;
+        new QRCode(el, {
+            text: REPO_URL,
+            width: 98,
+            height: 98,
+            colorDark: '#111111',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.M
+        });
+    }
+
+    // Fetch star count from GitHub API
+    function fetchStars() {
+        fetch('https://api.github.com/repos/' + REPO)
+            .then(r => r.json())
+            .then(data => {
+                const el = document.getElementById('autoai-stars');
+                if (el && data.stargazers_count !== undefined) {
+                    el.textContent = data.stargazers_count.toLocaleString();
+                }
+            })
+            .catch(() => {
+                const el = document.getElementById('autoai-stars');
+                if (el) el.textContent = '—';
+            });
+    }
+
+    // Init when slide becomes visible
+    function tryInit() {
+        const slide = document.getElementById('slide-brickjade');
+        if (!slide) return;
+        const obs = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting) {
+                buildQR();
+                fetchStars();
+                obs.disconnect();
+            }
+        }, { threshold: 0.1 });
+        obs.observe(slide);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', tryInit);
+    } else {
+        tryInit();
+    }
+})();
+</script>
 </body>
 </html>
