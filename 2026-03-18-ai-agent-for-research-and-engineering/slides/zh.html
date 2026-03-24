@@ -720,7 +720,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                         <div id="phone-screen" style="flex: 1; overflow: hidden; background: white; position: relative;">
                             <iframe
                                 id="cat-iframe"
-                                src="http://10.165.232.227:8081/"
+                                src="https://www.taolinwei.com/cat-boarding-system/"
                                 style="
                                     width: 430px;
                                     height: 932px;
@@ -925,7 +925,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
         <div class="reveal" style="display:flex;flex-direction:column;gap:0.8rem;">
             <!-- Step 1 -->
             <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
-                <span style="font-size:var(--t-label);color:var(--ink-soft);width:3.5rem;flex-shrink:0;">输入</span>
+                <span style="font-size:var(--t-label);color:var(--ink-soft);width:3.5rem;flex-shrink:0;" data-en="Input">输入</span>
                 <div style="display:flex;gap:0.3rem;flex-wrap:wrap;">
                     <span style="padding:0.25rem 0.6rem;background:var(--bg-alt);border:1.5px solid var(--border-soft);border-radius:5px;font-family:var(--font-mono);font-size:var(--t-small);color:var(--ink);">The</span>
                     <span style="padding:0.25rem 0.6rem;background:var(--bg-alt);border:1.5px solid var(--border-soft);border-radius:5px;font-family:var(--font-mono);font-size:var(--t-small);color:var(--ink);">cat</span>
@@ -938,7 +938,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
             </div>
             <!-- Step 2 -->
             <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
-                <span style="font-size:var(--t-label);color:var(--ink-soft);width:3.5rem;flex-shrink:0;">再输入</span>
+                <span style="font-size:var(--t-label);color:var(--ink-soft);width:3.5rem;flex-shrink:0;" data-en="Feed back">再输入</span>
                 <div style="display:flex;gap:0.3rem;flex-wrap:wrap;">
                     <span style="padding:0.25rem 0.6rem;background:var(--bg-alt);border:1.5px solid var(--border-soft);border-radius:5px;font-family:var(--font-mono);font-size:var(--t-small);color:var(--ink);">The</span>
                     <span style="padding:0.25rem 0.6rem;background:var(--bg-alt);border:1.5px solid var(--border-soft);border-radius:5px;font-family:var(--font-mono);font-size:var(--t-small);color:var(--ink);">cat</span>
@@ -1262,7 +1262,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
             <div id="safari-screen" style="flex:1;overflow:hidden;position:relative;background:#fff;">
                 <iframe
                     id="safari-iframe"
-                    src="http://10.165.232.227:8081/"
+                    src="https://www.taolinwei.com/cat-boarding-system/"
                     style="width:1440px;height:900px;border:none;display:block;transform-origin:top left;position:absolute;top:0;left:0;"
                     title="阿里嘎多猫咪寄养 Web App"
                     allow="fullscreen"
@@ -2613,8 +2613,8 @@ memory/
             <div class="reveal" style="padding:1rem 1.2rem;background:var(--bg-alt);border-radius:10px;border-top:3px solid var(--ink-soft);display:flex;flex-direction:column;gap:0.4rem;">
                 <p style="font-size:var(--t-label);font-weight:700;color:var(--ink-soft);letter-spacing:0.07em;text-transform:uppercase;">OpenAI · Codex Harness</p>
                 <div style="display:flex;align-items:baseline;gap:0.5rem;margin:0.2rem 0;">
-                    <span style="font-size:var(--t-h3);font-weight:800;color:var(--ink);">0 行</span>
-                    <span style="font-size:var(--t-small);color:var(--ink-soft);">人工代码</span>
+                    <span style="font-size:var(--t-h3);font-weight:800;color:var(--ink);" data-en="0 lines">0 行</span>
+                    <span style="font-size:var(--t-small);color:var(--ink-soft);" data-en="hand-written code">人工代码</span>
                 </div>
                 <p style="font-size:var(--t-small);color:var(--ink-soft);line-height:1.5;" data-en="Built a 1M-line production app in 5 months with 3 engineers — 1/10th normal dev time. Every line written by Codex agents.">3 名工程师，5 个月，100 万行生产代码，全由 Codex agent 写。只用了正常开发时间的 1/10。</p>
             </div>
@@ -2646,21 +2646,21 @@ memory/
 
             <!-- 原则一 -->
             <div class="reveal" style="padding:1rem 1.2rem;background:var(--bg-alt);border-radius:10px;border-top:3px solid var(--red);display:flex;flex-direction:column;gap:0.6rem;">
-                <div style="font-size:var(--t-label);font-weight:700;color:var(--red);letter-spacing:0.06em;text-transform:uppercase;">工具描述要精确</div>
+                <div style="font-size:var(--t-label);font-weight:700;color:var(--red);letter-spacing:0.06em;text-transform:uppercase;" data-en="Precise Tool Descriptions">工具描述要精确</div>
                 <p style="font-size:var(--t-body);font-weight:700;color:var(--ink);" data-en="Tell the agent exactly when NOT to use a tool">明确告诉 agent 什么时候<em>不该</em>调用</p>
                 <p style="font-size:var(--t-small);color:var(--ink-soft);line-height:1.6;" data-en="One engineer connected 12 tools. The agent kept calling the same endpoint twice with different params. He cut to 4 tools with precise descriptions — 40% fewer useless calls.">某工程师接了 12 个工具，agent 老是反复调同一个接口。换成 4 个描述精确的工具后，无效调用减少 40%。</p>
             </div>
 
             <!-- 原则二 -->
             <div class="reveal" style="padding:1rem 1.2rem;background:var(--bg-alt);border-radius:10px;border-top:3px solid var(--border);display:flex;flex-direction:column;gap:0.6rem;">
-                <div style="font-size:var(--t-label);font-weight:700;color:var(--ink-soft);letter-spacing:0.06em;text-transform:uppercase;">工具越少越好</div>
+                <div style="font-size:var(--t-label);font-weight:700;color:var(--ink-soft);letter-spacing:0.06em;text-transform:uppercase;" data-en="Fewer Tools, Better Results">工具越少越好</div>
                 <p style="font-size:var(--t-body);font-weight:700;color:var(--ink);" data-en="One rule in a config file beats adding a new tool">一条配置规则，胜过新加一个工具</p>
                 <p style="font-size:var(--t-small);color:var(--ink-soft);line-height:1.6;" data-en="Vercel's agent had a huge toolbox. Agent got confused, made redundant calls. They stripped it down to bare bash access. Success rate: 100%. Speed: 3.5× faster.">Vercel 的 agent 工具箱很大，agent 经常不知道该用哪个。删掉工具库，改成直接跑 bash 命令——成功率 100%，速度快了 3.5 倍。</p>
             </div>
 
             <!-- 原则三 -->
             <div class="reveal" style="padding:1rem 1.2rem;background:var(--bg-alt);border-radius:10px;border-top:3px solid var(--ink);display:flex;flex-direction:column;gap:0.6rem;">
-                <div style="font-size:var(--t-label);font-weight:700;color:var(--ink);letter-spacing:0.06em;text-transform:uppercase;">定期做减法</div>
+                <div style="font-size:var(--t-label);font-weight:700;color:var(--ink);letter-spacing:0.06em;text-transform:uppercase;" data-en="Prune Regularly">定期做减法</div>
                 <p style="font-size:var(--t-body);font-weight:700;color:var(--ink);" data-en="The harness you built for last year's model may be hurting today's">为旧模型搭的脚手架，可能正在拖慢新模型</p>
                 <p style="font-size:var(--t-small);color:var(--ink-soft);line-height:1.6;" data-en="Manus rewrote their harness 5 times in 6 months, stripping complexity each time. One engineer deleted an entire memory system on a Thursday — by Friday, response latency dropped 2.3s.">Manus 6 个月重写 5 次，越写越精简。一个工程师周四删掉了整套记忆系统，周五响应延迟就降了 2.3 秒。</p>
             </div>
