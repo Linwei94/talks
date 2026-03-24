@@ -609,7 +609,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
                 ambient
             </span>
         </div>
-        <div class="slide-num">01 / 46</div>
+        <div class="slide-num">01 / 47</div>
     </div>
 </section>
 
@@ -821,7 +821,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">02 / 46</div>
+        <div class="slide-num">02 / 47</div>
     </div>
 </section>
 
@@ -892,18 +892,82 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">03 / 46</div>
+        <div class="slide-num">03 / 47</div>
     </div>
 </section>
 
-<!-- ===================== SLIDE 3b: AI Agent 的本质 slogan ===================== -->
+<!-- ===================== SLIDE: LLM 自回归生成 ===================== -->
 <section class="slide" id="slide-agent-essence-intro">
     <div class="slide-content" style="justify-content:center;align-items:center;text-align:center;">
         <h1 class="reveal" style="font-size:clamp(2rem,5.5vw,4.5rem);font-weight:700;line-height:1.15;margin:0 auto;" data-en="The Essence of<br><span class='text-red'>AI Agent</span>">AI Agent<br>的<span class="text-red">本质</span></h1>
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">04 / 46</div>
+        <div class="slide-num">04 / 47</div>
+    </div>
+</section>
+
+<!-- ===================== SLIDE 3b: AI Agent 的本质 slogan ===================== -->
+<section class="slide" id="slide-llm-autoregressive">
+    <div class="slide-header">
+        <div class="slide-header-label" data-en="Foundation · How LLMs Work">基础 · LLM 是怎么工作的</div>
+        <div class="slide-header-label red" data-en="Autoregressive Generation">自回归生成</div>
+    </div>
+    <div class="slide-content" style="gap:var(--gap);">
+        <h2 class="reveal" data-en="Most LLMs Generate One Token at a Time">绝大多数 LLM 都是一次生成一个 token</h2>
+
+        <!-- 类比 -->
+        <div class="reveal" style="padding:0.8rem 1.2rem;background:var(--red-light);border-radius:8px;border-left:4px solid var(--red);">
+            <p style="font-size:var(--t-body);color:var(--ink);line-height:1.6;" data-en="Think of it like a Markov chain: given all previous tokens, predict the next one — then repeat. The model never &ldquo;plans ahead&rdquo;; it only ever answers: <strong>what comes next?</strong>">类比 Markov chain：给定所有已有的 token，预测下一个——然后重复。模型从不"规划全局"，它只回答一个问题：<strong>下一个 token 是什么？</strong></p>
+        </div>
+
+        <!-- 自回归循环可视化 -->
+        <div class="reveal" style="display:flex;flex-direction:column;gap:0.8rem;">
+            <!-- Step 1 -->
+            <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+                <span style="font-size:var(--t-label);color:var(--ink-soft);width:3.5rem;flex-shrink:0;">输入</span>
+                <div style="display:flex;gap:0.3rem;flex-wrap:wrap;">
+                    <span style="padding:0.25rem 0.6rem;background:var(--bg-alt);border:1.5px solid var(--border-soft);border-radius:5px;font-family:var(--font-mono);font-size:var(--t-small);color:var(--ink);">The</span>
+                    <span style="padding:0.25rem 0.6rem;background:var(--bg-alt);border:1.5px solid var(--border-soft);border-radius:5px;font-family:var(--font-mono);font-size:var(--t-small);color:var(--ink);">cat</span>
+                    <span style="padding:0.25rem 0.6rem;background:var(--bg-alt);border:1.5px solid var(--border-soft);border-radius:5px;font-family:var(--font-mono);font-size:var(--t-small);color:var(--ink);">sat</span>
+                    <span style="padding:0.25rem 0.6rem;background:var(--bg-alt);border:1.5px solid var(--border-soft);border-radius:5px;font-family:var(--font-mono);font-size:var(--t-small);color:var(--ink);">on</span>
+                    <span style="padding:0.25rem 0.6rem;background:var(--bg-alt);border:1.5px solid var(--border-soft);border-radius:5px;font-family:var(--font-mono);font-size:var(--t-small);color:var(--ink);">the</span>
+                    <span style="color:var(--ink-soft);font-size:1rem;align-self:center;">→</span>
+                    <span style="padding:0.25rem 0.6rem;background:#fff3cd;border:1.5px solid #f0c040;border-radius:5px;font-family:var(--font-mono);font-size:var(--t-small);color:#7a5c00;font-weight:700;">mat</span>
+                </div>
+            </div>
+            <!-- Step 2 -->
+            <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+                <span style="font-size:var(--t-label);color:var(--ink-soft);width:3.5rem;flex-shrink:0;">再输入</span>
+                <div style="display:flex;gap:0.3rem;flex-wrap:wrap;">
+                    <span style="padding:0.25rem 0.6rem;background:var(--bg-alt);border:1.5px solid var(--border-soft);border-radius:5px;font-family:var(--font-mono);font-size:var(--t-small);color:var(--ink);">The</span>
+                    <span style="padding:0.25rem 0.6rem;background:var(--bg-alt);border:1.5px solid var(--border-soft);border-radius:5px;font-family:var(--font-mono);font-size:var(--t-small);color:var(--ink);">cat</span>
+                    <span style="padding:0.25rem 0.6rem;background:var(--bg-alt);border:1.5px solid var(--border-soft);border-radius:5px;font-family:var(--font-mono);font-size:var(--t-small);color:var(--ink);">sat</span>
+                    <span style="padding:0.25rem 0.6rem;background:var(--bg-alt);border:1.5px solid var(--border-soft);border-radius:5px;font-family:var(--font-mono);font-size:var(--t-small);color:var(--ink);">on</span>
+                    <span style="padding:0.25rem 0.6rem;background:var(--bg-alt);border:1.5px solid var(--border-soft);border-radius:5px;font-family:var(--font-mono);font-size:var(--t-small);color:var(--ink);">the</span>
+                    <span style="padding:0.25rem 0.6rem;background:#e8f4e8;border:1.5px solid #7cb87c;border-radius:5px;font-family:var(--font-mono);font-size:var(--t-small);color:#2d5a2d;font-weight:700;">mat</span>
+                    <span style="color:var(--ink-soft);font-size:1rem;align-self:center;">→</span>
+                    <span style="padding:0.25rem 0.6rem;background:#fff3cd;border:1.5px solid #f0c040;border-radius:5px;font-family:var(--font-mono);font-size:var(--t-small);color:#7a5c00;font-weight:700;">.</span>
+                </div>
+            </div>
+            <div style="padding-left:4rem;font-size:var(--t-small);color:var(--ink-soft);" data-en="↑ The newly generated token is appended to the input, and the model runs again.">↑ 新生成的 token 追加到输入，模型再跑一次。如此往复，直到生成结束符。</div>
+        </div>
+
+        <!-- 两个关键含义 -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);">
+            <div class="reveal" style="padding:0.8rem 1rem;background:var(--bg-alt);border-radius:8px;border-top:3px solid var(--ink-soft);display:flex;flex-direction:column;gap:0.3rem;">
+                <p style="font-size:var(--t-small);font-weight:700;color:var(--ink);" data-en="Context window = working memory">Context window = 工作记忆</p>
+                <p style="font-size:var(--t-small);color:var(--ink-soft);line-height:1.5;" data-en="Everything the model sees is in one long sequence — no persistent state between calls.">模型能看到的，就是这一整段序列。没有跨调用的状态。</p>
+            </div>
+            <div class="reveal" style="padding:0.8rem 1rem;background:var(--bg-alt);border-radius:8px;border-top:3px solid var(--red);display:flex;flex-direction:column;gap:0.3rem;">
+                <p style="font-size:var(--t-small);font-weight:700;color:var(--ink);" data-en="Output = probability distribution over vocabulary">输出 = 词表上的概率分布</p>
+                <p style="font-size:var(--t-small);color:var(--ink-soft);line-height:1.5;" data-en="The model outputs a distribution P(next token | all previous). Temperature controls how sharp that distribution is.">每步输出 P(下一个 token | 所有已有 token)，temperature 控制分布的"锐度"。</p>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer">
+        <div class="footer-text"></div>
+        <div class="slide-num">05 / 47</div>
     </div>
 </section>
 
@@ -954,7 +1018,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">05 / 46</div>
+        <div class="slide-num">06 / 47</div>
     </div>
 </section>
 
@@ -1032,7 +1096,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">06 / 46</div>
+        <div class="slide-num">07 / 47</div>
     </div>
 </section>
 
@@ -1067,7 +1131,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">07 / 46</div>
+        <div class="slide-num">08 / 47</div>
     </div>
 </section>
 
@@ -1084,7 +1148,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">08 / 46</div>
+        <div class="slide-num">09 / 47</div>
     </div>
 </section>
 
@@ -1101,7 +1165,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer" style="border-color: rgba(255,255,255,0.1);">
         <div class="footer-text" style="color: rgba(255,255,255,0.3);"></div>
-        <div class="slide-num" style="color: rgba(255,255,255,0.3);">09 / 46</div>
+        <div class="slide-num" style="color: rgba(255,255,255,0.3);">10 / 47</div>
     </div>
 </section>
 
@@ -1131,7 +1195,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">10 / 46</div>
+        <div class="slide-num">11 / 47</div>
     </div>
 </section>
 
@@ -1208,7 +1272,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">11 / 46</div>
+        <div class="slide-num">12 / 47</div>
     </div>
 </section>
 
@@ -1282,7 +1346,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">12 / 46</div>
+        <div class="slide-num">13 / 47</div>
     </div>
 </section>
 
@@ -1348,7 +1412,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">13 / 46</div>
+        <div class="slide-num">14 / 47</div>
     </div>
 </section>
 
@@ -1363,7 +1427,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer" style="border-color: rgba(255,255,255,0.1);">
         <div class="footer-text" style="color: rgba(255,255,255,0.3);"></div>
-        <div class="slide-num" style="color: rgba(255,255,255,0.3);">14 / 46</div>
+        <div class="slide-num" style="color: rgba(255,255,255,0.3);">15 / 47</div>
     </div>
 </section>
 
@@ -1400,7 +1464,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">15 / 46</div>
+        <div class="slide-num">16 / 47</div>
     </div>
 </section>
 
@@ -1446,7 +1510,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">16 / 46</div>
+        <div class="slide-num">17 / 47</div>
     </div>
 </section>
 
@@ -1492,7 +1556,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">17 / 46</div>
+        <div class="slide-num">18 / 47</div>
     </div>
 </section>
 
@@ -1535,7 +1599,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">18 / 46</div>
+        <div class="slide-num">19 / 47</div>
     </div>
 </section>
 
@@ -1597,7 +1661,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">19 / 46</div>
+        <div class="slide-num">20 / 47</div>
     </div>
 </section>
 
@@ -1716,7 +1780,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">20 / 46</div>
+        <div class="slide-num">21 / 47</div>
     </div>
 </section>
 
@@ -1760,7 +1824,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">21 / 46</div>
+        <div class="slide-num">22 / 47</div>
     </div>
 </section>
 
@@ -1780,7 +1844,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text" style="font-size:var(--t-label);color:var(--ink-soft);">LUMI-lab · Cell 2026 · doi:10.1016/j.cell.2026.01.012</div>
-        <div class="slide-num">22 / 46</div>
+        <div class="slide-num">23 / 47</div>
     </div>
 </section>
 
@@ -1829,7 +1893,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">23 / 46</div>
+        <div class="slide-num">24 / 47</div>
     </div>
 </section>
 
@@ -1874,7 +1938,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">24 / 46</div>
+        <div class="slide-num">25 / 47</div>
     </div>
 </section>
 <!-- ===================== SLIDE: Pricing ===================== -->
@@ -1940,7 +2004,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">25 / 46</div>
+        <div class="slide-num">26 / 47</div>
     </div>
 </section>
 
@@ -1957,7 +2021,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer" style="border-color: rgba(255,255,255,0.1);">
         <div class="footer-text" style="color: rgba(255,255,255,0.3);"></div>
-        <div class="slide-num" style="color: rgba(255,255,255,0.3);">26 / 46</div>
+        <div class="slide-num" style="color: rgba(255,255,255,0.3);">27 / 47</div>
     </div>
 </section>
 
@@ -2003,7 +2067,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">27 / 46</div>
+        <div class="slide-num">28 / 47</div>
     </div>
 </section>
 <!-- ===================== SLIDE: Context 压缩 A ===================== -->
@@ -2030,7 +2094,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text" data-en="Source: Hongyi Lee Machine Learning 2025 · NTU">来源：李宏毅机器学习 2025 · NTU</div>
-        <div class="slide-num">28 / 46</div>
+        <div class="slide-num">29 / 47</div>
     </div>
 </section>
 <!-- ===================== SLIDE: Context 压缩 B ===================== -->
@@ -2060,7 +2124,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text" data-en="Source: Hongyi Lee Machine Learning 2025 · NTU">来源：李宏毅机器学习 2025 · NTU</div>
-        <div class="slide-num">29 / 46</div>
+        <div class="slide-num">30 / 47</div>
     </div>
 </section>
 
@@ -2107,7 +2171,7 @@ p  { font-size: var(--t-body); line-height: 1.65; color: var(--ink-mid); }
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">30 / 46</div>
+        <div class="slide-num">31 / 47</div>
     </div>
 </section>
 
@@ -2155,7 +2219,7 @@ Top-venue paper, ddl: 5/31">
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">31 / 46</div>
+        <div class="slide-num">32 / 47</div>
     </div>
 </section>
 
@@ -2228,7 +2292,7 @@ memory/
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">32 / 46</div>
+        <div class="slide-num">33 / 47</div>
     </div>
 </section>
 
@@ -2244,7 +2308,7 @@ memory/
     </div>
     <div class="slide-footer" style="border-color: rgba(255,255,255,0.1);">
         <div class="footer-text" style="color: rgba(255,255,255,0.3);"></div>
-        <div class="slide-num" style="color: rgba(255,255,255,0.3);">33 / 46</div>
+        <div class="slide-num" style="color: rgba(255,255,255,0.3);">34 / 47</div>
     </div>
 </section>
 
@@ -2297,7 +2361,7 @@ memory/
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">34 / 46</div>
+        <div class="slide-num">35 / 47</div>
     </div>
 </section>
 
@@ -2327,7 +2391,7 @@ memory/
     </div>
     <div class="slide-footer">
         <div class="footer-text" style="font-size:var(--t-label);color:var(--ink-soft);" data-en="Source: arXiv Blog (Nov 2024) · blog.arxiv.org/2024/11/04 · arxiv.org/stats/monthly_submissions">来源：arXiv Blog（2024年11月）· blog.arxiv.org/2024/11/04 · arxiv.org/stats</div>
-        <div class="slide-num">35 / 46</div>
+        <div class="slide-num">36 / 47</div>
     </div>
 </section>
 
@@ -2350,7 +2414,7 @@ memory/
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">36 / 46</div>
+        <div class="slide-num">37 / 47</div>
     </div>
 </section>
 
@@ -2389,7 +2453,7 @@ memory/
     </div>
     <div class="slide-footer">
         <div class="footer-text" style="font-size:var(--t-label);color:var(--ink-soft);" data-en="Source: Badal et al. (2025) · arxiv.org/abs/2511.15534 · agents4science.stanford.edu">来源：Badal et al. (2025) · arxiv.org/abs/2511.15534 · agents4science.stanford.edu</div>
-        <div class="slide-num">37 / 46</div>
+        <div class="slide-num">38 / 47</div>
     </div>
 </section>
 
@@ -2429,7 +2493,7 @@ memory/
     </div>
     <div class="slide-footer">
         <div class="footer-text" style="font-size:var(--t-label);color:var(--ink-soft);" data-en="Sources: Andy Hall, freesystems.substack.com · AI Ideas paper ICLR 2025 (arxiv.org/abs/2409.04109)">来源：Andy Hall, freesystems.substack.com · ICLR 2025 AI Ideas paper（arxiv.org/abs/2409.04109）</div>
-        <div class="slide-num">38 / 46</div>
+        <div class="slide-num">39 / 47</div>
     </div>
 </section>
 
@@ -2468,7 +2532,7 @@ memory/
     </div>
     <div class="slide-footer">
         <div class="footer-text" style="font-size:var(--t-label);color:var(--ink-soft);" data-en="Ref: Sam Altman (X, Feb 2025) · Anthropic Economic Index · anthropic.com/research/labor-market-impacts">参考：Sam Altman（X，2025年2月）· Anthropic Economic Index · anthropic.com/research/labor-market-impacts</div>
-        <div class="slide-num">39 / 46</div>
+        <div class="slide-num">40 / 47</div>
     </div>
 </section>
 
@@ -2502,7 +2566,7 @@ memory/
     </div>
     <div class="slide-footer">
         <div class="footer-text" style="font-size:var(--t-label);color:var(--ink-soft);" data-en="Sources: Anthropic (Mar 2026) anthropic.com/research/labor-market-impacts · Dallas Fed (Jan 2026) dallasfed.org/research/economics/2026/0106">来源：Anthropic（2026年3月）anthropic.com/research/labor-market-impacts · 达拉斯联储（2026年1月）dallasfed.org/research/economics/2026/0106</div>
-        <div class="slide-num">40 / 46</div>
+        <div class="slide-num">41 / 47</div>
     </div>
 </section>
 
@@ -2565,7 +2629,7 @@ memory/
     </div>
     <div class="slide-footer">
         <div class="footer-text" style="font-size:var(--t-label);color:var(--ink-soft);" data-en="Sources: Anthropic · Effective Harnesses for Long-Running Agents · LangChain · OpenAI · CORE-Bench">来源：Anthropic · Effective Harnesses · LangChain · OpenAI Harness Engineering · CORE-Bench</div>
-        <div class="slide-num">41 / 46</div>
+        <div class="slide-num">42 / 47</div>
     </div>
 </section>
 
@@ -2609,7 +2673,7 @@ memory/
     </div>
     <div class="slide-footer">
         <div class="footer-text" style="font-size:var(--t-label);color:var(--ink-soft);" data-en="Sources: Martin Fowler · OpenAI Harness Engineering · Anthropic · Manus · Vercel">来源：Martin Fowler · OpenAI Harness Engineering · Anthropic · Manus · Vercel</div>
-        <div class="slide-num">42 / 46</div>
+        <div class="slide-num">43 / 47</div>
     </div>
 </section>
 
@@ -2622,7 +2686,7 @@ memory/
     </div>
     <div class="slide-footer">
         <div class="footer-text"></div>
-        <div class="slide-num">43 / 46</div>
+        <div class="slide-num">44 / 47</div>
     </div>
 </section>
 
@@ -2654,7 +2718,7 @@ gnvitop              <span style="color:#555;"># 使用</span></div>
     </div>
     <div class="slide-footer">
         <div class="footer-text">github.com/Linwei94/gnvitop</div>
-        <div class="slide-num">44 / 46</div>
+        <div class="slide-num">45 / 47</div>
     </div>
 </section>
 
@@ -2669,7 +2733,7 @@ gnvitop              <span style="color:#555;"># 使用</span></div>
     </div>
     <div class="slide-footer">
         <div class="footer-text">Linwei Tao · 2026.03.20</div>
-        <div class="slide-num">45 / 46</div>
+        <div class="slide-num">46 / 47</div>
     </div>
 </section>
 
