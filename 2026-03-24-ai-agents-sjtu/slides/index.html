@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agent for Research and Engineering</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    background: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    overflow: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 40%, rgba(232,50,26,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 80% 70%, rgba(218,119,86,0.04) 0%, transparent 55%);
+    animation: breathe 8s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+
+  @keyframes breathe {
+    from { opacity: 0.6; }
+    to   { opacity: 1; }
+  }
+
+  .card {
+    position: relative;
+    text-align: center;
+    padding: 3.5rem 4rem 3rem;
+    max-width: 480px;
+    width: 90vw;
+  }
+
+  .label {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #555;
+    margin-bottom: 2rem;
+  }
+
+  h1 {
+    font-size: clamp(1.3rem, 3.5vw, 1.7rem);
+    font-weight: 700;
+    color: #e8e8e8;
+    line-height: 1.35;
+    margin-bottom: 0.5rem;
+  }
+
+  .sub {
+    font-size: 0.85rem;
+    color: #555;
+    margin-bottom: 3rem;
+  }
+
+  .divider {
+    width: 2rem;
+    height: 2px;
+    background: #e8321a;
+    margin: 0 auto 3rem;
+    border-radius: 2px;
+  }
+
+  .prompt {
+    font-size: 0.78rem;
+    color: #666;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.04em;
+  }
+
+  .lang-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .lang-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 1.1rem 2rem;
+    border: 1.5px solid #2a2a2a;
+    border-radius: 10px;
+    background: #171717;
+    color: #ccc;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.18s ease;
+    min-width: 120px;
+  }
+
+  .lang-btn:hover {
+    border-color: #e8321a;
+    background: #1e1410;
+    color: #f0f0f0;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(232,50,26,0.12);
+  }
+
+  .lang-btn .icon {
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  .lang-btn .name {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .lang-btn .hint {
+    font-size: 0.65rem;
+    color: #555;
+    letter-spacing: 0.06em;
+  }
+
+  .lang-btn:hover .hint {
+    color: #888;
+  }
+
+  .footer {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 0.65rem;
+    color: #333;
+    letter-spacing: 0.06em;
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <p class="label">Linwei Tao · 2026-03-18</p>
+  <h1>AI Agent for Research and Engineering</h1>
+  <p class="sub">人工智能 Agent 在科研与工程中的应用</p>
+  <div class="divider"></div>
+  <p class="prompt">Choose a language · 选择语言</p>
+  <div class="lang-buttons">
+    <a class="lang-btn" href="zh.html">
+      <span class="icon">🀄</span>
+      <span class="name">中文</span>
+      <span class="hint">CHINESE</span>
+    </a>
+    <a class="lang-btn" href="en.html">
+      <span class="icon">🔤</span>
+      <span class="name">English</span>
+      <span class="hint">ENGLISH</span>
+    </a>
+  </div>
+</div>
+
+<p class="footer">USYD · School of Computer Science</p>
+
+</body>
+</html>
