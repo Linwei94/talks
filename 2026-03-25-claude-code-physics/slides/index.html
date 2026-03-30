@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code for Research — Linwei Tao</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #ffffff; --bg-alt: #f7f6f2; --ink: #111; --ink-mid: #444; --ink-soft: #888;
+    --red: #e8321a; --red-light: rgba(232,50,26,0.08); --border-soft: #e0ddd8;
+    --t-h1: clamp(2.6rem,5.5vw,5rem); --t-h2: clamp(1.9rem,3.8vw,3.4rem);
+    --t-body: clamp(1.2rem,2vw,1.75rem); --t-small: clamp(1rem,1.5vw,1.3rem);
+    --t-label: clamp(0.75rem,1vw,0.95rem);
+    --pad: clamp(2.5rem,5.5vw,5.5rem); --gap: clamp(1rem,2.5vw,2.5rem); --egap: clamp(0.5rem,1.2vw,1.2rem);
+    --ease: cubic-bezier(0.16,1,0.3,1);
+    --mono: "JetBrains Mono", monospace;
+    --sans: "Helvetica Neue", Arial, sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow-x:hidden;background:var(--bg);color:var(--ink);font-family:var(--sans);}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth;}
+.slide{width:100vw;height:100vh;height:100dvh;overflow:hidden;scroll-snap-align:start;display:flex;flex-direction:column;background:var(--bg);}
+.slide-content{flex:1;display:flex;flex-direction:column;justify-content:center;overflow:hidden;padding:var(--pad);}
+@media(max-height:700px){:root{--pad:clamp(1.2rem,3vw,2.5rem);--gap:clamp(0.6rem,1.5vw,1.5rem);}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.2s!important;}}
+
+.reveal{opacity:0;transform:translateY(16px);transition:opacity 0.45s var(--ease),transform 0.45s var(--ease);}
+.slide.visible:not(.build-active) .reveal{opacity:1;transform:none;}
+.slide.visible:not(.build-active) .reveal:nth-child(1){transition-delay:.05s;}
+.slide.visible:not(.build-active) .reveal:nth-child(2){transition-delay:.15s;}
+.slide.visible:not(.build-active) .reveal:nth-child(3){transition-delay:.25s;}
+.slide.visible:not(.build-active) .reveal:nth-child(n+4){transition-delay:.35s;}
+.slide.build-active .reveal{opacity:0;transform:translateY(16px);}
+.slide.build-active .reveal.step-shown{opacity:1;transform:none;transition-delay:0s;}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--red);z-index:1000;transition:width .3s ease;width:0%;}
+.nav-dots{position:fixed;right:clamp(1rem,2vw,1.8rem);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;z-index:999;}
+.nav-dot{width:7px;height:7px;border-radius:50%;background:var(--ink-soft);opacity:.28;cursor:pointer;transition:all .3s;border:none;}
+.nav-dot.active{background:var(--red);opacity:1;transform:scale(1.35);}
+
+.slide-header{display:flex;align-items:center;justify-content:space-between;padding:clamp(.9rem,1.8vh,1.6rem) var(--pad);border-bottom:2px solid var(--ink);flex-shrink:0;}
+.lbl{font-size:var(--t-label);text-transform:uppercase;letter-spacing:.22em;font-weight:700;color:var(--ink-soft);}
+.lbl.red{color:var(--red);}
+.slide-footer{display:flex;align-items:center;justify-content:space-between;padding:clamp(.6rem,1.3vh,1rem) var(--pad);border-top:1px solid var(--border-soft);flex-shrink:0;}
+.foot{font-size:var(--t-label);color:var(--ink-soft);}
+.num{font-size:var(--t-label);color:var(--ink-soft);font-variant-numeric:tabular-nums;}
+
+h1{font-size:var(--t-h1);font-weight:900;line-height:1.05;}
+h2{font-size:var(--t-h2);font-weight:700;line-height:1.1;}
+p{font-size:var(--t-body);line-height:1.6;color:var(--ink-mid);}
+.red{color:var(--red);}
+.soft{color:var(--ink-soft);}
+
+.hl{background:var(--red-light);border-left:4px solid var(--red);padding:.8rem 1.2rem;border-radius:0 4px 4px 0;}
+.hl p{font-size:var(--t-body);font-weight:600;color:var(--ink);line-height:1.45;}
+.hl.grey{background:var(--bg-alt);border-color:var(--border-soft);}
+.hl.grey p{font-weight:400;color:var(--ink-mid);}
+
+.card{border:1px solid var(--border-soft);padding:.9rem 1rem;border-radius:4px;}
+.card-title{font-size:var(--t-small);font-weight:700;margin-bottom:.25rem;color:var(--ink);}
+.card-desc{font-size:clamp(.7rem,1vw,.88rem);color:var(--ink-soft);line-height:1.5;}
+
+.terminal{background:#0d1117;border-radius:8px;overflow:hidden;border:1px solid #30363d;display:flex;flex-direction:column;max-height:min(44vh,360px);}
+.t-bar{background:#161b22;padding:.5rem .9rem;display:flex;align-items:center;gap:.45rem;flex-shrink:0;}
+.t-dot{width:10px;height:10px;border-radius:50%;}
+.t-dot.r{background:#ff5f57;}.t-dot.y{background:#febc2e;}.t-dot.g{background:#28c840;}
+.t-name{font-size:.68rem;color:#8b949e;font-family:var(--mono);margin-left:.4rem;}
+.t-body{padding:.9rem 1.1rem;font-family:var(--mono);font-size:clamp(.68rem,.98vw,.84rem);color:#e6edf3;line-height:1.8;overflow-y:auto;flex:1;}
+.t-p{color:#58a6ff;}.t-tool{color:#7ec8e3;}.t-ok{color:#56d364;}.t-dim{color:#8b949e;}
+
+.code{background:#1a1a1a;border-left:3px solid var(--red);padding:.8rem 1.1rem;font-family:var(--mono);font-size:clamp(.65rem,.92vw,.8rem);color:#c8c8c8;line-height:1.7;border-radius:0 4px 4px 0;overflow:hidden;}
+.kw{color:#7ec8e3;}.ok2{color:#56d364;}.dim{color:#666;font-style:italic;}.hl2{color:#fff;font-weight:600;}
+
+.edit-hotzone{position:fixed;top:0;left:0;width:80px;height:80px;z-index:10000;cursor:pointer;}
+.edit-toggle{position:fixed;top:14px;left:14px;z-index:10001;background:var(--ink);color:#fff;border:none;border-radius:4px;padding:.35em .75em;font-size:.72rem;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s;}
+.edit-toggle.show,.edit-toggle.active{opacity:1;pointer-events:auto;}
+.edit-toggle.active{background:var(--red);}
+[contenteditable]{outline:none;}
+.edit-mode [contenteditable]:hover{background:rgba(232,50,26,.06);border-radius:2px;}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots"></nav>
+<div class="edit-hotzone" id="editHotzone"></div>
+<button class="edit-toggle" id="editToggle">✏ Edit</button>
+
+<!-- 01 COVER -->
+<section class="slide" id="s1">
+    <div class="slide-content" style="justify-content:center;gap:var(--gap);">
+        <div class="reveal" style="display:flex;align-items:center;gap:.9rem;">
+            <div style="width:3px;height:2.8rem;background:var(--red);"></div>
+            <div class="lbl">Lab Talk · 2026.03.30 · 15 min</div>
+        </div>
+        <h1 class="reveal">Claude Code<br><span class="red">for Research</span></h1>
+        <p class="reveal" style="color:var(--ink-soft);max-width:32rem;">
+            How I use an AI coding agent — and what it might mean for your work
+        </p>
+        <div class="reveal" style="padding-top:.3rem;">
+            <div style="font-size:var(--t-small);font-weight:600;">Linwei Tao</div>
+            <div style="font-size:var(--t-label);color:var(--ink-soft);">PhD Candidate · University of Sydney</div>
+            <div style="font-size:var(--t-label);color:var(--ink-soft);font-family:var(--mono);">linwei.tao@sydney.edu.au</div>
+        </div>
+    </div>
+    <div class="slide-footer"><div class="foot">Claude Code for Research</div><div class="num">01 / 11</div></div>
+</section>
+
+<!-- 02 NOT A CHATBOT -->
+<section class="slide" id="s2">
+    <div class="slide-header"><div class="lbl">Background</div><div class="lbl red">Not a Chatbot</div></div>
+    <div class="slide-content" style="gap:var(--gap);">
+        <h2 class="reveal">The difference is <span class="red">who does the work</span></h2>
+        <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);">
+            <div style="padding:1.1rem 1.3rem;background:var(--bg-alt);border-radius:8px;border-top:3px solid var(--border-soft);">
+                <div class="lbl" style="margin-bottom:.7rem;">ChatGPT / Copilot</div>
+                <p style="font-size:var(--t-small);line-height:1.8;">
+                    You copy an error → it suggests a fix<br>
+                    You paste it back → you run it<br>
+                    You copy the new error…<br>
+                    <span class="soft">You are the middleman.</span>
+                </p>
+            </div>
+            <div style="padding:1.1rem 1.3rem;background:var(--red-light);border-radius:8px;border-top:3px solid var(--red);">
+                <div class="lbl red" style="margin-bottom:.7rem;">Claude Code</div>
+                <p style="font-size:var(--t-small);line-height:1.8;">
+                    You describe the goal<br>
+                    It reads files, writes code, runs it<br>
+                    It fixes errors and loops back<br>
+                    <span class="red">You stay at the level of intent.</span>
+                </p>
+            </div>
+        </div>
+        <div class="reveal hl">
+            <p>Runs in your terminal. Reads and edits your actual files. Loops until done — or asks when stuck.</p>
+        </div>
+    </div>
+    <div class="slide-footer"><div class="foot"></div><div class="num">02 / 11</div></div>
+</section>
+
+<!-- 03 WHAT IT CAN BUILD -->
+<section class="slide" id="s4">
+    <div class="slide-header"><div class="lbl">What It Can Do</div><div class="lbl red">Research Tools, Built in Hours</div></div>
+    <div class="slide-content" style="gap:var(--gap);">
+        <h2 class="reveal">Anything that would normally take <span class="red">days of scripting</span></h2>
+        <div class="reveal" style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--egap);">
+            <div class="card" style="border-top:3px solid var(--red);">
+                <div class="card-title">Data analysis pipeline</div>
+                <div class="card-desc">Load raw data → fit → plot → export figures. You describe the model. It writes the code.</div>
+            </div>
+            <div class="card" style="border-top:3px solid var(--border-soft);">
+                <div class="card-title">Simulation wrapper</div>
+                <div class="card-desc">Submit jobs, monitor progress, parse output, collect results — automated end to end.</div>
+            </div>
+            <div class="card" style="border-top:3px solid var(--border-soft);">
+                <div class="card-title">Legacy code migration</div>
+                <div class="card-desc">Old Fortran or MATLAB scripts → clean Python, with comments and unit tests added.</div>
+            </div>
+            <div class="card" style="border-top:3px solid var(--border-soft);">
+                <div class="card-title">Lab dashboard</div>
+                <div class="card-desc">A simple web page to track experiments, samples, or equipment bookings. No web dev skills needed.</div>
+            </div>
+            <div class="card" style="border-top:3px solid var(--border-soft);">
+                <div class="card-title">Paper draft</div>
+                <div class="card-desc">Given your results and figures, draft a Methods or Results section in the journal's style.</div>
+            </div>
+            <div class="card" style="border-top:3px solid var(--border-soft);">
+                <div class="card-title">Debug anything</div>
+                <div class="card-desc">Stack trace or wrong output — it reads the code, finds the issue, fixes it, and reruns.</div>
+            </div>
+        </div>
+        <div class="reveal hl grey">
+            <p>I built a complete production web app for a small business in a few days — with little web development experience. The same logic applies to any research tool you need.</p>
+        </div>
+    </div>
+    <div class="slide-footer"><div class="foot"></div><div class="num">03 / 11</div></div>
+</section>
+
+<!-- 05 GHOSTCONNECT -->
+<section class="slide" id="s5">
+    <div class="slide-header"><div class="lbl">My Own Example</div><div class="lbl red">GhostConnect</div></div>
+    <div class="slide-content" style="justify-content:center;gap:2rem;">
+        <h2 class="reveal">A macOS app I needed. <span class="red">Built in an afternoon.</span></h2>
+
+        <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:54rem;">
+            <div style="background:var(--bg-alt);border-radius:10px;padding:1.4rem 1.6rem;display:flex;flex-direction:column;gap:.9rem;">
+                <div style="font-weight:700;font-size:var(--t-small);border-bottom:2px solid var(--ink);padding-bottom:.5rem;">The problem</div>
+                <p style="font-size:var(--t-small);color:var(--ink-mid);">Every morning: open terminal, ssh to 3 servers, attach tmux sessions, rename tabs. Tedious and error-prone.</p>
+            </div>
+            <div style="background:var(--bg-alt);border-radius:10px;padding:1.4rem 1.6rem;display:flex;flex-direction:column;gap:.9rem;">
+                <div style="font-weight:700;font-size:var(--t-small);border-bottom:2px solid var(--ink);padding-bottom:.5rem;">The result</div>
+                <p style="font-size:var(--t-small);color:var(--ink-mid);">Click the 👻 ghost icon in the menu bar → pick a server → Launch. One click opens all tabs, all sessions.</p>
+            </div>
+        </div>
+
+        <div class="reveal" style="display:flex;gap:1rem;flex-wrap:wrap;max-width:54rem;">
+            <div style="padding:.55rem 1rem;background:var(--red-light);border:1px solid rgba(232,50,26,.2);border-radius:6px;font-size:var(--t-small);font-weight:600;color:var(--red);">Swift + SwiftUI</div>
+            <div style="padding:.55rem 1rem;background:var(--bg-alt);border-radius:6px;font-size:var(--t-small);font-weight:600;">macOS menu bar app</div>
+            <div style="padding:.55rem 1rem;background:var(--bg-alt);border-radius:6px;font-size:var(--t-small);font-weight:600;">SSH + tmux automation</div>
+            <div style="padding:.55rem 1rem;background:var(--bg-alt);border-radius:6px;font-size:var(--t-small);font-weight:600;">Open-source on GitHub</div>
+        </div>
+
+        <div class="reveal hl grey" style="max-width:54rem;">
+            <p style="font-size:var(--t-small);">I had never written a line of Swift. Claude Code figured out the macOS APIs, permissions model, and packaging — I just described what I wanted.</p>
+        </div>
+    </div>
+    <div class="slide-footer"><div class="foot"></div><div class="num">04 / 11</div></div>
+</section>
+
+<!-- 05 RESEARCH IS TEXT -->
+<section class="slide" id="s5">
+    <div class="slide-header"><div class="lbl">The Argument</div><div class="lbl red">Research Is Also Just Files</div></div>
+    <div class="slide-content" style="gap:var(--gap);">
+        <h2 class="reveal">If it's a file, Claude Code can work with it</h2>
+        <div class="reveal" style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--egap);">
+            <div class="card" style="border-top:3px solid var(--ink-soft);text-align:center;padding:.9rem .7rem;">
+                <div style="font-size:1.4rem;margin-bottom:.35rem;">⚗️</div>
+                <div class="card-title">Code</div>
+                <div class="card-desc">.py · .f90 · .cpp<br>Read, run, fix, extend</div>
+            </div>
+            <div class="card" style="border-top:3px solid var(--ink-soft);text-align:center;padding:.9rem .7rem;">
+                <div style="font-size:1.4rem;margin-bottom:.35rem;">📊</div>
+                <div class="card-title">Data</div>
+                <div class="card-desc">.csv · .txt · .hdf5<br>Load, fit, plot, summarise</div>
+            </div>
+            <div class="card" style="border-top:3px solid var(--ink-soft);text-align:center;padding:.9rem .7rem;">
+                <div style="font-size:1.4rem;margin-bottom:.35rem;">📝</div>
+                <div class="card-title">Writing</div>
+                <div class="card-desc">.tex · .md<br>Draft, restructure, cite</div>
+            </div>
+            <div class="card" style="border-top:3px solid var(--ink-soft);text-align:center;padding:.9rem .7rem;">
+                <div style="font-size:1.4rem;margin-bottom:.35rem;">🐛</div>
+                <div class="card-title">Errors</div>
+                <div class="card-desc">Stack traces · logs<br>Diagnose and fix</div>
+            </div>
+        </div>
+        <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);">
+            <div style="padding:.85rem 1rem;background:var(--bg-alt);border-radius:6px;">
+                <div style="font-size:var(--t-small);font-weight:700;color:var(--ink);margin-bottom:.4rem;">It handles well</div>
+                <div style="font-size:var(--t-label);color:var(--ink-soft);line-height:1.8;">Fitting data · Plotting · Debugging<br>Formatting references · Drafting paragraphs</div>
+            </div>
+            <div style="padding:.85rem 1rem;background:var(--bg-alt);border-radius:6px;">
+                <div style="font-size:var(--t-small);font-weight:700;color:var(--ink);margin-bottom:.4rem;">Still needs you</div>
+                <div style="font-size:var(--t-label);color:var(--ink-soft);line-height:1.8;">Deciding what to measure · Choosing the model<br>Interpreting results · Knowing if it's right</div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer"><div class="foot"></div><div class="num">05 / 11</div></div>
+</section>
+
+
+
+
+<!-- 06 LLM + AGENT -->
+<section class="slide" id="s6">
+    <div class="slide-header"><div class="lbl">Background</div><div class="lbl red">How It Actually Works</div></div>
+    <div class="slide-content" style="justify-content:center;gap:2rem;">
+
+        <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:56rem;">
+            <div style="background:var(--bg-alt);border-radius:10px;padding:1.4rem 1.6rem;">
+                <div style="font-weight:700;font-size:var(--t-small);border-bottom:2px solid var(--ink);padding-bottom:.5rem;margin-bottom:.9rem;">The LLM</div>
+                <p style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.75;">Predicts the most likely next word — over and over. Trained on most of the text humanity has written. Surprisingly good at reasoning as a side effect.</p>
+            </div>
+            <div style="background:var(--bg-alt);border-radius:10px;padding:1.4rem 1.6rem;">
+                <div style="font-weight:700;font-size:var(--t-small);border-bottom:2px solid var(--red);padding-bottom:.5rem;margin-bottom:.9rem;color:var(--red);">The Agent</div>
+                <p style="font-size:var(--t-small);color:var(--ink-mid);line-height:1.75;">LLM + tools + a loop. The model decides what to do, calls a tool (read a file, run code…), sees the result, and keeps going until done.</p>
+            </div>
+        </div>
+
+        <div class="reveal" style="display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;max-width:56rem;">
+            <div style="padding:.7rem 1.2rem;background:var(--bg-alt);border-radius:8px;font-size:var(--t-small);font-weight:600;">💬 Your goal</div>
+            <div style="color:var(--ink-soft);font-size:1.2rem;">→</div>
+            <div style="padding:.7rem 1.2rem;background:var(--red-light);border:1px solid rgba(232,50,26,.2);border-radius:8px;font-size:var(--t-small);font-weight:600;color:var(--red);">🧠 Decide</div>
+            <div style="color:var(--ink-soft);font-size:1.2rem;">→</div>
+            <div style="padding:.7rem 1.2rem;background:var(--bg-alt);border-radius:8px;font-size:var(--t-small);font-weight:600;">🛠 Act</div>
+            <div style="color:var(--ink-soft);font-size:1.2rem;">→</div>
+            <div style="padding:.7rem 1.2rem;background:var(--bg-alt);border-radius:8px;font-size:var(--t-small);font-weight:600;">👁 Observe</div>
+            <div style="color:var(--ink-soft);font-size:1.2rem;">→ loop</div>
+        </div>
+
+    </div>
+    <div class="slide-footer"><div class="foot"></div><div class="num">06 / 11</div></div>
+</section>
+
+<!-- 07 CONTEXT WINDOW -->
+<section class="slide" id="s8">
+    <div class="slide-header"><div class="lbl">How It Works</div><div class="lbl red">The Context Window</div></div>
+    <div class="slide-content" style="justify-content:center;gap:2rem;">
+        <h2 class="reveal">Everything it <span class="red">can see</span> at once</h2>
+
+        <div class="reveal" style="display:flex;align-items:stretch;gap:1.5rem;max-width:54rem;">
+            <!-- Left: visual metaphor -->
+            <div style="flex:1;background:var(--bg-alt);border-radius:10px;padding:1.4rem 1.6rem;display:flex;flex-direction:column;gap:.9rem;">
+                <div style="font-weight:700;font-size:var(--t-small);border-bottom:2px solid var(--ink);padding-bottom:.5rem;">What fits in the window</div>
+                <div style="display:flex;gap:.7rem;align-items:center;">
+                    <span style="font-size:1.4rem;">📄</span>
+                    <span style="font-size:var(--t-small);color:var(--ink-mid);">Your instructions &amp; question</span>
+                </div>
+                <div style="display:flex;gap:.7rem;align-items:center;">
+                    <span style="font-size:1.4rem;">📂</span>
+                    <span style="font-size:var(--t-small);color:var(--ink-mid);">All the files in your project</span>
+                </div>
+                <div style="display:flex;gap:.7rem;align-items:center;">
+                    <span style="font-size:1.4rem;">💬</span>
+                    <span style="font-size:var(--t-small);color:var(--ink-mid);">The entire conversation so far</span>
+                </div>
+                <div style="display:flex;gap:.7rem;align-items:center;">
+                    <span style="font-size:1.4rem;">⚙️</span>
+                    <span style="font-size:var(--t-small);color:var(--ink-mid);">Terminal output, error logs</span>
+                </div>
+            </div>
+            <!-- Right: key insight -->
+            <div style="flex:1;display:flex;flex-direction:column;gap:1rem;">
+                <div class="hl" style="flex:1;padding:1.2rem 1.4rem;">
+                    <div style="font-weight:700;font-size:var(--t-small);margin-bottom:.5rem;">~200,000 tokens ≈ a small book</div>
+                    <p style="font-size:var(--t-small);">Large enough to hold an entire codebase or a full paper draft — all at once.</p>
+                </div>
+                <div class="hl grey" style="flex:1;padding:1.2rem 1.4rem;">
+                    <div style="font-weight:700;font-size:var(--t-small);margin-bottom:.5rem;">No memory between sessions</div>
+                    <p style="font-size:var(--t-small);">Each new session starts blank. A <code style="font-family:var(--mono);font-size:.9em;">CLAUDE.md</code> file tells it who you are and what matters — every time.</p>
+                </div>
+            </div>
+        </div>
+        <div class="reveal" style="max-width:54rem;padding:.6rem 1.1rem;background:var(--bg-alt);border-radius:8px;border-left:3px solid var(--ink-soft);">
+            <p style="font-size:var(--t-small);color:var(--ink-mid);">The latest models support up to <strong style="color:var(--ink);">1 million tokens</strong> — enough for a full PhD thesis, or months of lab notes, in a single session.</p>
+        </div>
+    </div>
+    <div class="slide-footer"><div class="foot"></div><div class="num">07 / 11</div></div>
+</section>
+<!-- 08 HONEST LIMITS -->
+<section class="slide" id="s9">
+    <div class="slide-header"><div class="lbl">Honest Assessment</div><div class="lbl red">What It Does and Doesn't Do</div></div>
+    <div class="slide-content" style="gap:var(--gap);">
+        <h2 class="reveal">Good at implementation. <span class="red">Not a scientist.</span></h2>
+        <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);">
+            <div>
+                <div style="font-size:var(--t-small);font-weight:700;padding-bottom:.4rem;border-bottom:2px solid var(--ink);margin-bottom:var(--egap);">Genuinely useful</div>
+                <div style="display:flex;flex-direction:column;gap:.5rem;">
+                    <div style="display:flex;gap:.6rem;"><span style="color:var(--red);font-weight:700;flex-shrink:0;">✓</span><span style="font-size:var(--t-small);color:var(--ink-mid);">Writing and debugging code you describe in words</span></div>
+                    <div style="display:flex;gap:.6rem;"><span style="color:var(--red);font-weight:700;flex-shrink:0;">✓</span><span style="font-size:var(--t-small);color:var(--ink-mid);">Fitting, plotting, and summarising datasets</span></div>
+                    <div style="display:flex;gap:.6rem;"><span style="color:var(--red);font-weight:700;flex-shrink:0;">✓</span><span style="font-size:var(--t-small);color:var(--ink-mid);">Migrating legacy Fortran / MATLAB to Python</span></div>
+                    <div style="display:flex;gap:.6rem;"><span style="color:var(--red);font-weight:700;flex-shrink:0;">✓</span><span style="font-size:var(--t-small);color:var(--ink-mid);">Drafting Methods and Results sections</span></div>
+                    <div style="display:flex;gap:.6rem;"><span style="color:var(--red);font-weight:700;flex-shrink:0;">✓</span><span style="font-size:var(--t-small);color:var(--ink-mid);">Formatting references and fixing LaTeX</span></div>
+                </div>
+            </div>
+            <div>
+                <div style="font-size:var(--t-small);font-weight:700;padding-bottom:.4rem;border-bottom:2px solid var(--ink);margin-bottom:var(--egap);">Still needs you</div>
+                <div style="display:flex;flex-direction:column;gap:.5rem;">
+                    <div style="display:flex;gap:.6rem;"><span style="color:var(--ink-soft);font-weight:700;flex-shrink:0;">—</span><span style="font-size:var(--t-small);color:var(--ink-mid);">Deciding which question is worth asking</span></div>
+                    <div style="display:flex;gap:.6rem;"><span style="color:var(--ink-soft);font-weight:700;flex-shrink:0;">—</span><span style="font-size:var(--t-small);color:var(--ink-mid);">Knowing if a result makes physical sense</span></div>
+                    <div style="display:flex;gap:.6rem;"><span style="color:var(--ink-soft);font-weight:700;flex-shrink:0;">—</span><span style="font-size:var(--t-small);color:var(--ink-mid);">Choosing the right model or approximation</span></div>
+                    <div style="display:flex;gap:.6rem;"><span style="color:var(--ink-soft);font-weight:700;flex-shrink:0;">—</span><span style="font-size:var(--t-small);color:var(--ink-mid);">Verifying cited references (it hallucinates)</span></div>
+                    <div style="display:flex;gap:.6rem;"><span style="color:var(--ink-soft);font-weight:700;flex-shrink:0;">—</span><span style="font-size:var(--t-small);color:var(--ink-mid);">Scientific judgement. Full stop.</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="reveal hl" style="margin-top:.3rem;">
+            <p>Think of it as a highly capable lab assistant who is excellent at implementation — but has no domain expertise. You still need to supervise the work.</p>
+        </div>
+    </div>
+    <div class="slide-footer"><div class="foot"></div><div class="num">08 / 11</div></div>
+</section>
+<!-- 06 RESEARCH PIPELINE -->
+<section class="slide" id="s6">
+    <div class="slide-header"><div class="lbl">Our Own Work</div></div>
+    <div class="slide-content" style="justify-content:center;gap:2rem;">
+        <h2 class="reveal" style="font-size:clamp(1.6rem,3.2vw,2.4rem);max-width:36rem;">We're automating the <span class="red">entire research pipeline</span> — and exploring where it breaks</h2>
+
+        <div class="reveal" style="display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;">
+            <div style="padding:.7rem 1.3rem;background:var(--bg-alt);border-radius:8px;font-size:var(--t-body);font-weight:600;">💡 Idea</div>
+            <div style="color:var(--ink-soft);font-size:1.2rem;">→</div>
+            <div style="padding:.7rem 1.3rem;background:var(--bg-alt);border-radius:8px;font-size:var(--t-body);font-weight:600;">📚 Literature</div>
+            <div style="color:var(--ink-soft);font-size:1.2rem;">→</div>
+            <div style="padding:.7rem 1.3rem;background:var(--red-light);border:1px solid rgba(232,50,26,.2);border-radius:8px;font-size:var(--t-body);font-weight:600;color:var(--red);">⚗️ Experiments</div>
+            <div style="color:var(--ink-soft);font-size:1.2rem;">→</div>
+            <div style="padding:.7rem 1.3rem;background:var(--bg-alt);border-radius:8px;font-size:var(--t-body);font-weight:600;">📝 Paper</div>
+            <div style="color:var(--ink-soft);font-size:1.2rem;">→</div>
+            <div style="padding:.7rem 1.3rem;background:var(--bg-alt);border-radius:8px;font-size:var(--t-body);font-weight:600;">🔍 Review</div>
+        </div>
+
+        <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:52rem;">
+            <div style="background:var(--bg-alt);border-radius:10px;padding:1.2rem 1.4rem;">
+                <div style="font-weight:700;font-size:var(--t-body);margin-bottom:.8rem;">✓ Already works</div>
+                <div style="color:var(--ink-mid);font-size:var(--t-body);line-height:1.8;">Literature review · Idea debate<br>Code gen · GPU scheduling · First draft</div>
+            </div>
+            <div style="background:var(--bg-alt);border-radius:10px;padding:1.2rem 1.4rem;">
+                <div style="font-weight:700;font-size:var(--t-body);margin-bottom:.8rem;">— Still breaks</div>
+                <div style="color:var(--ink-mid);font-size:var(--t-body);line-height:1.8;">Ideas lack novelty · Hallucinated refs<br>The <em>interesting question</em> still needs you</div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer"><div class="foot"></div><div class="num">09 / 11</div></div>
+</section>
+<!-- 10 LIVE DEMO -->
+<section class="slide" id="s10">
+    <div class="slide-header"><div class="lbl red">🔴 Live Demo</div><div class="lbl">Let's try it now</div></div>
+    <div class="slide-content" style="justify-content:center;gap:2rem;">
+
+        <h2 class="reveal">Can we write a physics paper <span class="red">right now?</span></h2>
+
+        <div class="reveal" style="max-width:54rem;background:var(--red-light);border:1px solid rgba(232,50,26,.25);border-radius:10px;padding:1.4rem 1.8rem;">
+            <div style="font-size:var(--t-small);font-weight:700;color:var(--red);margin-bottom:.5rem;">The gap in the literature</div>
+            <p style="font-size:var(--t-small);color:var(--ink);line-height:1.75;">CMB energy injection efficiency f<sub>eff</sub> has only been computed for <em>direct</em> χχ → e⁺e⁻. But when annihilation proceeds <em>through an off-shell dark photon</em> (Boehm's model), f<sub>eff</sub> depends on the mediator mass — and nobody has mapped this out. The blind spot changes the exclusion limits significantly.</p>
+        </div>
+
+        <div class="reveal" style="max-width:54rem;background:var(--bg-alt);border-radius:10px;padding:1.1rem 1.4rem;">
+            <div style="font-size:var(--t-small);font-weight:700;margin-bottom:.4rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.08em;">Prompt to Claude Code</div>
+            <p style="font-size:var(--t-small);color:var(--ink);line-height:1.75;font-style:italic;">"Do a literature review on CMB constraints on sub-GeV dark matter annihilating via a light dark photon mediator. Identify a gap or overlooked scenario in the existing literature. Propose a novel research direction, design the calculation needed to address it, implement it, and write up the results as a short paper in LaTeX. Render the final PDF."</p>
+        </div>
+
+        <p class="reveal" style="font-size:var(--t-small);color:var(--ink-soft);max-width:44rem;">You tell me if the physics is right — that's the only part it can't do alone.</p>
+
+    </div>
+    <div class="slide-footer"><div class="foot"></div><div class="num">10 / 11</div></div>
+</section>
+
+<!-- 09 CLOSING -->
+<section class="slide" id="s10">
+    <div class="slide-content" style="justify-content:center;gap:var(--gap);">
+        <div class="reveal hl" style="padding:1.2rem 1.6rem;max-width:44rem;border-left-width:5px;">
+            <p style="font-size:var(--t-h2);line-height:1.35;font-weight:700;">
+                The bottleneck shifts —<br>
+                from <em style="color:var(--ink-soft);font-style:italic;">can I implement this?</em><br>
+                to <span class="red">what is worth computing?</span>
+            </p>
+        </div>
+        <p class="reveal" style="color:var(--ink-soft);max-width:42rem;font-size:var(--t-small);line-height:1.8;">
+            LaTeX didn't replace physicists — it removed typesetting as a bottleneck.<br>
+            Python didn't replace mathematicians — it removed tedious calculation.<br>
+            <strong style="color:var(--ink);">Claude Code removes implementation as a bottleneck.</strong>
+        </p>
+        <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);max-width:44rem;">
+            <div style="padding:.9rem 1.1rem;background:var(--bg-alt);border-radius:8px;">
+                <div style="font-size:var(--t-small);font-weight:700;margin-bottom:.4rem;">I'm curious —</div>
+                <p style="font-size:var(--t-small);color:var(--ink-mid);">What part of your workflow takes the most time but feels the most mechanical?</p>
+            </div>
+            <div style="padding:.9rem 1.1rem;background:var(--bg-alt);border-radius:8px;">
+                <div style="font-size:var(--t-small);font-weight:700;margin-bottom:.6rem;">Where could this help you?</div>
+                <div style="display:flex;flex-direction:column;gap:.4rem;">
+                    <div style="font-size:var(--t-small);color:var(--ink-mid);">📊 Data processing &amp; plotting</div>
+                    <div style="font-size:var(--t-small);color:var(--ink-mid);">🔬 Simulation &amp; fitting pipelines</div>
+                    <div style="font-size:var(--t-small);color:var(--ink-mid);">📄 Paper writing &amp; LaTeX</div>
+                    <div style="font-size:var(--t-small);color:var(--ink-mid);">🛠 Lab tools &amp; dashboards</div>
+                </div>
+                <div style="margin-top:.7rem;font-size:var(--t-label);color:var(--ink-soft);">linwei.tao@sydney.edu.au</div>
+            </div>
+        </div>
+    </div>
+    <div class="slide-footer"><div class="foot">Claude Code for Research · Linwei Tao</div><div class="num">11 / 11</div></div>
+</section>
+
+<script>
+class Deck {
+    constructor() {
+        this.slides = [...document.querySelectorAll('.slide')];
+        this.n = this.slides.length;
+        this.cur = 0;
+        this.bar = document.getElementById('progressBar');
+        this.dots = [];
+        this.buildDots();
+        this.observe();
+        this.keys();
+        this.wheel();
+        this.touch();
+    }
+    buildDots() {
+        const nav = document.getElementById('navDots');
+        this.slides.forEach((s, i) => {
+            const d = document.createElement('button');
+            d.className = 'nav-dot';
+            d.addEventListener('click', () => this.go(i));
+            nav.appendChild(d);
+            this.dots.push(d);
+        });
+    }
+    observe() {
+        const io = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) { e.target.classList.add('visible'); this.cur = this.slides.indexOf(e.target); this.ui(); }
+            });
+        }, { threshold: 0.5 });
+        this.slides.forEach(s => io.observe(s));
+    }
+    items(s) {
+        if (s.id === 's1') return [];
+        const r = [...s.querySelectorAll('.reveal')];
+        return r.length >= 3 ? r : [];
+    }
+    next() {
+        const r = this.items(this.slides[this.cur]);
+        if (!r.length) return false;
+        const h = r.find(el => !el.classList.contains('step-shown'));
+        if (!h) return false;
+        h.classList.add('step-shown');
+        return true;
+    }
+    go(i) {
+        i = Math.max(0, Math.min(this.n - 1, i));
+        this.slides.forEach(s => { s.classList.remove('build-active'); s.querySelectorAll('.reveal').forEach(el => el.classList.remove('step-shown')); });
+        const r = this.items(this.slides[i]);
+        if (r.length) { this.slides[i].classList.add('build-active'); if (r[0]) r[0].classList.add('step-shown'); }
+        this.slides[i].scrollIntoView({ behavior: 'smooth' });
+        this.cur = i; this.ui();
+    }
+    ui() {
+        if (this.bar) this.bar.style.width = (this.n > 1 ? this.cur / (this.n - 1) * 100 : 0) + '%';
+        this.dots.forEach((d, i) => d.classList.toggle('active', i === this.cur));
+    }
+    keys() {
+        document.addEventListener('keydown', e => {
+            if (e.target.getAttribute('contenteditable') === 'true') return;
+            if (['ArrowDown','ArrowRight','Space','PageDown'].includes(e.code)) { e.preventDefault(); if (!this.next()) this.go(this.cur + 1); }
+            else if (['ArrowUp','ArrowLeft','PageUp'].includes(e.code)) { e.preventDefault(); this.go(this.cur - 1); }
+            else if (e.key === 'Home') this.go(0);
+            else if (e.key === 'End') this.go(this.n - 1);
+        });
+    }
+    wheel() {
+        let last = 0;
+        document.addEventListener('wheel', e => {
+            e.preventDefault();
+            const now = Date.now(); if (now - last < 800) return; last = now;
+            if (e.deltaY > 0) { if (!this.next()) this.go(this.cur + 1); } else this.go(this.cur - 1);
+        }, { passive: false });
+    }
+    touch() {
+        let sy = 0;
+        document.addEventListener('touchstart', e => { sy = e.touches[0].clientY; }, { passive: true });
+        document.addEventListener('touchend', e => {
+            const d = sy - e.changedTouches[0].clientY;
+            if (Math.abs(d) > 50) { if (d > 0) { if (!this.next()) this.go(this.cur + 1); } else this.go(this.cur - 1); }
+        }, { passive: true });
+    }
+}
+class Editor {
+    constructor() {
+        this.on = false;
+        this.t = document.getElementById('editToggle');
+        this.h = document.getElementById('editHotzone');
+        let ht;
+        this.h.addEventListener('mouseenter', () => { clearTimeout(ht); this.t.classList.add('show'); });
+        this.h.addEventListener('mouseleave', () => { ht = setTimeout(() => { if (!this.on) this.t.classList.remove('show'); }, 400); });
+        this.t.addEventListener('click', () => this.toggle());
+        this.h.addEventListener('click', () => this.toggle());
+        document.addEventListener('keydown', e => {
+            if ((e.key === 'e' || e.key === 'E') && !e.target.getAttribute('contenteditable')) this.toggle();
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); this.save(); }
+        });
+    }
+    toggle() {
+        this.on = !this.on;
+        document.body.classList.toggle('edit-mode', this.on);
+        this.t.textContent = this.on ? '💾 Save (Ctrl+S)' : '✏ Edit';
+        this.t.classList.toggle('active', this.on);
+        this.t.classList.add('show');
+        document.querySelectorAll('h1,h2,h3,p,li,.card-title,.card-desc,.foot').forEach(el => el.setAttribute('contenteditable', this.on ? 'true' : 'false'));
+        if (!this.on) { this.save(); this.t.classList.remove('show'); }
+    }
+    save() {
+        const d = {};
+        document.querySelectorAll('[contenteditable]').forEach((el, i) => { d[i] = el.innerHTML; });
+        localStorage.setItem('phys-talk-v3', JSON.stringify(d));
+    }
+}
+new Deck(); new Editor();
+</script>
+</body>
+</html>
