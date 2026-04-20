@@ -1,19 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Agents in My Workflow — Five Cases · Linwei Tao</title>
+<title>Agent 的五种用法 · 陶林威</title>
 
-<!-- Editorial serif + clean sans + mono for code snippets -->
+<!-- 思源宋 + 思源黑 + 等宽；中文不用斜体 -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
 <style>
-/* ===========================================
-   VIEWPORT-BASE (mandatory)
-   =========================================== */
+/* === VIEWPORT BASE (mandatory) === */
 html, body { height: 100%; overflow-x: hidden; }
 html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
 
@@ -31,503 +29,557 @@ html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
     --title-size: clamp(1.5rem, 5vw, 4rem);
     --h2-size: clamp(1.25rem, 3.5vw, 2.5rem);
     --h3-size: clamp(1rem, 2.5vw, 1.75rem);
-    --body-size: clamp(0.75rem, 1.5vw, 1.125rem);
-    --small-size: clamp(0.65rem, 1vw, 0.875rem);
+    --body-size: clamp(0.85rem, 1.5vw, 1.2rem);
+    --small-size: clamp(0.7rem, 1vw, 0.9rem);
     --slide-padding: clamp(1.5rem, 5vw, 5rem);
     --content-gap: clamp(0.5rem, 2vw, 2rem);
-    --element-gap: clamp(0.25rem, 1vw, 1rem);
 }
-.card, .container, .content-box { max-width: min(90vw, 1100px); max-height: min(80vh, 700px); }
-.feature-list, .bullet-list { gap: clamp(0.4rem, 1vh, 1rem); }
-.feature-list li, .bullet-list li { font-size: var(--body-size); line-height: 1.45; }
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
-        gap: clamp(0.5rem, 1.5vw, 1rem); }
-img, .image-container { max-width: 100%; max-height: min(50vh, 400px); object-fit: contain; }
+img { max-width: 100%; max-height: min(50vh, 400px); object-fit: contain; }
 
 @media (max-height: 700px) {
-    :root { --slide-padding: clamp(1rem, 3vw, 2.5rem); --content-gap: clamp(0.4rem, 1.5vw, 1rem);
-            --title-size: clamp(1.25rem, 4.5vw, 2.5rem); --h2-size: clamp(1rem, 3vw, 1.75rem); }
+    :root { --slide-padding: clamp(1rem, 3vw, 2.5rem); --title-size: clamp(1.25rem, 4.5vw, 2.5rem); }
 }
 @media (max-height: 600px) {
-    :root { --slide-padding: clamp(0.6rem, 2.5vw, 1.5rem); --title-size: clamp(1.1rem, 4vw, 2rem);
-            --body-size: clamp(0.7rem, 1.2vw, 0.95rem); }
-    .nav-dots, .keyboard-hint, .decorative { display: none; }
-}
-@media (max-height: 500px) {
-    :root { --slide-padding: clamp(0.4rem, 2vw, 1rem); --title-size: clamp(1rem, 3.5vw, 1.5rem);
-            --h2-size: clamp(0.9rem, 2.5vw, 1.25rem); --body-size: clamp(0.65rem, 1vw, 0.85rem); }
-}
-@media (max-width: 600px) {
-    :root { --title-size: clamp(1.25rem, 7vw, 2.5rem); }
-    .grid { grid-template-columns: 1fr; }
+    :root { --slide-padding: clamp(0.6rem, 2.5vw, 1.5rem); --title-size: clamp(1.1rem, 4vw, 2rem); --body-size: clamp(0.75rem, 1.2vw, 1rem); }
+    .nav-dots { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
     html { scroll-behavior: auto; }
 }
 
-/* ===========================================
-   THEME — Paper & Ink, editorial
-   =========================================== */
+/* === THEME === */
 :root {
-    --paper: #f4efe6;
+    --paper: #f5f0e6;
     --paper-soft: #ebe4d6;
     --ink: #1a1a1a;
-    --ink-soft: #403a34;
-    --accent: #b4431f;        /* terracotta */
-    --accent-soft: #d89b6e;
-    --rule: rgba(26,26,26,0.18);
+    --ink-soft: #4a433b;
+    --ink-mute: #8a8075;
+    --accent: #b4431f;
+    --rule: rgba(26,26,26,0.15);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Noto Sans SC', sans-serif;
     background: var(--paper);
     color: var(--ink);
     font-weight: 400;
-    letter-spacing: -0.005em;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* Soft paper-grain backdrop via layered gradients */
 body::before {
-    content: "";
-    position: fixed; inset: 0;
+    content: ""; position: fixed; inset: 0;
     background:
-        radial-gradient(circle at 20% 10%, rgba(180, 67, 31, 0.05), transparent 40%),
-        radial-gradient(circle at 80% 90%, rgba(64, 58, 52, 0.06), transparent 45%);
+        radial-gradient(circle at 15% 10%, rgba(180, 67, 31, 0.04), transparent 45%),
+        radial-gradient(circle at 85% 90%, rgba(74, 67, 59, 0.05), transparent 45%);
     pointer-events: none; z-index: 0;
 }
 
 .slide > * { position: relative; z-index: 1; }
 
-/* === Typography === */
+/* 字体：中文显示用思源宋，正文用思源黑，代码/元信息用 JetBrains Mono */
 .display {
-    font-family: 'Fraunces', serif;
+    font-family: 'Noto Serif SC', serif;
     font-weight: 300;
-    font-style: italic;
-    font-variation-settings: "opsz" 144;
-    letter-spacing: -0.03em;
-    line-height: 1.02;
+    letter-spacing: 0.01em;
+    line-height: 1.15;
 }
+.display strong { color: var(--accent); font-weight: 500; }
+
 .eyebrow {
     font-family: 'JetBrains Mono', monospace;
     font-size: var(--small-size);
     text-transform: uppercase;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.2em;
     color: var(--accent);
+    font-weight: 500;
 }
 .meta {
     font-family: 'JetBrains Mono', monospace;
     font-size: clamp(0.6rem, 0.9vw, 0.8rem);
-    color: var(--ink-soft);
-    letter-spacing: 0.1em;
+    color: var(--ink-mute);
+    letter-spacing: 0.14em;
     text-transform: uppercase;
 }
-.cn {
-    font-family: 'Inter Tight', 'Noto Serif SC', 'Songti SC', serif;
-    color: var(--ink-soft);
-    font-size: var(--body-size);
-    line-height: 1.65;
-}
 
-/* === Header/footer chrome on every slide === */
+/* 顶部/底部 chrome */
 .slide-header, .slide-footer {
     position: absolute; left: var(--slide-padding); right: var(--slide-padding);
     display: flex; justify-content: space-between; align-items: center;
     font-family: 'JetBrains Mono', monospace;
-    font-size: clamp(0.55rem, 0.85vw, 0.75rem);
-    color: var(--ink-soft);
+    font-size: clamp(0.58rem, 0.85vw, 0.75rem);
+    color: var(--ink-mute);
     letter-spacing: 0.15em; text-transform: uppercase;
     z-index: 2;
 }
 .slide-header { top: clamp(1rem, 2.5vw, 2rem); }
 .slide-footer { bottom: clamp(1rem, 2.5vw, 2rem); }
-.slide-header::before, .slide-footer::before {
-    content: ""; position: absolute; left: 0; right: 0;
-    height: 1px; background: var(--rule);
+.slide-header::after, .slide-footer::after {
+    content: ""; position: absolute; left: 0; right: 0; height: 1px; background: var(--rule);
 }
-.slide-header::before { bottom: -0.6rem; }
-.slide-footer::before { top: -0.6rem; }
+.slide-header::after { bottom: -0.6rem; }
+.slide-footer::after { top: -0.6rem; }
 
-/* === Page numbers — editorial style === */
 .folio { font-variant-numeric: tabular-nums; }
 
-/* === Title slide === */
-.slide-title .slide-content { justify-content: space-between; padding-top: clamp(5rem, 10vh, 8rem); padding-bottom: clamp(4rem, 8vh, 6rem); }
-.slide-title h1 {
-    font-size: clamp(2.2rem, 8.5vw, 7.5rem);
-    font-weight: 300;
+/* === TITLE 页 === */
+.slide-title .slide-content {
+    justify-content: space-between;
+    padding-top: clamp(5rem, 10vh, 8rem);
+    padding-bottom: clamp(4rem, 8vh, 6rem);
 }
-.slide-title h1 em { color: var(--accent); font-style: italic; }
-.slide-title .subtitle {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
+.slide-title h1 {
+    font-family: 'Noto Serif SC', serif;
     font-weight: 300;
-    font-size: clamp(1rem, 2.2vw, 1.75rem);
+    font-size: clamp(2.5rem, 9vw, 8rem);
+    line-height: 1.05;
+    letter-spacing: 0.02em;
+}
+.slide-title h1 strong { color: var(--accent); font-weight: 500; }
+.slide-title .subtitle {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 300;
+    font-size: clamp(1rem, 2vw, 1.5rem);
     color: var(--ink-soft);
-    max-width: 48ch;
-    margin-top: clamp(0.8rem, 2vh, 1.5rem);
+    max-width: 30ch;
+    margin-top: clamp(1rem, 2.5vh, 2rem);
+    line-height: 1.6;
 }
 .byline {
     display: flex; justify-content: space-between; align-items: flex-end;
     gap: clamp(1rem, 3vw, 3rem); flex-wrap: wrap;
     border-top: 1px solid var(--rule); padding-top: clamp(0.8rem, 2vh, 1.5rem);
+    font-family: 'Noto Sans SC', sans-serif;
 }
-.byline .who { font-size: var(--body-size); color: var(--ink); }
-.byline .who small { display: block; font-family: 'JetBrains Mono', monospace;
-    font-size: var(--small-size); color: var(--ink-soft); letter-spacing: 0.12em;
-    text-transform: uppercase; margin-top: 0.3rem; }
+.byline .who { font-size: var(--body-size); color: var(--ink); font-weight: 500; }
+.byline .who small {
+    display: block; font-family: 'JetBrains Mono', monospace;
+    font-size: var(--small-size); color: var(--ink-mute);
+    letter-spacing: 0.12em; text-transform: uppercase; margin-top: 0.4rem; font-weight: 400;
+}
 
-/* === Section-heading slide layout === */
-.slide-section .slide-content { flex-direction: row; align-items: flex-start; gap: clamp(1.5rem, 4vw, 4rem); }
+/* === SECTION 页（case 首页）=== */
+.slide-section .slide-content {
+    flex-direction: row; align-items: center;
+    gap: clamp(1.5rem, 4vw, 4rem);
+}
 .slide-section .index {
-    font-family: 'Fraunces', serif; font-style: italic; font-weight: 300;
-    font-size: clamp(6rem, 22vw, 18rem); color: var(--accent); line-height: 0.85;
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 200;
+    font-size: clamp(8rem, 28vw, 22rem);
+    color: var(--accent);
+    line-height: 0.85;
     font-variant-numeric: tabular-nums;
 }
-.slide-section .body { flex: 1; padding-top: clamp(1rem, 4vh, 3rem); }
-.slide-section h2 { font-size: clamp(1.6rem, 4.5vw, 3.5rem); font-weight: 300; font-family: 'Fraunces', serif; line-height: 1.05; letter-spacing: -0.02em; }
+.slide-section .body { flex: 1; }
+.slide-section h2 {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 300;
+    font-size: clamp(1.8rem, 5vw, 3.8rem);
+    line-height: 1.15;
+    letter-spacing: 0.01em;
+}
+.slide-section h2 strong { color: var(--accent); font-weight: 500; }
 .slide-section .tagline {
-    font-size: var(--body-size); color: var(--ink-soft); max-width: 52ch;
-    margin-top: clamp(0.7rem, 1.8vh, 1.4rem); line-height: 1.55;
+    font-size: var(--body-size);
+    color: var(--ink-soft);
+    max-width: 26ch;
+    margin-top: clamp(0.8rem, 2vh, 1.6rem);
+    line-height: 1.7;
 }
-.slide-section .cn-tagline { margin-top: 0.6rem; }
 
-/* === Content slide === */
+/* === CONTENT 页 === */
 .content-title {
-    font-family: 'Fraunces', serif; font-weight: 300;
-    font-size: clamp(1.4rem, 3.8vw, 2.8rem); line-height: 1.1;
-    max-width: 24ch; letter-spacing: -0.02em;
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 300;
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    line-height: 1.2;
+    max-width: 22ch;
+    letter-spacing: 0.01em;
 }
-.content-title em { color: var(--accent); font-style: italic; }
+.content-title strong { color: var(--accent); font-weight: 500; }
+
 .lede {
-    margin-top: clamp(0.6rem, 1.5vh, 1rem);
-    font-size: var(--body-size); color: var(--ink-soft);
-    max-width: 58ch; line-height: 1.6;
-}
-.columns {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: clamp(1rem, 3vw, 3rem);
-    margin-top: clamp(1rem, 2.5vh, 2rem);
-    align-items: start;
-}
-@media (max-width: 720px) { .columns { grid-template-columns: 1fr; } }
-
-ul.ticks { list-style: none; display: flex; flex-direction: column; gap: clamp(0.4rem, 1.2vh, 0.9rem); }
-ul.ticks li { display: flex; gap: clamp(0.5rem, 1.2vw, 0.9rem); font-size: var(--body-size); line-height: 1.45; }
-ul.ticks li::before {
-    content: "§"; color: var(--accent); font-family: 'Fraunces', serif; font-weight: 600;
-    font-size: 1em; flex-shrink: 0; width: 1em;
+    margin-top: clamp(1.5rem, 4vh, 3rem);
+    font-size: var(--body-size);
+    color: var(--ink-soft);
+    max-width: 36ch;
+    line-height: 1.75;
 }
 
-/* === Code/terminal block === */
-.term {
-    background: #1a1a1a; color: #f4efe6;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: clamp(0.65rem, 1.05vw, 0.85rem);
-    padding: clamp(0.8rem, 2vw, 1.5rem);
-    border-radius: 4px;
-    line-height: 1.55;
-    overflow: hidden;
+/* 精简的要点列表 —— 每页最多 3 条 */
+.points {
+    list-style: none;
+    display: flex; flex-direction: column;
+    gap: clamp(1rem, 2.8vh, 2rem);
+    margin-top: clamp(1.5rem, 4vh, 3rem);
+    max-width: 36ch;
+}
+.points li {
+    font-size: var(--body-size);
+    line-height: 1.6;
+    padding-left: 2.2em;
     position: relative;
+    color: var(--ink-soft);
+}
+.points li strong {
+    color: var(--ink);
+    font-weight: 500;
+    display: block;
+    font-size: 1.05em;
+    margin-bottom: 0.15em;
+    font-family: 'Noto Serif SC', serif;
+}
+.points li::before {
+    content: counter(pt, decimal-leading-zero);
+    counter-increment: pt;
+    position: absolute;
+    left: 0;
+    top: 0.1em;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85em;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+}
+.points { counter-reset: pt; }
+
+/* === 终端框 === */
+.term {
+    background: #1c1815;
+    color: #f5f0e6;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(0.75rem, 1.1vw, 0.95rem);
+    padding: clamp(1.2rem, 2.5vw, 2rem) clamp(1.2rem, 2.5vw, 2rem);
+    padding-top: clamp(2.2rem, 4vw, 3rem);
+    border-radius: 4px;
+    line-height: 1.7;
+    position: relative;
+    max-width: min(95%, 640px);
 }
 .term::before {
-    content: "● ● ●"; position: absolute; top: 0.6rem; left: 0.9rem;
-    color: #555; letter-spacing: 0.2em; font-size: 0.7rem;
+    content: "● ● ●"; position: absolute; top: 0.8rem; left: 1rem;
+    color: #555; letter-spacing: 0.25em; font-size: 0.75rem;
 }
-.term-body { margin-top: 1.4rem; white-space: pre; overflow: hidden; }
-.term-body .muted { color: #888; }
-.term-body .acc { color: var(--accent-soft); }
-.term-body .ok { color: #7ab287; }
+.term-body { white-space: pre; overflow: hidden; }
+.term-body .muted { color: #8a8075; }
+.term-body .acc { color: #d89b6e; }
+.term-body .ok { color: #8db888; }
 .term-body .prompt { color: #7a94b3; }
 
-/* === "pull quote" slide === */
+/* === 引言大字 === */
 .slide-quote .slide-content { justify-content: center; align-items: center; text-align: center; }
 .pull {
-    font-family: 'Fraunces', serif; font-style: italic; font-weight: 300;
-    font-size: clamp(1.6rem, 4.5vw, 3.5rem); line-height: 1.15;
-    max-width: 28ch; letter-spacing: -0.02em;
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 300;
+    font-size: clamp(1.8rem, 5.5vw, 4.5rem);
+    line-height: 1.3;
+    max-width: 16ch;
+    letter-spacing: 0.02em;
 }
-.pull::before { content: "\201C"; color: var(--accent); font-size: 1.3em; line-height: 0; margin-right: 0.1em; vertical-align: -0.25em; }
-.pull::after { content: "\201D"; color: var(--accent); font-size: 1.3em; line-height: 0; margin-left: 0.05em; vertical-align: -0.25em; }
+.pull strong { color: var(--accent); font-weight: 500; }
 
-/* === Stats / emphasis chips === */
-.chips { display: flex; gap: clamp(0.6rem, 1.5vw, 1.2rem); flex-wrap: wrap; margin-top: clamp(0.8rem, 2vh, 1.4rem); }
-.chip {
-    border: 1px solid var(--rule); padding: 0.4em 0.9em;
-    font-family: 'JetBrains Mono', monospace; font-size: var(--small-size);
-    letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft);
-    border-radius: 999px;
+/* === 目录页 === */
+.toc {
+    display: flex; flex-direction: column;
+    margin-top: clamp(1.5rem, 4vh, 2.5rem);
+    max-width: min(92%, 900px);
 }
-.chip.accent { border-color: var(--accent); color: var(--accent); }
-
-/* === Case-index (overview) grid === */
-.toc { display: grid; grid-template-columns: 1fr; gap: clamp(0.3rem, 0.9vh, 0.7rem); margin-top: clamp(0.8rem, 2vh, 1.4rem); }
 .toc .row {
-    display: grid; grid-template-columns: 3em 1fr auto;
-    gap: clamp(0.6rem, 1.8vw, 1.4rem);
-    padding: clamp(0.6rem, 1.3vh, 1rem) 0; border-bottom: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 3em 1fr auto;
+    gap: clamp(0.8rem, 2vw, 1.8rem);
+    padding: clamp(0.8rem, 1.8vh, 1.4rem) 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: center;
+}
+.toc .n {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 300;
+    color: var(--accent);
+    font-size: clamp(1.4rem, 2.8vw, 2rem);
+    font-variant-numeric: tabular-nums;
+}
+.toc .t {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 400;
+    font-size: clamp(1.05rem, 2vw, 1.5rem);
+    color: var(--ink);
+}
+.toc .k {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: var(--small-size);
+    color: var(--ink-mute);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+@media (max-width: 600px) {
+    .toc .k { display: none; }
+    .toc .row { grid-template-columns: 2.2em 1fr; }
+}
+
+/* === 三卡片（case 2）=== */
+.cards-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(0.8rem, 2vw, 1.6rem);
+    margin-top: clamp(1.5rem, 4vh, 2.5rem);
+    max-width: min(95%, 1000px);
+}
+@media (max-width: 800px) { .cards-3 { grid-template-columns: 1fr; } }
+
+.card-mini {
+    border-top: 2px solid var(--accent);
+    padding: clamp(0.9rem, 2vw, 1.4rem) 0;
+    display: flex; flex-direction: column; gap: 0.6rem;
+}
+.card-mini h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    font-size: clamp(0.9rem, 1.4vw, 1.1rem);
+    color: var(--ink);
+    letter-spacing: 0.02em;
+}
+.card-mini p {
+    font-size: clamp(0.78rem, 1.15vw, 0.95rem);
+    color: var(--ink-soft);
+    line-height: 1.65;
+}
+
+/* === 时间线（case 5）=== */
+.timeline {
+    margin-top: clamp(1.5rem, 4vh, 2.5rem);
+    max-width: min(92%, 700px);
+    display: flex; flex-direction: column;
+}
+.tl-row {
+    display: grid;
+    grid-template-columns: 4em 1fr;
+    gap: clamp(0.8rem, 2vw, 1.6rem);
+    padding: clamp(0.6rem, 1.5vh, 1rem) 0;
+    border-bottom: 1px solid var(--rule);
     align-items: baseline;
 }
-.toc .n { font-family: 'Fraunces', serif; font-style: italic; color: var(--accent); font-size: var(--h3-size); font-variant-numeric: tabular-nums; }
-.toc .title { font-family: 'Fraunces', serif; font-weight: 400; font-size: var(--h3-size); line-height: 1.15; }
-.toc .title small { display: block; font-family: 'Inter Tight', sans-serif; color: var(--ink-soft); font-size: var(--small-size); margin-top: 0.2rem; font-style: normal; }
-.toc .keyword { font-family: 'JetBrains Mono', monospace; font-size: var(--small-size); color: var(--ink-soft); letter-spacing: 0.1em; text-transform: uppercase; }
+.tl-row .time {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    color: var(--accent);
+    font-size: var(--small-size);
+    letter-spacing: 0.05em;
+}
+.tl-row .what {
+    font-size: var(--body-size);
+    color: var(--ink);
+    line-height: 1.55;
+}
 
-/* === Animation: staggered reveal on active slide === */
-.slide .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); }
+/* === 三个共性（synthesis）=== */
+.three-invariants {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.5rem, 3vw, 3rem);
+    margin-top: clamp(1.5rem, 4vh, 3rem);
+    max-width: min(95%, 1100px);
+}
+@media (max-width: 800px) { .three-invariants { grid-template-columns: 1fr; } }
+.inv {
+    display: flex; flex-direction: column; gap: 0.7rem;
+}
+.inv .num {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 300;
+    color: var(--accent);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 1;
+}
+.inv h5 {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 500;
+    font-size: clamp(1rem, 1.8vw, 1.3rem);
+    color: var(--ink);
+    line-height: 1.35;
+}
+.inv p {
+    font-size: clamp(0.78rem, 1.15vw, 0.95rem);
+    color: var(--ink-soft);
+    line-height: 1.7;
+}
+
+/* === 出场动画 === */
+.slide .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
 .slide.is-active .reveal { opacity: 1; transform: none; }
 .slide.is-active .reveal:nth-child(1) { transition-delay: 0.05s; }
-.slide.is-active .reveal:nth-child(2) { transition-delay: 0.18s; }
-.slide.is-active .reveal:nth-child(3) { transition-delay: 0.3s; }
-.slide.is-active .reveal:nth-child(4) { transition-delay: 0.42s; }
-.slide.is-active .reveal:nth-child(5) { transition-delay: 0.54s; }
-.slide.is-active .reveal:nth-child(6) { transition-delay: 0.66s; }
+.slide.is-active .reveal:nth-child(2) { transition-delay: 0.22s; }
+.slide.is-active .reveal:nth-child(3) { transition-delay: 0.4s; }
+.slide.is-active .reveal:nth-child(4) { transition-delay: 0.58s; }
 
-/* === Nav dots === */
+/* === 导航点 === */
 .nav-dots {
-    position: fixed; right: clamp(0.8rem, 2vw, 1.8rem); top: 50%;
+    position: fixed;
+    right: clamp(0.8rem, 2vw, 1.8rem);
+    top: 50%;
     transform: translateY(-50%);
-    display: flex; flex-direction: column; gap: 0.55rem; z-index: 100;
+    display: flex; flex-direction: column; gap: 0.55rem;
+    z-index: 100;
 }
 .nav-dots a {
     width: 7px; height: 7px; border-radius: 50%;
-    background: transparent; border: 1px solid var(--ink-soft);
-    transition: all 0.25s ease; opacity: 0.45;
+    background: transparent;
+    border: 1px solid var(--ink-mute);
+    transition: all 0.25s ease;
+    opacity: 0.45;
 }
 .nav-dots a:hover { opacity: 0.9; }
-.nav-dots a.active { background: var(--accent); border-color: var(--accent); opacity: 1; transform: scale(1.2); }
-
-/* Bilingual helper */
-.bi .en { display: block; }
-.bi .zh { display: block; color: var(--ink-soft); font-size: 0.85em; margin-top: 0.15em; }
-
-/* Demo sketch boxes */
-.sketch {
-    border: 1px solid var(--rule);
-    padding: clamp(0.8rem, 2vw, 1.4rem);
-    background: rgba(255,255,255,0.35);
-    display: flex; flex-direction: column; gap: 0.55rem;
-    font-size: var(--small-size); line-height: 1.45;
+.nav-dots a.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    opacity: 1;
+    transform: scale(1.3);
 }
-.sketch h4 {
-    font-family: 'Fraunces', serif; font-style: italic; font-weight: 400;
-    color: var(--accent); font-size: var(--body-size);
-}
-.sketch ul { list-style: none; display: flex; flex-direction: column; gap: 0.35rem; }
-.sketch ul li::before { content: "·  "; color: var(--accent); font-weight: 700; }
 
-/* Three-up grid of sketches */
-.three-up { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(0.6rem, 1.5vw, 1.2rem); margin-top: clamp(0.8rem, 2vh, 1.4rem); }
-@media (max-width: 860px) { .three-up { grid-template-columns: 1fr; } }
-
-/* Closing */
+/* === 结束页 === */
 .slide-end .slide-content { justify-content: center; align-items: flex-start; }
-.slide-end .display { font-size: clamp(2.5rem, 8vw, 6rem); }
+.slide-end .display { font-size: clamp(3rem, 9vw, 7rem); }
 </style>
 </head>
 <body>
 
-<!-- ===========================================
-     1. TITLE
-     =========================================== -->
+<!-- ============ 01 · 封面 ============ -->
 <section class="slide slide-title" data-label="Cover">
     <div class="slide-header">
-        <span>Linwei Tao · 陶林威</span>
-        <span>Apple Research — Internal Talk</span>
+        <span>陶林威 · Linwei Tao</span>
+        <span>Apple Research — 内部分享</span>
     </div>
 
     <div class="slide-content">
         <div>
-            <p class="eyebrow reveal">Five cases from a year of using agents</p>
-            <h1 class="display reveal">Agents in<br/>my <em>workflow</em>.</h1>
-            <p class="subtitle reveal">A personal tour of where coding agents have quietly replaced
-                tools, tutorials, and small bets — and what that means for research practice.</p>
+            <p class="eyebrow reveal">Agent 的五种用法</p>
+            <h1 class="reveal">我是怎么<br/><strong>用 agent</strong> 的。</h1>
+            <p class="subtitle reveal">五个每天都在跑的真实场景 —— 不讲 benchmark、不讲框架。</p>
         </div>
 
         <div class="byline reveal">
             <div class="who">
-                Linwei Tao · <span style="color:var(--ink-soft)">陶林威</span>
+                陶林威
                 <small>Incoming intern · Apple Research</small>
             </div>
             <div class="who" style="text-align:right">
-                2026 · Spring
-                <small>A talk in five parts</small>
+                2026 · 春
+                <small>Five cases · one pattern</small>
             </div>
         </div>
     </div>
 
     <div class="slide-footer">
-        <span class="folio">000 — 016</span>
-        <span>§ Cover</span>
+        <span class="folio">000 / 015</span>
+        <span>§ 封面</span>
     </div>
 </section>
 
-<!-- ===========================================
-     2. WHY THIS TALK
-     =========================================== -->
+<!-- ============ 02 · 为什么 ============ -->
 <section class="slide" data-label="Why">
     <div class="slide-header">
-        <span>§ Prologue</span>
-        <span class="folio">001 / 016</span>
+        <span>§ 引言</span>
+        <span class="folio">001 / 015</span>
     </div>
 
     <div class="slide-content">
-        <p class="eyebrow reveal">Why this talk</p>
-        <h2 class="content-title reveal">Agents are no longer a <em>demo</em>.<br/>They are how I get work done.</h2>
-        <p class="lede reveal cn">对我而言，agent 已经从"试一试的玩具"变成"每天都在用的工具链"。
-            这次分享不讲 benchmark，不讲 framework —— 讲五个真实、具体、我每天都在跑的使用场景。</p>
-
-        <div class="columns reveal">
-            <div>
-                <p class="meta" style="margin-bottom:0.6rem">Scope</p>
-                <ul class="ticks">
-                    <li>Five cases, each a real workflow I rely on</li>
-                    <li>Built mostly with Claude Code + custom skills</li>
-                    <li>Each case = a shape of problem, not a product</li>
-                </ul>
-            </div>
-            <div>
-                <p class="meta" style="margin-bottom:0.6rem">What I won't do</p>
-                <ul class="ticks">
-                    <li>Compare providers or models</li>
-                    <li>Claim any of this is novel engineering</li>
-                    <li>Pretend the rough edges aren't there</li>
-                </ul>
-            </div>
-        </div>
+        <p class="eyebrow reveal">为什么讲这个</p>
+        <h2 class="content-title reveal">Agent 已经从"<strong>试一试的玩具</strong>"<br/>变成我每天用的<strong>工具链</strong>。</h2>
+        <p class="lede reveal">今天分享五个具体的使用场景 ——<br/>都是真实、粗糙、但我每天都依赖的工作流。</p>
     </div>
 
     <div class="slide-footer">
-        <span>Agents in my workflow</span>
-        <span>Linwei Tao</span>
+        <span>Agent 的五种用法</span>
+        <span>陶林威</span>
     </div>
 </section>
 
-<!-- ===========================================
-     3. OVERVIEW — TABLE OF CASES
-     =========================================== -->
-<section class="slide" data-label="Overview">
+<!-- ============ 03 · 目录 ============ -->
+<section class="slide" data-label="Contents">
     <div class="slide-header">
-        <span>§ Contents</span>
-        <span class="folio">002 / 016</span>
+        <span>§ 目录</span>
+        <span class="folio">002 / 015</span>
     </div>
 
     <div class="slide-content">
-        <p class="eyebrow reveal">The five cases</p>
-        <h2 class="content-title reveal">One agent, five <em>shapes</em> of work.</h2>
+        <p class="eyebrow reveal">五种形状</p>
+        <h2 class="content-title reveal">一套 agent，<br/>五种<strong>工作形状</strong>。</h2>
 
         <div class="toc reveal">
-            <div class="row">
-                <span class="n">01</span>
-                <span class="title">Staying current — an AI daily briefing<small>每天把 HuggingFace / arXiv / 大厂 release 熬成一杯早咖啡</small></span>
-                <span class="keyword">ai-daily</span>
-            </div>
-            <div class="row">
-                <span class="n">02</span>
-                <span class="title">Small tools, same-day shipped<small>5 分钟一个 utility：gnvitop, bibtex-checker, …</small></span>
-                <span class="keyword">utilities</span>
-            </div>
-            <div class="row">
-                <span class="n">03</span>
-                <span class="title">Learning a new field — "agent RL" in one sitting<small>让 agent 帮我做 literature review 并铺一条学习路径</small></span>
-                <span class="keyword">learn-fast</span>
-            </div>
-            <div class="row">
-                <span class="n">04</span>
-                <span class="title">Auto-research — validating a tiny, honest idea<small>一个最小 claim → 最小实验 → 一页结论</small></span>
-                <span class="keyword">auto-research</span>
-            </div>
-            <div class="row">
-                <span class="n">05</span>
-                <span class="title">Vibe-coding a minimal MCP startup<small>从"我有个想法"到"能跑的 MCP 服务"在一个下午</small></span>
-                <span class="keyword">vibe-coding</span>
-            </div>
+            <div class="row"><span class="n">01</span><span class="t">每日 AI 简报</span><span class="k">ai-daily</span></div>
+            <div class="row"><span class="n">02</span><span class="t">顺手写的小工具</span><span class="k">utilities</span></div>
+            <div class="row"><span class="n">03</span><span class="t">一个晚上学一个新领域</span><span class="k">learn-fast</span></div>
+            <div class="row"><span class="n">04</span><span class="t">最小想法 · 最小实验</span><span class="k">auto-research</span></div>
+            <div class="row"><span class="n">05</span><span class="t">一个下午跑出 MCP 原型</span><span class="k">vibe-coding</span></div>
         </div>
     </div>
 
     <div class="slide-footer">
-        <span>Five cases · One pattern</span>
+        <span>Contents</span>
         <span class="folio">002</span>
     </div>
 </section>
 
-<!-- ===========================================
-     4. SECTION — CASE 1
-     =========================================== -->
+<!-- ============ 04 · Case 1 section ============ -->
 <section class="slide slide-section" data-label="Case 1">
     <div class="slide-header">
-        <span>§ Case one</span>
-        <span class="folio">003 / 016</span>
+        <span>§ Case 01</span>
+        <span class="folio">003 / 015</span>
     </div>
 
     <div class="slide-content">
         <div class="index reveal">01</div>
         <div class="body">
-            <p class="eyebrow reveal">Case 1 — stay current</p>
-            <h2 class="reveal">The daily AI briefing.</h2>
-            <p class="tagline reveal">Every morning, an agent reads HuggingFace Trending, arXiv,
-                and big-lab release feeds, clusters the noise, and hands me a single file I
-                actually read with my coffee.</p>
-            <p class="tagline cn-tagline cn reveal">信息爆炸不是新问题，新的是<strong>治理方式</strong>：
-                把"订阅 → 过滤 → 摘要 → 归档"变成一条每天自动跑的 agent pipeline。</p>
+            <p class="eyebrow reveal">每日简报</p>
+            <h2 class="reveal">早上一杯咖啡，<br/>一份<strong>AI 日报</strong>。</h2>
+            <p class="tagline reveal">订阅 → 过滤 → 摘要 → 归档<br/>做成一条每天自动跑的 pipeline。</p>
         </div>
     </div>
 
     <div class="slide-footer">
-        <span>Case 01 · ai-daily</span>
-        <span>stay current without drowning</span>
+        <span>ai-daily</span>
+        <span>让信息来找你</span>
     </div>
 </section>
 
-<!-- ===========================================
-     5. CASE 1 — HOW IT WORKS
-     =========================================== -->
-<section class="slide" data-label="Case 1 / how">
+<!-- ============ 05 · Case 1 demo ============ -->
+<section class="slide" data-label="Case 1 / demo">
     <div class="slide-header">
-        <span>§ Case 01 · mechanics</span>
-        <span class="folio">004 / 016</span>
+        <span>§ Case 01 · 运行一次</span>
+        <span class="folio">004 / 015</span>
     </div>
 
-    <div class="slide-content">
-        <p class="eyebrow reveal">How it actually runs</p>
-        <h2 class="content-title reveal">A cron, a skill, and a <em>knowledge base</em>.</h2>
+    <div class="slide-content" style="justify-content:center; align-items:center; text-align:center">
+        <p class="eyebrow reveal" style="text-align:center">每天早上，三分钟</p>
 
-        <div class="columns reveal">
-            <div>
-                <ul class="ticks">
-                    <li><strong>Trigger.</strong> Cron fires <code style="font-family:'JetBrains Mono',monospace">/ai-daily</code> each morning.</li>
-                    <li><strong>Gather.</strong> Agent pulls HF Trending, arXiv categories, lab blogs.</li>
-                    <li><strong>Cluster.</strong> Group by theme, dedup near-duplicates, rank by novelty.</li>
-                    <li><strong>Write.</strong> One markdown briefing, ≤ 6 stories, each with a "why it matters".</li>
-                    <li><strong>Archive.</strong> Drop into <code style="font-family:'JetBrains Mono',monospace">~/ai-knowledge/daily/</code>, linked to a web dashboard.</li>
-                </ul>
-            </div>
-            <div>
-                <div class="term">
-                    <div class="term-body"><span class="muted"># 2026-04-20 briefing</span>
+        <div class="reveal" style="margin-top: clamp(1.2rem, 3vh, 2rem); display:flex; justify-content:center">
+            <div class="term">
+                <div class="term-body"><span class="muted"># 2026-04-20</span>
 <span class="prompt">$</span> claude /ai-daily
-<span class="muted">→ scanning 9 sources ... 312 items</span>
-<span class="muted">→ clustering ............ 7 themes</span>
-<span class="muted">→ ranking by novelty .... done</span>
+<span class="muted">→ 抓取 9 个来源 ...... 312 条</span>
+<span class="muted">→ 聚类 ................ 7 个主题</span>
+<span class="muted">→ 按新颖度排序 ........ done</span>
 
-<span class="acc">▸ theme 01</span>  agent-RL post-training
-<span class="acc">▸ theme 02</span>  long-context serving
-<span class="acc">▸ theme 03</span>  on-device diffusion
-<span class="muted">... 4 more</span>
+<span class="acc">▸ 主题 01</span>  agent-RL post-training
+<span class="acc">▸ 主题 02</span>  long-context serving
+<span class="acc">▸ 主题 03</span>  on-device diffusion
+<span class="muted">... 还有 4 个</span>
 
-<span class="ok">✓ wrote ~/ai-knowledge/daily/2026-04-20.md</span>
-<span class="ok">✓ updated dashboard (+7 cards)</span></div>
-                </div>
+<span class="ok">✓ 写入 ~/ai-knowledge/daily/2026-04-20.md</span>
+<span class="ok">✓ 更新 dashboard (+7 cards)</span></div>
             </div>
         </div>
 
-        <div class="chips reveal">
-            <span class="chip accent">Runtime ≈ 3 min</span>
-            <span class="chip">No UI to maintain</span>
-            <span class="chip">Same skill · different cron · team briefings</span>
-        </div>
+        <p class="reveal" style="margin-top:clamp(1.2rem, 3vh, 2rem); font-size:var(--body-size); color:var(--ink-soft); max-width:30ch; text-align:center">
+            一条 cron、一个 skill、一个 knowledge base。<br/>每天长出来，不用我操心。
+        </p>
     </div>
 
     <div class="slide-footer">
@@ -536,80 +588,56 @@ ul.ticks li::before {
     </div>
 </section>
 
-<!-- ===========================================
-     6. SECTION — CASE 2
-     =========================================== -->
+<!-- ============ 06 · Case 2 section ============ -->
 <section class="slide slide-section" data-label="Case 2">
     <div class="slide-header">
-        <span>§ Case two</span>
-        <span class="folio">005 / 016</span>
+        <span>§ Case 02</span>
+        <span class="folio">005 / 015</span>
     </div>
 
     <div class="slide-content">
         <div class="index reveal">02</div>
         <div class="body">
-            <p class="eyebrow reveal">Case 2 — small tools</p>
-            <h2 class="reveal">Utilities I used to<br/>never bother to write.</h2>
-            <p class="tagline reveal">The threshold for "should I build this?" has collapsed.
-                Things that used to be "meh, I'll do it by hand" are now a 20-minute agent
-                session and a pip-installable package.</p>
-            <p class="tagline cn-tagline cn reveal">工具的<strong>建造成本</strong>低到可以忽略之后，
-                你的行为会变 —— 每一次手动重复，都变成"值得写一个工具"。</p>
+            <p class="eyebrow reveal">小工具</p>
+            <h2 class="reveal">以前<strong>懒得写</strong>的工具，<br/>现在都写了。</h2>
+            <p class="tagline reveal">"手动做两次"<br/>就已经值得做一个工具。</p>
         </div>
     </div>
 
     <div class="slide-footer">
-        <span>Case 02 · small tools</span>
-        <span>the threshold collapsed</span>
+        <span>utilities</span>
+        <span>门槛塌了</span>
     </div>
 </section>
 
-<!-- ===========================================
-     7. CASE 2 — EXAMPLES
-     =========================================== -->
+<!-- ============ 07 · Case 2 examples ============ -->
 <section class="slide" data-label="Case 2 / examples">
     <div class="slide-header">
-        <span>§ Case 02 · examples</span>
-        <span class="folio">006 / 016</span>
+        <span>§ Case 02 · 三个例子</span>
+        <span class="folio">006 / 015</span>
     </div>
 
     <div class="slide-content">
-        <p class="eyebrow reveal">Two tools I ship and actually use</p>
-        <h2 class="content-title reveal">From paper cut to <em>pip install</em>.</h2>
+        <p class="eyebrow reveal">都是一个 session 写完的</p>
+        <h2 class="content-title reveal">从"手痒"到 <strong>pip install</strong>。</h2>
 
-        <div class="three-up reveal">
-            <div class="sketch">
+        <div class="cards-3 reveal">
+            <div class="card-mini">
                 <h4>gnvitop</h4>
-                <p class="cn" style="font-size:var(--small-size)">A multi-host GPU monitor for my lab fleet. JSON output that agents can read before scheduling a job.</p>
-                <ul>
-                    <li>Aggregates <code>nvidia-smi</code> across 6 hosts</li>
-                    <li>One command, one JSON blob</li>
-                    <li>Consumed by my own agents before any training run</li>
-                </ul>
+                <p>多机 GPU 监控。<br/>把 <code>nvidia-smi</code> 聚合成 JSON，<br/>我的 agent 排队前会先读它。</p>
             </div>
-            <div class="sketch">
+            <div class="card-mini">
                 <h4>bibtex-checker</h4>
-                <p class="cn" style="font-size:var(--small-size)">Catches dead DOIs, mismatched venues, arXiv-vs-published version drift before every paper submission.</p>
-                <ul>
-                    <li>Cross-checks against OpenAlex + Crossref</li>
-                    <li>Flags 20–30 issues per typical .bib</li>
-                    <li>Written in a single afternoon session</li>
-                </ul>
+                <p>投稿前校验 .bib，<br/>对照 OpenAlex / Crossref 找死链和版本漂移。<br/>一个典型 .bib 通常能捞出 20+ 处。</p>
             </div>
-            <div class="sketch">
+            <div class="card-mini">
                 <h4>paper2poster</h4>
-                <p class="cn" style="font-size:var(--small-size)">PDF → print-ready conference poster (HTML). A skill, not a product — invokable from any chat.</p>
-                <ul>
-                    <li>Reads the paper, picks a style, lays it out</li>
-                    <li>Single standalone HTML → print PDF</li>
-                    <li>Replaces 2 days of InDesign fiddling</li>
-                </ul>
+                <p>PDF → 打印就绪的会议 poster（HTML）。<br/>省掉两天 InDesign 调版。</p>
             </div>
         </div>
 
-        <p class="lede reveal" style="margin-top:clamp(0.8rem, 2vh, 1.4rem)">
-            <strong>Lesson.</strong> Each of these would have been "nice-to-have, maybe next year" pre-agent.
-            Post-agent, the decision inverts: if I'll do it twice, I build a tool.
+        <p class="reveal" style="margin-top:clamp(1.2rem, 3vh, 2rem); font-size:var(--body-size); color:var(--ink-soft); max-width:38ch">
+            关键不是"这些工具多新"<br/>而是决策规则反了：<strong>重复两次就值得做</strong>。
         </p>
     </div>
 
@@ -619,79 +647,55 @@ ul.ticks li::before {
     </div>
 </section>
 
-<!-- ===========================================
-     8. SECTION — CASE 3
-     =========================================== -->
+<!-- ============ 08 · Case 3 section ============ -->
 <section class="slide slide-section" data-label="Case 3">
     <div class="slide-header">
-        <span>§ Case three</span>
-        <span class="folio">007 / 016</span>
+        <span>§ Case 03</span>
+        <span class="folio">007 / 015</span>
     </div>
 
     <div class="slide-content">
         <div class="index reveal">03</div>
         <div class="body">
-            <p class="eyebrow reveal">Case 3 — learn fast</p>
-            <h2 class="reveal">Onboarding to a<br/>field in one evening.</h2>
-            <p class="tagline reveal">Take "agent RL" — I had read maybe three papers. Asking an
-                agent for a reading list is a weak prompt. Asking it to
-                <em>build me a learning trajectory</em> is a strong one.</p>
-            <p class="tagline cn-tagline cn reveal">真正有用的不是"给我 10 篇论文"，
-                而是"按因果顺序排一条学习路径，标出每篇的作用、前置知识、和我看完之后应该能回答什么问题"。</p>
+            <p class="eyebrow reveal">快速学习</p>
+            <h2 class="reveal">一晚上<br/>入门一个<strong>新领域</strong>。</h2>
+            <p class="tagline reveal">要 reading list 是弱 prompt；<br/>要 <strong>learning trajectory</strong> 才是强 prompt。</p>
         </div>
     </div>
 
     <div class="slide-footer">
-        <span>Case 03 · learn-fast</span>
-        <span>reading list → trajectory</span>
+        <span>learn-fast</span>
+        <span>agent RL · 一个例子</span>
     </div>
 </section>
 
-<!-- ===========================================
-     9. CASE 3 — WHAT IT PRODUCES
-     =========================================== -->
-<section class="slide" data-label="Case 3 / output">
+<!-- ============ 09 · Case 3 prompt ============ -->
+<section class="slide" data-label="Case 3 / prompt">
     <div class="slide-header">
-        <span>§ Case 03 · output</span>
-        <span class="folio">008 / 016</span>
+        <span>§ Case 03 · prompt 的形状</span>
+        <span class="folio">008 / 015</span>
     </div>
 
-    <div class="slide-content">
-        <p class="eyebrow reveal">Prompt shape matters more than model choice</p>
-        <h2 class="content-title reveal">A <em>trajectory</em>, not a list.</h2>
+    <div class="slide-content" style="justify-content:center; align-items:center; text-align:center">
+        <p class="eyebrow reveal" style="text-align:center">关键在于 prompt 的形状</p>
 
-        <div class="columns reveal">
-            <div>
-                <p class="meta" style="margin-bottom:0.6rem">The prompt, roughly</p>
-                <div class="term">
-                    <div class="term-body"><span class="muted"># topic: agent RL</span>
-<span class="prompt">&gt;</span> Give me a 10-step learning
-<span class="prompt">&gt;</span> trajectory. For each step:
-<span class="prompt">&gt;</span>   · the one paper to read
-<span class="prompt">&gt;</span>   · what it lets me do next
-<span class="prompt">&gt;</span>   · what I should be able
-<span class="prompt">&gt;</span>     to answer after reading
-<span class="prompt">&gt;</span>   · 2 sentence summary
-<span class="prompt">&gt;</span> Order by causal dependency,
-<span class="prompt">&gt;</span> not by date.</div>
-                </div>
-            </div>
-            <div>
-                <p class="meta" style="margin-bottom:0.6rem">What comes back</p>
-                <ul class="ticks">
-                    <li><strong>Step 01.</strong> RLHF fundamentals — <em>InstructGPT</em>, 2022</li>
-                    <li><strong>Step 02.</strong> Preference modeling without RL — <em>DPO</em></li>
-                    <li><strong>Step 03.</strong> Rewarding reasoning, not answers — process rewards</li>
-                    <li><strong>Step 04.</strong> Agent-flavored RL — tool use as actions</li>
-                    <li><strong>Step 05.</strong> Self-play with verifiable rewards</li>
-                    <li><span style="color:var(--ink-soft)">... five more, each with a "you'll be ready to ask X"</span></li>
-                </ul>
+        <div class="reveal" style="margin-top: clamp(1.2rem, 3vh, 2rem); display:flex; justify-content:center">
+            <div class="term">
+                <div class="term-body"><span class="muted"># 主题: agent RL</span>
+
+<span class="prompt">&gt;</span> 排一条 10 步的学习路径。
+<span class="prompt">&gt;</span> 每一步告诉我：
+<span class="prompt">&gt;</span>   <span class="acc">·</span> 读哪一篇
+<span class="prompt">&gt;</span>   <span class="acc">·</span> 读完能做什么
+<span class="prompt">&gt;</span>   <span class="acc">·</span> 我应该能回答什么问题
+<span class="prompt">&gt;</span>   <span class="acc">·</span> 两句话的摘要
+<span class="prompt">&gt;</span>
+<span class="prompt">&gt;</span> 按 <span class="ok">因果顺序</span>排，不按年份。</div>
             </div>
         </div>
 
-        <p class="lede reveal" style="margin-top:clamp(0.8rem, 2vh, 1.4rem)">
-            It's wrong in places. That's <em>fine</em> — it gives me a scaffold to argue with,
-            which is faster than writing one from scratch. I've done this for three fields this year.
+        <p class="reveal" style="margin-top:clamp(1.2rem, 3vh, 2rem); font-size:var(--body-size); color:var(--ink-soft); max-width:32ch; text-align:center">
+            给回来的路径会错。<br/>但它是一个<strong>可以吵架的脚手架</strong> —— 比我自己从零写快得多。
         </p>
     </div>
 
@@ -701,73 +705,47 @@ ul.ticks li::before {
     </div>
 </section>
 
-<!-- ===========================================
-     10. SECTION — CASE 4
-     =========================================== -->
+<!-- ============ 10 · Case 4 section ============ -->
 <section class="slide slide-section" data-label="Case 4">
     <div class="slide-header">
-        <span>§ Case four</span>
-        <span class="folio">009 / 016</span>
+        <span>§ Case 04</span>
+        <span class="folio">009 / 015</span>
     </div>
 
     <div class="slide-content">
         <div class="index reveal">04</div>
         <div class="body">
-            <p class="eyebrow reveal">Case 4 — auto-research</p>
-            <h2 class="reveal">Minimum idea,<br/>minimum experiment.</h2>
-            <p class="tagline reveal">Not "write me a NeurIPS paper." The useful shape is:
-                take one small, clean claim — run the smallest experiment that could falsify it
-                — report honestly what happened.</p>
-            <p class="tagline cn-tagline cn reveal">auto-research 的价值不在"自动写论文"，
-                而在<strong>缩短"从直觉到第一条信号"</strong>的距离：通常一个下午，一张图，一个决定 —— 继续还是放弃。</p>
+            <p class="eyebrow reveal">auto-research</p>
+            <h2 class="reveal">最小 claim，<br/>最小<strong>实验</strong>。</h2>
+            <p class="tagline reveal">不是"自动写论文"。<br/>是把"从直觉到第一条信号"<br/>压到一个下午。</p>
         </div>
     </div>
 
     <div class="slide-footer">
-        <span>Case 04 · auto-research</span>
-        <span>the minimum honest experiment</span>
+        <span>auto-research</span>
+        <span>快速证伪 · 快速放弃</span>
     </div>
 </section>
 
-<!-- ===========================================
-     11. CASE 4 — THE LOOP
-     =========================================== -->
+<!-- ============ 11 · Case 4 loop ============ -->
 <section class="slide" data-label="Case 4 / loop">
     <div class="slide-header">
-        <span>§ Case 04 · the loop</span>
-        <span class="folio">010 / 016</span>
+        <span>§ Case 04 · 回路</span>
+        <span class="folio">010 / 015</span>
     </div>
 
     <div class="slide-content">
-        <p class="eyebrow reveal">Five phases, one afternoon</p>
-        <h2 class="content-title reveal">Ideation → pilot → <em>verdict</em>.</h2>
+        <p class="eyebrow reveal">三个角色，一个下午</p>
+        <h2 class="content-title reveal">ideation → pilot → <strong>verdict</strong>。</h2>
 
-        <div class="columns reveal">
-            <div>
-                <ul class="ticks">
-                    <li><strong>Frame.</strong> Write the claim as one sentence an experiment can break.</li>
-                    <li><strong>Scope.</strong> Agent proposes the <em>smallest</em> dataset + model that could show signal.</li>
-                    <li><strong>Run.</strong> A Lab sub-agent writes code, dispatches to a free GPU, collects results.</li>
-                    <li><strong>Review.</strong> A separate Reviewer agent returns a verdict: <code>KILL / PIVOT / CONTINUE</code>.</li>
-                    <li><strong>Decide.</strong> I look at one figure and one paragraph, then I decide — not the agent.</li>
-                </ul>
-            </div>
-            <div>
-                <div class="sketch">
-                    <h4>Recent example</h4>
-                    <p class="cn" style="font-size:var(--small-size)">Claim: "Calibration-aware sampling improves multi-step agent traces on XYZ."</p>
-                    <ul>
-                        <li>Scope: 2 tasks, 1 model, 3 seeds</li>
-                        <li>Runtime: ~4 hours on one A100</li>
-                        <li>Verdict: <strong style="color:var(--accent)">PIVOT</strong> — signal exists, but only on one task family</li>
-                        <li>Cost saved: 2 weeks of scaling before knowing</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        <ol class="points reveal">
+            <li><strong>Framing</strong>把想法写成一句"能被实验推翻"的话。</li>
+            <li><strong>Pilot</strong>Lab agent 写代码，挑一张空闲 GPU，跑一遍最小规模。</li>
+            <li><strong>Verdict</strong>Reviewer agent 给结论：<code style="color:var(--accent); font-family:'JetBrains Mono',monospace">KILL / PIVOT / CONTINUE</code>。</li>
+        </ol>
 
-        <p class="lede reveal" style="margin-top:clamp(0.8rem, 2vh, 1.4rem)">
-            The agent is an <em>instrument</em>, not a collaborator. It runs the experiment I was too lazy to script. I still own the idea and the interpretation.
+        <p class="reveal" style="margin-top:clamp(1.5rem, 4vh, 2.5rem); font-size:var(--body-size); color:var(--ink-soft); max-width:38ch">
+            最近一次 PIVOT 省掉了两周的 scaling。<br/>Agent 是<strong>仪器</strong>，不是 collaborator —— 决策始终在我。
         </p>
     </div>
 
@@ -777,80 +755,50 @@ ul.ticks li::before {
     </div>
 </section>
 
-<!-- ===========================================
-     12. SECTION — CASE 5
-     =========================================== -->
+<!-- ============ 12 · Case 5 section ============ -->
 <section class="slide slide-section" data-label="Case 5">
     <div class="slide-header">
-        <span>§ Case five</span>
-        <span class="folio">011 / 016</span>
+        <span>§ Case 05</span>
+        <span class="folio">011 / 015</span>
     </div>
 
     <div class="slide-content">
         <div class="index reveal">05</div>
         <div class="body">
-            <p class="eyebrow reveal">Case 5 — vibe coding</p>
-            <h2 class="reveal">Shipping a minimum<br/>MCP in one afternoon.</h2>
-            <p class="tagline reveal">The fastest way to know if a product idea has legs is to
-                make the thinnest possible version of it usable by one real user — me.
-                MCP is the honest interface for that: a single verb, a single data shape.</p>
-            <p class="tagline cn-tagline cn reveal">"Vibe coding" 不是草率 —— 是把<strong>验证周期</strong>从两周压到两小时。
-                你不需要创业，你需要那个"我其实不想用它"的诚实时刻尽早出现。</p>
+            <p class="eyebrow reveal">vibe coding</p>
+            <h2 class="reveal">一个下午<br/>跑出一个 <strong>MCP</strong>。</h2>
+            <p class="tagline reveal">验证一个产品想法的最短路径 ——<br/>让自己当第一个用户。</p>
         </div>
     </div>
 
     <div class="slide-footer">
-        <span>Case 05 · vibe-coding</span>
-        <span>shortest honest validation</span>
+        <span>vibe-coding</span>
+        <span>最短的诚实验证</span>
     </div>
 </section>
 
-<!-- ===========================================
-     13. CASE 5 — WHAT EMERGED
-     =========================================== -->
-<section class="slide" data-label="Case 5 / what">
+<!-- ============ 13 · Case 5 timeline ============ -->
+<section class="slide" data-label="Case 5 / timeline">
     <div class="slide-header">
-        <span>§ Case 05 · what emerged</span>
-        <span class="folio">012 / 016</span>
+        <span>§ Case 05 · 一个下午</span>
+        <span class="folio">012 / 015</span>
     </div>
 
     <div class="slide-content">
-        <p class="eyebrow reveal">From "I wish this existed" to a running MCP server</p>
-        <h2 class="content-title reveal">One verb, one <em>week-one</em> user.</h2>
+        <p class="eyebrow reveal">从"想要它"到"能跑"</p>
+        <h2 class="content-title reveal">四小时，<br/>一个 <strong>week-one</strong> 用户。</h2>
 
-        <div class="columns reveal">
-            <div>
-                <p class="meta" style="margin-bottom:0.6rem">The afternoon</p>
-                <ul class="ticks">
-                    <li>2:00 — sketched the one primitive the server must do</li>
-                    <li>2:30 — agent scaffolded the MCP tool definitions</li>
-                    <li>3:30 — auth, rate-limits, a tiny web dashboard</li>
-                    <li>5:00 — used it inside Claude Code for a real task</li>
-                    <li>6:00 — wrote a note: <em>"which part do I actually keep opening?"</em></li>
-                </ul>
-            </div>
-            <div>
-                <div class="sketch">
-                    <h4>The lesson, inverted</h4>
-                    <p class="cn" style="font-size:var(--small-size)">
-                        最早的 prototype 最有价值的时刻，不是"它能跑"，
-                        而是第二天我发现<strong>我没再打开它</strong>。
-                        那才是最诚实的信号。
-                    </p>
-                    <p style="font-size:var(--small-size); color:var(--ink-soft); margin-top:0.4rem">
-                        The agent makes <em>building</em> nearly free.
-                        That forces the interesting question back to where it belongs:
-                        is this worth using at all?
-                    </p>
-                </div>
-            </div>
+        <div class="timeline reveal">
+            <div class="tl-row"><span class="time">14:00</span><span class="what">草稿：这个服务必须做的<strong>一个</strong>动作是什么？</span></div>
+            <div class="tl-row"><span class="time">14:30</span><span class="what">Agent 搭好 MCP tool 定义</span></div>
+            <div class="tl-row"><span class="time">15:30</span><span class="what">加上 auth、限流、一个极简 dashboard</span></div>
+            <div class="tl-row"><span class="time">17:00</span><span class="what">在 Claude Code 里用它做一个真实任务</span></div>
+            <div class="tl-row"><span class="time">次日</span><span class="what">发现我<strong>没再打开它</strong> —— 最诚实的信号</span></div>
         </div>
 
-        <div class="chips reveal">
-            <span class="chip">1 afternoon</span>
-            <span class="chip">~400 lines</span>
-            <span class="chip accent">1 honest "no" saved 3 months</span>
-        </div>
+        <p class="reveal" style="margin-top:clamp(1.2rem, 3vh, 2rem); font-size:var(--body-size); color:var(--ink-soft); max-width:36ch">
+            "构建"几乎免费之后，真正的问题回到了该在的地方：<br/><strong>这个东西值不值得用。</strong>
+        </p>
     </div>
 
     <div class="slide-footer">
@@ -859,159 +807,96 @@ ul.ticks li::before {
     </div>
 </section>
 
-<!-- ===========================================
-     14. PULL QUOTE — THE COMMON PATTERN
-     =========================================== -->
+<!-- ============ 14 · PULL QUOTE ============ -->
 <section class="slide slide-quote" data-label="Pattern">
     <div class="slide-header">
-        <span>§ Interlude</span>
-        <span class="folio">013 / 016</span>
+        <span>§ 小结</span>
+        <span class="folio">013 / 015</span>
     </div>
 
     <div class="slide-content">
-        <p class="pull reveal">What changed isn't what I<br/>can do. It's how <em style="color:var(--accent); font-style:italic">cheap</em><br/>it became to try.</p>
-        <p class="cn reveal" style="margin-top:clamp(1rem, 3vh, 2rem); max-width:40ch; text-align:center">
-            变化的不是能力的上限 —— 是"去试一下"这件事的<strong>成本</strong>。
-        </p>
+        <p class="pull reveal">变的不是<br/><strong>能力</strong>的上限 ——<br/>是"试一下"的<br/><strong>成本</strong>。</p>
     </div>
 
     <div class="slide-footer">
-        <span>Agents in my workflow</span>
+        <span>Agent 的五种用法</span>
         <span class="folio">013</span>
     </div>
 </section>
 
-<!-- ===========================================
-     15. CROSS-CUTTING PATTERNS
-     =========================================== -->
+<!-- ============ 15 · Three invariants ============ -->
 <section class="slide" data-label="Patterns">
     <div class="slide-header">
-        <span>§ Synthesis</span>
-        <span class="folio">014 / 016</span>
+        <span>§ 共性</span>
+        <span class="folio">014 / 015</span>
     </div>
 
     <div class="slide-content">
-        <p class="eyebrow reveal">What all five cases share</p>
-        <h2 class="content-title reveal">Three invariants.</h2>
+        <p class="eyebrow reveal">五个 case 共享的三件事</p>
+        <h2 class="content-title reveal">三个<strong>不变量</strong>。</h2>
 
-        <div class="columns reveal">
-            <div>
-                <ul class="ticks">
-                    <li><strong>1. The agent is an instrument, not a colleague.</strong>
-                        I keep taste, framing, and the call on what matters. It does the work I was too lazy to script.</li>
-                    <li><strong>2. The win is throughput of <em>attempts</em>, not quality of any one attempt.</strong>
-                        Five bad tries in a morning beat one careful try in a week — if each try is cheap to discard.</li>
-                    <li><strong>3. Good prompts describe the <em>shape</em>, not the answer.</strong>
-                        "Give me a learning trajectory with preconditions" beats "give me 10 papers." Every time.</li>
-                </ul>
+        <div class="three-invariants reveal">
+            <div class="inv">
+                <span class="num">01</span>
+                <h5>Agent 是仪器，<br/>不是同事。</h5>
+                <p>taste、framing、取舍仍然在我。<br/>它做的是我懒得写的那部分。</p>
             </div>
-            <div>
-                <p class="meta" style="margin-bottom:0.6rem">Implications · 对研究的影响</p>
-                <ul class="ticks">
-                    <li>Small, ugly prototypes become the new literature review.</li>
-                    <li>"I should build a tool" crosses the bar much more often — and that changes which problems you can afford to notice.</li>
-                    <li>The real skill becomes <em>deciding</em>: what to scale, what to KILL, what was never worth starting.</li>
-                </ul>
+            <div class="inv">
+                <span class="num">02</span>
+                <h5>赢在尝试的<br/>吞吐量。</h5>
+                <p>一上午跑五次烂的，<br/>好过一周只跑一次"很仔细的"。</p>
+            </div>
+            <div class="inv">
+                <span class="num">03</span>
+                <h5>好 prompt 描述<br/>的是形状。</h5>
+                <p>"给我 10 篇"很弱；<br/>"按因果顺序 + 前置依赖"永远更好。</p>
             </div>
         </div>
     </div>
 
     <div class="slide-footer">
-        <span>Patterns across all five cases</span>
+        <span>Three invariants</span>
         <span class="folio">014</span>
     </div>
 </section>
 
-<!-- ===========================================
-     16. TAKEAWAYS FOR APPLE RESEARCH
-     =========================================== -->
-<section class="slide" data-label="Takeaways">
-    <div class="slide-header">
-        <span>§ For us, specifically</span>
-        <span class="folio">015 / 016</span>
-    </div>
-
-    <div class="slide-content">
-        <p class="eyebrow reveal">Takeaways for the team</p>
-        <h2 class="content-title reveal">What I'd like to try <em>with you</em>.</h2>
-
-        <div class="columns reveal">
-            <div>
-                <p class="meta" style="margin-bottom:0.6rem">Low-friction places to start</p>
-                <ul class="ticks">
-                    <li>A shared daily briefing skill, tuned to the team's reading list</li>
-                    <li>A lab-internal "paper cut" utility shelf — each utility is one session</li>
-                    <li>A reviewer-agent pass in every pilot experiment, before we scale</li>
-                </ul>
-            </div>
-            <div>
-                <p class="meta" style="margin-bottom:0.6rem">What I'd love your pushback on</p>
-                <ul class="ticks">
-                    <li>Where the "instrument, not colleague" framing breaks down</li>
-                    <li>When an agent-built prototype actually slows a project</li>
-                    <li>Guardrails for reproducibility when code is half-agent-written</li>
-                </ul>
-            </div>
-        </div>
-
-        <p class="lede reveal cn" style="margin-top:clamp(0.8rem, 2vh, 1.4rem)">
-            我不是来推销 agent 的。我是来分享一套<strong>已经改变了我日常工作节奏</strong>的具体做法 ——
-            然后听听各位在 Apple Research 的语境下，会怎么用、怎么不用。
-        </p>
-    </div>
-
-    <div class="slide-footer">
-        <span>Takeaways</span>
-        <span class="folio">015</span>
-    </div>
-</section>
-
-<!-- ===========================================
-     17. CLOSING
-     =========================================== -->
+<!-- ============ 16 · Close ============ -->
 <section class="slide slide-end" data-label="End">
     <div class="slide-header">
-        <span>§ End</span>
-        <span class="folio">016 / 016</span>
+        <span>§ 结束</span>
+        <span class="folio">015 / 015</span>
     </div>
 
     <div class="slide-content">
         <div>
             <p class="eyebrow reveal">Thank you</p>
-            <h2 class="display reveal">Let's <em style="color:var(--accent)">try things</em>.</h2>
-            <p class="subtitle reveal" style="font-family:'Fraunces',serif; font-style:italic; font-weight:300; color:var(--ink-soft); max-width:40ch; margin-top:clamp(1rem, 3vh, 2rem)">
-                Questions, pushback, and war stories all welcome.
-            </p>
-            <p class="cn reveal" style="margin-top:clamp(0.8rem, 2vh, 1.2rem); max-width:40ch">
-                欢迎提问、反驳，或者直接丢一个你想让 agent 帮你做的问题。
+            <h2 class="display reveal">我们<br/><strong>试点东西</strong>吧。</h2>
+            <p class="reveal" style="font-family:'Noto Serif SC',serif; font-weight:300; color:var(--ink-soft); font-size:clamp(1rem, 2vw, 1.4rem); margin-top:clamp(1rem, 3vh, 2rem); max-width:28ch; line-height:1.7">
+                欢迎提问、反驳，<br/>或者丢一个你想让 agent 帮你做的问题。
             </p>
         </div>
 
         <div class="byline reveal" style="margin-top:clamp(2rem, 6vh, 4rem); width:100%">
             <div class="who">
-                Linwei Tao · 陶林威
+                陶林威 · Linwei Tao
                 <small>dylan.tao94 @ gmail.com</small>
             </div>
             <div class="who" style="text-align:right">
                 Apple Research · 2026
-                <small>Five cases · One pattern</small>
+                <small>Five cases · one pattern</small>
             </div>
         </div>
     </div>
 
     <div class="slide-footer">
-        <span>Agents in my workflow</span>
+        <span>Agent 的五种用法</span>
         <span class="folio">fin.</span>
     </div>
 </section>
 
-<!-- === Nav dots === -->
 <nav class="nav-dots" aria-label="Slide navigation" id="navDots"></nav>
 
 <script>
-/* ===========================================
-   NAV DOTS + ACTIVE-SLIDE DETECTION
-   =========================================== */
 const slides = document.querySelectorAll('.slide');
 const navDots = document.getElementById('navDots');
 
@@ -1041,16 +926,11 @@ const io = new IntersectionObserver((entries) => {
 
 slides.forEach(s => io.observe(s));
 
-// First slide active on load for entrance animation
 window.addEventListener('load', () => {
     slides[0].classList.add('is-active');
     if (dotLinks[0]) dotLinks[0].classList.add('active');
 });
 
-/* ===========================================
-   KEYBOARD NAVIGATION
-   =========================================== */
-let currentIdx = 0;
 function activeIndex() {
     const mid = window.scrollY + window.innerHeight / 2;
     for (let i = 0; i < slides.length; i++) {
@@ -1061,16 +941,14 @@ function activeIndex() {
     return 0;
 }
 document.addEventListener('keydown', (e) => {
-    currentIdx = activeIndex();
+    const idx = activeIndex();
     if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
         e.preventDefault();
-        const next = Math.min(currentIdx + 1, slides.length - 1);
-        slides[next].scrollIntoView({ behavior: 'smooth' });
+        slides[Math.min(idx + 1, slides.length - 1)].scrollIntoView({ behavior: 'smooth' });
     }
     if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') {
         e.preventDefault();
-        const prev = Math.max(currentIdx - 1, 0);
-        slides[prev].scrollIntoView({ behavior: 'smooth' });
+        slides[Math.max(idx - 1, 0)].scrollIntoView({ behavior: 'smooth' });
     }
     if (e.key === 'Home') { e.preventDefault(); slides[0].scrollIntoView({ behavior: 'smooth' }); }
     if (e.key === 'End')  { e.preventDefault(); slides[slides.length - 1].scrollIntoView({ behavior: 'smooth' }); }
