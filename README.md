@@ -6,6 +6,9 @@ Public talks and presentations. Each is a self-contained HTML slide deck — no 
 
 | Date | Title | Venue |
 |------|-------|-------|
+| 2026-04-20 | [Agents in My Workflow: Five Cases](./2026-04-20-agent-use-cases-apple/) | Internal Talk, Apple Research |
+| 2026-03-25 | [Claude Code for Physics](./2026-03-25-claude-code-physics/) | Guest Talk — Céline Bœhm group |
+| 2026-03-24 | [AI Agents for Research and Engineering: From Automation to Reliable Autonomy](./2026-03-24-ai-agents-sjtu/) | Invited Talk — Young Scientist Seminar, SJTU |
 | 2026-03-18 | [AI Agent for Research and Engineering](./2026-03-18-ai-agent-for-research-and-engineering/) | Lab Seminar, USYD |
 
 
